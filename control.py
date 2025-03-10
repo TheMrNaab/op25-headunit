@@ -5,7 +5,7 @@ import time
 class OP25Controller:
     def __init__(self):
         self.op25_process = None
-        print("OP25Controller - Version 1.2")
+        print("OP25Controller - Version 1.3")
     def kill_rx_processes(self):
         """Kills all existing rx.py processes."""
         try:
@@ -19,7 +19,7 @@ class OP25Controller:
         self.kill_rx_processes()  # Ensure no existing instances are running
 
         self.op25_process = subprocess.Popen(
-            ["python3", "/opt/op25-project/rx.py"],
+            ["python3", "/home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
         )
