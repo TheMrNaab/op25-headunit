@@ -2,8 +2,13 @@ import json
 import os
 
 class FileObject:
-    def __init__(self, file_path="system.json"):
-        self.file_path = file_path
+    def __init__(self, file_path=None):
+
+        if file_path is None:
+            self.file_path = self.beta_file_path()
+        else:
+            self.file_path = file_path
+
         self.data = self.load_file()
 
         # Store zone and talkgroup state
@@ -13,7 +18,13 @@ class FileObject:
         # Extract zone names after loading data
         self.zone_names = list(self.data["zones"].keys()) if "zones" in self.data else []
             
-            
+    def beta_file_path(self):
+        """Returns the path for the beta JSON file."""
+
+        script_dir = os.path.dirname(os.path.abspath(__file__))  # Get main.py's directory
+        file_path = os.path.join(script_dir, "system.json")  # Ensure correct path
+
+        return file_path
 
     def load_file(self):
         """Loads the JSON file."""
@@ -21,6 +32,8 @@ class FileObject:
             with open(self.file_path, "r") as file:
                 data = json.load(file)
             
+            print(self.file_path)
+
             # Convert JSON into zone-based structure
             zones = {}
             for entry in data:
