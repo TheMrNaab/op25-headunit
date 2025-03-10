@@ -1,6 +1,5 @@
 import subprocess
 import os
-import signal
 import time
 
 class OP25Controller:
@@ -20,10 +19,9 @@ class OP25Controller:
         self.kill_rx_processes()  # Ensure no existing instances are running
 
         self.op25_process = subprocess.Popen(
-            ["python3", "/opt/op25-project/rx.py"],  # Adjust path if needed
+            ["python3", "/opt/op25-project/rx.py"],
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            stdin=subprocess.PIPE  # Ensure stdin is available for switchGroup
+            stderr=subprocess.PIPE
         )
 
         time.sleep(2)  # Give OP25 time to initialize
@@ -38,17 +36,21 @@ class OP25Controller:
             self.op25_process = subprocess.Popen(
                 ["python3", "/opt/op25-project/rx.py"], 
                 stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                stdin=subprocess.PIPE  # Ensure stdin is available for switchGroup
+                stderr=subprocess.PIPE
             )
 
             time.sleep(2)  # Wait for second attempt
 
             if self.op25_process.poll() is not None:
                 print("[CRITICAL] OP25 failed to start after retry. Check logs!")
+                self.op25_process = None  # Prevent further execution
+                return
 
-        if self.op25_process:
+        if self.op25_process and self.op25_process.poll() is None:
             print("[DEBUG] OP25 started successfully!")
+        else:
+            print("[ERROR] OP25 is not running. Exiting process.")
+            self.op25_process = None  # Ensure it does not get marked as running
 
     def stop(self):
         """Stops the OP25 process if running."""
