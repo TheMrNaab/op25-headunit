@@ -2,3 +2,5 @@ __pycache__/
 *.swap
 *.pyc
 error.log
+__pycache__/control.cpython-312.pyc
+__pycache__/file_object.cpython-312.pyc

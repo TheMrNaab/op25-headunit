@@ -3,7 +3,6 @@ import os
 
 class FileObject:
     def __init__(self, file_path=None):
-
         if file_path is None:
             self.file_path = self.beta_file_path()
         else:
@@ -28,6 +27,7 @@ class FileObject:
 
     def load_file(self):
         """Loads the JSON file."""
+        print(f"Loading JSON from: {self.file_path}")
         try:
             with open(self.file_path, "r") as file:
                 data = json.load(file)
