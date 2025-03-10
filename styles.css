@@ -1,0 +1,52 @@
+/* Background color for the window */
+QWidget {
+    background-color: black;
+}
+
+/* Zone label styling */
+QLabel#zone_label {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Talkgroup label styling */
+QLabel#tg_label {
+    background-color: #d4ff00;
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+    border: 2px solid #555;
+    padding: 10px;
+}
+
+/* Talkgroup list styling */
+QListWidget#tg_list {
+    background-color: #d4ff00;
+    color: black;
+    font-size: 18px;
+    border: 2px solid #555;
+}
+
+/* Buttons - Default style */
+QPushButton {
+    background-color: #444;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #666;
+    padding: 8px;
+}
+QPushButton:pressed {
+    background-color: #666;
+}
+
+/* Green Button (Channel Up) */
+QPushButton#ch_up_btn {
+    background-color: #008000;
+}
+
+/* Red Button (Channel Down) */
+QPushButton#ch_down_btn {
+    background-color: #800000;
+}

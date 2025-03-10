@@ -1,0 +1,26 @@
+  
+  ### REMOVED FROM fixed_main.py
+  
+  def stop_op25(self):
+        """Gracefully stop the OP25 process, close the application, and exit Openbox."""
+        try:
+            # Stop OP25 if it's running
+            if hasattr(self, 'op25_process') and self.op25 and self.op25.poll() is None:
+                print("Stopping OP25...")
+                self.op25.terminate()  # Send termination signal
+                try:
+                    self.op25.wait(timeout=5)  # Wait for it to exit gracefully
+                except subprocess.TimeoutExpired:
+                    print("OP25 did not terminate in time. Forcing shutdown.")
+                    self.op25.kill()  # Forcefully stop it
+
+            print("Exiting application.")
+            self.close()  # Close the application window
+
+            # Exit Openbox and return to the console
+            print("Exiting Openbox...")
+            subprocess.run(["openbox", "--exit"], check=True)
+
+        except Exception as e:
+            print(f"Error during shutdown: {e}")
+
