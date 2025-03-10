@@ -1,10 +1,12 @@
+--
 Traceback (most recent call last):
   File "/opt/op25-project/main.py", line 280, in <module>
     ex = ScannerUI()
          ^^^^^^^^^^^
-  File "/opt/op25-project/main.py", line 33, in __init__
-    self.initUI()
-  File "/opt/op25-project/main.py", line 41, in initUI
-    self.zone_label = QLabel(self.currentFile.zone_names[self.currentFile.current_zone_index], self)
-                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'FileObject' object has no attribute 'zone_names'
+  File "/opt/op25-project/main.py", line 18, in __init__
+    self.currentFile = FileObject()
+                       ^^^^^^^^^^^^
+  File "/opt/op25-project/file_object.py", line 7, in __init__
+    self.data = self.load_file()
+                ^^^^^^^^^^^^^^
+AttributeError: 'FileObject' object has no attribute 'load_file'
