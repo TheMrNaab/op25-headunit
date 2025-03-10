@@ -2,15 +2,16 @@ import json
 import os
 
 class FileObject:
-    class FileObject:
-        def __init__(self, file_path="system.json"):
-            self.file_path = file_path
-            self.data = self.load_file()
+    def __init__(self, file_path="system.json"):
+        self.file_path = file_path
+        self.data = self.load_file()
 
-            # Store zone and talkgroup state
-            self.current_zone_index = 0
-            self.current_tg_index = 0
-            self.zone_names = []  # Ensure this attribute exists
+        # Store zone and talkgroup state
+        self.current_zone_index = 0
+        self.current_tg_index = 0
+
+        # Extract zone names after loading data
+        self.zone_names = list(self.data["zones"].keys()) if "zones" in self.data else []
             
             
 
