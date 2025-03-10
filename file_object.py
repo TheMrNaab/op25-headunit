@@ -13,12 +13,22 @@ class FileObject:
             self.zone_names = list(self.data.keys()) if self.data else []
 
         def load_file(self):
-            """Loads the JSON file"""
+            """Loads the JSON file."""
             try:
                 with open(self.file_path, "r") as file:
-                    return json.load(file)
+                    data = json.load(file)
+                
+                # Convert JSON into zone-based structure
+                zones = {}
+                for entry in data:
+                    zone_name = entry["zone"]
+                    if zone_name not in zones:
+                        zones[zone_name] = {"channels": []}
+                    zones[zone_name]["channels"].append(entry)
+
+                return {"zones": zones}  # Store zones properly
             except FileNotFoundError:
-                return {}  # Return an empty dict if file is missing
+                return {"zones": {}}  # Ensure empty zones structure
 
         def save_json(self):
             """Saves the current JSON data to the file."""
