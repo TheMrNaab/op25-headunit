@@ -1,68 +1,78 @@
-import os
 import subprocess
+import os
+import signal
 import time
-class OP25Controller:
-    def __init__(self):  # Fixed method name
-        # Define OP25 executable path
-        rx_script = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/rx.py")
 
-        # Start OP25 in the background
+class OP25Controller:
+    def __init__(self):
+        self.op25_process = None
+
+    def kill_rx_processes(self):
+        """Kills all existing rx.py processes."""
         try:
+            subprocess.run(["pkill", "-f", "rx.py"], check=True)
+            print("[DEBUG] Killed all existing rx.py processes.")
+        except subprocess.CalledProcessError:
+            print("[DEBUG] No existing rx.py processes found.")
+
+    def start(self):
+        """Starts OP25 and handles failures by killing rx.py if necessary."""
+        self.kill_rx_processes()  # Ensure no existing instances are running
+
+        self.op25_process = subprocess.Popen(
+            ["python3", "/opt/op25-project/rx.py"],  # Adjust path if needed
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            stdin=subprocess.PIPE  # Ensure stdin is available for switchGroup
+        )
+
+        time.sleep(2)  # Give OP25 time to initialize
+
+        if self.op25_process.poll() is not None:  # Process failed immediately
+            print("[ERROR] OP25 failed to start on the first attempt!")
+
+            # Kill rx.py again in case it partially started
+            self.kill_rx_processes()
+
+            print("[INFO] Retrying OP25 startup...")
             self.op25_process = subprocess.Popen(
-                [
-                    "python3", rx_script, "--args", "rtl=0", "-N", "LNA:35",
-                    "-S", "2500000", "-q", "0", "-T", "trunk.tsv", "-V", "-2", "-U"
-                ],
-                cwd=os.path.dirname(rx_script),  # Ensure the script runs in the correct directory
-                stdin=subprocess.PIPE,
-                stdout=subprocess.DEVNULL,  # Suppress stdout to avoid triggering gnuplot
-                stderr=subprocess.DEVNULL,  # Suppress errors to prevent gnuplot launch
-                text=True
+                ["python3", "/opt/op25-project/rx.py"], 
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                stdin=subprocess.PIPE  # Ensure stdin is available for switchGroup
             )
 
-            time.sleep(5)  # Give OP25 time to initialize
+            time.sleep(2)  # Wait for second attempt
 
-        except Exception as e:
-            print(f"Failed to start OP25: {e}")
-            exit(1)
+            if self.op25_process.poll() is not None:
+                print("[CRITICAL] OP25 failed to start after retry. Check logs!")
+
+        if self.op25_process:
+            print("[DEBUG] OP25 started successfully!")
+
+    def stop(self):
+        """Stops the OP25 process if running."""
+        if self.op25_process and self.op25_process.poll() is None:
+            self.op25_process.terminate()
+            self.op25_process.wait()
+            print("[DEBUG] OP25 process terminated.")
 
     def switchGroup(self, grp):
-        """ Switches OP25 to a new talkgroup. """
-        if self.op25_process.poll() is not None:
-            print("Error: OP25 is not running.")
+        """Switches OP25 to a new talkgroup."""
+        if not self.op25_process or self.op25_process.poll() is not None:
+            print("[ERROR] OP25 is not running.")
             return
         try:
             grp = int(grp)  # Ensure numeric input
-            command = f"W {grp}\n"  # OP25 uses 'w' to change talkgroup
-            print(command)
-            self.op25_process.stdin.write(command)
+            command = f"W {grp}\n"  # OP25 uses 'W' to change talkgroup
+            print(f"[DEBUG] Sending command: {command.strip()}")
+            self.op25_process.stdin.write(command.encode())
             self.op25_process.stdin.flush()
         except ValueError:
-            print("Invalid input. Enter a numeric talkgroup.")
-
-    def start(self):
-        # Check if the process is still running
-        if self.op25_process.poll() is None:
-            print("OP25 started successfully!")
-        else:
-            print("OP25 failed to start.")
-            error_message = self.op25_process.stderr.read()
-            print("Error Output:\n", error_message)
-            self.op25_process.terminate()  # Ensure the process does not hang
-            exit(1)
-
-    def stop(self):
-        if self.op25_process and self.op25_process.poll() is None:
-            print("Stopping OP25...")
-            self.op25_process.terminate()
-            self.op25_process.wait()
-            print("OP25 stopped successfully.")
-        else:
-            print("OP25 is not running.")
+            print("[ERROR] Invalid input. Enter a numeric talkgroup.")
 
     def restart(self):
-        print("Restarting OP25...")
+        """Restarts OP25."""
+        print("[INFO] Restarting OP25...")
         self.stop()
         self.start()
-
-
