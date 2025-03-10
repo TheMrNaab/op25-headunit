@@ -10,7 +10,9 @@ class FileObject:
             # Store zone and talkgroup state
             self.current_zone_index = 0
             self.current_tg_index = 0
-            self.zone_names = list(self.data.keys()) if self.data else []
+            self.zone_names = []  # Ensure this attribute exists
+            
+            
 
         def load_file(self):
             """Loads the JSON file."""
