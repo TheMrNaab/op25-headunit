@@ -5,7 +5,7 @@ import time
 class OP25Controller:
     def __init__(self):
         self.op25_process = None
-
+        print("OP25Controller - Version 1.2")
     def kill_rx_processes(self):
         """Kills all existing rx.py processes."""
         try:
