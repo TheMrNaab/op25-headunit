@@ -1,4 +1,4 @@
-#import test
+import os
 import sys
 from file_object import FileObject
 from control import OP25Controller
@@ -7,9 +7,7 @@ from PyQt5.QtWidgets import ( # type: ignore
 )
 from PyQt5.QtCore import Qt # type: ignore
 
-import subprocess
-import time
-import os
+
 
 class ScannerUI(QWidget):
 
@@ -18,6 +16,7 @@ class ScannerUI(QWidget):
         print("--")
 
         self.currentFile = FileObject()
+         
      
         self.isMenuActive = False  # Tracks if talkgroup menu is active
 

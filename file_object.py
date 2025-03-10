@@ -3,7 +3,7 @@ import os
 
 class FileObject:
     class FileObject:
-        def __init__(self, file_path="config.json"):
+        def __init__(self, file_path="system.json"):
             self.file_path = file_path
             self.data = self.load_file()
 
