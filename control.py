@@ -58,7 +58,7 @@ class OP25Controller:
                 grp = str(grp)  # Convert single integer to string
             elif isinstance(grp, list):  
                 grp = ",".join(map(str, grp))  # Convert list to comma-separated string
-            
+                print("Raw Group Data", grp)
             command = f"W {grp}\n"  # Ensure newline for OP25 to process command
             print(f"[DEBUG] Sending command: {command.strip()}")
             
