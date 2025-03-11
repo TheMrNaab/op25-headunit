@@ -248,11 +248,10 @@ class ScannerUI(QWidget):
             self.update_display()
             self.toggle_talkgroup_menu()
 
-            # Determine if it's a scan or talkgroup type and send TGID(s)
-            if selected_channel["type"] == "talkgroup":
-                self.op25.switchGroup(str(selected_channel["tgid"]))  # Send single TGID
-            elif selected_channel["type"] == "scan":
-                self.op25.switchGroup(",".join(map(str, selected_channel["tgid"])))  # Send comma-separated TGIDs
+        if selected_channel["type"] == "talkgroup":
+            self.op25.switchGroup(str(selected_channel["tgid"]))  # Send single TGID
+        elif selected_channel["type"] == "scan":
+            self.op25.switchGroup(",".join(map(str, selected_channel["tgid"])))  # Send comma-separated TGIDs
 
     def update_display(self):
         """Updates the display with the current zone and channel information."""

@@ -42,18 +42,25 @@ class OP25Controller:
             print("[DEBUG] OP25 process terminated.")
 
     def switchGroup(self, grp):
-        """ Switches OP25 to a new talkgroup. """
-        if self.op25_process.poll() is not None:
+        """Switches OP25 to a new talkgroup."""
+        if not self.op25_process or self.op25_process.poll() is not None:
             print("[ERROR] OP25 is not running.")
             return
+
         try:
-            grp = int(grp)  # Ensure numeric input
-            command = f"W {grp}\n"  # OP25 uses 'W' to change talkgroup
+            # Ensure grp is a string
+            if isinstance(grp, int):  
+                grp = str(grp)  # Convert single integer to string
+            elif isinstance(grp, list):  
+                grp = ",".join(map(str, grp))  # Convert list to comma-separated string
+            
+            command = f"W {grp}\n"  # Ensure newline for OP25 to process command
             print(f"[DEBUG] Sending command: {command.strip()}")
-            self.op25_process.stdin.write(command.encode())
-            self.op25_process.stdin.flush()
-        except ValueError:
-            print("[ERROR] Invalid input. Enter a numeric talkgroup.")
+            
+            self.op25_process.stdin.write(command.encode())  # Send command
+            self.op25_process.stdin.flush()  # Flush buffer
+        except Exception as e:
+            print(f"[ERROR] Failed to send talkgroup switch command: {e}")
 
     def restart(self):
         print("[INFO] Restarting OP25...")
