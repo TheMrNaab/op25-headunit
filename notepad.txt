@@ -45,3 +45,5 @@ Correct initialization:
             stderr=subprocess.PIPE,
             stdin=subprocess.PIPE  # Added for command input handling
         )
+
+        /home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py

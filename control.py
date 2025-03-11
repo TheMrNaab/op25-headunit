@@ -11,7 +11,7 @@ class OP25Controller:
         self.op25_process = subprocess.Popen(
             [
                 "python3",
-                "/opt/op25-project/rx.py",
+                "/home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py",
                 "--args", "rtl",
                 "-N", "LNA:47",
                 "-S", "250000",
