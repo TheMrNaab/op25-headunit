@@ -26,7 +26,9 @@ class OP25Controller:
                 "-V", "-2",
                 "-U"  # Enables UDP streaming
             ],
-            stderr=open("stderr.2", "w")  # Redirects stderr to a file
+            stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL,  # Ignore stdout to avoid blocking audio
+            stderr=subprocess.DEVNULL  # Capture errors
         )
 
         time.sleep(2)  # Give OP25 time to initialize
