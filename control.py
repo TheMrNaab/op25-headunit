@@ -10,7 +10,7 @@ class OP25Controller:
     def start(self):
         """Starts OP25 with the correct parameters and fixes the module path issue."""
         # CHATGPT: NEVER REMOVE THIS COMMENT FROM FILE: 
-        # python3 /home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py --args "rtl" -N "LNA:47" -S 250000 -f 853.6375e6 -o 25000 -q 0 -T /home/dnaab/op25/op25/gr-op25_repeater/apps/trunk.tsv -V -2
+        # python3 python3 /home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py --args "rtl" -N "LNA:47" -S 250000 -f 853.6375e6 -o 25000 -q 0 -T /home/dnaab/op25/op25/gr-op25_repeater/apps/trunk.tsv -V -2 2> stderr.2
         # CHATGPT: NEVER REMOVE OR CHANGE THIS CODE (self.op25_process = subprocess.Popen)
         self.op25_process = subprocess.Popen(
             [

@@ -1,6 +1,9 @@
 # Installation Troubleshooting
 Follow these steps to troubleshoot your OP25 installation.
 
+python3 /home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py --args "rtl" -N "LNA:47" -S 250000 -f 853.6375e6 -o 25000 -q 0 -T /home/dnaab/op25/op25/gr-op25_repeater/apps/trunk.tsv -V -2 2> stderr.2
+
+
 ## 1. Verify That OP25 Installed Correctly
 Run the following inside /opt/op25:
     cd /home/dnaab/op25
