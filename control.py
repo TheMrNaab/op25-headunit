@@ -5,23 +5,13 @@ import time
 class OP25Controller:
     def __init__(self):
         self.op25_process = None
-        self.OP25_Path = "/home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py"
-        print("OP25Controller - Version 1.3")
 
-    def kill_rx_processes(self):
-        """Kills all existing rx.py processes."""
-        try:
-            subprocess.run(["pkill", "-f", "rx.py"], check=True)
-            print("[DEBUG] Killed all existing rx.py processes.")
-        except subprocess.CalledProcessError:
-            print("[DEBUG] No existing rx.py processes found.")
-
-    def start_op25(self):
-        """Starts OP25 process."""
+    def start(self):
+        """Starts OP25 with the correct parameters."""
         self.op25_process = subprocess.Popen(
             [
                 "python3",
-                self.OP25_Path,
+                "/opt/op25-project/rx.py",
                 "--args", "rtl",
                 "-N", "LNA:47",
                 "-S", "250000",
@@ -32,32 +22,16 @@ class OP25Controller:
                 "-V", "-2"
             ],
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            stdin=subprocess.PIPE  # Added for command input handling
+            stderr=subprocess.PIPE
         )
 
-    def start(self):
-        """Starts OP25 and handles failures by killing rx.py if necessary."""
-        self.kill_rx_processes()  # Ensure no existing instances are running
-
-        self.start_op25()
         time.sleep(2)  # Give OP25 time to initialize
 
-        if self.op25_process.poll() is not None:  # Process failed immediately
-            print("[ERROR] OP25 failed to start on the first attempt!")
+        if self.op25_process.poll() is not None:  # Process failed
+            print("[ERROR] OP25 failed to start!")
 
-            self.kill_rx_processes()  # Kill any partially started processes
-
-            print("[INFO] Retrying OP25 startup...")
-            self.start_op25()
-            time.sleep(2)
-
-            if self.op25_process.poll() is not None:
-                print("[CRITICAL] OP25 failed to start after retry. Check logs!")
-                self.op25_process = None
-                return
-
-        print("[DEBUG] OP25 started successfully!")
+        if self.op25_process:
+            print("[DEBUG] OP25 started successfully!")
 
     def stop(self):
         """Stops the OP25 process if running."""
@@ -67,8 +41,8 @@ class OP25Controller:
             print("[DEBUG] OP25 process terminated.")
 
     def switchGroup(self, grp):
-        """Switches OP25 to a new talkgroup."""
-        if not self.op25_process or self.op25_process.poll() is not None:
+        """ Switches OP25 to a new talkgroup. """
+        if self.op25_process.poll() is not None:
             print("[ERROR] OP25 is not running.")
             return
         try:
@@ -81,7 +55,6 @@ class OP25Controller:
             print("[ERROR] Invalid input. Enter a numeric talkgroup.")
 
     def restart(self):
-        """Restarts OP25."""
         print("[INFO] Restarting OP25...")
         self.stop()
         self.start()

@@ -24,3 +24,24 @@
         except Exception as e:
             print(f"Error during shutdown: {e}")
 
+
+Correct initialization:
+    def start_op25(self):
+        """Starts OP25 process."""
+        self.op25_process = subprocess.Popen(
+            [
+                "python3",
+                self.OP25_Path,
+                "--args", "rtl",
+                "-N", "LNA:47",
+                "-S", "250000",
+                "-f", "853.6375e6",
+                "-o", "25000",
+                "-q", "0",
+                "-T", "/opt/op25-project/trunk.tsv",
+                "-V", "-2"
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            stdin=subprocess.PIPE  # Added for command input handling
+        )
