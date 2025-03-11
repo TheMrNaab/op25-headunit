@@ -1,13 +1,19 @@
 import subprocess
 import os
 import time
+import sys
 
 class OP25Controller:
     def __init__(self):
         self.op25_process = None
 
     def start(self):
-        """Starts OP25 with the correct parameters."""
+        """Starts OP25 with the correct parameters and fixes the module path issue."""
+
+        # Set PYTHONPATH to include the OP25 directory
+        env = os.environ.copy()
+        env["PYTHONPATH"] = "/home/dnaab/op25/op25/gr-op25_repeater"  # Adjust if needed
+
         self.op25_process = subprocess.Popen(
             [
                 "python3",
@@ -22,21 +28,17 @@ class OP25Controller:
                 "-V", "-2"
             ],
             stdin=subprocess.PIPE,  
-            stdout=subprocess.PIPE,  # Capture standard output
-            stderr=subprocess.PIPE  # Capture errors
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env=env  # Pass the modified environment
         )
 
         time.sleep(2)  # Give OP25 time to initialize
-
-        time.sleep(2)  # Give OP25 time to start
 
         if self.op25_process.poll() is not None:
             error_message = self.op25_process.stderr.read().decode()
             print(f"[ERROR] OP25 failed to start! Error: {error_message}")
         else:
-            print("[DEBUG] OP25 started successfully!")
-
-        if self.op25_process:
             print("[DEBUG] OP25 started successfully!")
 
     def stop(self):
