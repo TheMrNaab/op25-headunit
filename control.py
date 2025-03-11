@@ -21,15 +21,20 @@ class OP25Controller:
                 "-T", "/opt/op25-project/trunk.tsv",
                 "-V", "-2"
             ],
-            stdin=subprocess.PIPE,  # Enables sending commands
-            stdout=subprocess.DEVNULL,  # Prevents process crash from excessive output
-            stderr=subprocess.DEVNULL   # Prevents log spam
+            stdin=subprocess.PIPE,  
+            stdout=subprocess.PIPE,  # Capture standard output
+            stderr=subprocess.PIPE  # Capture errors
         )
 
         time.sleep(2)  # Give OP25 time to initialize
 
-        if self.op25_process.poll() is not None:  # Process failed
-            print("[ERROR] OP25 failed to start!")
+        time.sleep(2)  # Give OP25 time to start
+
+        if self.op25_process.poll() is not None:
+            error_message = self.op25_process.stderr.read().decode()
+            print(f"[ERROR] OP25 failed to start! Error: {error_message}")
+        else:
+            print("[DEBUG] OP25 started successfully!")
 
         if self.op25_process:
             print("[DEBUG] OP25 started successfully!")
