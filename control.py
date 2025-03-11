@@ -21,8 +21,9 @@ class OP25Controller:
                 "-T", "/opt/op25-project/trunk.tsv",
                 "-V", "-2"
             ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
+            stdin=subprocess.PIPE,  # Enables sending commands
+            stdout=subprocess.DEVNULL,  # Prevents process crash from excessive output
+            stderr=subprocess.DEVNULL   # Prevents log spam
         )
 
         time.sleep(2)  # Give OP25 time to initialize
