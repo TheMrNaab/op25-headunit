@@ -242,19 +242,25 @@ class ScannerUI(QWidget):
             None
         )
 
-        print("@245: ", selected_channel["tgid"])
+        if not selected_channel:
+            print("@ERROR: Selected talkgroup not found in JSON")
+            return  # Exit function if selection is invalid
 
-        if selected_channel:
-            # Update the currently selected talkgroup
-            self.currentFile.current_tg_index = selected_channel["channel_number"]
-            self.update_display()
-            self.toggle_talkgroup_menu()
+        print("@245:", selected_channel["tgid"])
+
+        # Update the currently selected talkgroup
+        self.currentFile.current_tg_index = selected_channel["channel_number"]
+        self.update_display()
+        self.toggle_talkgroup_menu()
 
         if selected_channel["type"] == "talkgroup":
             self.op25.switchGroup(str(selected_channel["tgid"]))  # Send single TGID
         elif selected_channel["type"] == "scan":
-            print("@254: ", selected_channel["tgid"])
-            self.op25.switchGroup(",".join(map(str, selected_channel["tgid"])))  # Send comma-separated TGIDs
+            if isinstance(selected_channel["tgid"], list):  # Ensure it's a list
+                print("@254:", selected_channel["tgid"])
+                self.op25.switchGroup(",".join(map(str, selected_channel["tgid"])))  # Send comma-separated TGIDs
+            else:
+                print("@ERROR: Expected list for scan mode, got", type(selected_channel["tgid"])) 
 
     def update_display(self):
         """Updates the display with the current zone and channel information."""
