@@ -48,7 +48,7 @@ class OP25Controller:
 
     def switchGroup(self, grp):
         """Switches OP25 to a new talkgroup."""
-        print("@PARAM Group Raw:",grp)
+        
         if not self.op25_process or self.op25_process.poll() is not None:
             print("[ERROR] OP25 is not running.")
             return
