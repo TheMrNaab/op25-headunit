@@ -9,10 +9,7 @@ class OP25Controller:
 
     def start(self):
         """Starts OP25 with the correct parameters and fixes the module path issue."""
-
-        # Set PYTHONPATH to include the OP25 directory
-        env = os.environ.copy()
-        env["PYTHONPATH"] = "/home/dnaab/op25/op25/gr-op25_repeater"  # Adjust if needed
+        # NEVER REMOVE THIS COMMENT FROM FILE: python3 /home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py --args "rtl" -N "LNA:47" -S 250000 -f 853.6375e6 -o 25000 -q 0 -T /home/dnaab/op25/op25/gr-op25_repeater/apps/trunk.tsv -V -2
 
         self.op25_process = subprocess.Popen(
             [
@@ -24,7 +21,7 @@ class OP25Controller:
                 "-f", "853.6375e6",
                 "-o", "25000",
                 "-q", "0",
-                "-T", "/opt/op25-project/trunk.tsv",
+                "-T", "/home/dnaab/op25/op25/gr-op25_repeater/apps/trunk.tsv",
                 "-V", "-2"
             ],
             stdin=subprocess.PIPE,  
