@@ -26,8 +26,7 @@ class OP25Controller:
             ],
             stdin=subprocess.PIPE,  
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            env=env  # Pass the modified environment
+            stderr=subprocess.PIPE
         )
 
         time.sleep(2)  # Give OP25 time to initialize
