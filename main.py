@@ -246,8 +246,6 @@ class ScannerUI(QWidget):
             print("@ERROR: Selected talkgroup not found in JSON")
             return  # Exit function if selection is invalid
 
-        print("@245:", selected_channel["tgid"])
-
         # Update the currently selected talkgroup
         self.currentFile.current_tg_index = selected_channel["channel_number"]
         self.update_display()
