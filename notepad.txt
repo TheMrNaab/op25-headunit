@@ -1,4 +1,7 @@
-  
+python3 /home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py --args rtl -N LNA:47 -S 250000 -f 853.6375e6 -o 25000 -q 0 -T /opt/op25-project/trunk.tsv -V -2  
+ 
+ 
+ 
   ### REMOVED FROM fixed_main.py
   
   def stop_op25(self):
