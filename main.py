@@ -255,7 +255,7 @@ class ScannerUI(QWidget):
 
         if selected_channel["type"] == "talkgroup":
             self.op25.switchGroup(str(selected_channel["tgid"]))  # Send single TGID
-        elif selected_channel["type"] == "scan":
+        elif selected_channel["type"].lower() == "scan":
             if isinstance(selected_channel["tgid"], list):  # Ensure it's a list
                 print("@254:", selected_channel["tgid"])
                 self.op25.switchGroup(",".join(map(str, selected_channel["tgid"])))  # Send comma-separated TGIDs
