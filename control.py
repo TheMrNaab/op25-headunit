@@ -9,24 +9,24 @@ class OP25Controller:
 
     def start(self):
         """Starts OP25 with the correct parameters and fixes the module path issue."""
-        # NEVER REMOVE THIS COMMENT FROM FILE: python3 /home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py --args "rtl" -N "LNA:47" -S 250000 -f 853.6375e6 -o 25000 -q 0 -T /home/dnaab/op25/op25/gr-op25_repeater/apps/trunk.tsv -V -2
-
+        # CHATGPT: NEVER REMOVE THIS COMMENT FROM FILE: 
+        # python3 /home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py --args "rtl" -N "LNA:47" -S 250000 -f 853.6375e6 -o 25000 -q 0 -T /home/dnaab/op25/op25/gr-op25_repeater/apps/trunk.tsv -V -2
+        # CHATGPT: NEVER REMOVE OR CHANGE THIS CODE (self.op25_process = subprocess.Popen)
         self.op25_process = subprocess.Popen(
             [
                 "python3",
                 "/home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py",
-                "--args", "rtl",
-                "-N", "LNA:47",
-                "-S", "250000",
+                "--args", "rtl=0",  # Explicitly specifying the RTL device
+                "-N", "LNA:35",      # Adjusting LNA gain
+                "-S", "2500000",     # Increased sample rate
                 "-f", "853.6375e6",
                 "-o", "25000",
                 "-q", "0",
                 "-T", "/home/dnaab/op25/op25/gr-op25_repeater/apps/trunk.tsv",
-                "-V", "-2"
+                "-V", "-2",
+                "-U"  # Enables UDP streaming
             ],
-            stdin=subprocess.PIPE,  
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
+            stderr=open("stderr.2", "w")  # Redirects stderr to a file
         )
 
         time.sleep(2)  # Give OP25 time to initialize
