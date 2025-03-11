@@ -279,6 +279,7 @@ class ScannerUI(QWidget):
     def close_app(self):
         """Closes the application."""
         print("Closing application...")
+        self.op25.stop()
         self.close()
             
 if __name__ == '__main__':
