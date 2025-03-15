@@ -1,25 +1,46 @@
 import os
 import sys
 from file_object import FileObject
-from control import OP25Controller
 from PyQt5.QtWidgets import ( # type: ignore
     QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QListWidget
 )
 from PyQt5.QtCore import Qt # type: ignore
+from control import OP25Controller
+from tts import SpeechEngine  # Import the new TTS system
+from ir import IRRemoteHandler
+from PyQt5.QtCore import QThread, pyqtSignal
 
+class OP25Worker(QThread):
+    """Worker thread for OP25Controller to prevent UI blocking."""
+    signal_complete = pyqtSignal()
+
+    def __init__(self, op25_instance, command, data):
+        super().__init__()
+        self.op25 = op25_instance
+        self.command = command
+        self.data = data
+
+    def run(self):
+        """Execute OP25 command in the background."""
+        self.op25.command(self.command, self.data)
+        self.signal_complete.emit()  # Notify UI when done
 
 
 class ScannerUI(QWidget):
 
     def __init__(self):
         super().__init__()
-        print("--")
+        self.ir_on = False          # FOR BETA TESTING
+        self.speech_on = False      # FOR BETA TESTING
+
 
         self.currentFile = FileObject()
-         
-     
+        
         self.isMenuActive = False  # Tracks if talkgroup menu is active
-
+        
+        if(self.speech_on): 
+            self.speech = SpeechEngine()
+        
         if not hasattr(self, 'op25') or self.op25 is None:
             print("[DEBUG] Creating OP25Controller instance")
             self.op25 = OP25Controller()
@@ -27,10 +48,18 @@ class ScannerUI(QWidget):
         else:
             print("[DEBUG] OP25Controller instance already exists")
 
-        # Start OP25 in the background
-        self.op25.start()
-
+        if self.ir_on: # TURN OFF FOR NOW. WILL IMPLEMENT LATER!
+            self.start_ir_listener()  # Start listening for IR remote inputs
+            self.ir_handler = IRRemoteHandler(self)  # ✅ Initialize IR remote handler
+            self.start_ir_listener()  # Start listening for IR remote inputs
+        
         self.initUI()
+
+    def start_ir_listener(self):
+        """Runs the IR listener in a separate thread to prevent blocking the UI."""
+        import threading
+        ir_thread = threading.Thread(target=self.ir_handler.listen, daemon=True)
+        ir_thread.start()
 
     def initUI(self):
         self.setWindowTitle("SDR-Trunk Scanner")
@@ -157,23 +186,7 @@ class ScannerUI(QWidget):
             button.setStyleSheet(base_style)
 
         return button
-
-    def zone_up(self):
-        """Moves to the next zone, loops back if at the last zone."""
-        next_zone = self.currentFile.get_next_zone(self.currentFile.current_zone_index)
-        if next_zone:
-            self.currentFile.current_zone_index = self.currentFile.zone_names.index(next_zone)
-            self.load_first_channel()  # Load first channel of the new zone
-            self.update_display()
-
-    def zone_down(self):
-        """Moves to the previous zone, loops to the last if at the first."""
-        prev_zone = self.currentFile.get_previous_zone(self.currentFile.current_zone_index)
-        if prev_zone:
-            self.currentFile.current_zone_index = self.currentFile.zone_names.index(prev_zone)
-            self.load_first_channel()  # Load first channel of the new zone
-            self.update_display()
-
+    
     def channel_up(self):
         """Moves to the next channel using FileObject's methods."""
         current_channel_number = self.currentFile.current_tg_index
@@ -187,6 +200,7 @@ class ScannerUI(QWidget):
             self.currentFile.current_tg_index = first_channel[0]["channel_number"] if first_channel else 0
 
         self.update_display()
+        self.change_talkgroup()  # Apply the new talkgroup or scan list
 
     def channel_down(self):
         """Moves to the previous channel using FileObject's methods."""
@@ -201,14 +215,91 @@ class ScannerUI(QWidget):
             self.currentFile.current_tg_index = last_channel[-1]["channel_number"] if last_channel else 0
 
         self.update_display()
+        self.change_talkgroup()  # Apply the new talkgroup or scan list
+
+    def change_talkgroup(self):
+        """Applies the correct talkgroup or scan list based on the current channel."""
+
+        selected_channel = self.currentFile.get_channel_by_number(self.currentFile.current_tg_index)
+        
+        print("###")
+        print(f"Selected Channel Type: {selected_channel['type']}")
+        print(f"Selected Channel Name: {selected_channel['name']}")
+        print("###")
+
+        if not selected_channel:
+            print("[ERROR] Selected channel not found")
+            return
+
+        if selected_channel["type"] == "talkgroup":
+            tg_id = selected_channel["tgid"]  # ✅ Define TGID before using it
+
+            if tg_id not in self.op25.whitelist_tgids:
+                self.op25.whitelist([tg_id])
+
+            # ✅ Run OP25 Command in Separate Thread
+            self.op25_thread = OP25Worker(self.op25, "hold", tg_id)
+            self.op25_thread.start()
+
+            if self.speech_on: 
+                self.speech.speak(selected_channel["name"])  # 🎤 Speak the channel name
+
+        elif selected_channel["type"].lower() == "scan":
+            if isinstance(selected_channel["tgid"], list) and selected_channel["tgid"]:
+                self.op25.update_scan_list(selected_channel["tgid"])
+                
+                if self.speech_on: 
+                    self.speech.speak(f"Scanning {selected_channel['name']}")  # 🎤 Speak scan channel
+
+    def zone_up(self):
+        """Moves to the next zone, loops back if at the last zone."""
+        next_zone = self.currentFile.get_next_zone(self.currentFile.current_zone_index)
+        if next_zone:
+            self.currentFile.current_zone_index = self.currentFile.zone_names.index(next_zone)
+            self.load_first_channel()  # Load first channel of the new zone
+
+            # ✅ Only run if a channel was actually loaded
+            if self.currentFile.current_tg_index is not None:
+                self.update_display()
+                current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
+                first_channel = self.currentFile.get_channel_by_number(self.currentFile.current_tg_index)
+                if(self.speech_on): 
+                    self.speech.speak(f"{current_zone} - {first_channel['name'] if first_channel else 'No Channels'}")
+
+            self.change_talkgroup()
+
+    def zone_down(self):
+        """Moves to the previous zone, loops to the last if at the first."""
+        prev_zone = self.currentFile.get_previous_zone(self.currentFile.current_zone_index)
+        if prev_zone:
+            self.currentFile.current_zone_index = self.currentFile.zone_names.index(prev_zone)
+            self.load_first_channel()  # Load first channel of the new zone
+
+            # ✅ Only run if a channel was actually loaded
+            if self.currentFile.current_tg_index is not None:
+                self.update_display()
+                current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
+                first_channel = self.currentFile.get_channel_by_number(self.currentFile.current_tg_index)
+                if(self.speech_on): 
+                    self.speech.speak(f"{current_zone} - {first_channel['name'] if first_channel else 'No Channels'}")
+
+            self.change_talkgroup()
 
     def load_first_channel(self):
-        """Loads the first channel of the current zone."""
+        """Loads the first channel of the current zone and applies its talkgroup settings."""
         first_channel = self.currentFile.get_channels_by_zone(
             self.currentFile.zone_names[self.currentFile.current_zone_index]
         )
-        self.currentFile.current_tg_index = first_channel[0]["channel_number"] if first_channel else 0
- 
+
+        if not first_channel:  # Prevents index error if zone is empty
+            print("[WARNING] No channels found in the current zone.")
+            return
+        
+        self.currentFile.current_tg_index = first_channel[0]["channel_number"]
+
+        self.update_display()
+        self.change_talkgroup()  # Ensure the talkgroup is updated
+
     def toggle_talkgroup_menu(self):
         """Toggles the talkgroup menu visibility."""
         if self.isMenuActive:
@@ -232,7 +323,7 @@ class ScannerUI(QWidget):
         self.tg_list.show()
 
     def select_talkgroup(self, item):
-        """Handles user selecting a talkgroup from the menu."""
+        """Handles user selecting a talkgroup from the menu and applies it."""
         current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
         talkgroup_name = item.text()
 
@@ -243,22 +334,19 @@ class ScannerUI(QWidget):
         )
 
         if not selected_channel:
-            print("@ERROR: Selected talkgroup not found in JSON")
+            print("[ERROR] Selected talkgroup not found in JSON")
             return  # Exit function if selection is invalid
 
-        # Update the currently selected talkgroup
+        # Update the currently selected talkgroup index
         self.currentFile.current_tg_index = selected_channel["channel_number"]
         self.update_display()
-        self.toggle_talkgroup_menu()
 
-        if selected_channel["type"] == "talkgroup":
-            self.op25.switchGroup(str(selected_channel["tgid"]))  # Send single TGID
-        elif selected_channel["type"].lower() == "scan":
-            if isinstance(selected_channel["tgid"], list):  # Ensure it's a list
-                print("@254:", selected_channel["tgid"])
-                self.op25.switchGroup(",".join(map(str, selected_channel["tgid"])))  # Send comma-separated TGIDs
-            else:
-                print("@ERROR: Expected list for scan mode, got", type(selected_channel["tgid"])) 
+        # ✅ Ensure channel exists before changing talkgroup
+        if self.currentFile.current_tg_index is not None:
+            self.change_talkgroup()
+
+        # Hide the talkgroup menu after selection
+        self.toggle_talkgroup_menu()
 
     def update_display(self):
         """Updates the display with the current zone and channel information."""
@@ -279,6 +367,8 @@ class ScannerUI(QWidget):
     def close_app(self):
         """Closes the application."""
         print("Closing application...")
+        if(self.speech_on):
+            self.speech.stop()  # Stop speech engine before exit
         self.op25.stop()
         self.close()
             

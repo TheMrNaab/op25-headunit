@@ -1,0 +1,2 @@
+sudo apt install python3-rpi.gpio -y
+pip install --break-system-packages pyttsx3 # If using Ubuntu, this bypasses the need for avirtual enviornment. 
