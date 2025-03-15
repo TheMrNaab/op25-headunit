@@ -1,0 +1,4 @@
+1. Implement Updated OSD with Channel Number, Zone, and Status Icons
+2. Text to Speech Test
+3. IR Remote Install and Test
+4. Test Changing Channels 

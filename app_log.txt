@@ -1,8 +1,0 @@
-=== Log File Created ===
-[2025-03-14 20:21:48] [INFO] Connection Status: OP25 Connected
-[2025-03-14 20:23:54] [INFO] Connection Status: OP25 Connected
-[2025-03-14 20:24:54] [INFO] Connection Status: OP25 Connected
-[2025-03-14 20:25:42] [INFO] Connection Status: OP25 Connected
-[2025-03-14 20:25:44] [INFO] Sent {"command": "whitelist", "arg1": 47021, "arg2": 0}: 
-[2025-03-14 21:18:39] [INFO] Connection Status: OP25 Connected
-[2025-03-14 21:19:22] [INFO] Connection Status: OP25 Connected
