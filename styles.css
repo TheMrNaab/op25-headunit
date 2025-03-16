@@ -46,5 +46,6 @@ QPushButton#btnMenu:disabled,
 QPushButton#btnGroups:disabled, 
 QPushButton#btnMute:disabled,
 QPushButton#btnExit_2:disabled {
-    color: grey;
+    color: darkgray ;
+    background: black;
 }

@@ -2,15 +2,20 @@ import RPi.GPIO as GPIO
 import time
 
 class IRRemoteHandler:
-    def __init__(self, receiver_pin):
+    def __init__(self, mainWindow, receiver_pin=18):
         """Initialize IR remote handler and setup GPIO."""
         self.receiver_pin = receiver_pin
         self.setup_gpio()
+        self.main = mainWindow
 
     def setup_gpio(self):
         """Set up GPIO for the IR receiver."""
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.receiver_pin, GPIO.IN)
+
+    def startListener(self):
+        #TODO: Implement start listener method
+        pass
 
     def listen(self):
         """Continuously listens for IR signals and prints the key pressed."""

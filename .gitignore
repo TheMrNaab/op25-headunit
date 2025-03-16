@@ -6,4 +6,4 @@ __pycache__/
 *.2
 __pycache__/control.cpython-312.pyc
 __pycache__/file_object.cpython-312.pyc
-.vscode
+.vscode/

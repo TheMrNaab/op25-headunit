@@ -2,6 +2,7 @@ import sys
 import os
 import csv
 import re
+import time
 # PySide6 Core Imports
 from PySide6.QtCore import QThread, Signal, QTimer, QMetaObject, QRect, QSize, QCoreApplication, Qt, QPropertyAnimation, QVariantAnimation
 
@@ -51,7 +52,7 @@ from PySide6.QtCore import QThread, Signal
 
 class MonitorLogFileWorker(QThread):
     """Worker thread for monitoring the OP25 log file without blocking the UI."""
-    signal_tg_update = Signal(str)  # ✅ Signal to send back the TG number
+    signal_tg_update = Signal(str)  # Signal to send back the TG number
 
     def __init__(self, op25_instance, stderr_path):
         super().__init__()
@@ -116,10 +117,11 @@ class MainWindow(QMainWindow):
             self.speech = SpeechEngine()
         
         if self.ir_on:              # Work in Progress
-            self.start_ir_listener() 
-            self.ir_handler = IRRemoteHandler(self)  
-            self.start_ir_listener()  
-        
+            #TODO: Implement Remote Listener
+            #self.ir_handler = IRRemoteHandler(self)  
+            #self.startIRListener()
+            pass
+
         self.setupUi(self)
 
         # INITIAL STATUS ICONS
@@ -216,7 +218,7 @@ class MainWindow(QMainWindow):
         font = QFont()
         font.setPointSize(12)
         font.setBold(True)
-        font.setWeight(QFont.Weight.Bold)  # ✅ Use enum instead of an integer
+        font.setWeight(QFont.Weight.Bold)  # Use enum instead of an integer
         self.lblZone.setFont(font)
         self.lblZone.setStyleSheet(u"background-color:white; border: none; margin-left: 3px;")
 
@@ -530,10 +532,11 @@ class MainWindow(QMainWindow):
         
         # -- #1: MENU BUTTON
         self.btnMenu = QPushButton(self.horizontalLayoutWidget)
+        self.functionButtonLayoutRow.addWidget(self.btnMenu)
         self.btnMenu.setObjectName(u"btnMenu")
         self.btnMenu.setFont(font4)
-
-        self.functionButtonLayoutRow.addWidget(self.btnMenu)
+        self.btnMenu.setDisabled(True)                          #TODO: Implement Menu Button & Remove
+        
 
         self.btnGroups = QPushButton(self.horizontalLayoutWidget)
         
@@ -545,7 +548,8 @@ class MainWindow(QMainWindow):
         # -- #3: MUTE BUTTON
         self.btnMute = QPushButton(self.horizontalLayoutWidget)
         self.btnMute.setObjectName(u"btnMute")
-        self.functionButtonLayoutRow.addWidget(self.btnMute)
+        self.btnMute.setDisabled(True)  # Ensure it's disabled initially
+        self.functionButtonLayoutRow.addWidget(self.btnMute)  # Add to layout
 
         # -- #4: EXIT BUTTON
         self.btnExit_2 = QPushButton(self.horizontalLayoutWidget)
@@ -683,7 +687,8 @@ class MainWindow(QMainWindow):
         self.btnMute.clicked.connect(self.toggle_mute)  # Mute Toggle
         self.btnExit_2.clicked.connect(self.close_app)  # Exit Application
 
-
+        self.btnChUp.clicked.connect(self.channel_up)
+        self.btnChDown.clicked.connect(self.channel_down)
         self.btnZnUp.clicked.connect(self.zone_up)   # CH ▲
         self.btnZnDown.clicked.connect(self.zone_down)   # CH ▼
         self.btnGroups.clicked.connect(self.toggle_talkgroup_menu)  # Open Groups Menu
@@ -712,11 +717,12 @@ class MainWindow(QMainWindow):
         except FileNotFoundError:
             print(f"[ERROR] File '{file_path}' not found.")
 
-    def start_ir_listener(self):
+    def startIRListener(self):
         """Runs the IR listener in a separate thread to prevent blocking the UI."""
-        import threading
-        ir_thread = threading.Thread(target=self.ir_handler.listen, daemon=True)
-        ir_thread.start()
+        #TODO: Implement threading and IR Listener
+        # ir_thread = threading.Thread(target=self.ir_handler.listen, daemon=True)
+        # ir_thread.start()
+        pass
 
     def keypad_input(self, digit):
         """Handles numeric button input for direct TGID entry with TV-style shifting."""
@@ -768,7 +774,7 @@ class MainWindow(QMainWindow):
         self.change_talkgroup()
 
         if self.speech_on:
-            self.speech.speak(f"Channel {tgid} in {found_zone}")  # ✅ Use found_zone instead of zone_name
+            self.speech.speak(f"Channel {tgid} in {found_zone}")  # Use found_zone instead of zone_name
     
     def clear_keypad_input(self):
         """Clears the TGID input on the LCD screen."""
@@ -837,14 +843,13 @@ class MainWindow(QMainWindow):
             self.lblChannelName_2.setText("No Channel")
             self.lcdNumber.display(0)
 
-        print("[DEBUG] UI Updated - No extra change_talkgroup() calls")
 
     def close_app(self):
         """Closes the application."""
         print("Closing application...")
         if(self.speech_on):
             self.speech.stop()  # Stop speech engine before exit
-        self.op25.stop()
+        self.op25.stop()        #TODO: Send request to OP25 to stop gracefully.
         self.close()
 
     def channel_up(self):
@@ -956,6 +961,16 @@ class MainWindow(QMainWindow):
     def select_talkgroup(self, item):
         """Handles user selecting a talkgroup from the menu and applies it."""
         
+         # Hide the talkgroup menu after selection
+        self.toggle_talkgroup_menu()  # Assuming this toggles visibility of the menu
+
+        
+        
+        self.lblChannelName_2.setText("LOADING...")
+        self.lblZone.setText("ZONE")
+
+        time.sleep(2) # TODO: Implement threading; for now allows time to change status
+
         # Ensure current zone index is within bounds
         if self.currentFile.current_zone_index >= len(self.currentFile.zone_names):
             print("[ERROR] Current zone index out of bounds")
@@ -981,8 +996,13 @@ class MainWindow(QMainWindow):
         self.update_display()  # Assuming update_display refreshes the UI to reflect current channel
         self.change_talkgroup()  # Apply the new talkgroup settings
 
-        # Hide the talkgroup menu after selection
-        self.toggle_talkgroup_menu()  # Assuming this toggles visibility of the menu
+       
+
+    def cleanup_before_exit(self):
+        """Cleanup actions before exiting the application."""
+        print("[INFO] Stopping OP25...")
+        if hasattr(self, "op25"):
+            self.op25.stop()  # Ensure OP25 shuts down properly
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

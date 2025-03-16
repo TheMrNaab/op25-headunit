@@ -96,6 +96,8 @@ class OP25Controller:
             self.op25_process.terminate()
             self.op25_process.wait()
             print("[DEBUG] OP25 process terminated.")
+            subprocess.run(["pkill", "-f", "rx.py"])        #TODO: Send API request to end gracefuuly
+                                                            #TODO: PKILL ensures rx.py is closed for now 
 
     def whitelist(self, data):
         print("Placeholder for whitelist(self, data)")
