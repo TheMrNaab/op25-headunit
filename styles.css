@@ -3,50 +3,48 @@ QWidget {
     background-color: black;
 }
 
-/* Zone label styling */
-QLabel#zone_label {
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-/* Talkgroup label styling */
-QLabel#tg_label {
-    background-color: #d4ff00;
+QPushButton#btnZnDown, 
+QPushButton#btnZnUp,
+QPushButton#btnChDown, 
+QPushButton#btnChUp  {
+    background-color: white;
     color: black;
-    font-size: 24px;
+    font-size: 16px;
     font-weight: bold;
-    border: 2px solid #555;
-    padding: 10px;
+    border: 2px solid #666;
+    padding: 8px;
+    margin-top: 10px;
+    margin-left: 3px;
 }
 
-/* Talkgroup list styling */
-QListWidget#tg_list {
-    background-color: #d4ff00;
-    color: black;
-    font-size: 18px;
-    border: 2px solid #555;
+BlinkingLabel#lblChannelName_2 {
+    background-color: white;
+    color: red;
 }
 
-/* Buttons - Default style */
-QPushButton {
+QPushButton#btnMenu, 
+QPushButton#btnGroups, 
+QPushButton#btnMute,
+QPushButton#btnExit_2 {
     background-color: #444;
     color: white;
     font-size: 16px;
     font-weight: bold;
     border: 2px solid #666;
     padding: 8px;
-}
-QPushButton:pressed {
-    background-color: #666;
+    margin-left: 3px;
+    margin-top: 10px;
+    }
+QPushButton#btnMenu:Pressed, 
+QPushButton#btnGroups:Pressed, 
+QPushButton#btnMute:Pressed,
+QPushButton#btnExit_2:Pressed {
+    background-color: white;
 }
 
-/* Green Button (Channel Up) */
-QPushButton#ch_up_btn {
-    background-color: #008000;
-}
-
-/* Red Button (Channel Down) */
-QPushButton#ch_down_btn {
-    background-color: #800000;
+QPushButton#btnMenu:disabled, 
+QPushButton#btnGroups:disabled, 
+QPushButton#btnMute:disabled,
+QPushButton#btnExit_2:disabled {
+    color: grey;
 }

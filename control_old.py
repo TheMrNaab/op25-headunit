@@ -29,7 +29,8 @@ class OP25Controller:
         self.logger = CustomLogger(self.logFile)
 
         # Set environment variables correctly
-        os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":/home/dnaab/op25/op25/gr-op25_repeater/apps/tx:/home/dnaab/op25/build"
+        home_dir = os.path.expanduser("~")
+        os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + f":{home_dir}/op25/op25/gr-op25_repeater/apps/tx:{home_dir}/op25/build"
 
         # Kill any existing OP25 processes before starting a new one
         subprocess.run(["pkill", "-f", "rx.py"])

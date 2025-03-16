@@ -9,6 +9,7 @@ from typing import List
 from logger import CustomLogger
 from typing import List
 from PySide6.QtCore import QThread, Signal
+import csv
 #  echo '{"command": "whitelist", "arg1": 47021, "arg2": 0}' | nc -u 127.0.0.1 5000
 
 class OP25Controller:
@@ -17,7 +18,8 @@ class OP25Controller:
         self.rx_script = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/rx.py")
         self.trunk_file = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_trunk.tsv")
         self.stderr_file = os.path.expanduser("/opt/op25-project/logs/stderr.2")
-
+        self.stdout_file = os.path.expanduser("/opt/op25-project/logs/stdout.2")
+        self.tgroups_file = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_tgroups.csv")
         self.defaultWhitelistFile = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_whitelist.tsv")
         self.defaultBlacklistFile = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_blist.tsv")
 
@@ -37,7 +39,7 @@ class OP25Controller:
         # Define the OP25 command with arguments
         self.op25_command = [
             self.rx_script , "--nocrypt", "--args", "rtl",
-            "--gains", "lna:36", "-S", "960000", "-q", "0",
+            "--gains", "lna:40", "-S", "960000", "-q", "0",
             "-v", "1", "-2", "-V", "-U",
             "-T", self.trunk_file,
             "-U", "-l", "5000"
@@ -46,7 +48,7 @@ class OP25Controller:
         # Start OP25 process and redirect stderr to a file
         self.op25_process = subprocess.Popen(
             self.op25_command,
-            stdout=subprocess.PIPE,
+            stdout=open(self.stdout_file, "w"),
             stderr=open(self.stderr_file, "w"),
             text=True
         )

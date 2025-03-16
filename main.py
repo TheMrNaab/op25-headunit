@@ -1,59 +1,716 @@
-import os
 import sys
-from file_object import FileObject
-from PyQt5.QtWidgets import ( # type: ignore
-    QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QListWidget
+import os
+import csv
+import re
+# PySide6 Core Imports
+from PySide6.QtCore import QThread, Signal, QTimer, QMetaObject, QRect, QSize, QCoreApplication, Qt, QPropertyAnimation, QVariantAnimation
+
+# PySide6 GUI Imports
+from PySide6.QtGui import QFont, QFontDatabase, QTransform, QPixmap
+
+# PySide6 Widgets
+from PySide6.QtWidgets import (
+    QApplication, QMainWindow, QWidget, QLabel, QFrame, QPushButton, QLCDNumber, 
+    QSizePolicy, QSpacerItem, QVBoxLayout, QHBoxLayout, QGridLayout, QListWidget
 )
-from PyQt5.QtCore import Qt # type: ignore
-from control import OP25Controller
-from tts import SpeechEngine  # Import the new TTS system
+
+# Project-Specific Imports
+from tts import SpeechEngine
 from ir import IRRemoteHandler
-from PyQt5.QtCore import QThread, pyqtSignal
+from file_object import FileObject
+from control import OP25Controller  # This must import properly
+from customWidgets import BlinkingLabel
 
-class OP25Worker(QThread):
-    """Worker thread for OP25Controller to prevent UI blocking."""
-    signal_complete = pyqtSignal()
+class ScanListWorker(QThread):
+    signal_complete = Signal()
 
-    def __init__(self, op25_instance, command, data):
+    def __init__(self, op25_instance, tgids):
         super().__init__()
         self.op25 = op25_instance
-        self.command = command
-        self.data = data
+        self.tgids = tgids
 
     def run(self):
-        """Execute OP25 command in the background."""
-        self.op25.command(self.command, self.data)
+        """Process scan TGIDs in a separate thread."""
+        print(f"[DEBUG] Processing {len(self.tgids)} TGIDs in scan mode")
+        self.op25.update_scan_list(self.tgids)
         self.signal_complete.emit()  # Notify UI when done
 
+class OP25InitWorker(QThread):
+    """Worker thread for initializing OP25 without blocking the UI."""
+    signal_initialized = Signal()  
 
-class ScannerUI(QWidget):
+    def __init__(self, op25_instance):
+        super().__init__()
+        self.op25 = op25_instance
 
+    def run(self):
+        self.op25.start()
+        self.signal_initialized.emit()  
+
+from PySide6.QtCore import QThread, Signal
+
+class MonitorLogFileWorker(QThread):
+    """Worker thread for monitoring the OP25 log file without blocking the UI."""
+    signal_tg_update = Signal(str)  # ✅ Signal to send back the TG number
+
+    def __init__(self, op25_instance, stderr_path):
+        super().__init__()
+        self.stderr_path = stderr_path
+        self.op25 = op25_instance
+        self.tg_dict = {}
+        self.load_csv(self.op25.tgroups_file)
+
+    def extract_tg_number(self, line):
+        """Extracts the TG number from a voice update line."""
+        import re
+        match = re.search(r'voice update:.*tg\((\d+)\)', line)
+        return match.group(1) if match else None
+
+    def load_csv(self, csv_file):
+        """Loads the talkgroup CSV file into a dictionary."""
+        try:
+            with open(csv_file, "r", newline="", encoding="utf-8") as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    decimal = row["Decimal"].strip()  # Ensure no spaces
+                    alpha_tag = row["Alpha Tag"].strip()
+                    self.tg_dict[decimal] = alpha_tag  # Store in dictionary
+        except FileNotFoundError:
+            print(f"[ERROR] CSV file '{csv_file}' not found.")
+
+    def lookup_tg(self, arg):
+        """Returns the Alpha Tag if found, otherwise returns the original arg."""
+        return self.tg_dict.get(str(arg), str(arg))  # Convert arg to string for safe lookup
+
+
+    def run(self):
+        """Monitors the log file and emits TG number when a new voice update appears."""
+        try:
+            with open(self.stderr_path, "r") as file:
+                file.seek(0, 2)  # Move to the end of the file to only capture new lines
+
+                while True:
+                    line = file.readline()
+                    if not line:
+                        continue  # No new line, keep waiting
+
+                    tg_number = self.extract_tg_number(line)
+                    if tg_number:
+                        alpha = self.lookup_tg(tg_number)
+                        self.signal_tg_update.emit(alpha)  # ✅ Emit the TG number
+                        print(f"[ACTIVE TG]: {alpha}")  # Debug print
+
+        except FileNotFoundError:
+            print(f"[ERROR] File '{self.stderr_path}' not found.")
+
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.ir_on = False          # FOR BETA TESTING
-        self.speech_on = False      # FOR BETA TESTING
 
-
+        self.ir_on = True       
+        self.speech_on = False      
         self.currentFile = FileObject()
-        
-        self.isMenuActive = False  # Tracks if talkgroup menu is active
-        
-        if(self.speech_on): 
+        self.isMenuActive = False  
+
+        if(self.speech_on):         # Work in Progress
             self.speech = SpeechEngine()
         
-        if not hasattr(self, 'op25') or self.op25 is None:
-            print("[DEBUG] Creating OP25Controller instance")
-            self.op25 = OP25Controller()
-            
-        else:
-            print("[DEBUG] OP25Controller instance already exists")
-
-        if self.ir_on: # TURN OFF FOR NOW. WILL IMPLEMENT LATER!
-            self.start_ir_listener()  # Start listening for IR remote inputs
-            self.ir_handler = IRRemoteHandler(self)  # ✅ Initialize IR remote handler
-            self.start_ir_listener()  # Start listening for IR remote inputs
+        if self.ir_on:              # Work in Progress
+            self.start_ir_listener() 
+            self.ir_handler = IRRemoteHandler(self)  
+            self.start_ir_listener()  
         
-        self.initUI()
+        self.setupUi(self)
+
+        # INITIAL STATUS ICONS
+        self.lblSync.start_blink(900)
+        self.lblSoundStatus.hide()      #TODO: Implement in future
+        self.lblError.hide()            #TODO: Implement in future
+        self.lblConnectionStatus.hide()
+
+        self.lblChannelName_2.setText("Connecting...")
+        self.lblSoundStatus.hide()
+        
+        self.op25 = OP25Controller()
+        self.op25_worker = OP25InitWorker(self.op25)
+        self.op25_worker.signal_initialized.connect(self.on_op25_initialized)  # Connect signal to slot
+        self.op25_worker.start()
+
+
+    def on_op25_initialized(self):
+        """Slot that gets called when OP25 is initialized and sets the initial zone and channel."""
+        self.lblChannelName_2.setText("Connected")  # Update the label text
+
+        # Select the first zone
+        first_zone = self.currentFile.get_zone(0)
+        if first_zone is not None:
+            channels = self.currentFile.get_channels_by_zone(first_zone)
+            if channels and len(channels) > 0:
+                # Set the first channel in the first zone as the current
+                self.currentFile.current_zone_index=0
+                self.currentFile.current_tg_index=1
+                # Now, you can update your display or perform other actions based on the selected channel
+                self.update_display()  # Assuming this updates your UI with the selected channel info
+            else:
+                print("[ERROR] No channels found in the first zone")
+        else:
+            print("[ERROR] No zones available")
+
+        # If you have additional setup steps, such as triggering scan or talkgroup changes, do that here
+        self.lblConnectionStatus.show()
+        self.lblSync.stop_blink()
+        self.lblSync.hide()
+        self.change_talkgroup()
+        self.update_display()
+        
+        self.logMonitor = MonitorLogFileWorker(self.op25, self.op25.stderr_file)
+        self.logMonitor.signal_tg_update.connect(self.updateStatusBar)
+        self.logMonitor.start()
+    
+    def updateStatusBar(self, arg):
+        """Updates the status bar with the latest talkgroup number."""
+        self.lblChannelName_2.setText(f"{arg}")
+        #self.lblChannelName_2.start_blink(500)
+         
+
+    def setupUi(self, MainWindow):
+        if not MainWindow.objectName():
+            MainWindow.setObjectName(u"MainWindow")
+        MainWindow.resize(693, 374)
+        MainWindow.setStyleSheet(u"background-color:black;")
+        self.centralwidget = QWidget(MainWindow)
+        self.centralwidget.setObjectName(u"centralwidget")
+        self.horizontalLayoutWidget = QWidget(self.centralwidget)
+        self.horizontalLayoutWidget.setObjectName(u"horizontalLayoutWidget")
+        self.horizontalLayoutWidget.setGeometry(QRect(0, 0, 682, 749))
+        self.horizontalLayout = QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout = QVBoxLayout()
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.topSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.verticalLayout.addItem(self.topSpacer)
+
+        self.horizontalLayout_10 = QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3.setSpacing(0)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.horizontalLayout_14 = QHBoxLayout()
+        self.horizontalLayout_14.setSpacing(0)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.onscreenDisplayLayout = QVBoxLayout()
+        self.onscreenDisplayLayout.setSpacing(0)
+        self.onscreenDisplayLayout.setObjectName(u"onscreenDisplayLayout")
+        self.statusBarLayout = QHBoxLayout()
+        self.statusBarLayout.setSpacing(0)
+        self.statusBarLayout.setObjectName(u"statusBarLayout")
+        self.lblZone = QLabel(self.horizontalLayoutWidget)
+        self.lblZone.setObjectName(u"lblZone")
+        self.lblZone.setMinimumSize(QSize(0, 30))
+        self.lblZone.setMaximumSize(QSize(16777215, 30))
+        font = QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(QFont.Weight.Bold)  # ✅ Use enum instead of an integer
+        self.lblZone.setFont(font)
+        self.lblZone.setStyleSheet(u"background-color:white; border: none; margin-left: 3px;")
+
+        self.statusBarLayout.addWidget(self.lblZone)
+
+        self.lblChannelName_2 = BlinkingLabel(self.horizontalLayoutWidget)
+        self.lblChannelName_2.setObjectName(u"lblChannelName_2")
+        self.lblChannelName_2.setMaximumSize(QSize(16777215, 30))
+        self.lblChannelName_2.setFont(font)
+        self.lblChannelName_2.setStyleSheet(u"background-color:white; border: none;")
+
+        self.statusBarLayout.addWidget(self.lblChannelName_2)
+
+        self.lblSoundStatus = BlinkingLabel(self.horizontalLayoutWidget)
+        self.lblSoundStatus.setObjectName(u"lblSoundStatus")
+        self.lblSoundStatus.setMaximumSize(QSize(20, 30))
+        font1 = QFont()
+        font1.setFamily(u"FontAwesome")
+        font1.setPointSize(12)
+        self.lblSoundStatus.setFont(font1)
+        self.lblSoundStatus.setStyleSheet(u"background-color:white; border: none;")
+        self.lblSoundStatus.setAlignment(Qt.AlignCenter)
+
+        self.statusBarLayout.addWidget(self.lblSoundStatus)
+
+        self.lblError = BlinkingLabel(self.horizontalLayoutWidget)
+        self.lblError.setObjectName(u"lblError")
+        self.lblError.setMinimumSize(QSize(10, 0))
+        self.lblError.setMaximumSize(QSize(20, 30))
+        font2 = QFont()
+        font2.setFamily(u"FontAwesome")
+        self.lblError.setFont(font2)
+        self.lblError.setStyleSheet(u"background-color:white;\n"
+"color:orange;")
+        self.lblError.setAlignment(Qt.AlignCenter)
+
+        self.statusBarLayout.addWidget(self.lblError)
+
+        self.lblChanelType = QLabel(self.horizontalLayoutWidget)
+        self.lblChanelType.setObjectName(u"lblChanelType")
+        self.lblChanelType.setMinimumSize(QSize(10, 0))
+        self.lblChanelType.setMaximumSize(QSize(20, 30))
+        self.lblChanelType.setFont(font2)
+        self.lblChanelType.setStyleSheet(u"background-color:white")
+        self.lblChanelType.setAlignment(Qt.AlignCenter)
+
+        self.statusBarLayout.addWidget(self.lblChanelType)
+
+        self.lblSync = BlinkingLabel(self.horizontalLayoutWidget)
+        self.lblSync.setObjectName(u"lblSync")
+        self.lblSync.setMinimumSize(QSize(10, 0))
+        self.lblSync.setMaximumSize(QSize(20, 30))
+        self.lblSync.setFont(font2)
+        self.lblSync.setStyleSheet(u"background-color:white")
+        self.lblSync.setAlignment(Qt.AlignCenter)
+
+        self.statusBarLayout.addWidget(self.lblSync)
+
+        self.lblConnectionStatus = BlinkingLabel(self.horizontalLayoutWidget)
+        self.lblConnectionStatus.setObjectName(u"lblConnectionStatus")
+        self.lblConnectionStatus.setMinimumSize(QSize(10, 0))
+        self.lblConnectionStatus.setMaximumSize(QSize(20, 30))
+        self.lblConnectionStatus.setFont(font2)
+        self.lblConnectionStatus.setStyleSheet(u"background-color:white")
+        self.lblConnectionStatus.setAlignment(Qt.AlignCenter)
+
+        self.statusBarLayout.addWidget(self.lblConnectionStatus)
+
+
+        self.onscreenDisplayLayout.addLayout(self.statusBarLayout)
+
+        self.lcdNumber = QLCDNumber(self.horizontalLayoutWidget)
+        self.lcdNumber.setObjectName(u"lcdNumber")
+        self.lcdNumber.setMinimumSize(QSize(0, 161))
+        self.lcdNumber.setMaximumSize(QSize(320, 161))
+        self.lcdNumber.setStyleSheet(u"background-color:white; border: none; margin-left: 3px")
+
+        self.onscreenDisplayLayout.addWidget(self.lcdNumber)
+
+
+        self.verticalLayout_2.addLayout(self.onscreenDisplayLayout)
+
+
+        self.horizontalLayout_14.addLayout(self.verticalLayout_2)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_14)
+
+
+        self.horizontalLayout_10.addLayout(self.verticalLayout_3)
+
+        self.keypadLayout = QGridLayout()
+        self.keypadLayout.setObjectName(u"keypadLayout")
+        self.keypadLayout.setHorizontalSpacing(-1)
+        self.btnGo = QPushButton(self.horizontalLayoutWidget)
+        self.btnGo.setObjectName(u"btnGo")
+        font3 = QFont()
+        font3.setFamily(u"FontAwesome")
+        font3.setBold(True)
+        font3.setWeight(QFont.Weight.Bold)  # ✅ Use enum instead of an integer
+        font3.setKerning(True)
+        self.btnGo.setFont(font3)
+        self.btnGo.setStyleSheet(u"            QPushButton {\n"
+"                background-color: green;\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btnGo, 4, 2, 1, 1)
+
+        self.btn0 = QPushButton(self.horizontalLayoutWidget)
+        self.btn0.setObjectName(u"btn0")
+        self.btn0.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #444;\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btn0, 4, 1, 1, 1)
+
+        self.btn3 = QPushButton(self.horizontalLayoutWidget)
+        self.btn3.setObjectName(u"btn3")
+        self.btn3.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #444;\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btn3, 0, 2, 1, 1)
+
+        self.btn5 = QPushButton(self.horizontalLayoutWidget)
+        self.btn5.setObjectName(u"btn5")
+        self.btn5.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #444;\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btn5, 1, 1, 1, 1)
+
+        self.btn8 = QPushButton(self.horizontalLayoutWidget)
+        self.btn8.setObjectName(u"btn8")
+        self.btn8.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #444;\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btn8, 2, 1, 1, 1)
+
+        self.btn9 = QPushButton(self.horizontalLayoutWidget)
+        self.btn9.setObjectName(u"btn9")
+        self.btn9.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #444;\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btn9, 2, 2, 1, 1)
+
+        self.btnDel = QPushButton(self.horizontalLayoutWidget)
+        self.btnDel.setObjectName(u"btnDel")
+        font4 = QFont()
+        font4.setFamily(u"FontAwesome")
+        font4.setBold(True)
+        font4.setWeight(QFont.Weight.Bold)  # ✅ Use enum instead of an integer
+        self.btnDel.setFont(font4)
+        self.btnDel.setStyleSheet(u"            QPushButton {\n"
+"                background-color: rgb(195, 0, 0);\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btnDel, 4, 0, 1, 1)
+
+        self.btn4 = QPushButton(self.horizontalLayoutWidget)
+        self.btn4.setObjectName(u"btn4")
+        self.btn4.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #444;\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btn4, 1, 0, 1, 1)
+
+        self.btn2 = QPushButton(self.horizontalLayoutWidget)
+        self.btn2.setObjectName(u"btn2")
+        self.btn2.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #444;\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btn2, 0, 1, 1, 1)
+
+        self.btn1 = QPushButton(self.horizontalLayoutWidget)
+        self.btn1.setObjectName(u"btn1")
+        self.btn1.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #444;\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btn1, 0, 0, 1, 1)
+
+        self.btn6 = QPushButton(self.horizontalLayoutWidget)
+        self.btn6.setObjectName(u"btn6")
+        self.btn6.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #444;\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btn6, 1, 2, 1, 1)
+
+        self.btn7 = QPushButton(self.horizontalLayoutWidget)
+        self.btn7.setObjectName(u"btn7")
+        self.btn7.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #444;\n"
+"                color: white;\n"
+"                font-size: 16px;\n"
+"                font-weight: bold;\n"
+"                border: 2px solid #666;\n"
+"                padding: 8px;\n"
+"            }\n"
+"            QPushButton:pressed {\n"
+"                background-color: #666;\n"
+"            }")
+
+        self.keypadLayout.addWidget(self.btn7, 2, 0, 1, 1)
+
+
+        self.horizontalLayout_10.addLayout(self.keypadLayout)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_10)
+
+        # -- FUNCTION BUTTON GRID LAYOUT (MENU, MUTE, EXIT)
+        self.functionButtonLayout = QGridLayout()
+        self.functionButtonLayout.setObjectName(u"functionButtonLayout")
+
+        # -- FUNCTION BUTTON HORIZONTAL LAYOUT (ROW)
+        self.functionButtonLayoutRow = QHBoxLayout()
+        self.functionButtonLayoutRow.setObjectName(u"functionButtonLayoutRow")
+        
+        # -- #1: MENU BUTTON
+        self.btnMenu = QPushButton(self.horizontalLayoutWidget)
+        self.btnMenu.setObjectName(u"btnMenu")
+        self.btnMenu.setFont(font4)
+
+        self.functionButtonLayoutRow.addWidget(self.btnMenu)
+
+        self.btnGroups = QPushButton(self.horizontalLayoutWidget)
+        
+        # -- #2: GROUPS BUTTON
+        self.btnGroups.setObjectName(u"btnGroups")
+        self.btnGroups.setFont(font4)
+        self.functionButtonLayoutRow.addWidget(self.btnGroups)
+
+        # -- #3: MUTE BUTTON
+        self.btnMute = QPushButton(self.horizontalLayoutWidget)
+        self.btnMute.setObjectName(u"btnMute")
+        self.functionButtonLayoutRow.addWidget(self.btnMute)
+
+        # -- #4: EXIT BUTTON
+        self.btnExit_2 = QPushButton(self.horizontalLayoutWidget)
+        self.btnExit_2.setObjectName(u"btnExit_2")
+        self.functionButtonLayoutRow.addWidget(self.btnExit_2)
+
+        # + ADD FUNCTION BUTTON ROW LAYOUT (ZONES, CHANNEL)
+  
+        # -- MENU, MUTE, GROUPS, EXIT ROW
+        self.horizontalLayout_12 = QHBoxLayout()
+
+        #ifndef Q_OS_MAC
+        self.horizontalLayout_12.setSpacing(-1)
+        #endif
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.btnZnDown = QPushButton(self.horizontalLayoutWidget)
+        self.btnZnDown.setObjectName(u"btnZnDown")
+        self.btnZnDown.setFont(font4)
+        self.btnZnDown.setObjectName("btnZnDown")
+
+        self.horizontalLayout_12.addWidget(self.btnZnDown)
+
+        self.btnZnUp = QPushButton(self.horizontalLayoutWidget)
+        self.btnZnUp.setFont(font4)
+        self.btnZnUp.setObjectName("btnZnUp")
+        self.horizontalLayout_12.addWidget(self.btnZnUp)
+
+        # Add a spacer between the buttons
+        spacer = QSpacerItem(70, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalLayout_12.addItem(spacer)
+
+        # -- Channel Up
+        self.btnChUp = QPushButton(self.horizontalLayoutWidget)
+        self.btnChUp.setFont(font4)
+        self.btnChUp.setObjectName("btnChUp")
+        self.horizontalLayout_12.addWidget(self.btnChUp)
+
+        # -- Channel Down
+        self.btnChDown = QPushButton(self.horizontalLayoutWidget)
+        self.btnChDown.setObjectName(u"btnChDown")
+        self.btnChDown.setFont(font4)
+        
+        self.horizontalLayout_12.addWidget(self.btnChDown)
+
+        # ROW 2
+        self.functionButtonLayout.addLayout(self.horizontalLayout_12, 1, 0, 1, 1)
+       
+
+        # ROW 0
+        self.functionButtonLayout.addLayout(self.functionButtonLayoutRow, 0, 0, 1, 1) # BOTTOM
+        
+        
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.functionButtonLayout.addItem(self.verticalSpacer, 2, 0, 1, 1)
+
+        self.verticalLayout.addLayout(self.functionButtonLayout)
+
+        self.horizontalLayout.addLayout(self.verticalLayout)
+
+        MainWindow.setCentralWidget(self.centralwidget)
+
+        self.retranslateUi(MainWindow)
+
+        QMetaObject.connectSlotsByName(MainWindow)
+
+        # Inside setupUi:
+        self.tg_list = QListWidget(self.centralwidget)
+        self.tg_list.setObjectName("tg_list")
+        self.tg_list.setStyleSheet("QListWidget { background-color:white; color:black; margin-left: 3px; }")
+        self.tg_list.setVisible(False)  # Start hidden
+        self.tg_list.setMaximumHeight(200)
+        self.tg_list.setMaximumSize(QSize(320, 161))
+        
+        self.tg_list.itemClicked.connect(self.select_talkgroup)
+        self.verticalLayout_2.addWidget(self.tg_list)
+
+        self.apply_stylesheet()
+       
+    # setupUi
+    def apply_stylesheet(self):
+        """Loads the stylesheet from an external file."""
+        # Get the directory where the Python file is located
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+        # Example: Define a relative path for a file (e.g., a stylesheet)
+        stylesheet_path = os.path.join(BASE_DIR, "styles.css")
+        with open(stylesheet_path, "r") as file:
+            self.setStyleSheet(file.read())
+
+    def retranslateUi(self, MainWindow):
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.lblZone.setText(QCoreApplication.translate("MainWindow", u"Zone", None))
+        self.lblChannelName_2.setText(QCoreApplication.translate("MainWindow", u"Channel Name", None))
+        self.lblSoundStatus.setText(QCoreApplication.translate("MainWindow", u"\uf028", None))
+        self.lblError.setText(QCoreApplication.translate("MainWindow", u"\uf071", None))
+        self.lblChanelType.setText(QCoreApplication.translate("MainWindow", u"\uf0c0", None))
+        self.lblSync.setText(QCoreApplication.translate("MainWindow", u"\uf021", None))
+        self.lblConnectionStatus.setText(QCoreApplication.translate("MainWindow", u"\uf012", None))
+        self.btnGo.setText(QCoreApplication.translate("MainWindow", u"\uf069 GO", None))
+        self.btn0.setText(QCoreApplication.translate("MainWindow", u"0", None))
+        self.btn3.setText(QCoreApplication.translate("MainWindow", u"3", None))
+        self.btn5.setText(QCoreApplication.translate("MainWindow", u"5", None))
+        self.btn8.setText(QCoreApplication.translate("MainWindow", u"8", None))
+        self.btn9.setText(QCoreApplication.translate("MainWindow", u"9", None))
+        self.btnDel.setText(QCoreApplication.translate("MainWindow", u"\uf00d DEL", None))
+        self.btn4.setText(QCoreApplication.translate("MainWindow", u"4", None))
+        self.btn2.setText(QCoreApplication.translate("MainWindow", u"2", None))
+        self.btn1.setText(QCoreApplication.translate("MainWindow", u"1", None))
+        self.btn6.setText(QCoreApplication.translate("MainWindow", u"6", None))
+        self.btn7.setText(QCoreApplication.translate("MainWindow", u"7", None))
+        self.btnMenu.setText(QCoreApplication.translate("MainWindow", u"\uf0c9 MENU", None))
+        self.btnMute.setText(QCoreApplication.translate("MainWindow", u"MUTE", None))
+        self.btnExit_2.setText(QCoreApplication.translate("MainWindow", u"EXIT", None))
+        self.btnZnDown.setText(QCoreApplication.translate("MainWindow", u"Zn \uf107", None))
+        self.btnGroups.setText(QCoreApplication.translate("MainWindow", u"\uf009 ZONES", None))
+        self.btnZnUp.setText(QCoreApplication.translate("MainWindow", u"Zn \uf106", None))
+        self.btnChDown.setText(QCoreApplication.translate("MainWindow", u"Ch \uf106", None))
+        self.btnChUp.setText(QCoreApplication.translate("MainWindow", u"Ch \uf106", None))
+
+        self.btnMenu.clicked.connect(self.toggle_talkgroup_menu)  # ✅ Correct function name
+        self.btn0.clicked.connect(lambda: self.keypad_input("0"))
+        self.btn1.clicked.connect(lambda: self.keypad_input("1"))
+        self.btn2.clicked.connect(lambda: self.keypad_input("2"))
+        self.btn3.clicked.connect(lambda: self.keypad_input("3"))
+        self.btn4.clicked.connect(lambda: self.keypad_input("4"))
+        self.btn5.clicked.connect(lambda: self.keypad_input("5"))
+        self.btn6.clicked.connect(lambda: self.keypad_input("6"))
+        self.btn7.clicked.connect(lambda: self.keypad_input("7"))
+        self.btn8.clicked.connect(lambda: self.keypad_input("8"))
+        self.btn9.clicked.connect(lambda: self.keypad_input("9"))
+        self.btnDel.clicked.connect(self.clear_keypad_input)  # Clear Input
+        self.btnGo.clicked.connect(self.confirm_tgid_input)  # Apply TGID
+        
+        self.btnMute.clicked.connect(self.toggle_mute)  # Mute Toggle
+        self.btnExit_2.clicked.connect(self.close_app)  # Exit Application
+
+
+        self.btnZnUp.clicked.connect(self.zone_up)   # CH ▲
+        self.btnZnDown.clicked.connect(self.zone_down)   # CH ▼
+        self.btnGroups.clicked.connect(self.toggle_talkgroup_menu)  # Open Groups Menu
+    # retranslateUi
+
+    def extract_tg_number(self, line):
+        """Extracts the TG number from a voice update line."""
+        match = re.search(r'voice update:.*tg\((\d+)\)', line)
+        return match.group(1) if match else None
+
+    def monitor_stderr(self, file_path):
+        """Monitors the stderr2 file for new voice update lines."""
+        try:
+            with open(file_path, "r") as file:
+                file.seek(0, 2)  # Move to the end of the file
+
+                while True:
+                    line = file.readline()
+                    if not line:
+                        continue  # No new line, keep waiting
+
+                    tg_number = self.extract_tg_number(line)
+                    if tg_number:
+                        print(f"[ACTIVE TG]: {tg_number}")  # Print the latest TG number
+
+        except FileNotFoundError:
+            print(f"[ERROR] File '{file_path}' not found.")
 
     def start_ir_listener(self):
         """Runs the IR listener in a separate thread to prevent blocking the UI."""
@@ -61,132 +718,135 @@ class ScannerUI(QWidget):
         ir_thread = threading.Thread(target=self.ir_handler.listen, daemon=True)
         ir_thread.start()
 
-    def initUI(self):
-        self.setWindowTitle("SDR-Trunk Scanner")
-        self.setGeometry(100, 100, 600, 400)  # Window size
-        self.setStyleSheet("background-color: black;")  # Set background to black
-
-        # ZONE Controls
-        self.zone_label = QLabel(self.currentFile.zone_names[self.currentFile.current_zone_index], self)
-        self.zone_label.setAlignment(Qt.AlignCenter)
-        self.zone_label.setStyleSheet("color: white; font-size: 18px; font-weight: bold;")
-
-        self.zone_up_btn = self.create_button("ZONE ▲")
-        self.zone_up_btn.clicked.connect(self.zone_up)
-
-        self.zone_down_btn = self.create_button("ZONE ▼")
-        self.zone_down_btn.clicked.connect(self.zone_down)
-
-        # Current Talkgroup Display
-        self.tg_label = QLabel("", self)  # Placeholder label
-        self.update_display()  # Call display update after UI initialization
-        self.tg_label.setAlignment(Qt.AlignCenter)
-        self.tg_label.setStyleSheet("""
-            background-color: #d4ff00;
-            color: black;
-            font-size: 24px;
-            font-weight: bold;
-            border: 2px solid #555;
-            padding: 10px;
-        """)
-
-        # Talkgroup List
-        self.tg_list = QListWidget(self)
-        self.tg_list.hide()
-        self.tg_list.setStyleSheet("""
-            background-color: #d4ff00;
-            color: black;
-            font-size: 18px;
-            border: 2px solid #555;
-        """)
-        self.tg_list.itemClicked.connect(self.select_talkgroup)
-
-        # CHANNEL Controls
-        self.ch_up_btn = self.create_button("CH ▲", "green")
-        self.ch_up_btn.clicked.connect(self.channel_up)
-
-        self.ch_down_btn = self.create_button("CH ▼", "red")
-        self.ch_down_btn.clicked.connect(self.channel_down)
-
-        # Function Buttons
-        self.func1_btn = self.create_button("GROUPS")
-        self.func1_btn.clicked.connect(self.toggle_talkgroup_menu)
-
-        self.func2_btn = self.create_button("MUTE")
-
-        # Menu Buttons
-        self.menu_btn = self.create_button("MENU")
-        self.back_btn = self.create_button("BACK")
-        self.exit_btn = self.create_button("EXIT")
-        self.exit_btn.clicked.connect(self.close_app)
-
-
-        # Layouts
-        zone_layout = QHBoxLayout()
-        zone_layout.addWidget(self.zone_up_btn)
-        zone_layout.addWidget(self.zone_label)
-        zone_layout.addWidget(self.zone_down_btn)
-
-        talkgroup_layout = QVBoxLayout()
-        talkgroup_layout.addWidget(self.tg_label)
-        talkgroup_layout.addWidget(self.tg_list)
-
-
+    def keypad_input(self, digit):
+        """Handles numeric button input for direct TGID entry with TV-style shifting."""
+        current_text = str(int(self.lcdNumber.value())) if self.lcdNumber.value() else ""
         
-        channel_layout = QHBoxLayout()
-        channel_layout.addWidget(self.ch_up_btn)
-        channel_layout.addWidget(self.func1_btn)
-        channel_layout.addWidget(self.func2_btn)
-        channel_layout.addWidget(self.ch_down_btn)
+        if len(current_text) >= 3:
+            current_text = current_text[1:]  # Remove the leftmost digit (shift behavior)
+        if self.speech_on:
+                    self.speech.speak(f"{digit}")
 
-        menu_layout = QHBoxLayout()
-        menu_layout.addWidget(self.menu_btn)
-        menu_layout.addWidget(self.back_btn)
-        menu_layout.addWidget(self.exit_btn)
+        new_text = current_text + digit
+        self.lcdNumber.display(new_text)  # Update LCD
 
-        # Main Layout
-        main_layout = QVBoxLayout()
-        main_layout.addLayout(zone_layout)
-        main_layout.addLayout(talkgroup_layout)
-        main_layout.addLayout(channel_layout)
-        main_layout.addLayout(menu_layout)
+    def toggle_mute(self):
+        """Toggles mute status (Placeholder for future implementation)."""
+        print("[DEBUG] Mute toggled")
 
-        self.setLayout(main_layout)
-        
-    def load_stylesheet(self):
-        """Loads styles from an external QSS file."""
-        stylesheet_path = "styles.qss"  # Adjust path if needed
-        if os.path.exists(stylesheet_path):
-            with open(stylesheet_path, "r") as file:
-                self.setStyleSheet(file.read())
-        else:
-            print(f"[WARNING] Stylesheet '{stylesheet_path}' not found.")
+    def confirm_tgid_input(self):
+        """Applies the entered TGID, updates the zone, and changes the channel."""
+        tgid = int(self.lcdNumber.intValue()) if self.lcdNumber.intValue() else None  # ✅ Use intValue() for QLCDNumber
 
-    def create_button(self, text, color=None):
-        """Creates a Motorola-style button"""
-        button = QPushButton(text)
-        base_style = """
-            QPushButton {
-                background-color: #444;
-                color: white;
-                font-size: 16px;
-                font-weight: bold;
-                border: 2px solid #666;
-                padding: 8px;
-            }
-            QPushButton:pressed {
-                background-color: #666;
-            }
-        """
-        if color == "green":
-            button.setStyleSheet(base_style.replace("#444", "#008000"))
-        elif color == "red":
-            button.setStyleSheet(base_style.replace("#444", "#800000"))
-        else:
-            button.setStyleSheet(base_style)
+        if not tgid:
+            print("[ERROR] No valid TGID entered.")
+            return
 
-        return button
+        # Find channel with matching TGID
+        found_channel = None
+        found_zone = None
+
+        for zone_name in self.currentFile.zone_names:
+            channels = self.currentFile.get_channels_by_zone(zone_name)
+            for channel in channels:
+                if "channel_number" in channel and channel["channel_number"] == tgid:  # ✅ Prevent KeyError
+                    found_channel = channel
+                    found_zone = zone_name
+                    break
+            if found_channel:
+                break  # Stop searching if found
+
+        if not found_channel or not found_zone:
+            print(f"[ERROR] TGID {tgid} not found in any zone.")
+            return
+
+        # Update to the correct zone and channel
+        self.currentFile.current_zone_index = self.currentFile.zone_names.index(found_zone)
+        self.currentFile.current_tg_index = found_channel["channel_number"]
+
+        self.update_display()
+        self.change_talkgroup()
+
+        if self.speech_on:
+            self.speech.speak(f"Channel {tgid} in {found_zone}")  # ✅ Use found_zone instead of zone_name
     
+    def clear_keypad_input(self):
+        """Clears the TGID input on the LCD screen."""
+        self.lcdNumber.display("")
+   
+    def toggle_talkgroup_menu(self):
+        """Toggles the talkgroup menu visibility."""
+        if self.isMenuActive:
+            # The menu is currently open, so we will close it
+            # Hide the talkgroup list and show all other relevant UI elements
+            self.tg_list.hide()
+            self.lcdNumber.show()
+            self.lblChanelType.show()
+            self.lblSoundStatus.show()
+            self.lblChannelName_2.show()
+            self.lblError.show()
+            self.lblConnectionStatus.show()
+            self.isMenuActive = False  # Update state to indicate menu is closed
+        else:
+            # The menu is currently closed, so we will open it
+            # Hide non-essential interface elements and show the talkgroup list
+            self.isMenuActive = True
+            self.tg_list.show()
+            self.lcdNumber.hide()
+            self.lblChanelType.hide()
+            self.lblSoundStatus.hide()
+            self.lblChannelName_2.hide()
+            self.lblError.hide()
+            self.lblConnectionStatus.hide()
+            self.open_talkgroup_menu()  # Assuming this method sets up the talkgroup list for display
+
+    def open_talkgroup_menu(self):
+        """Opens the talkgroup menu for the current zone."""
+        current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
+        self.tg_list.clear()  # Clear old items
+
+        # Retrieve channel names from the file object
+        channel_list = [channel["name"] for channel in self.currentFile.get_channels_by_zone(current_zone)]
+
+        if channel_list:
+            self.tg_list.addItems(channel_list)
+            self.tg_list.show()  # ✅ Ensure the menu becomes visible
+        else:
+            print("[WARNING] No channels available in the current zone.")
+
+    def update_display(self):
+        """Updates the UI labels and LCD screen with the current zone and talkgroup info."""
+        current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
+        self.lblZone.setText(current_zone)  
+
+        current_channel = self.currentFile.get_channel_by_number(self.currentFile.current_tg_index)
+
+        if current_channel:
+            tg_name = current_channel["name"]
+            tg_number = current_channel["channel_number"]
+
+            self.lblChannelName_2.setText(tg_name)
+            self.lcdNumber.display(tg_number)
+
+            if current_channel["type"] == "scan":
+                self.lblChanelType.setText("\uf002")  
+            else:
+                self.lblChanelType.setText("\uf0c0")  
+
+        else:
+            self.lblChannelName_2.setText("No Channel")
+            self.lcdNumber.display(0)
+
+        print("[DEBUG] UI Updated - No extra change_talkgroup() calls")
+
+    def close_app(self):
+        """Closes the application."""
+        print("Closing application...")
+        if(self.speech_on):
+            self.speech.stop()  # Stop speech engine before exit
+        self.op25.stop()
+        self.close()
+
     def channel_up(self):
         """Moves to the next channel using FileObject's methods."""
         current_channel_number = self.currentFile.current_tg_index
@@ -216,40 +876,6 @@ class ScannerUI(QWidget):
 
         self.update_display()
         self.change_talkgroup()  # Apply the new talkgroup or scan list
-
-    def change_talkgroup(self):
-        """Applies the correct talkgroup or scan list based on the current channel."""
-
-        selected_channel = self.currentFile.get_channel_by_number(self.currentFile.current_tg_index)
-        
-        print("###")
-        print(f"Selected Channel Type: {selected_channel['type']}")
-        print(f"Selected Channel Name: {selected_channel['name']}")
-        print("###")
-
-        if not selected_channel:
-            print("[ERROR] Selected channel not found")
-            return
-
-        if selected_channel["type"] == "talkgroup":
-            tg_id = selected_channel["tgid"]  # ✅ Define TGID before using it
-
-            if tg_id not in self.op25.whitelist_tgids:
-                self.op25.whitelist([tg_id])
-
-            # ✅ Run OP25 Command in Separate Thread
-            self.op25_thread = OP25Worker(self.op25, "hold", tg_id)
-            self.op25_thread.start()
-
-            if self.speech_on: 
-                self.speech.speak(selected_channel["name"])  # 🎤 Speak the channel name
-
-        elif selected_channel["type"].lower() == "scan":
-            if isinstance(selected_channel["tgid"], list) and selected_channel["tgid"]:
-                self.op25.update_scan_list(selected_channel["tgid"])
-                
-                if self.speech_on: 
-                    self.speech.speak(f"Scanning {selected_channel['name']}")  # 🎤 Speak scan channel
 
     def zone_up(self):
         """Moves to the next zone, loops back if at the last zone."""
@@ -300,34 +926,45 @@ class ScannerUI(QWidget):
         self.update_display()
         self.change_talkgroup()  # Ensure the talkgroup is updated
 
-    def toggle_talkgroup_menu(self):
-        """Toggles the talkgroup menu visibility."""
-        if self.isMenuActive:
-            self.tg_list.hide()
-            self.tg_label.show()
-            self.isMenuActive = False
-        else:
-            self.isMenuActive = True
-            self.open_talkgroup_menu()
 
-    def open_talkgroup_menu(self):
-        """Opens the talkgroup menu for the current zone."""
-        current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
-        self.tg_list.clear()
+    def change_talkgroup(self):
+        """Applies the correct talkgroup or scan list based on the current channel."""
 
-        # Retrieve channel names from the file object
-        channel_list = [channel["name"] for channel in self.currentFile.get_channels_by_zone(current_zone)]
+        # First, check if the current channel index is valid
+        if self.currentFile.current_tg_index is None:
+            print("[ERROR] Current channel index not set")
+            return
+
+        selected_channel = self.currentFile.get_channel_by_number(self.currentFile.current_tg_index)
+        if not selected_channel:
+            print("[ERROR] Selected channel not found")
+            return
+
+        # Get the list of Talkgroup IDs (TGIDs) for the whitelist
+        wlist = selected_channel.get('tgid', [])  # Safely get 'tgid' with a default empty list if not found
+
+        # Switch the talkgroup using the retrieved list
+        self.op25.switchGroup(wlist=wlist)  # Ensure switchGroup is expecting a keyword argument
+
+        # Assuming update_display refreshes the UI to reflect current channel
+        self.update_display() 
         
-        self.tg_list.addItems(channel_list)
-        self.tg_label.hide()
-        self.tg_list.show()
+        # Speak the channel name if speech is enabled
+        if self.speech_on:
+            self.speech.speak(selected_channel["name"])
 
     def select_talkgroup(self, item):
         """Handles user selecting a talkgroup from the menu and applies it."""
+        
+        # Ensure current zone index is within bounds
+        if self.currentFile.current_zone_index >= len(self.currentFile.zone_names):
+            print("[ERROR] Current zone index out of bounds")
+            return
+        
         current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
         talkgroup_name = item.text()
 
-        # Find the selected channel from JSON
+        # Attempt to find the selected channel from JSON using the current zone and talkgroup name
         selected_channel = next(
             (ch for ch in self.currentFile.get_channels_by_zone(current_zone) if ch["name"] == talkgroup_name),
             None
@@ -339,41 +976,16 @@ class ScannerUI(QWidget):
 
         # Update the currently selected talkgroup index
         self.currentFile.current_tg_index = selected_channel["channel_number"]
-        self.update_display()
 
-        # ✅ Ensure channel exists before changing talkgroup
-        if self.currentFile.current_tg_index is not None:
-            self.change_talkgroup()
+        # Update the display and change to the new talkgroup if the index is valid
+        self.update_display()  # Assuming update_display refreshes the UI to reflect current channel
+        self.change_talkgroup()  # Apply the new talkgroup settings
 
         # Hide the talkgroup menu after selection
-        self.toggle_talkgroup_menu()
+        self.toggle_talkgroup_menu()  # Assuming this toggles visibility of the menu
 
-    def update_display(self):
-        """Updates the display with the current zone and channel information."""
-        current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
-        self.zone_label.setText(current_zone)  # Update zone display
-
-        # Ensure the channel exists
-        current_channel = self.currentFile.get_channel_by_number(self.currentFile.current_tg_index)
-
-        if current_channel:
-            display_text = f"{current_channel['channel_number']}: {current_channel['name']}"
-            if current_channel["type"] == "scan":
-                display_text += " (Scan)"
-            self.tg_label.setText(display_text)
-        else:
-            self.tg_label.setText("No Channels")
-
-    def close_app(self):
-        """Closes the application."""
-        print("Closing application...")
-        if(self.speech_on):
-            self.speech.stop()  # Stop speech engine before exit
-        self.op25.stop()
-        self.close()
-            
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = ScannerUI()
-    ex.show()
-    sys.exit(app.exec_())
+    mainWindow = MainWindow()  # ✅ Instantiating MainWindow directly
+    mainWindow.show()
+    sys.exit(app.exec())
