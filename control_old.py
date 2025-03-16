@@ -98,25 +98,22 @@ class OP25Controller:
     def whitelist(self, data):
         print("Placeholder for whitelist(self, data)")
 
-
-    def switchGroup(self, wlist=[1000], blist=[2000]):
+    # Usage: me.switchGroup(int(tgid))
+    def switchGroup(self, grp):
         """Switches OP25 to a new talkgroup."""
         if not self.op25_process or self.op25_process.poll() is not None:
             print("[ERROR] OP25 is not running.")
             return
 
-        # Overwrite the whitelist file with the contents of wlist
-        with open(self.defaultWhitelistFile, 'w') as file:
-            for tgid in wlist:
-                file.write(f"{tgid}\n")
+        try:
+            if isinstance(grp, int):
+                if grp not in self.whitelist_tgids:
+                    self.whitelist([grp])  # Ensure it's whitelisted
+                self.command("hold", grp)  # Actually switch the TGID
+                print(f"Success! Talkgroup changed to {grp}.")
+        except Exception as e:
+            print(f"[ERROR] Failed to switch talkgroup: {e}")
 
-        # Overwrite the blacklist file with the contents of blist
-        with open(self.defaultBlacklistFile, 'w') as file:
-            for tgid in blist:
-                file.write(f"{tgid}\n")
-
-        # Command to reload OP25 configuration, assuming self.command is implemented
-        self.command("reload", 0)
 
     def command(self, cmd, data):
         """Sends a command to OP25. Ensures proper handling for hold, whitelist, and reload."""
@@ -154,8 +151,8 @@ class OP25Controller:
                 print("[SUCCESS] OP25 reload command executed.")
                 time.sleep(1)  # Ensure OP25 has time to process reload
                 # 🔹 Step 3B: Reapply stored whitelist TGIDs after reset
-                # if self.whitelist_tgids:
-                #     self.whitelist(self.whitelist_tgids)
+                if self.whitelist_tgids:
+                    self.whitelist(self.whitelist_tgids)
             else:
                 print("[ERROR] OP25 reload command failed. No response received.")
 

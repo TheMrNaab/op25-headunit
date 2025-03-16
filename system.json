@@ -61,294 +61,294 @@
         "name": "WC FD ALERT",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46949
+        "tgid": [46949]
     },
     {
         "channel_number": 4,
         "name": "RFD ALERT",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 47021
+        "tgid": [47021]
     },
     {
         "channel_number": 5,
         "name": "WC FD DISP",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46940
+        "tgid": [46940]
     },
     {
         "channel_number": 6,
         "name": "FD OPS 1",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46800
+        "tgid": [46800]
     },
     {
         "channel_number": 7,
         "name": "FD OPS 2",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46801
+        "tgid": [46801]
     },
     {
         "channel_number": 8,
         "name": "FD OPS 3",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46802
+        "tgid": [46802]
     },
     {
         "channel_number": 9,
         "name": "FD OPS 4",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46803
+        "tgid": [46803]
     },
     {
         "channel_number": 10,
         "name": "FD OPS 5",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46804
+        "tgid": [46804]
     },
     {
         "channel_number": 11,
         "name": "FD OPS 6",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46805
+        "tgid": [46805]
     },
     {
         "channel_number": 12,
         "name": "FD OPS 7",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46806
+        "tgid": [46806]
     },
     {
         "channel_number": 13,
         "name": "FD OPS 8",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46807
+        "tgid": [46807]
     },
     {
         "channel_number": 14,
         "name": "FD OPS 9",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46808
+        "tgid": [46808]
     },
     {
         "channel_number": 15,
         "name": "FD OPS 10",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46809
+        "tgid": [46809]
     },
     {
         "channel_number": 16,
         "name": "FD OPS 11",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46810
+        "tgid": [46810]
     },
     {
         "channel_number": 17,
         "name": "FD OPS 12",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46811
+        "tgid": [46811]
     },
     {
         "channel_number": 18,
         "name": "PS TAC 13",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46812
+        "tgid": [46812]
     },
     {
         "channel_number": 19,
         "name": "PS TAC 14",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46813
+        "tgid": [46813]
     },
     {
         "channel_number": 20,
         "name": "PS TAC 15",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46814
+        "tgid": [46814]
     },
     {
         "channel_number": 21,
         "name": "PS TAC 16",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46815
+        "tgid": [46815]
     },
     {
         "channel_number": 22,
         "name": "PS TAC 17",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46816
+        "tgid": [46816]
     },
     {
         "channel_number": 23,
         "name": "PS TAC 18",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46817
+        "tgid": [46817]
     },
     {
         "channel_number": 24,
         "name": "PS TAC 19",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46818
+        "tgid": [46818]
     },
     {
         "channel_number": 25,
         "name": "PS TAC 20",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46819
+        "tgid": [46819]
     },
     {
         "channel_number": 26,
         "name": "PS TAC 21",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46820
+        "tgid": [46820]
     },
     {
         "channel_number": 27,
         "name": "PS TAC 22",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46821
+        "tgid": [46821]
     },
     {
         "channel_number": 28,
         "name": "PS TAC 23",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46822
+        "tgid": [46822]
     },
     {
         "channel_number": 29,
         "name": "PS TAC 24",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46823
+        "tgid": [46823]
     },
     {
         "channel_number": 30,
         "name": "PS TAC 25",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46824
+        "tgid": [46824]
     },
     {
         "channel_number": 31,
         "name": "PS TAC 26",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46825
+        "tgid": [46825]
     },
     {
         "channel_number": 32,
         "name": "PS TAC 27",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46826
+        "tgid": [46826]
     },
     {
         "channel_number": 33,
         "name": "PS TAC 28",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46827
+        "tgid": [46827]
     },
     {
         "channel_number": 34,
         "name": "PS TAC 29",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46828
+        "tgid": [46828]
     },
     {
         "channel_number": 35,
         "name": "PS TAC 30",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46829
+        "tgid": [46829]
     },
     {
         "channel_number": 36,
         "name": "PS TAC 31",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46830
+        "tgid": [46830]
     },
     {
         "channel_number": 37,
         "name": "PS TAC 32",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46831
+        "tgid": [46831]
     },
     {
         "channel_number": 38,
         "name": "PS TAC 33",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46832
+        "tgid": [46832]
     },
     {
         "channel_number": 39,
         "name": "PS TAC 34",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46833
+        "tgid": [46833]
     },
     {
         "channel_number": 40,
         "name": "PS TAC 35",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46834
+        "tgid": [46834]
     },
     {
         "channel_number": 41,
         "name": "PS TAC 36",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46835
+        "tgid": [46835]
     },
     {
         "channel_number": 42,
         "name": "PS TAC 37",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46836
+        "tgid": [46836]
     },
     {
         "channel_number": 43,
         "name": "PS TAC 38",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46837
+        "tgid": [46837]
     },
     {
         "channel_number": 44,
         "name": "PS TAC 39",
         "zone": "Fire",
         "type": "talkgroup",
-        "tgid": 46838
+        "tgid": [46838]
     },
     {
         "channel_number": 45,
@@ -373,97 +373,97 @@
         "name": "RPD NWD DISP",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 47050
+        "tgid": [47050]
     },
     {
         "channel_number": 47,
         "name": "RPD NOD DISP",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 47051
+        "tgid": [47051]
     },
     {
         "channel_number": 48,
         "name": "RPD NED DISP",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 47052
+        "tgid": [47052]
     },
     {
         "channel_number": 49,
         "name": "RPD SED DISP",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 47053
+        "tgid": [47053]
     },
     {
         "channel_number": 50,
         "name": "RPD DTD DISP",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 47054
+        "tgid": [47054]
     },
     {
         "channel_number": 51,
         "name": "RPD SWD DISP",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 47055
+        "tgid": [47055]
     },
     {
         "channel_number": 52,
         "name": "WSO DISP 1",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 46880
+        "tgid": [46880]
     },
     {
         "channel_number": 53,
         "name": "WSO DISP 2",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 46881
+        "tgid": [46881]
     },
     {
         "channel_number": 54,
         "name": "WSO DISP 3",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 46882
+        "tgid": [46882]
     },
     {
         "channel_number": 55,
         "name": "WSO DISP 4",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 46883
+        "tgid": [46883]
     },
     {
         "channel_number": 56,
         "name": "WSO PAT 1",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 46884
+        "tgid": [46884]
     },
     {
         "channel_number": 57,
         "name": "WSO PAT 2",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 46885
+        "tgid": [46885]
     },
     {
         "channel_number": 58,
         "name": "WSO PAT 3",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 46886
+        "tgid": [46886]
     },
     {
         "channel_number": 59,
         "name": "WSO PAT 4",
         "zone": "Law",
         "type": "talkgroup",
-        "tgid": 46887
+        "tgid": [46887]
     }
 ]

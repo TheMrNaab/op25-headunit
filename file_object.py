@@ -126,6 +126,12 @@ class FileObject:
                     return True
         return False
     
+    def get_zone(self, index):
+        """Finds the zone by index"""
+        if not self.zone_names:
+            return None  # No zones exist
+        return self.zone_names[(index) % len(self.zone_names)]
+    
     def get_next_zone(self, current_zone_index):
         """Finds the next zone, looping back if at the last one."""
         if not self.zone_names:
