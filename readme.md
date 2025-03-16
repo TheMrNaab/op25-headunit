@@ -10,6 +10,7 @@ This project provides a graphical user interface (GUI) for OP25, a software-defi
 - **Text-to-Speech (TTS) Alerts**: Uses `pyttsx3` for audio feedback on talkgroup changes.
 - **Log Monitoring**: Captures OP25 logs for troubleshooting.
 - **Scan Mode**: Dynamically updates and reloads OP25’s whitelist.
+- **System Integration**: Currently, the system supports only one system at a time. Future updates will aim to integrate OP25's multi-system capabilities.
 
 ## Requirements
 ### Hardware
@@ -31,6 +32,18 @@ This project provides a graphical user interface (GUI) for OP25, a software-defi
   ```bash
   sudo apt install xfce4 xfce4-goodies tightvncserver
   ```
+
+## Tested Hardware
+- **Raspberry Pi 4 (2GB Memory) with Ubuntu Server**  
+  [Buy on Amazon](https://www.amazon.com/dp/B09TTNPB4J?ref=ppx_yo2ov_dt_b_fed_asin_title)
+- **DWEII 6 Sets Infrared IR Wireless Remote Control Module Kits DIY Kit HX1838 for Arduino Raspberry Pi**  
+  [Buy on Amazon](https://www.amazon.com/dp/B09ZTZQFP7?ref=ppx_yo2ov_dt_b_fed_asin_title)
+- **A1 FFCs - Sample Pack Flex Cable for Raspberry Pi Camera - Black 8, 15, 30, and 60 cm**  
+  [Buy on Amazon](https://www.amazon.com/dp/B097P6CMV1?ref=ppx_yo2ov_dt_b_fed_asin_title)
+- **FREENOVE 5 Inch Touchscreen Monitor for Raspberry Pi 5 4 B 3 B+ A+, 800x480 Pixel IPS Display, 5-Point Touch Capacitive Screen, Driver-Free MIPI DSI Port**  
+  [Buy on Amazon](https://www.amazon.com/dp/B0B455LDKH?ref=ppx_yo2ov_dt_b_fed_asin_title)
+- **RTL-SDR Blog V4 R828D RTL2832U 1PPM TCXO SMA Software Defined Radio (Dongle Only)**  
+  [Buy on Amazon](https://www.amazon.com/dp/B0CD745394?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_2)
 
 ## Installation
 ### 1. Install OP25
@@ -65,7 +78,11 @@ These files must be located in:
 /home/(user)/op25/op25/gr-op25_repeater/apps/
 ```
 
-### 5. Run the Scanner UI
+### 5. Configure Auto-Start
+- Enable automatic login and configure `main.py` to start with the GUI.
+- Manually edit `system.json` to configure your channels.
+
+### 6. Run the Scanner UI
 ```bash
 cd /opt/op25-project
 python3 main.py
@@ -107,5 +124,5 @@ python3 main.py
 This project is licensed under the MIT License.
 
 ## Credits
-Developed by [Your Name].
+Developed by David Naab.
 
