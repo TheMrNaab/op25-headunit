@@ -54,6 +54,8 @@ git clone https://github.com/boatbod/op25.git
 cd op25
 ./install.sh
 ```
+See [op25-config.md](https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md) for additional details on this step. Installing OP25 on Raspberry Pi OS presented challenges, so I opted to install Ubuntu Server and manually configure the required modules. Since this is not my base code, I cannot provide support for this step, but there are plenty of online resources available.
+
 
 ### 2. Install Required Python Packages
 ```bash
@@ -62,7 +64,7 @@ pip install PySide6 pyttsx3 RPi.GPIO
 
 ### 3. Clone and Set Up This Project
 ```bash
-git clone https://github.com/your-repo/op25-vehicle-scanner.git
+git clone https://github.com/TheMrNaab/op25-headunit
 sudo mv op25-vehicle-scanner /opt/op25-project
 ```
 
@@ -78,11 +80,16 @@ These files must be located in:
 /home/(user)/op25/op25/gr-op25_repeater/apps/
 ```
 
-### 5. Configure Auto-Start
+See [op25-config.md](https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md) for additional information on this step.
+
+### 5. Configure Your System
+Edit `system.json` in this installation directory of this script. See  [system-config.md](https://github.com/TheMrNaab/op25-headunit/blob/main/help/system-config.md) for additional information on this step.
+
+### 6. Configure Auto-Start
 - Enable automatic login and configure `main.py` to start with the GUI.
 - Manually edit `system.json` to configure your channels.
 
-### 6. Run the Scanner UI
+### 7. Run the Scanner UI
 ```bash
 cd /opt/op25-project
 python3 main.py
@@ -101,6 +108,7 @@ python3 main.py
 ├── styles.css          # UI Styling (if applicable)
 ├── system.json         # Zone and Talkgroup Configuration
 └── logs/               # Logs Directory
+└── templates/          # Template files for OP25 installation
 ```
 
 ## Troubleshooting
@@ -114,6 +122,7 @@ python3 main.py
 ### IR Remote Not Working
 - Ensure `RPi.GPIO` is installed.
 - Check if the correct GPIO pin is used in `ir.py`.
+See the [ir.md](https://github.com/TheMrNaab/op25-headunit/blob/main/help/ir.md) for additional information on this step.
 
 ## Future Plans
 - Implement full IR remote control.
