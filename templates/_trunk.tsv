@@ -1,0 +1,2 @@
+Sysname	Control Channel List	Offset	NAC	Modulation	TGID Tags File	Whitelist	Blacklist	Center Frequency
+Wake County Simulcast	"853.1500, 853.4625, 853.9250, 853.9625"	0	0	cqpsk	/home/dnaab/op25/op25/gr-op25_repeater/apps/_tgroups.csv	/home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv	/home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv	
