@@ -10,3 +10,5 @@ __pycache__/file_object.cpython-312.pyc
 logs/stderr.2
 logs/stdout.2
 logs/stderr.2
+logs/stderr.2
+logs/app_log.txt

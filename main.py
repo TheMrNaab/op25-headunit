@@ -657,16 +657,26 @@ class MainWindow(QMainWindow):
         pass
 
     def keypad_input(self, digit):
-        """Handles numeric button input for direct TGID entry with TV-style shifting."""
+        """Handles numeric button input for direct TGID entry and menu navigation."""
+        if self.isMenuActive:
+            if digit == "1":
+                print("[DEBUG] Moving selection up")
+                self.move_selection_up()
+            elif digit == "7":
+                print("[DEBUG] Moving selection down")
+                self.move_selection_down()
+            return  # Stop normal keypad behavior when menu is active
+
+        # Normal keypad input processing
         current_text = str(int(self.lcdNumber.value())) if self.lcdNumber.value() else ""
-        
+
         if len(current_text) >= 3:
-            current_text = current_text[1:]  # Remove the leftmost digit (shift behavior)
+            current_text = current_text[1:]  # Shift digits
         if self.speech_on:
-                    self.speech.speak(f"{digit}")
+            self.speech.speak(f"{digit}")
 
         new_text = current_text + digit
-        self.lcdNumber.display(new_text)  # Update LCD
+        self.lcdNumber.display(new_text)
 
     def toggle_mute(self):
         """Toggles mute status (Placeholder for future implementation)."""
@@ -820,6 +830,21 @@ class MainWindow(QMainWindow):
             self.tg_list.show()  # ✅ Ensure the menu becomes visible
         else:
             print("[WARNING] No channels available in the current zone.")
+    
+    def move_selection_down(self):
+        """Moves the selection down by one in a QListWidget."""
+        current_row = self.tg_list.currentRow()  # Get current row index
+
+        if current_row < self.tg_list.count() - 1:  # Ensure it doesn't go out of bounds
+            self.tg_list.setCurrentRow(current_row + 1)  # Move down one row
+
+    def move_selection_up(self):
+        """Moves the selection up by one in a QListWidget."""
+        current_row = self.tg_list.currentRow()  # Get current row index
+
+        if current_row > 0:  # Ensure it doesn't go out of bounds
+            self.tg_list.setCurrentRow(current_row - 1)  # Move up one row
+
 
     def select_talkgroup(self, item):
         """Handles user selecting a talkgroup from the menu and applies it."""
