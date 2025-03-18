@@ -10,6 +10,7 @@ from logger import CustomLogger
 from typing import List
 from PySide6.QtCore import QThread, Signal
 import csv
+import sys
 #  echo '{"command": "whitelist", "arg1": 47021, "arg2": 0}' | nc -u 127.0.0.1 5000
 
 class OP25Controller:
@@ -52,6 +53,9 @@ class OP25Controller:
             stderr=open(self.stderr_file, "w"),
             text=True
         )
+
+        sys.stdout = open(os.devnull, 'w')
+        sys.stderr = open(os.devnull, 'w')
 
         time.sleep(14)
         if(self.isConnected()):

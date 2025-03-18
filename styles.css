@@ -49,3 +49,5 @@ QPushButton#btnExit_2:disabled {
     color: darkgray ;
     background: black;
 }
+
+QListWidget::item { font-size: 18pt; }

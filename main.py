@@ -5,7 +5,7 @@ import re
 import time
 # PySide6 Core Imports
 from PySide6.QtCore import QThread, Signal, QTimer, QMetaObject, QRect, QSize, QCoreApplication, Qt, QPropertyAnimation, QVariantAnimation
-
+import threading
 # PySide6 GUI Imports
 from PySide6.QtGui import QFont, QFontDatabase, QTransform, QPixmap
 
@@ -24,7 +24,6 @@ from customWidgets import BlinkingLabel
 
 class ScanListWorker(QThread):
     signal_complete = Signal()
-
     def __init__(self, op25_instance, tgids):
         super().__init__()
         self.op25 = op25_instance
@@ -48,8 +47,35 @@ class OP25InitWorker(QThread):
         self.op25.start()
         self.signal_initialized.emit()  
 
-from PySide6.QtCore import QThread, Signal
+class ChangeTalkgroupWorker(QThread):
+    """Worker thread for changing the talkgroup without blocking the UI."""
+    signal_initialized = Signal()
 
+    def __init__(self, main_window):
+        super().__init__()
+        self.main_window = main_window
+        self.op25 = main_window.op25  # Ensure it has access to OP25
+
+    def run(self):
+        print("[INFO] Change Talkgroup Thread Started")
+        if self.main_window.currentFile.current_tg_index is None:
+            print("[ERROR] Current channel index not set")
+            return
+
+        selected_channel = self.main_window.currentFile.get_channel_by_number(self.main_window.currentFile.current_tg_index)
+        if not selected_channel:
+            print("[ERROR] Selected channel not found")
+            return
+
+        wlist = selected_channel.get('tgid', [])  # Get 'tgid' safely
+        self.op25.switchGroup(wlist=wlist)  # Ensure this function exists
+
+        if self.main_window.speech_on:
+            self.main_window.speech.speak(selected_channel["name"])
+
+        self.signal_initialized.emit()
+
+from PySide6.QtCore import QThread, Signal
 class MonitorLogFileWorker(QThread):
     """Worker thread for monitoring the OP25 log file without blocking the UI."""
     signal_tg_update = Signal(str)  # Signal to send back the TG number
@@ -112,15 +138,10 @@ class MainWindow(QMainWindow):
         self.speech_on = False      
         self.currentFile = FileObject()
         self.isMenuActive = False  
-
-        if(self.speech_on):         # Work in Progress
-            self.speech = SpeechEngine()
+        self.ChangeTalkgroupWorker = None
         
-        if self.ir_on:              # Work in Progress
-            #TODO: Implement Remote Listener
-            #self.ir_handler = IRRemoteHandler(self)  
-            #self.startIRListener()
-            pass
+        
+
 
         self.setupUi(self)
 
@@ -139,6 +160,28 @@ class MainWindow(QMainWindow):
         self.op25_worker.start()
 
 
+        if(self.speech_on):         # Work in Progress
+            self.speech = SpeechEngine()
+        
+        if self.ir_on:              # Work in Progress
+            self.ir_handler = IRRemoteHandler(self)  
+            self.startIRListener()
+            
+
+    def on_talkgroup_changed(self):
+        """Slot that gets called when OP25 is initialized and sets the initial zone and channel."""
+        print("[INFO] on_talkgroup_changed() Triggered")
+        self.lblConnectionStatus.show()
+        self.lblSync.stop_blink()
+        self.lblSync.hide()
+        self.update_display()
+
+    def ir_callback(self, channel):
+        """Handles IR signal when detected."""
+        code = self.decode_signal()  # Get decoded key
+        self.main.op25.logger.info(f"[INFO] {code} pressed.")
+        self.handle_ir_input(code)
+        
     def on_op25_initialized(self):
         """Slot that gets called when OP25 is initialized and sets the initial zone and channel."""
         self.lblChannelName_2.setText("Connected")  # Update the label text
@@ -168,13 +211,10 @@ class MainWindow(QMainWindow):
         self.logMonitor = MonitorLogFileWorker(self.op25, self.op25.stderr_file)
         self.logMonitor.signal_tg_update.connect(self.updateStatusBar)
         self.logMonitor.start()
-    
+
     def updateStatusBar(self, arg):
         """Updates the status bar with the latest talkgroup number."""
         self.lblChannelName_2.setText(f"{arg}")
-        #self.lblChannelName_2.start_blink(500)
-         
-
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
@@ -627,8 +667,7 @@ class MainWindow(QMainWindow):
         self.tg_list.itemClicked.connect(self.select_talkgroup)
         self.verticalLayout_2.addWidget(self.tg_list)
 
-        self.apply_stylesheet()
-       
+        self.apply_stylesheet()   
     # setupUi
     def apply_stylesheet(self):
         """Loads the stylesheet from an external file."""
@@ -720,8 +759,8 @@ class MainWindow(QMainWindow):
     def startIRListener(self):
         """Runs the IR listener in a separate thread to prevent blocking the UI."""
         #TODO: Implement threading and IR Listener
-        # ir_thread = threading.Thread(target=self.ir_handler.listen, daemon=True)
-        # ir_thread.start()
+        ir_thread = threading.Thread(target=self.ir_handler.listen, daemon=True)
+        ir_thread.start()
         pass
 
     def keypad_input(self, digit):
@@ -854,6 +893,7 @@ class MainWindow(QMainWindow):
 
     def channel_up(self):
         """Moves to the next channel using FileObject's methods."""
+        print("[INFO] Channel Up Clicked")
         current_channel_number = self.currentFile.current_tg_index
         next_channel = self.currentFile.get_channel_by_number(current_channel_number + 1)
 
@@ -864,8 +904,7 @@ class MainWindow(QMainWindow):
             first_channel = self.currentFile.get_channels_by_zone(self.currentFile.zone_names[self.currentFile.current_zone_index])
             self.currentFile.current_tg_index = first_channel[0]["channel_number"] if first_channel else 0
 
-        self.update_display()
-        self.change_talkgroup()  # Apply the new talkgroup or scan list
+        self.change_talkgroup()
 
     def channel_down(self):
         """Moves to the previous channel using FileObject's methods."""
@@ -879,7 +918,6 @@ class MainWindow(QMainWindow):
             last_channel = self.currentFile.get_channels_by_zone(self.currentFile.zone_names[self.currentFile.current_zone_index])
             self.currentFile.current_tg_index = last_channel[-1]["channel_number"] if last_channel else 0
 
-        self.update_display()
         self.change_talkgroup()  # Apply the new talkgroup or scan list
 
     def zone_up(self):
@@ -928,14 +966,11 @@ class MainWindow(QMainWindow):
         
         self.currentFile.current_tg_index = first_channel[0]["channel_number"]
 
-        self.update_display()
         self.change_talkgroup()  # Ensure the talkgroup is updated
 
 
     def change_talkgroup(self):
         """Applies the correct talkgroup or scan list based on the current channel."""
-
-        # First, check if the current channel index is valid
         if self.currentFile.current_tg_index is None:
             print("[ERROR] Current channel index not set")
             return
@@ -945,18 +980,19 @@ class MainWindow(QMainWindow):
             print("[ERROR] Selected channel not found")
             return
 
-        # Get the list of Talkgroup IDs (TGIDs) for the whitelist
-        wlist = selected_channel.get('tgid', [])  # Safely get 'tgid' with a default empty list if not found
+        wlist = selected_channel.get('tgid', [])  # Safely get 'tgid'
+        self.op25.switchGroup(wlist=wlist)  
 
-        # Switch the talkgroup using the retrieved list
-        self.op25.switchGroup(wlist=wlist)  # Ensure switchGroup is expecting a keyword argument
+        if hasattr(self, "changeTalkgroupWorker") and self.changeTalkgroupWorker.isRunning():
+            print("[DEBUG] Previous ChangeTalkgroupWorker still running, waiting...")
+            self.changeTalkgroupWorker.quit()
+            self.changeTalkgroupWorker.wait()
 
-        # Assuming update_display refreshes the UI to reflect current channel
-        self.update_display() 
-        
-        # Speak the channel name if speech is enabled
-        if self.speech_on:
-            self.speech.speak(selected_channel["name"])
+        self.changeTalkgroupWorker = ChangeTalkgroupWorker(self)
+        self.changeTalkgroupWorker.signal_initialized.connect(self.on_talkgroup_changed)
+        self.changeTalkgroupWorker.start()
+    
+
 
     def select_talkgroup(self, item):
         """Handles user selecting a talkgroup from the menu and applies it."""
@@ -993,7 +1029,7 @@ class MainWindow(QMainWindow):
         self.currentFile.current_tg_index = selected_channel["channel_number"]
 
         # Update the display and change to the new talkgroup if the index is valid
-        self.update_display()  # Assuming update_display refreshes the UI to reflect current channel
+
         self.change_talkgroup()  # Apply the new talkgroup settings
 
        
