@@ -683,26 +683,37 @@ class MainWindow(QMainWindow):
         print("[DEBUG] Mute toggled")
 
     def confirm_tgid_input(self):
-        """Applies the entered TGID, updates the zone, and changes the channel."""
-        tgid = int(self.lcdNumber.intValue()) if self.lcdNumber.intValue() else None  # ✅ Use intValue() for QLCDNumber
+        """Handles TGID entry normally, but if the menu is open, triggers selection in the list."""
+        if self.isMenuActive:
+            current_row = self.tg_list.currentRow()  # Get selected row
+            if current_row >= 0:  # Ensure a valid selection
+                print(f"[DEBUG] Confirming selection of row {current_row}")
+                item = self.tg_list.item(current_row)
+                if item:
+                    item.setSelected(True)  # Ensure it's visually selected
+                    self.select_talkgroup(item)  # Trigger the selection event
+            return  # Stop normal processing if menu is open
+
+        # Normal TGID processing
+        tgid = int(self.lcdNumber.intValue()) if self.lcdNumber.intValue() else None  
 
         if not tgid:
             print("[ERROR] No valid TGID entered.")
             return
 
-        # Find channel with matching TGID
+        # Find the channel with the matching TGID
         found_channel = None
         found_zone = None
 
         for zone_name in self.currentFile.zone_names:
             channels = self.currentFile.get_channels_by_zone(zone_name)
             for channel in channels:
-                if "channel_number" in channel and channel["channel_number"] == tgid:  # ✅ Prevent KeyError
+                if "channel_number" in channel and channel["channel_number"] == tgid:
                     found_channel = channel
                     found_zone = zone_name
                     break
             if found_channel:
-                break  # Stop searching if found
+                break  # Stop searching once found
 
         if not found_channel or not found_zone:
             print(f"[ERROR] TGID {tgid} not found in any zone.")
@@ -716,7 +727,7 @@ class MainWindow(QMainWindow):
         self.change_talkgroup()
 
         if self.speech_on:
-            self.speech.speak(f"Channel {tgid} in {found_zone}")  # Use found_zone instead of zone_name
+            self.speech.speak(f"Channel {tgid} in {found_zone}")
 
     def update_display(self):
         """Updates the UI labels and LCD screen with the current zone and talkgroup info."""
@@ -758,10 +769,6 @@ class MainWindow(QMainWindow):
    
     def toggle_talkgroup_menu(self):
         """Toggles the talkgroup menu visibility."""
-        normalPolicyMax = self.tg_list.setMaximumSize
-        normalPolicyMin = self.tg_list.setMaximumSize
-
-        
 
         if self.isMenuActive:
             # The menu is currently open, so we will close it
@@ -774,20 +781,16 @@ class MainWindow(QMainWindow):
             self.lblError.show()
             self.lblConnectionStatus.show()
 
-            self.tg_list.setMaximumSize(QSize(700, 161))
-            self.tg_list.setMinimumSize(QSize(700, 161))
-
-
             self.btn0.show()
-            self.btn1.setText("1")
+            self.btn1.show()
             self.btn2.show()
-            self.btn3.show()
+            self.btn3.setText("3")
             self.btn4.show()
             self.btn5.show()
             self.btn6.show()
-            self.btn7.setText("7")
+            self.btn7.show()
             self.btn8.show()
-            self.btn9.show()
+            self.btn9.setText("9")
             self.btnDel.show()
             self.btnGo.show()
             self.isMenuActive = False  # Update state to indicate menu is closed
@@ -802,18 +805,17 @@ class MainWindow(QMainWindow):
             self.lblChannelName_2.hide()
             self.lblError.hide()
             self.btn0.hide()
-            self.btn1.setText("UP")
+            self.btn1.hide()
             self.btn2.hide()
-            self.btn3.hide()
+            self.btn3.setText("UP")
             self.btn4.hide()
             self.btn5.hide()
             self.btn6.hide()
-            self.btn7.setText("DWN")
+            self.btn7.hide()
             self.btn8.hide()
-            self.btn9.hide()
+            self.btn9.setText("DWN")
             self.btnDel.hide()
-            self.btnGo.hide()
-
+            self.btnGo.show()
             self.lblConnectionStatus.hide()
             self.open_talkgroup_menu()  # Assuming this method sets up the talkgroup list for display
 
@@ -833,19 +835,22 @@ class MainWindow(QMainWindow):
     
     def move_selection_down(self):
         """Moves the selection down by one in a QListWidget."""
-        current_row = self.tg_list.currentRow()  # Get current row index
+        current_row = self.tg_list.currentRow()
 
-        if current_row < self.tg_list.count() - 1:  # Ensure it doesn't go out of bounds
-            self.tg_list.setCurrentRow(current_row + 1)  # Move down one row
-
+        if current_row < self.tg_list.count() - 1:  # Ensure within bounds
+            self.tg_list.setCurrentRow(current_row + 1)  # Move down
+            self.tg_list.item(current_row + 1).setSelected(True)  # Ensure it's selected
+            self.tg_list.scrollToItem(self.tg_list.item(current_row + 1))  # Ensure visibility
+   
     def move_selection_up(self):
         """Moves the selection up by one in a QListWidget."""
-        current_row = self.tg_list.currentRow()  # Get current row index
+        current_row = self.tg_list.currentRow()
 
-        if current_row > 0:  # Ensure it doesn't go out of bounds
-            self.tg_list.setCurrentRow(current_row - 1)  # Move up one row
-
-
+        if current_row > 0:  # Ensure within bounds
+            self.tg_list.setCurrentRow(current_row - 1)  # Move up
+            self.tg_list.item(current_row - 1).setSelected(True)  # Ensure it's selected
+            self.tg_list.scrollToItem(self.tg_list.item(current_row - 1))  # Ensure visibility
+    
     def select_talkgroup(self, item):
         """Handles user selecting a talkgroup from the menu and applies it."""
         self.setUpdatesEnabled(False)
