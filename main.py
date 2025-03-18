@@ -3,37 +3,54 @@ import os
 import csv
 import re
 import time
-# PySide6 Core Imports
-from PySide6.QtCore import QThread, Signal, QTimer, QMetaObject, QRect, QSize, QCoreApplication, Qt, QPropertyAnimation, QVariantAnimation
 import threading
-# PySide6 GUI Imports
-from PySide6.QtGui import QFont, QFontDatabase, QTransform, QPixmap
+import select
+from enum import Enum
+from PySide6.QtCore import QThread, Signal
 
-# PySide6 Widgets
+# PySide6 Core Imports
+from PySide6.QtCore import (
+    QThread, Signal, QTimer, QMetaObject, QRect, Qt, QPropertyAnimation, QVariantAnimation, QSize, QCoreApplication
+)
+
+# PySide6 GUI Imports
+from PySide6.QtGui import QFont, QPixmap
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QLabel, QFrame, QPushButton, QLCDNumber, 
-    QSizePolicy, QSpacerItem, QVBoxLayout, QHBoxLayout, QGridLayout, QListWidget
+    QApplication, QMainWindow, QWidget, QLabel, QPushButton, QLCDNumber,
+    QVBoxLayout, QHBoxLayout, QGridLayout, QListWidget, QSpacerItem, QSizePolicy
 )
 
 # Project-Specific Imports
 from tts import SpeechEngine
 from ir import IRRemoteHandler
 from file_object import FileObject
-from control import OP25Controller  # This must import properly
+from control import OP25Controller
 from customWidgets import BlinkingLabel
 
 class ScanListWorker(QThread):
     signal_complete = Signal()
+
     def __init__(self, op25_instance, tgids):
         super().__init__()
         self.op25 = op25_instance
         self.tgids = tgids
+        self.running = False  # ✅ Prevent multiple threads
 
     def run(self):
         """Process scan TGIDs in a separate thread."""
+        if self.running:
+            print("[DEBUG] ScanListWorker is already running. Skipping duplicate execution.")
+            return
+
+        self.running = True
         print(f"[DEBUG] Processing {len(self.tgids)} TGIDs in scan mode")
-        self.op25.update_scan_list(self.tgids)
-        self.signal_complete.emit()  # Notify UI when done
+        try:
+            self.op25.update_scan_list(self.tgids)
+        except Exception as e:
+            print(f"[ERROR] Failed to update scan list: {e}")
+        finally:
+            self.running = False
+            self.signal_complete.emit()  # Notify UI even if there is an error
 
 class OP25InitWorker(QThread):
     """Worker thread for initializing OP25 without blocking the UI."""
@@ -55,27 +72,64 @@ class ChangeTalkgroupWorker(QThread):
         super().__init__()
         self.main_window = main_window
         self.op25 = main_window.op25  # Ensure it has access to OP25
+        self.running = False  # ✅ Prevent duplicate workers
 
     def run(self):
+        self.main_window.setDisabled(True)
+        QApplication.processEvents()
+        if self.running:
+            print("[DEBUG] ChangeTalkgroupWorker is already running. Skipping execution.")
+            return
+
+        self.running = True
         print("[INFO] Change Talkgroup Thread Started")
+
         if self.main_window.currentFile.current_tg_index is None:
             print("[ERROR] Current channel index not set")
+            self.running = False
             return
 
         selected_channel = self.main_window.currentFile.get_channel_by_number(self.main_window.currentFile.current_tg_index)
         if not selected_channel:
             print("[ERROR] Selected channel not found")
+            self.running = False
             return
 
-        wlist = selected_channel.get('tgid', [])  # Get 'tgid' safely
-        self.op25.switchGroup(wlist=wlist)  # Ensure this function exists
+        wlist = selected_channel.get('tgid', [])
+        
+        try:
+            self.op25.switchGroup(wlist=wlist)
+        except Exception as e:
+            print(f"[ERROR] Failed to switch talkgroup: {e}")
+            self.running = False
+            return  # Exit if switching fails
 
         if self.main_window.speech_on:
             self.main_window.speech.speak(selected_channel["name"])
 
+        self.running = False
         self.signal_initialized.emit()
+        self.main_window.setDisabled(False)
+        QApplication.processEvents()
 
-from PySide6.QtCore import QThread, Signal
+    def cleanup_before_exit(self):
+        """Cleanup actions before exiting the application."""
+        print("[INFO] Stopping all workers...")
+
+        if hasattr(self, "op25") and self.op25:
+            self.op25.stop()  # Ensure OP25 stops properly
+
+        if hasattr(self, "logMonitor") and self.logMonitor:
+            self.logMonitor.stop()  # ✅ Stop log monitor thread
+            self.logMonitor.wait()  # ✅ Wait for clean exit
+
+        if hasattr(self, "ChangeTalkgroupWorker") and self.ChangeTalkgroupWorker:
+            if self.ChangeTalkgroupWorker.isRunning():
+                self.ChangeTalkgroupWorker.quit()
+                self.ChangeTalkgroupWorker.wait()
+        
+        self.close()
+
 class MonitorLogFileWorker(QThread):
     """Worker thread for monitoring the OP25 log file without blocking the UI."""
     signal_tg_update = Signal(str)  # Signal to send back the TG number
@@ -85,80 +139,58 @@ class MonitorLogFileWorker(QThread):
         self.stderr_path = stderr_path
         self.op25 = op25_instance
         self.tg_dict = {}
+        self.running = True  # ✅ Use flag to control the thread
         self.load_csv(self.op25.tgroups_file)
 
     def extract_tg_number(self, line):
         """Extracts the TG number from a voice update line."""
-        import re
         match = re.search(r'voice update:.*tg\((\d+)\)', line)
         return match.group(1) if match else None
-
-    def load_csv(self, csv_file):
-        """Loads the talkgroup CSV file into a dictionary."""
-        try:
-            with open(csv_file, "r", newline="", encoding="utf-8") as file:
-                reader = csv.DictReader(file)
-                for row in reader:
-                    decimal = row["Decimal"].strip()  # Ensure no spaces
-                    alpha_tag = row["Alpha Tag"].strip()
-                    self.tg_dict[decimal] = alpha_tag  # Store in dictionary
-        except FileNotFoundError:
-            print(f"[ERROR] CSV file '{csv_file}' not found.")
-
-    def lookup_tg(self, arg):
-        """Returns the Alpha Tag if found, otherwise returns the original arg."""
-        return self.tg_dict.get(str(arg), str(arg))  # Convert arg to string for safe lookup
-
 
     def run(self):
         """Monitors the log file and emits TG number when a new voice update appears."""
         try:
             with open(self.stderr_path, "r") as file:
-                file.seek(0, 2)  # Move to the end of the file to only capture new lines
+                file.seek(0, 2)  # Move to the end of the file
 
-                while True:
+                while self.running:
                     line = file.readline()
                     if not line:
-                        continue  # No new line, keep waiting
+                        time.sleep(0.1)  # ✅ Small delay to prevent CPU overuse
+                        continue  
 
                     tg_number = self.extract_tg_number(line)
                     if tg_number:
                         alpha = self.lookup_tg(tg_number)
-                        self.signal_tg_update.emit(alpha)  # ✅ Emit the TG number
-                        print(f"[ACTIVE TG]: {alpha}")  # Debug print
+                        self.signal_tg_update.emit(alpha)  
+                        print(f"[ACTIVE TG]: {alpha}")
 
         except FileNotFoundError:
             print(f"[ERROR] File '{self.stderr_path}' not found.")
 
+    def stop(self):
+        """Gracefully stops the log monitoring thread."""
+        self.running = False
+
+
 class MainWindow(QMainWindow):
+    update_display_signal = Signal()  # ✅ Create a signal
     def __init__(self):
         super().__init__()
+        self.update_display_signal.connect(self.update_display)
 
-        self.ir_on = True       
+        self.ir_on = False       
         self.speech_on = False      
         self.currentFile = FileObject()
         self.isMenuActive = False  
-        self.ChangeTalkgroupWorker = None
-        
-        
 
-
-        self.setupUi(self)
-
-        # INITIAL STATUS ICONS
-        self.lblSync.start_blink(900)
-        self.lblSoundStatus.hide()      #TODO: Implement in future
-        self.lblError.hide()            #TODO: Implement in future
-        self.lblConnectionStatus.hide()
-
-        self.lblChannelName_2.setText("Connecting...")
-        self.lblSoundStatus.hide()
-        
         self.op25 = OP25Controller()
         self.op25_worker = OP25InitWorker(self.op25)
         self.op25_worker.signal_initialized.connect(self.on_op25_initialized)  # Connect signal to slot
         self.op25_worker.start()
 
+        if not hasattr(self, "ChangeTalkgroupWorker") or not self.ChangeTalkgroupWorker.isRunning():
+            self.ChangeTalkgroupWorker = ChangeTalkgroupWorker(self)
 
         if(self.speech_on):         # Work in Progress
             self.speech = SpeechEngine()
@@ -166,6 +198,13 @@ class MainWindow(QMainWindow):
         if self.ir_on:              # Work in Progress
             self.ir_handler = IRRemoteHandler(self)  
             self.startIRListener()
+
+        # Initialize GUI first!
+        self.setupUi(self)
+        self.setDisabled(True)
+        QApplication.processEvents()
+        self.apply_stylesheet()
+        self.show()  # ✅ Ensures window renders before threads start
             
 
     def on_talkgroup_changed(self):
@@ -213,8 +252,30 @@ class MainWindow(QMainWindow):
         self.logMonitor.start()
 
     def updateStatusBar(self, arg):
-        """Updates the status bar with the latest talkgroup number."""
+        """Updates the status bar with the latest talkgroup name."""
         self.lblChannelName_2.setText(f"{arg}")
+                # INITIAL STATUS ICONS
+        self.lblSync.start_blink(900)
+        self.lblSoundStatus.hide()      #TODO: Implement in future
+        self.lblError.hide()            #TODO: Implement in future
+        self.lblConnectionStatus.hide()
+
+        self.lblChannelName_2.setText("Connecting...")
+        self.lblSoundStatus.hide()
+
+    def updateStatusBarV2(self, zone_name, channel_name, channel_number = -1):
+        """Updates the status bar with the latest talkgroup number."""
+        self.lblChannelName_2.setText(f"{channel_name}")
+        self.lblZone.setText(f"{zone_name}")
+        if channel_number > -1: 
+            self.lcdNumber.display(int(channel_number))
+
+
+    class icons(Enum):
+        MUTE = ""
+        UNMUTE = ""
+        SCAN = ""
+
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
@@ -255,19 +316,17 @@ class MainWindow(QMainWindow):
         self.lblZone.setObjectName(u"lblZone")
         self.lblZone.setMinimumSize(QSize(0, 30))
         self.lblZone.setMaximumSize(QSize(16777215, 30))
-        font = QFont()
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(QFont.Weight.Bold)  # Use enum instead of an integer
-        self.lblZone.setFont(font)
         self.lblZone.setStyleSheet(u"background-color:white; border: none; margin-left: 3px;")
 
+        fontAwesome = QFont()
+        fontAwesome.setFamily(u"FontAwesome")
+        fontAwesome.setPointSize(12)
+        
         self.statusBarLayout.addWidget(self.lblZone)
 
         self.lblChannelName_2 = BlinkingLabel(self.horizontalLayoutWidget)
         self.lblChannelName_2.setObjectName(u"lblChannelName_2")
         self.lblChannelName_2.setMaximumSize(QSize(16777215, 30))
-        self.lblChannelName_2.setFont(font)
         self.lblChannelName_2.setStyleSheet(u"background-color:white; border: none;")
 
         self.statusBarLayout.addWidget(self.lblChannelName_2)
@@ -275,12 +334,7 @@ class MainWindow(QMainWindow):
         self.lblSoundStatus = BlinkingLabel(self.horizontalLayoutWidget)
         self.lblSoundStatus.setObjectName(u"lblSoundStatus")
         self.lblSoundStatus.setMaximumSize(QSize(20, 30))
-        font1 = QFont()
-        font1.setFamily(u"FontAwesome")
-        font1.setPointSize(12)
-        self.lblSoundStatus.setFont(font1)
-        self.lblSoundStatus.setStyleSheet(u"background-color:white; border: none;")
-        self.lblSoundStatus.setAlignment(Qt.AlignCenter)
+        self.lblSoundStatus.setFont(fontAwesome)
 
         self.statusBarLayout.addWidget(self.lblSoundStatus)
 
@@ -288,12 +342,6 @@ class MainWindow(QMainWindow):
         self.lblError.setObjectName(u"lblError")
         self.lblError.setMinimumSize(QSize(10, 0))
         self.lblError.setMaximumSize(QSize(20, 30))
-        font2 = QFont()
-        font2.setFamily(u"FontAwesome")
-        self.lblError.setFont(font2)
-        self.lblError.setStyleSheet(u"background-color:white;\n"
-"color:orange;")
-        self.lblError.setAlignment(Qt.AlignCenter)
 
         self.statusBarLayout.addWidget(self.lblError)
 
@@ -301,9 +349,7 @@ class MainWindow(QMainWindow):
         self.lblChanelType.setObjectName(u"lblChanelType")
         self.lblChanelType.setMinimumSize(QSize(10, 0))
         self.lblChanelType.setMaximumSize(QSize(20, 30))
-        self.lblChanelType.setFont(font2)
-        self.lblChanelType.setStyleSheet(u"background-color:white")
-        self.lblChanelType.setAlignment(Qt.AlignCenter)
+        self.lblChanelType.setFont(fontAwesome)
 
         self.statusBarLayout.addWidget(self.lblChanelType)
 
@@ -311,9 +357,7 @@ class MainWindow(QMainWindow):
         self.lblSync.setObjectName(u"lblSync")
         self.lblSync.setMinimumSize(QSize(10, 0))
         self.lblSync.setMaximumSize(QSize(20, 30))
-        self.lblSync.setFont(font2)
-        self.lblSync.setStyleSheet(u"background-color:white")
-        self.lblSync.setAlignment(Qt.AlignCenter)
+        self.lblSync.setFont(fontAwesome)
 
         self.statusBarLayout.addWidget(self.lblSync)
 
@@ -321,9 +365,7 @@ class MainWindow(QMainWindow):
         self.lblConnectionStatus.setObjectName(u"lblConnectionStatus")
         self.lblConnectionStatus.setMinimumSize(QSize(10, 0))
         self.lblConnectionStatus.setMaximumSize(QSize(20, 30))
-        self.lblConnectionStatus.setFont(font2)
-        self.lblConnectionStatus.setStyleSheet(u"background-color:white")
-        self.lblConnectionStatus.setAlignment(Qt.AlignCenter)
+        self.lblConnectionStatus.setFont(fontAwesome)
 
         self.statusBarLayout.addWidget(self.lblConnectionStatus)
 
@@ -332,8 +374,8 @@ class MainWindow(QMainWindow):
 
         self.lcdNumber = QLCDNumber(self.horizontalLayoutWidget)
         self.lcdNumber.setObjectName(u"lcdNumber")
-        self.lcdNumber.setMinimumSize(QSize(0, 161))
-        self.lcdNumber.setMaximumSize(QSize(320, 161))
+        self.lcdNumber.setMinimumSize(QSize(430, 161))
+        self.lcdNumber.setMaximumSize(QSize(430, 161))
         self.lcdNumber.setStyleSheet(u"background-color:white; border: none; margin-left: 3px")
 
         self.onscreenDisplayLayout.addWidget(self.lcdNumber)
@@ -355,205 +397,61 @@ class MainWindow(QMainWindow):
         self.keypadLayout.setHorizontalSpacing(-1)
         self.btnGo = QPushButton(self.horizontalLayoutWidget)
         self.btnGo.setObjectName(u"btnGo")
-        font3 = QFont()
-        font3.setFamily(u"FontAwesome")
-        font3.setBold(True)
-        font3.setWeight(QFont.Weight.Bold)  # ✅ Use enum instead of an integer
-        font3.setKerning(True)
-        self.btnGo.setFont(font3)
-        self.btnGo.setStyleSheet(u"            QPushButton {\n"
-"                background-color: green;\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
 
         self.keypadLayout.addWidget(self.btnGo, 4, 2, 1, 1)
 
         self.btn0 = QPushButton(self.horizontalLayoutWidget)
         self.btn0.setObjectName(u"btn0")
-        self.btn0.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #444;\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
-
+ 
         self.keypadLayout.addWidget(self.btn0, 4, 1, 1, 1)
 
         self.btn3 = QPushButton(self.horizontalLayoutWidget)
         self.btn3.setObjectName(u"btn3")
-        self.btn3.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #444;\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
-
         self.keypadLayout.addWidget(self.btn3, 0, 2, 1, 1)
 
         self.btn5 = QPushButton(self.horizontalLayoutWidget)
         self.btn5.setObjectName(u"btn5")
-        self.btn5.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #444;\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
-
         self.keypadLayout.addWidget(self.btn5, 1, 1, 1, 1)
 
         self.btn8 = QPushButton(self.horizontalLayoutWidget)
         self.btn8.setObjectName(u"btn8")
-        self.btn8.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #444;\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
-
         self.keypadLayout.addWidget(self.btn8, 2, 1, 1, 1)
 
         self.btn9 = QPushButton(self.horizontalLayoutWidget)
         self.btn9.setObjectName(u"btn9")
-        self.btn9.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #444;\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
 
         self.keypadLayout.addWidget(self.btn9, 2, 2, 1, 1)
 
         self.btnDel = QPushButton(self.horizontalLayoutWidget)
         self.btnDel.setObjectName(u"btnDel")
+
         font4 = QFont()
         font4.setFamily(u"FontAwesome")
-        font4.setBold(True)
-        font4.setWeight(QFont.Weight.Bold)  # ✅ Use enum instead of an integer
-        self.btnDel.setFont(font4)
-        self.btnDel.setStyleSheet(u"            QPushButton {\n"
-"                background-color: rgb(195, 0, 0);\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
+        font4.setWeight(QFont.Weight.Normal)  # ✅ Use enum instead of an integer
 
         self.keypadLayout.addWidget(self.btnDel, 4, 0, 1, 1)
 
         self.btn4 = QPushButton(self.horizontalLayoutWidget)
         self.btn4.setObjectName(u"btn4")
-        self.btn4.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #444;\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
-
         self.keypadLayout.addWidget(self.btn4, 1, 0, 1, 1)
 
         self.btn2 = QPushButton(self.horizontalLayoutWidget)
         self.btn2.setObjectName(u"btn2")
-        self.btn2.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #444;\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
 
         self.keypadLayout.addWidget(self.btn2, 0, 1, 1, 1)
 
         self.btn1 = QPushButton(self.horizontalLayoutWidget)
         self.btn1.setObjectName(u"btn1")
-        self.btn1.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #444;\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
 
         self.keypadLayout.addWidget(self.btn1, 0, 0, 1, 1)
 
         self.btn6 = QPushButton(self.horizontalLayoutWidget)
         self.btn6.setObjectName(u"btn6")
-        self.btn6.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #444;\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
 
         self.keypadLayout.addWidget(self.btn6, 1, 2, 1, 1)
 
         self.btn7 = QPushButton(self.horizontalLayoutWidget)
         self.btn7.setObjectName(u"btn7")
-        self.btn7.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #444;\n"
-"                color: white;\n"
-"                font-size: 16px;\n"
-"                font-weight: bold;\n"
-"                border: 2px solid #666;\n"
-"                padding: 8px;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #666;\n"
-"            }")
-
         self.keypadLayout.addWidget(self.btn7, 2, 0, 1, 1)
 
 
@@ -631,18 +529,12 @@ class MainWindow(QMainWindow):
         self.btnChDown = QPushButton(self.horizontalLayoutWidget)
         self.btnChDown.setObjectName(u"btnChDown")
         self.btnChDown.setFont(font4)
-        
         self.horizontalLayout_12.addWidget(self.btnChDown)
 
         # ROW 2
         self.functionButtonLayout.addLayout(self.horizontalLayout_12, 1, 0, 1, 1)
-       
-
         # ROW 0
         self.functionButtonLayout.addLayout(self.functionButtonLayoutRow, 0, 0, 1, 1) # BOTTOM
-        
-        
-
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.functionButtonLayout.addItem(self.verticalSpacer, 2, 0, 1, 1)
 
@@ -661,8 +553,9 @@ class MainWindow(QMainWindow):
         self.tg_list.setObjectName("tg_list")
         self.tg_list.setStyleSheet("QListWidget { background-color:white; color:black; margin-left: 3px; }")
         self.tg_list.setVisible(False)  # Start hidden
+        self.tg_list.setMinimumSize(QSize(420, 161))
         self.tg_list.setMaximumHeight(200)
-        self.tg_list.setMaximumSize(QSize(320, 161))
+        self.tg_list.setMaximumSize(QSize(420, 161))
         
         self.tg_list.itemClicked.connect(self.select_talkgroup)
         self.verticalLayout_2.addWidget(self.tg_list)
@@ -814,13 +707,52 @@ class MainWindow(QMainWindow):
 
         if self.speech_on:
             self.speech.speak(f"Channel {tgid} in {found_zone}")  # Use found_zone instead of zone_name
-    
+
+    def update_display(self):
+        """Updates the UI labels and LCD screen with the current zone and talkgroup info."""
+        
+        if self.currentFile.current_tg_index is None:
+            print("[ERROR] No current channel index set.")
+            return
+
+        current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
+
+        current_channel = self.currentFile.get_channel_by_number(self.currentFile.current_tg_index)
+        
+        if not current_channel:
+            print("[ERROR] No channel found for index", self.currentFile.current_tg_index)
+            self.lblChannelName_2.setText("No Channel")
+            self.lcdNumber.display(0)  # Ensure LCD shows zero instead of old value
+            return
+
+        tg_name = current_channel["name"]
+        tg_number = current_channel["channel_number"]
+
+        # Debugging to ensure values are correct
+        print(f"[DEBUG] Updating Display: Zone: {current_zone}, Channel: {tg_name}, Number: {tg_number}")
+
+        # Update UI components
+        self.lblZone.setText(current_zone)
+        self.lblChannelName_2.setText(tg_name)
+        self.lcdNumber.display(int(tg_number))  # Use display() instead of setValue()
+
+        # Set the channel type icon
+        if current_channel["type"] == "scan":
+            self.lblChanelType.setText("\uf002")  
+        else:
+            self.lblChanelType.setText("\uf0c0")
+
     def clear_keypad_input(self):
         """Clears the TGID input on the LCD screen."""
         self.lcdNumber.display("")
    
     def toggle_talkgroup_menu(self):
         """Toggles the talkgroup menu visibility."""
+        normalPolicyMax = self.tg_list.setMaximumSize
+        normalPolicyMin = self.tg_list.setMaximumSize
+
+        
+
         if self.isMenuActive:
             # The menu is currently open, so we will close it
             # Hide the talkgroup list and show all other relevant UI elements
@@ -831,6 +763,23 @@ class MainWindow(QMainWindow):
             self.lblChannelName_2.show()
             self.lblError.show()
             self.lblConnectionStatus.show()
+
+            self.tg_list.setMaximumSize(QSize(700, 161))
+            self.tg_list.setMinimumSize(QSize(700, 161))
+
+
+            self.btn0.show()
+            self.btn1.setText("1")
+            self.btn2.show()
+            self.btn3.show()
+            self.btn4.show()
+            self.btn5.show()
+            self.btn6.show()
+            self.btn7.setText("7")
+            self.btn8.show()
+            self.btn9.show()
+            self.btnDel.show()
+            self.btnGo.show()
             self.isMenuActive = False  # Update state to indicate menu is closed
         else:
             # The menu is currently closed, so we will open it
@@ -842,6 +791,19 @@ class MainWindow(QMainWindow):
             self.lblSoundStatus.hide()
             self.lblChannelName_2.hide()
             self.lblError.hide()
+            self.btn0.hide()
+            self.btn1.setText("UP")
+            self.btn2.hide()
+            self.btn3.hide()
+            self.btn4.hide()
+            self.btn5.hide()
+            self.btn6.hide()
+            self.btn7.setText("DWN")
+            self.btn8.hide()
+            self.btn9.hide()
+            self.btnDel.hide()
+            self.btnGo.hide()
+
             self.lblConnectionStatus.hide()
             self.open_talkgroup_menu()  # Assuming this method sets up the talkgroup list for display
 
@@ -859,29 +821,39 @@ class MainWindow(QMainWindow):
         else:
             print("[WARNING] No channels available in the current zone.")
 
-    def update_display(self):
-        """Updates the UI labels and LCD screen with the current zone and talkgroup info."""
-        current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
-        self.lblZone.setText(current_zone)  
+    def select_talkgroup(self, item):
+        """Handles user selecting a talkgroup from the menu and applies it."""
+        self.setUpdatesEnabled(False)
+        self.setDisabled(True)
+        self.toggle_talkgroup_menu()
+        self.setUpdatesEnabled(True)
+        QApplication.processEvents()
 
-        current_channel = self.currentFile.get_channel_by_number(self.currentFile.current_tg_index)
+        self.talkgroup_name = item.text()
+        self.current_zone_index = self.currentFile.current_zone_index
 
-        if current_channel:
-            tg_name = current_channel["name"]
-            tg_number = current_channel["channel_number"]
+        # Ensure current zone index is valid before proceeding
+        if self.current_zone_index >= len(self.currentFile.zone_names):
+            print("[ERROR] Current zone index out of bounds")
+            return
 
-            self.lblChannelName_2.setText(tg_name)
-            self.lcdNumber.display(tg_number)
+        self.current_zone = self.currentFile.zone_names[self.current_zone_index]
 
-            if current_channel["type"] == "scan":
-                self.lblChanelType.setText("\uf002")  
-            else:
-                self.lblChanelType.setText("\uf0c0")  
+        # Find selected channel
+        selected_channel = next(
+            (ch for ch in self.currentFile.get_channels_by_zone(self.current_zone) if ch["name"] == self.talkgroup_name),
+            None
+        )
 
-        else:
-            self.lblChannelName_2.setText("No Channel")
-            self.lcdNumber.display(0)
+        if not selected_channel:
+            print(f"[ERROR] Talkgroup '{self.talkgroup_name}' not found in zone '{self.current_zone}'")
+            return  # ✅ Exit early if the selection is invalid
 
+        # ✅ Set the selected talkgroup index
+        self.currentFile.current_tg_index = selected_channel["channel_number"]
+
+        # ✅ Use QTimer to delay execution without freezing UI
+        QTimer.singleShot(2000, self.change_talkgroup)  # ⏳ Delayed switch (non-blocking)
 
     def close_app(self):
         """Closes the application."""
@@ -893,7 +865,8 @@ class MainWindow(QMainWindow):
 
     def channel_up(self):
         """Moves to the next channel using FileObject's methods."""
-        print("[INFO] Channel Up Clicked")
+        self.setDisabled(True)
+        QApplication.processEvents()  # Force UI to refresh immediately
         current_channel_number = self.currentFile.current_tg_index
         next_channel = self.currentFile.get_channel_by_number(current_channel_number + 1)
 
@@ -905,9 +878,12 @@ class MainWindow(QMainWindow):
             self.currentFile.current_tg_index = first_channel[0]["channel_number"] if first_channel else 0
 
         self.change_talkgroup()
+        self.setDisabled(False)
 
     def channel_down(self):
         """Moves to the previous channel using FileObject's methods."""
+        self.setDisabled(True)
+        QApplication.processEvents()  # Force UI to refresh immediately
         current_channel_number = self.currentFile.current_tg_index
         previous_channel = self.currentFile.get_previous_channel(current_channel_number)
 
@@ -919,9 +895,12 @@ class MainWindow(QMainWindow):
             self.currentFile.current_tg_index = last_channel[-1]["channel_number"] if last_channel else 0
 
         self.change_talkgroup()  # Apply the new talkgroup or scan list
+        self.setDisabled(False)
 
     def zone_up(self):
         """Moves to the next zone, loops back if at the last zone."""
+        self.setDisabled(True)
+        QApplication.processEvents()  # Force UI to refresh immediately
         next_zone = self.currentFile.get_next_zone(self.currentFile.current_zone_index)
         if next_zone:
             self.currentFile.current_zone_index = self.currentFile.zone_names.index(next_zone)
@@ -936,9 +915,12 @@ class MainWindow(QMainWindow):
                     self.speech.speak(f"{current_zone} - {first_channel['name'] if first_channel else 'No Channels'}")
 
             self.change_talkgroup()
+        self.setDisabled(False)
 
     def zone_down(self):
         """Moves to the previous zone, loops to the last if at the first."""
+        self.setDisabled(True)
+        QApplication.processEvents()  # Force UI to refresh immediately
         prev_zone = self.currentFile.get_previous_zone(self.currentFile.current_zone_index)
         if prev_zone:
             self.currentFile.current_zone_index = self.currentFile.zone_names.index(prev_zone)
@@ -953,6 +935,7 @@ class MainWindow(QMainWindow):
                     self.speech.speak(f"{current_zone} - {first_channel['name'] if first_channel else 'No Channels'}")
 
             self.change_talkgroup()
+        self.setDisabled(False)
 
     def load_first_channel(self):
         """Loads the first channel of the current zone and applies its talkgroup settings."""
@@ -971,6 +954,7 @@ class MainWindow(QMainWindow):
 
     def change_talkgroup(self):
         """Applies the correct talkgroup or scan list based on the current channel."""
+        
         if self.currentFile.current_tg_index is None:
             print("[ERROR] Current channel index not set")
             return
@@ -980,57 +964,30 @@ class MainWindow(QMainWindow):
             print("[ERROR] Selected channel not found")
             return
 
-        wlist = selected_channel.get('tgid', [])  # Safely get 'tgid'
-        self.op25.switchGroup(wlist=wlist)  
-
-        if hasattr(self, "changeTalkgroupWorker") and self.changeTalkgroupWorker.isRunning():
-            print("[DEBUG] Previous ChangeTalkgroupWorker still running, waiting...")
-            self.changeTalkgroupWorker.quit()
-            self.changeTalkgroupWorker.wait()
-
-        self.changeTalkgroupWorker = ChangeTalkgroupWorker(self)
-        self.changeTalkgroupWorker.signal_initialized.connect(self.on_talkgroup_changed)
-        self.changeTalkgroupWorker.start()
-    
-
-
-    def select_talkgroup(self, item):
-        """Handles user selecting a talkgroup from the menu and applies it."""
-        
-         # Hide the talkgroup menu after selection
-        self.toggle_talkgroup_menu()  # Assuming this toggles visibility of the menu
-
-        
-        
-        self.lblChannelName_2.setText("LOADING...")
-        self.lblZone.setText("ZONE")
-
-        time.sleep(2) # TODO: Implement threading; for now allows time to change status
-
-        # Ensure current zone index is within bounds
-        if self.currentFile.current_zone_index >= len(self.currentFile.zone_names):
-            print("[ERROR] Current zone index out of bounds")
+        wlist = selected_channel.get('tgid')
+        if not wlist:
+            print("[ERROR] No TGID found in selected channel")
             return
-        
-        current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
-        talkgroup_name = item.text()
 
-        # Attempt to find the selected channel from JSON using the current zone and talkgroup name
-        selected_channel = next(
-            (ch for ch in self.currentFile.get_channels_by_zone(current_zone) if ch["name"] == talkgroup_name),
-            None
-        )
+        if self.op25:
+            try:
+                self.op25.switchGroup(wlist=wlist)
+            except Exception as e:
+                print(f"[ERROR] Failed to switch talkgroup: {e}")
+                return
 
-        if not selected_channel:
-            print("[ERROR] Selected talkgroup not found in JSON")
-            return  # Exit function if selection is invalid
+        # ✅ Stop old worker before starting a new one
+        if hasattr(self, "changeTalkgroupWorker") and self.changeTalkgroupWorker:
+            if self.changeTalkgroupWorker.isRunning():
+                print("[DEBUG] Previous ChangeTalkgroupWorker still running, waiting...")
+                self.changeTalkgroupWorker.quit()
+                self.changeTalkgroupWorker.wait()
+            self.changeTalkgroupWorker = None  
 
-        # Update the currently selected talkgroup index
-        self.currentFile.current_tg_index = selected_channel["channel_number"]
-
-        # Update the display and change to the new talkgroup if the index is valid
-
-        self.change_talkgroup()  # Apply the new talkgroup settings
+        # ✅ Start a new worker safely
+        self.changeTalkgroupWorker = ChangeTalkgroupWorker(self)
+        self.changeTalkgroupWorker.signal_initialized.connect(self.update_display_signal.emit)  # ✅ Emit Signal
+        self.changeTalkgroupWorker.start()
 
        
 

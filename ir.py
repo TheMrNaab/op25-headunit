@@ -1,49 +1,64 @@
-import RPi.GPIO as GPIO
+import subprocess
 import time
+import re
 
 class IRRemoteHandler:
-    def __init__(self, mainWindow, receiver_pin=18):
-        """Initialize IR remote handler and setup GPIO."""
-        self.receiver_pin = receiver_pin
-        self.setup_gpio()
-        self.main = mainWindow
-
-    def setup_gpio(self):
-        """Set up GPIO for the IR receiver."""
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.receiver_pin, GPIO.IN)
-
-    def startListener(self):
-        #TODO: Implement start listener method
-        pass
+    def __init__(self):
+        print("[INFO] IR Remote Handler initialized.")
 
     def listen(self):
-        """Continuously listens for IR signals and prints the key pressed."""
-        print("Listening for IR remote inputs...")
+        """Continuously listens for IR scancodes and prints them."""
+        print("[INFO] Listening for IR remote inputs...")
+
         try:
+            process = subprocess.Popen(
+                ["ir-keytable", "-t"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                bufsize=1  # Force line buffering
+            )
+
             while True:
-                if GPIO.input(self.receiver_pin) == GPIO.LOW:
-                    code = self.decode_signal()
-                    if code:
-                        print(f"Key Pressed: {code}")  # Print the key name
-                    time.sleep(0.1)
+                output, _ = process.communicate(timeout=5)  # Wait for output with timeout
+                if output:
+                    print(f"[DEBUG] Raw Output: {output.strip()}")  # Print raw output
+
+                    scancode = self.extract_scancode(output)
+                    if scancode:
+                        print(f"[INFO] IR Scancode Received: {scancode}")
+                        self.handle_ir_input(scancode)  # Process scancode
+
+                time.sleep(0.1)  # Prevent CPU overuse
+
+        except subprocess.TimeoutExpired:
+            print("[WARNING] No IR signal received within timeout, continuing...")
         except KeyboardInterrupt:
-            print("\nExiting...")
-            self.cleanup()
+            print("\n[INFO] Exiting...")
+            process.terminate()
 
-    def decode_signal(self):
-        """Placeholder for IR decoding logic. Simulates button presses."""
-        # In actual implementation, replace this with IR decoding logic.
-        # For now, return a simulated button name.
-        return "KEY_UP"  # Simulated key press
+    def extract_scancode(self, line):
+        """Extracts the scancode from ir-keytable output using regex."""
+        match = re.search(r"scancode = (0x[0-9a-fA-F]+)", line)
+        return match.group(1) if match else None
 
-    def cleanup(self):
-        """Cleanup GPIO on exit."""
-        GPIO.cleanup()
-        print("GPIO cleaned up.")
+    def handle_ir_input(self, scancode):
+        """Processes the received scancode and maps it dynamically."""
+        scancode_map = {
+            "0x19": "KEY_POWER",
+            "0x45": "KEY_UP",
+            "0x46": "KEY_DOWN",
+            "0x47": "KEY_LEFT",
+            "0x44": "KEY_RIGHT",
+            "0x40": "KEY_ENTER",
+            "0x43": "KEY_BACK"
+        }
+        if scancode in scancode_map:
+            print(f"[INFO] Mapped Key Pressed: {scancode_map[scancode]}")
+        else:
+            print(f"[INFO] Unmapped Scancode: {scancode}")
 
-# Run the script directly
+# Run the script
 # if __name__ == "__main__":
-#     receiver_pin = 18  # Change to the correct GPIO pin
-#     remote = IRRemoteHandler(receiver_pin)
+#     remote = IRRemoteHandler()
 #     remote.listen()

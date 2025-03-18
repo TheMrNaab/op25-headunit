@@ -1,14 +1,88 @@
-[2025-03-17 22:30:18] [INFO] [INFO] Started IRRemoteHandler(): 
-[2025-03-17 22:30:18] [INFO] [INFO] Started listener.: 
-[2025-03-17 22:30:36] [INFO] Connection Status: OP25 Connected
-[2025-03-17 22:33:38] [INFO] [INFO] Started IRRemoteHandler(): 
-[2025-03-17 22:33:38] [INFO] [INFO] Started listener.: 
-[2025-03-17 22:33:38] [INFO] [INFO] KEY_UP pressed.: 
-[2025-03-17 22:33:57] [INFO] Connection Status: OP25 Connected
-[2025-03-17 22:37:41] [INFO] [INFO] Started IRRemoteHandler(): 
-[2025-03-17 22:37:41] [INFO] [INFO] Started listener.: 
-[2025-03-17 22:37:41] [INFO] [INFO] KEY_UP pressed.: 
-[2025-03-17 22:38:00] [INFO] Connection Status: OP25 Connected
-[2025-03-17 22:47:54] [INFO] [INFO] Started IRRemoteHandler(): 
-[2025-03-17 22:47:54] [INFO] [INFO] Started listener.: 
-[2025-03-17 22:48:16] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:12:53] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:15:52] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:16:14] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:17:20] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:20:33] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:20:33] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:21:31] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:23:43] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:25:08] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:26:06] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:29:42] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:32:25] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:39:55] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:43:32] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:45:06] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:46:23] [INFO] Connection Status: OP25 Connected
+[2025-03-18 15:57:10] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:03:26] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:12:00] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:30:49] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:48:43] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:50:16] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:51:40] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:52:44] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:53:23] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:54:30] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:55:10] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:55:58] [INFO] Connection Status: OP25 Connected
+[2025-03-18 16:59:01] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:00:25] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:03:15] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:05:22] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:07:39] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:08:51] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:11:13] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:14:30] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:16:13] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:18:16] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:20:20] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:21:38] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:22:11] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:23:03] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:23:46] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:24:30] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:25:53] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:28:01] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:29:43] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:33:09] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:35:59] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:36:41] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:37:16] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:37:41] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:40:23] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:41:51] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:44:25] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:45:23] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:46:11] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:48:36] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:49:58] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:52:19] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:53:38] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:55:18] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:57:53] [INFO] Connection Status: OP25 Connected
+[2025-03-18 17:58:29] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:00:02] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:03:07] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:07:26] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:10:20] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:11:50] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:13:41] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:15:03] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:17:14] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:19:18] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:19:53] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:21:45] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:23:32] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:23:55] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:24:23] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:26:50] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:32:00] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:33:19] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:33:56] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:38:47] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:39:35] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:41:32] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:43:15] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:45:28] [INFO] Connection Status: OP25 Connected
+[2025-03-18 18:46:46] [INFO] Connection Status: OP25 Connected
