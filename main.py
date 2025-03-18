@@ -659,10 +659,10 @@ class MainWindow(QMainWindow):
     def keypad_input(self, digit):
         """Handles numeric button input for direct TGID entry and menu navigation."""
         if self.isMenuActive:
-            if digit == "1":
+            if digit == "3":
                 print("[DEBUG] Moving selection up")
                 self.move_selection_up()
-            elif digit == "7":
+            elif digit == "9":
                 print("[DEBUG] Moving selection down")
                 self.move_selection_down()
             return  # Stop normal keypad behavior when menu is active
