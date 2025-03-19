@@ -10,265 +10,253 @@ supported sample rates 250000-2560000 step 24000
 demodulator: xlator if_rate=24000, input_rate=960000, decim=40, if taps=[193,49], resampled_rate=24000, sps=5
 op25_audio::open_socket(): enabled udp host(127.0.0.1), wireshark(23456), audio(23456)
 p25_frame_assembler_impl: do_imbe[1], do_output[0], do_audio_output[1], do_phase2_tdma[1], do_nocrypt[0]
-03/18/25 19:16:11.033829 Reading whitelist file
-03/18/25 19:16:11.034202 added talkgroup 46949 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.034310 added talkgroup 47021 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.034385 added talkgroup 46940 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.034449 added talkgroup 46800 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.034512 added talkgroup 46801 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.034574 added talkgroup 46802 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.034636 added talkgroup 46803 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.034698 added talkgroup 46804 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.034913 added talkgroup 46805 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.034989 added talkgroup 46806 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035054 added talkgroup 46807 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035192 added talkgroup 46808 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035255 added talkgroup 46809 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035314 added talkgroup 46810 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035373 added talkgroup 46811 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035432 added talkgroup 46812 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035491 added talkgroup 46813 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035559 added talkgroup 46814 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035623 added talkgroup 46815 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035685 added talkgroup 46816 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035789 added talkgroup 46817 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035857 added talkgroup 46818 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035914 added talkgroup 46819 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.035971 added talkgroup 46820 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036029 added talkgroup 46821 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036086 added talkgroup 46822 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036155 added talkgroup 46823 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036218 added talkgroup 46824 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036277 added talkgroup 46825 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036334 added talkgroup 46826 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036453 added talkgroup 46827 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036517 added talkgroup 46828 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036576 added talkgroup 46829 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036635 added talkgroup 46830 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036750 added talkgroup 46831 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036837 added talkgroup 46832 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036901 added talkgroup 46833 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.036958 added talkgroup 46834 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.037017 added talkgroup 46835 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.037080 added talkgroup 46836 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.037141 added talkgroup 46837 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.037199 added talkgroup 46838 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:11.037384 Reading blacklist file
-03/18/25 19:16:11.037648 added talkgroup 2000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv
+03/18/25 21:52:43.631965 Reading whitelist file
+03/18/25 21:52:43.632365 added talkgroup 46949 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.632490 added talkgroup 47021 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.632567 added talkgroup 46940 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.632642 added talkgroup 46800 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.632714 added talkgroup 46801 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.632782 added talkgroup 46802 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.632851 added talkgroup 46803 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.632916 added talkgroup 46804 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.632981 added talkgroup 46805 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633046 added talkgroup 46806 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633113 added talkgroup 46807 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633190 added talkgroup 46808 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633279 added talkgroup 46809 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633350 added talkgroup 46810 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633416 added talkgroup 46811 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633483 added talkgroup 46812 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633547 added talkgroup 46813 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633613 added talkgroup 46814 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633677 added talkgroup 46815 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633742 added talkgroup 46816 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633807 added talkgroup 46817 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633874 added talkgroup 46818 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.633938 added talkgroup 46819 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634002 added talkgroup 46820 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634068 added talkgroup 46821 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634132 added talkgroup 46822 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634198 added talkgroup 46823 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634280 added talkgroup 46824 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634346 added talkgroup 46825 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634410 added talkgroup 46826 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634546 added talkgroup 46827 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634606 added talkgroup 46828 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634663 added talkgroup 46829 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634719 added talkgroup 46830 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634775 added talkgroup 46831 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634832 added talkgroup 46832 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634887 added talkgroup 46833 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634942 added talkgroup 46834 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.634999 added talkgroup 46835 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.635054 added talkgroup 46836 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.635110 added talkgroup 46837 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.635166 added talkgroup 46838 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:52:43.635327 Reading blacklist file
+03/18/25 21:52:43.635555 added talkgroup 2000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv
 metadata update not enabled
 using ALSA sound system
 audio device: default
 Listening on 127.0.0.1:23456
 python version detected: 3.12.7 (main, Feb  4 2025, 14:46:03) [GCC 14.2.0]
 Allocating 15 zero-copy buffers
-03/18/25 19:16:12.178247 control channel timeout
-03/18/25 19:16:13.269342 control channel timeout
-03/18/25 19:16:14.359379 control channel timeout
-03/18/25 19:16:15.459703 control channel timeout
-03/18/25 19:16:16.544086 control channel timeout
-03/18/25 19:16:17.639104 control channel timeout
-03/18/25 19:16:18.733826 control channel timeout
-03/18/25 19:16:19.821485 control channel timeout
-03/18/25 19:16:20.915674 control channel timeout
-03/18/25 19:16:22.008782 control channel timeout
-03/18/25 19:16:23.102250 control channel timeout
-03/18/25 19:16:24.195222 control channel timeout
-03/18/25 19:16:25.288333 control channel timeout
-03/18/25 19:16:25.838843 Reconfiguring NAC from 0x000 to 0x592
-03/18/25 19:16:27.655026 reloading blacklist & whitelist files for nac(592)
-03/18/25 19:16:27.655681 added talkgroup 2000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv
-03/18/25 19:16:27.656304 added talkgroup 46949 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.656448 added talkgroup 47021 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.656539 added talkgroup 46940 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.656627 added talkgroup 46800 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.656744 added talkgroup 46801 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.656848 added talkgroup 46802 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.656935 added talkgroup 46803 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.657017 added talkgroup 46804 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.657097 added talkgroup 46805 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.657178 added talkgroup 46806 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.657261 added talkgroup 46807 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.657341 added talkgroup 46808 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.657423 added talkgroup 46809 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.657505 added talkgroup 46810 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.657645 added talkgroup 46811 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.657753 added talkgroup 46812 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.657849 added talkgroup 46813 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.657940 added talkgroup 46814 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658022 added talkgroup 46815 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658102 added talkgroup 46816 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658181 added talkgroup 46817 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658266 added talkgroup 46818 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658346 added talkgroup 46819 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658426 added talkgroup 46820 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658508 added talkgroup 46821 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658586 added talkgroup 46822 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658664 added talkgroup 46823 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658768 added talkgroup 46824 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658861 added talkgroup 46825 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.658943 added talkgroup 46826 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659028 added talkgroup 46827 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659107 added talkgroup 46828 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659189 added talkgroup 46829 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659268 added talkgroup 46830 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659347 added talkgroup 46831 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659428 added talkgroup 46832 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659507 added talkgroup 46833 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659587 added talkgroup 46834 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659668 added talkgroup 46835 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659781 added talkgroup 46836 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659865 added talkgroup 46837 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:27.659944 added talkgroup 46838 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-process_qmsg b'{"freq": 853925000, "tgid": null, "offset": 0, "tag": "", "nac": 1426, "system": "Wake County Simulcast", "center_frequency": null, "tdma": null, "wacn": 781824, "sysid": 1430, "tuner": 0, "sigtype": "P25", "json_type": "change_freq", "fine_tune": 0.0, "error": 194, "stream_url": ""}'03/18/25 19:16:30.350697 reloading blacklist & whitelist files for nac(592)
-03/18/25 19:16:30.351344 added talkgroup 2000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv
-03/18/25 19:16:30.351782 added talkgroup 46949 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.351916 added talkgroup 47021 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.352006 added talkgroup 46940 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.352094 added talkgroup 46800 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.352174 added talkgroup 46801 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.352315 added talkgroup 46802 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.352400 added talkgroup 46803 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.352477 added talkgroup 46804 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.352556 added talkgroup 46805 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.352629 added talkgroup 46806 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.352705 added talkgroup 46807 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.352973 added talkgroup 46808 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353055 added talkgroup 46809 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353128 added talkgroup 46810 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353204 added talkgroup 46811 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353275 added talkgroup 46812 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353347 added talkgroup 46813 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353418 added talkgroup 46814 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353487 added talkgroup 46815 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353556 added talkgroup 46816 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353626 added talkgroup 46817 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353700 added talkgroup 46818 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353846 added talkgroup 46819 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353920 added talkgroup 46820 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.353993 added talkgroup 46821 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354066 added talkgroup 46822 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354138 added talkgroup 46823 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354226 added talkgroup 46824 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354300 added talkgroup 46825 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354371 added talkgroup 46826 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354441 added talkgroup 46827 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354514 added talkgroup 46828 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354587 added talkgroup 46829 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354660 added talkgroup 46830 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354761 added talkgroup 46831 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354853 added talkgroup 46832 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354926 added talkgroup 46833 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.354996 added talkgroup 46834 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.355067 added talkgroup 46835 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.355141 added talkgroup 46836 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.355211 added talkgroup 46837 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:30.355283 added talkgroup 46838 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-process_qmsg b'{"freq": 853925000, "tgid": null, "offset": 0, "tag": "", "nac": 1426, "system": "Wake County Simulcast", "center_frequency": null, "tdma": null, "wacn": 781824, "sysid": 1430, "tuner": 0, "sigtype": "P25", "json_type": "change_freq", "fine_tune": 0.0, "error": 193, "stream_url": ""}'03/18/25 19:16:42.757560 reloading blacklist & whitelist files for nac(592)
-03/18/25 19:16:42.758298 added talkgroup 2000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv
-03/18/25 19:16:42.759108 added talkgroup 46800 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-process_qmsg b'{"freq": 853925000, "tgid": null, "offset": 0, "tag": "", "nac": 1426, "system": "Wake County Simulcast", "center_frequency": null, "tdma": null, "wacn": 781824, "sysid": 1430, "tuner": 0, "sigtype": "P25", "json_type": "change_freq", "fine_tune": 0.0, "error": 136, "stream_url": ""}'03/18/25 19:16:45.367681 reloading blacklist & whitelist files for nac(592)
-03/18/25 19:16:45.368288 added talkgroup 2000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv
-03/18/25 19:16:45.368826 added talkgroup 46800 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-process_qmsg b'{"freq": 853925000, "tgid": null, "offset": 0, "tag": "", "nac": 1426, "system": "Wake County Simulcast", "center_frequency": null, "tdma": null, "wacn": 781824, "sysid": 1430, "tuner": 0, "sigtype": "P25", "json_type": "change_freq", "fine_tune": 0.0, "error": 236, "stream_url": ""}'03/18/25 19:16:57.247030 reloading blacklist & whitelist files for nac(592)
-03/18/25 19:16:57.247694 added talkgroup 2000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv
-03/18/25 19:16:57.248187 added talkgroup 46949 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.248333 added talkgroup 47021 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.248432 added talkgroup 46940 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.248521 added talkgroup 46800 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.248604 added talkgroup 46801 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.248688 added talkgroup 46802 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.248837 added talkgroup 46803 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.248920 added talkgroup 46804 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249002 added talkgroup 46805 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249084 added talkgroup 46806 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249168 added talkgroup 46807 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249250 added talkgroup 46808 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249331 added talkgroup 46809 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249423 added talkgroup 46810 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249506 added talkgroup 46811 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249588 added talkgroup 46812 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249668 added talkgroup 46813 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249772 added talkgroup 46814 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249859 added talkgroup 46815 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.249939 added talkgroup 46816 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250021 added talkgroup 46817 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250157 added talkgroup 46818 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250232 added talkgroup 46819 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250303 added talkgroup 46820 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250373 added talkgroup 46821 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250442 added talkgroup 46822 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250512 added talkgroup 46823 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250581 added talkgroup 46824 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250650 added talkgroup 46825 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250738 added talkgroup 46826 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250820 added talkgroup 46827 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250892 added talkgroup 46828 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.250961 added talkgroup 46829 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.251030 added talkgroup 46830 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.251101 added talkgroup 46831 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.251169 added talkgroup 46832 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.251238 added talkgroup 46833 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.251308 added talkgroup 46834 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.251376 added talkgroup 46835 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.251445 added talkgroup 46836 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.251515 added talkgroup 46837 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.251584 added talkgroup 46838 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:57.647761 voice update:  tg(46815), freq(853262500), slot(-), prio(3)
-process_qmsg b'{"freq": 853262500, "tgid": 46815, "offset": 0, "tag": "", "nac": 1426, "system": "Wake County Simulcast", "center_frequency": null, "tdma": null, "wacn": 781824, "sysid": 1430, "tuner": 0, "sigtype": "P25", "json_type": "change_freq", "fine_tune": 0.0, "error": 124, "stream_url": ""}'process_qmsg b'{"freq": 853925000, "tgid": null, "offset": 0, "tag": "", "nac": 1426, "system": "Wake County Simulcast", "center_frequency": null, "tdma": null, "wacn": 781824, "sysid": 1430, "tuner": 0, "sigtype": "P25", "json_type": "change_freq", "fine_tune": 0.0, "error": 179, "stream_url": ""}'03/18/25 19:16:59.570260 voice update:  tg(46815), freq(853262500), slot(-), prio(3)
-process_qmsg b'{"freq": 853262500, "tgid": 46815, "offset": 0, "tag": "", "nac": 1426, "system": "Wake County Simulcast", "center_frequency": null, "tdma": null, "wacn": 781824, "sysid": 1430, "tuner": 0, "sigtype": "P25", "json_type": "change_freq", "fine_tune": 0.0, "error": 207, "stream_url": ""}'03/18/25 19:16:59.796654 reloading blacklist & whitelist files for nac(592)
-03/18/25 19:16:59.797433 added talkgroup 2000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv
-03/18/25 19:16:59.797898 added talkgroup 46949 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.798031 added talkgroup 47021 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.798132 added talkgroup 46940 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.798229 added talkgroup 46800 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.798325 added talkgroup 46801 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.798474 added talkgroup 46802 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.798561 added talkgroup 46803 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.798646 added talkgroup 46804 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.798757 added talkgroup 46805 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.798854 added talkgroup 46806 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.798948 added talkgroup 46807 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799031 added talkgroup 46808 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799109 added talkgroup 46809 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799192 added talkgroup 46810 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799271 added talkgroup 46811 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799350 added talkgroup 46812 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799428 added talkgroup 46813 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799509 added talkgroup 46814 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799587 added talkgroup 46815 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799669 added talkgroup 46816 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799785 added talkgroup 46817 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799871 added talkgroup 46818 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.799953 added talkgroup 46819 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800032 added talkgroup 46820 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800110 added talkgroup 46821 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800192 added talkgroup 46822 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800269 added talkgroup 46823 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800347 added talkgroup 46824 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800426 added talkgroup 46825 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800505 added talkgroup 46826 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800584 added talkgroup 46827 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800666 added talkgroup 46828 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800778 added talkgroup 46829 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800859 added talkgroup 46830 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.800940 added talkgroup 46831 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.801018 added talkgroup 46832 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.801096 added talkgroup 46833 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.801178 added talkgroup 46834 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.801256 added talkgroup 46835 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.801333 added talkgroup 46836 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.801413 added talkgroup 46837 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-03/18/25 19:16:59.801491 added talkgroup 46838 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
-process_qmsg b'{"freq": 853925000, "tgid": null, "offset": 0, "tag": "", "nac": 1426, "system": "Wake County Simulcast", "center_frequency": null, "tdma": null, "wacn": 781824, "sysid": 1430, "tuner": 0, "sigtype": "P25", "json_type": "change_freq", "fine_tune": 0.0, "error": 190, "stream_url": ""}'process_qmsg b'{"freq": 853925000, "tgid": null, "offset": 0, "tag": "", "nac": 1426, "system": "Wake County Simulcast", "center_frequency": null, "tdma": null, "wacn": 781824, "sysid": 1430, "tuner": 0, "sigtype": "P25", "json_type": "change_freq", "fine_tune": 0.0, "error": 187, "stream_url": ""}'03/18/25 19:17:04.756140 voice update:  tg(46816), freq(851762500), slot(-), prio(3)
-03/18/25 19:17:11.848346 voice update:  tg(46816), freq(851762500), slot(-), prio(3)
-03/18/25 19:17:15.399061 voice update:  tg(46816), freq(852962500), slot(-), prio(3)
-03/18/25 19:17:17.716042 voice update:  tg(46816), freq(852962500), slot(-), prio(3)
-03/18/25 19:17:18.682380 voice update:  tg(46816), freq(852962500), slot(-), prio(3)
-03/18/25 19:17:21.267824 voice update:  tg(46816), freq(852962500), slot(-), prio(3)
-03/18/25 19:17:25.359298 voice update:  tg(46816), freq(852962500), slot(-), prio(3)
-03/18/25 19:17:30.276042 voice update:  tg(46816), freq(852962500), slot(-), prio(3)
-03/18/25 19:17:33.290130 voice update:  tg(46816), freq(852962500), slot(-), prio(3)
-03/18/25 19:17:34.650923 voice update:  tg(46816), freq(851462500), slot(-), prio(3)
-03/18/25 19:17:39.089285 voice update:  tg(46816), freq(851462500), slot(-), prio(3)
-03/18/25 19:17:40.040597 voice update:  tg(46816), freq(851462500), slot(-), prio(3)
-03/18/25 19:17:42.565945 voice update:  tg(46816), freq(851462500), slot(-), prio(3)
+03/18/25 21:52:44.769498 control channel timeout
+03/18/25 21:52:45.861764 control channel timeout
+03/18/25 21:52:46.955102 control channel timeout
+03/18/25 21:52:48.049762 control channel timeout
+03/18/25 21:52:49.143328 control channel timeout
+03/18/25 21:52:50.225901 control channel timeout
+03/18/25 21:52:51.320093 control channel timeout
+03/18/25 21:52:52.418527 control channel timeout
+03/18/25 21:52:53.503295 control channel timeout
+03/18/25 21:52:54.599041 control channel timeout
+03/18/25 21:52:55.694140 control channel timeout
+03/18/25 21:52:56.788092 control channel timeout
+03/18/25 21:52:57.872010 control channel timeout
+03/18/25 21:52:58.433574 Reconfiguring NAC from 0x000 to 0x592
+03/18/25 21:53:00.181958 reloading blacklist & whitelist files for nac(592)
+03/18/25 21:53:00.182738 added talkgroup 2000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv
+03/18/25 21:53:00.183163 added talkgroup 46949 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.183306 added talkgroup 47021 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.183408 added talkgroup 46940 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.183491 added talkgroup 46800 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.183567 added talkgroup 46801 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.183643 added talkgroup 46802 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.183718 added talkgroup 46803 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.183788 added talkgroup 46804 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.183858 added talkgroup 46805 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.183928 added talkgroup 46806 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184000 added talkgroup 46807 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184070 added talkgroup 46808 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184140 added talkgroup 46809 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184214 added talkgroup 46810 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184406 added talkgroup 46811 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184483 added talkgroup 46812 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184556 added talkgroup 46813 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184625 added talkgroup 46814 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184694 added talkgroup 46815 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184764 added talkgroup 46816 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184832 added talkgroup 46817 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184903 added talkgroup 46818 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.184973 added talkgroup 46819 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185042 added talkgroup 46820 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185113 added talkgroup 46821 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185192 added talkgroup 46822 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185307 added talkgroup 46823 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185378 added talkgroup 46824 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185447 added talkgroup 46825 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185518 added talkgroup 46826 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185586 added talkgroup 46827 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185656 added talkgroup 46828 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185724 added talkgroup 46829 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185794 added talkgroup 46830 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185863 added talkgroup 46831 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.185932 added talkgroup 46832 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.186001 added talkgroup 46833 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.186070 added talkgroup 46834 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.186138 added talkgroup 46835 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.186207 added talkgroup 46836 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.186317 added talkgroup 46837 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:00.186391 added talkgroup 46838 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+process_qmsg b'{"freq": 853925000, "tgid": null, "offset": 0, "tag": "", "nac": 1426, "system": "Wake County Simulcast", "center_frequency": null, "tdma": null, "wacn": 781824, "sysid": 1430, "tuner": 0, "sigtype": "P25", "json_type": "change_freq", "fine_tune": 0.0, "error": 267, "stream_url": ""}'03/18/25 21:53:02.935681 reloading blacklist & whitelist files for nac(592)
+03/18/25 21:53:02.936304 added talkgroup 2000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv
+03/18/25 21:53:02.936790 added talkgroup 46949 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.936915 added talkgroup 47021 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.936996 added talkgroup 46940 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.937077 added talkgroup 46800 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.937167 added talkgroup 46801 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.937354 added talkgroup 46802 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.937460 added talkgroup 46803 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.937539 added talkgroup 46804 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.937612 added talkgroup 46805 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.937683 added talkgroup 46806 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.937754 added talkgroup 46807 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.937825 added talkgroup 46808 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.937896 added talkgroup 46809 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.937969 added talkgroup 46810 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938038 added talkgroup 46811 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938107 added talkgroup 46812 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938180 added talkgroup 46813 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938274 added talkgroup 46814 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938360 added talkgroup 46815 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938433 added talkgroup 46816 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938502 added talkgroup 46817 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938572 added talkgroup 46818 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938643 added talkgroup 46819 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938711 added talkgroup 46820 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938780 added talkgroup 46821 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938853 added talkgroup 46822 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938921 added talkgroup 46823 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.938991 added talkgroup 46824 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939061 added talkgroup 46825 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939131 added talkgroup 46826 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939202 added talkgroup 46827 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939308 added talkgroup 46828 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939382 added talkgroup 46829 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939458 added talkgroup 46830 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939531 added talkgroup 46831 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939600 added talkgroup 46832 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939672 added talkgroup 46833 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939741 added talkgroup 46834 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939810 added talkgroup 46835 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939878 added talkgroup 46836 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.939949 added talkgroup 46837 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/18/25 21:53:02.940019 added talkgroup 46838 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+process_qmsg b'{"freq": 853925000, "tgid": null, "offset": 0, "tag": "", "nac": 1426, "system": "Wake County Simulcast", "center_frequency": null, "tdma": null, "wacn": 781824, "sysid": 1430, "tuner": 0, "sigtype": "P25", "json_type": "change_freq", "fine_tune": 0.0, "error": 304, "stream_url": ""}'03/18/25 21:54:13.930786 voice update:  tg(46949), freq(851462500), slot(-), prio(3)
+03/18/25 21:54:32.624414 PCM underrun
+03/18/25 21:54:44.917006 voice update:  tg(46949), freq(852787500), slot(-), prio(3)
+03/18/25 21:55:08.406029 voice update:  tg(46817), freq(852962500), slot(-), prio(3)
+03/18/25 21:55:11.130464 voice update:  tg(46817), freq(852962500), slot(-), prio(3)
+03/18/25 21:55:13.045754 voice update:  tg(46817), freq(851537500), slot(-), prio(3)
+03/18/25 21:55:16.322104 voice update:  tg(46817), freq(851537500), slot(-), prio(3)
+03/18/25 21:55:19.190371 voice update:  tg(46817), freq(851537500), slot(-), prio(3)
+03/18/25 21:55:21.786397 voice update:  tg(46817), freq(851537500), slot(-), prio(3)
+03/18/25 21:55:22.873698 voice update:  tg(46817), freq(851537500), slot(-), prio(3)
+03/18/25 21:55:24.792445 voice update:  tg(46817), freq(851537500), slot(-), prio(3)
+03/18/25 21:55:26.561376 voice update:  tg(46817), freq(851150000), slot(-), prio(3)
+03/18/25 21:55:29.018498 voice update:  tg(46817), freq(851150000), slot(-), prio(3)
+03/18/25 21:55:39.935767 voice update:  tg(46819), freq(851200000), slot(-), prio(3)
+03/18/25 21:55:42.545850 voice update:  tg(46819), freq(851200000), slot(-), prio(3)
+03/18/25 21:58:34.021931 voice update:  tg(46819), freq(852150000), slot(-), prio(3)
+03/18/25 21:58:36.895814 voice update:  tg(46819), freq(852150000), slot(-), prio(3)
+03/18/25 21:58:38.112971 voice update:  tg(46819), freq(852150000), slot(-), prio(3)
+03/18/25 21:58:41.126505 voice update:  tg(46819), freq(852150000), slot(-), prio(3)
+03/18/25 21:58:48.498345 voice update:  tg(46819), freq(851200000), slot(-), prio(3)
+03/18/25 21:58:52.721421 voice update:  tg(46819), freq(851200000), slot(-), prio(3)
+03/18/25 22:00:22.968551 voice update:  tg(46800), freq(851200000), slot(-), prio(3)
+03/18/25 22:00:25.566437 voice update:  tg(46800), freq(851200000), slot(-), prio(3)
+03/18/25 22:10:03.908878 voice update:  tg(46949), freq(855462500), slot(-), prio(3)
+03/18/25 22:10:26.162127 voice update:  tg(46838), freq(851150000), slot(-), prio(3)
+03/18/25 22:10:46.229213 voice update:  tg(46812), freq(852150000), slot(-), prio(3)
+03/18/25 22:10:47.590534 voice update:  tg(46812), freq(852150000), slot(-), prio(3)
+03/18/25 22:10:59.205327 voice update:  tg(46812), freq(853262500), slot(-), prio(3)
+03/18/25 22:11:03.573197 voice update:  tg(46812), freq(853262500), slot(-), prio(3)
+03/18/25 22:11:35.244996 voice update:  tg(46838), freq(852787500), slot(-), prio(3)
+03/18/25 22:11:37.709536 voice update:  tg(46838), freq(852787500), slot(-), prio(3)
+03/18/25 22:11:40.300820 voice update:  tg(46812), freq(851200000), slot(-), prio(3)
+03/18/25 22:14:30.960602 voice update:  tg(47021), freq(851537500), slot(-), prio(3)
+03/18/25 22:15:37.178859 voice update:  tg(46813), freq(855462500), slot(-), prio(3)
+03/18/25 22:15:39.781979 voice update:  tg(46813), freq(855462500), slot(-), prio(3)
+03/18/25 22:15:53.157484 voice update:  tg(46949), freq(852787500), slot(-), prio(3)
+03/18/25 22:16:43.542281 voice update:  tg(46822), freq(853262500), slot(-), prio(3)
+03/18/25 22:16:46.811382 voice update:  tg(46822), freq(853262500), slot(-), prio(3)
+03/18/25 22:16:59.792048 voice update:  tg(46822), freq(851537500), slot(-), prio(3)
+03/18/25 22:17:02.787010 voice update:  tg(46822), freq(851537500), slot(-), prio(3)
+03/18/25 22:17:27.770730 voice update:  tg(46822), freq(851462500), slot(-), prio(3)
+03/18/25 22:17:31.863545 voice update:  tg(46822), freq(851462500), slot(-), prio(3)
+03/18/25 22:17:44.972298 voice update:  tg(46822), freq(855462500), slot(-), prio(3)
+03/18/25 22:17:47.156551 voice update:  tg(46822), freq(855462500), slot(-), prio(3)
+03/18/25 22:17:48.115213 voice update:  tg(46822), freq(855462500), slot(-), prio(3)
+03/18/25 22:17:54.943903 voice update:  tg(46822), freq(855462500), slot(-), prio(3)
+03/18/25 22:17:58.633735 voice update:  tg(46822), freq(851150000), slot(-), prio(3)
+03/18/25 22:18:02.181568 voice update:  tg(46822), freq(851150000), slot(-), prio(3)
+03/18/25 22:18:03.541366 voice update:  tg(46822), freq(851150000), slot(-), prio(3)
+03/18/25 22:18:06.552864 voice update:  tg(46822), freq(851150000), slot(-), prio(3)
+03/18/25 22:18:08.732546 voice update:  tg(46822), freq(851462500), slot(-), prio(3)
+03/18/25 22:18:17.072379 voice update:  tg(46822), freq(851462500), slot(-), prio(3)
+03/18/25 22:18:18.150748 voice update:  tg(46822), freq(851462500), slot(-), prio(3)
+03/18/25 22:18:22.113537 voice update:  tg(46822), freq(851462500), slot(-), prio(3)
+03/18/25 22:18:24.432468 voice update:  tg(46822), freq(851462500), slot(-), prio(3)
+03/18/25 22:18:29.482198 voice update:  tg(46822), freq(851537500), slot(-), prio(3)
+03/18/25 22:18:38.489413 voice update:  tg(46822), freq(851537500), slot(-), prio(3)
+03/18/25 22:18:40.954718 voice update:  tg(46940), freq(852650000), slot(-), prio(3)
+03/18/25 22:18:42.456838 voice update:  tg(46940), freq(852650000), slot(-), prio(3)
+03/18/25 22:18:46.141926 voice update:  tg(46801), freq(852787500), slot(-), prio(3)
+03/18/25 22:18:48.329009 voice update:  tg(46801), freq(852787500), slot(-), prio(3)
+03/18/25 22:18:49.280298 voice update:  tg(46801), freq(852787500), slot(-), prio(3)
+03/18/25 22:18:58.160824 voice update:  tg(46801), freq(852787500), slot(-), prio(3)
+03/18/25 22:19:10.034339 PCM underrun
+03/18/25 22:19:12.087933 voice update:  tg(46801), freq(852787500), slot(-), prio(3)
+03/18/25 22:19:13.178146 voice update:  tg(46801), freq(852787500), slot(-), prio(3)
+03/18/25 22:19:15.352437 voice update:  tg(46801), freq(851262500), slot(-), prio(3)
+03/18/25 22:19:19.999576 voice update:  tg(46801), freq(851262500), slot(-), prio(3)
+03/18/25 22:19:23.557880 voice update:  tg(46801), freq(851262500), slot(-), prio(3)
+03/18/25 22:19:25.874440 voice update:  tg(46801), freq(851262500), slot(-), prio(3)
+03/18/25 22:19:26.960515 voice update:  tg(46801), freq(851262500), slot(-), prio(3)
+03/18/25 22:19:45.801293 voice update:  tg(46801), freq(852650000), slot(-), prio(3)
+03/18/25 22:19:48.128704 voice update:  tg(46801), freq(852650000), slot(-), prio(3)
+03/18/25 22:20:32.219074 voice update:  tg(46822), freq(852150000), slot(-), prio(3)
+03/18/25 22:20:35.914484 voice update:  tg(46822), freq(852150000), slot(-), prio(3)
+03/18/25 22:20:41.666932 voice update:  tg(46822), freq(853262500), slot(-), prio(3)
+03/18/25 22:20:46.429539 voice update:  tg(46822), freq(853262500), slot(-), prio(3)
+03/18/25 22:20:50.658273 voice update:  tg(46822), freq(855462500), slot(-), prio(3)
+03/18/25 22:20:52.167024 voice update:  tg(46822), freq(855462500), slot(-), prio(3)
+03/18/25 22:20:53.789952 voice update:  tg(46822), freq(855462500), slot(-), prio(3)
+03/18/25 22:21:01.033602 voice update:  tg(46822), freq(853650000), slot(-), prio(3)
+03/18/25 22:21:06.082473 voice update:  tg(46822), freq(853650000), slot(-), prio(3)
+03/18/25 22:21:16.876616 voice update:  tg(46822), freq(851762500), slot(-), prio(3)
+03/18/25 22:21:18.916834 voice update:  tg(46822), freq(851762500), slot(-), prio(3)
+03/18/25 22:21:21.104096 voice update:  tg(46822), freq(851762500), slot(-), prio(3)
+03/18/25 22:21:24.927687 voice update:  tg(46822), freq(851762500), slot(-), prio(3)
+03/18/25 22:21:28.755658 voice update:  tg(46822), freq(851762500), slot(-), prio(3)
+03/18/25 22:21:31.474875 voice update:  tg(47021), freq(851262500), slot(-), prio(3)
+03/18/25 22:21:55.243626 voice update:  tg(46822), freq(851200000), slot(-), prio(3)
+03/18/25 22:22:01.246974 voice update:  tg(46822), freq(851200000), slot(-), prio(3)
+03/18/25 22:22:07.253523 voice update:  tg(46822), freq(852787500), slot(-), prio(3)
+03/18/25 22:22:08.340030 voice update:  tg(46822), freq(852787500), slot(-), prio(3)
+03/18/25 22:22:12.177102 voice update:  tg(46822), freq(852787500), slot(-), prio(3)
+03/18/25 22:22:13.941307 voice update:  tg(46822), freq(852150000), slot(-), prio(3)
+03/18/25 22:22:16.812715 voice update:  tg(46822), freq(852150000), slot(-), prio(3)
+03/18/25 22:22:18.715933 voice update:  tg(46822), freq(851762500), slot(-), prio(3)
+03/18/25 22:22:22.547281 voice update:  tg(46822), freq(851762500), slot(-), prio(3)

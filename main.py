@@ -1,16 +1,13 @@
 import sys
 import os
-import csv
 import re
 import time
-import threading
-import select
 from enum import Enum
 from PySide6.QtCore import QThread, Signal
 
 # PySide6 Core Imports
 from PySide6.QtCore import (
-    QThread, Signal, QTimer, QMetaObject, QRect, Qt, QPropertyAnimation, QVariantAnimation, QSize, QCoreApplication
+    QThread, Signal, QTimer, QMetaObject, QRect, QSize, QCoreApplication
 )
 
 # PySide6 GUI Imports
@@ -22,8 +19,8 @@ from PySide6.QtWidgets import (
 
 # Project-Specific Imports
 from tts import SpeechEngine
-from ir import IRRemoteHandler
 from file_object import FileObject
+from file_object import MyConfig
 from control import OP25Controller
 from customWidgets import BlinkingLabel
 
@@ -178,8 +175,10 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.update_display_signal.connect(self.update_display)
+        
+        # NEW: config.ini 
+        self.config = MyConfig("config.ini")
 
-        self.ir_on = False       
         self.speech_on = False      
         self.currentFile = FileObject()
         self.isMenuActive = False  
@@ -195,10 +194,6 @@ class MainWindow(QMainWindow):
         if(self.speech_on):         # Work in Progress
             self.speech = SpeechEngine()
         
-        if self.ir_on:              # Work in Progress
-            self.ir_handler = IRRemoteHandler(self)  
-            self.startIRListener()
-
         # Initialize GUI first!
         self.setupUi(self)
         self.setDisabled(True)
@@ -214,12 +209,6 @@ class MainWindow(QMainWindow):
         self.lblSync.stop_blink()
         self.lblSync.hide()
         self.update_display()
-
-    def ir_callback(self, channel):
-        """Handles IR signal when detected."""
-        code = self.decode_signal()  # Get decoded key
-        self.main.op25.logger.info(f"[INFO] {code} pressed.")
-        self.handle_ir_input(code)
         
     def on_op25_initialized(self):
         """Slot that gets called when OP25 is initialized and sets the initial zone and channel."""
@@ -648,13 +637,6 @@ class MainWindow(QMainWindow):
 
         except FileNotFoundError:
             print(f"[ERROR] File '{file_path}' not found.")
-
-    def startIRListener(self):
-        """Runs the IR listener in a separate thread to prevent blocking the UI."""
-        #TODO: Implement threading and IR Listener
-        ir_thread = threading.Thread(target=self.ir_handler.listen, daemon=True)
-        ir_thread.start()
-        pass
 
     def keypad_input(self, digit):
         """Handles numeric button input for direct TGID entry and menu navigation."""

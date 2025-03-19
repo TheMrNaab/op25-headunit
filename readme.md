@@ -26,7 +26,6 @@ This project provides a graphical user interface (GUI) for OP25, a software-defi
   - OP25 (Installed in `/home/(user)/op25`)
   - `PySide6` for GUI
   - `pyttsx3` for text-to-speech
-  - `RPi.GPIO` (for IR remote control)
 
 ### Additional Notes for Ubuntu Server Users
 - Since Ubuntu Server does not come with a GUI, you will need to install one to use this project effectively.
@@ -38,8 +37,6 @@ This project provides a graphical user interface (GUI) for OP25, a software-defi
 ## Tested Hardware
 - **Raspberry Pi 4 (2GB Memory) with Ubuntu Server**  
   [Buy on Amazon](https://www.amazon.com/dp/B09TTNPB4J?ref=ppx_yo2ov_dt_b_fed_asin_title)
-- **DWEII 6 Sets Infrared IR Wireless Remote Control Module Kits DIY Kit HX1838 for Arduino Raspberry Pi**  
-  [Buy on Amazon](https://www.amazon.com/dp/B09ZTZQFP7?ref=ppx_yo2ov_dt_b_fed_asin_title)
 - **A1 FFCs - Sample Pack Flex Cable for Raspberry Pi Camera - Black 8, 15, 30, and 60 cm**  
   [Buy on Amazon](https://www.amazon.com/dp/B097P6CMV1?ref=ppx_yo2ov_dt_b_fed_asin_title)
 - **FREENOVE 5 Inch Touchscreen Monitor for Raspberry Pi 5 4 B 3 B+ A+, 800x480 Pixel IPS Display, 5-Point Touch Capacitive Screen, Driver-Free MIPI DSI Port**  

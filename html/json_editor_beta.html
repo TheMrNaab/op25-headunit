@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Channel Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Channel Manager</h2>
+        <ul class="nav nav-tabs" id="channelTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="json-tab" data-bs-toggle="tab" data-bs-target="#json" type="button" role="tab">JSON Input</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="editor-tab" data-bs-toggle="tab" data-bs-target="#editor" type="button" role="tab">Editor</button>
+            </li>
+        </ul>
+        <div class="tab-content mt-3" id="channelTabsContent">
+            <div class="tab-pane fade show active" id="json" role="tabpanel">
+                <p>Paste your JSON data in the box below. Click "Load JSON" to populate the editor with your data.</p>
+                <textarea id="json-input" class="form-control" rows="10" placeholder="Paste JSON here..."></textarea>
+                <button class="btn btn-primary mt-2" onclick="loadJson()">Load JSON</button>
+            </div>
+            <div class="tab-pane fade" id="editor" role="tabpanel">
+                <p>Use the form below to add, edit, or remove channels. For valid TGIDs, refer to <a href="https://www.radioreference.com/" target="_blank">RadioReference</a>.</p>
+                <form id="channel-form" class="mb-4">
+                    <input type="hidden" id="edit-index">
+                    <div class="mb-2">
+                        <input type="number" id="channel-number" class="form-control" placeholder="Channel Number" required>
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" id="channel-name" class="form-control" placeholder="Channel Name" required>
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" id="channel-zone" class="form-control" placeholder="Zone" required>
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" id="channel-type" class="form-control" placeholder="Type (Scan/Talkgroup)" required>
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" id="channel-tgids" class="form-control" placeholder="TGIDs (comma-separated)" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Channel</button>
+                </form>
+                <h3>Channel List</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Channel #</th>
+                            <th>Name</th>
+                            <th>Zone</th>
+                            <th>Type</th>
+                            <th>TGIDs</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="channel-list"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let channels = [
+            {
+                "channel_number": 1,
+                "name": "Example Channel",
+                "zone": "Fire",
+                "type": "Talkgroup",
+                "tgid": [12345, 67890]
+            }
+        ];
+
+        function loadJson() {
+            try {
+                channels = JSON.parse(document.getElementById("json-input").value);
+                renderChannels();
+            } catch (e) {
+                alert("Invalid JSON");
+            }
+        }
+
+        document.getElementById("channel-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let index = document.getElementById("edit-index").value;
+            let channel = {
+                channel_number: parseInt(document.getElementById("channel-number").value),
+                name: document.getElementById("channel-name").value,
+                zone: document.getElementById("channel-zone").value,
+                type: document.getElementById("channel-type").value,
+                tgid: document.getElementById("channel-tgids").value.split(',').map(Number)
+            };
+            if (index === "") {
+                channels.push(channel);
+            } else {
+                channels[index] = channel;
+                document.getElementById("edit-index").value = "";
+            }
+            renderChannels();
+        });
+
+        function renderChannels() {
+            let list = document.getElementById("channel-list");
+            list.innerHTML = "";
+            channels.forEach((channel, index) => {
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${channel.channel_number}</td>
+                    <td>${channel.name}</td>
+                    <td>${channel.zone}</td>
+                    <td>${channel.type}</td>
+                    <td>${channel.tgid.join(', ')}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm me-2" onclick="editChannel(${index})">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="removeChannel(${index})">Remove</button>
+                    </td>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function removeChannel(index) {
+            channels.splice(index, 1);
+            renderChannels();
+        }
+
+        function editChannel(index) {
+            let channel = channels[index];
+            document.getElementById("edit-index").value = index;
+            document.getElementById("channel-number").value = channel.channel_number;
+            document.getElementById("channel-name").value = channel.name;
+            document.getElementById("channel-zone").value = channel.zone;
+            document.getElementById("channel-type").value = channel.type;
+            document.getElementById("channel-tgids").value = channel.tgid.join(', ');
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
