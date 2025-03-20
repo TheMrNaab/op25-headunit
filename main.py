@@ -2,6 +2,7 @@ import sys
 import os
 import re
 import time
+import csv
 from enum import Enum
 from PySide6.QtCore import QThread, Signal
 
@@ -36,7 +37,7 @@ class ScanListWorker(QThread):
     def run(self):
         """Process scan TGIDs in a separate thread."""
         if self.running:
-            print("[DEBUG] ScanListWorker is already running. Skipping duplicate execution.")
+            self.op25.logger.info("[DEBUG] ScanListWorker is already running. Skipping duplicate execution.")
             return
 
         self.running = True
@@ -44,7 +45,7 @@ class ScanListWorker(QThread):
         try:
             self.op25.update_scan_list(self.tgids)
         except Exception as e:
-            print(f"[ERROR] Failed to update scan list: {e}")
+            self.op25.logger.info(f"[ERROR] Failed to update scan list: {e}")
         finally:
             self.running = False
             self.signal_complete.emit()  # Notify UI even if there is an error
@@ -68,8 +69,8 @@ class ChangeTalkgroupWorker(QThread):
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
-        self.op25 = main_window.op25  # Ensure it has access to OP25
-        self.running = False  # ✅ Prevent duplicate workers
+        self.op25 = main_window.op25 
+        self.running = False  
 
     def run(self):
         self.main_window.setDisabled(True)
@@ -93,6 +94,7 @@ class ChangeTalkgroupWorker(QThread):
             return
 
         wlist = selected_channel.get('tgid', [])
+        print("Line 97")
         
         try:
             self.op25.switchGroup(wlist=wlist)
@@ -136,8 +138,23 @@ class MonitorLogFileWorker(QThread):
         self.stderr_path = stderr_path
         self.op25 = op25_instance
         self.tg_dict = {}
-        self.running = True  # ✅ Use flag to control the thread
+        self.running = True 
         self.load_csv(self.op25.tgroups_file)
+
+    def load_csv(self, file):
+        """Loads the talkgroup mappings from a CSV file into a dictionary."""
+        try:
+            with open(file, mode='r', encoding='utf-8') as csvfile:
+                reader = csv.reader(csvfile)
+                for row in reader:
+                    if len(row) >= 2:
+                        tg_id, alpha_tag = row[0].strip(), row[1].strip()
+                        if tg_id.isdigit():  # Ensure first column is a number
+                            self.tg_dict[tg_id] = alpha_tag
+        except FileNotFoundError:
+            print(f"[ERROR] CSV file '{file}' not found.")
+        except Exception as e:
+            print(f"[ERROR] Failed to load CSV: {e}")
 
     def extract_tg_number(self, line):
         """Extracts the TG number from a voice update line."""
@@ -165,17 +182,22 @@ class MonitorLogFileWorker(QThread):
         except FileNotFoundError:
             print(f"[ERROR] File '{self.stderr_path}' not found.")
 
+    def extract_tg_number(self, line):
+        """Extracts the TG number from a voice update line."""
+        match = re.search(r'voice update:.*tg\((\d+)\)', line)
+        return match.group(1) if match else None
+
     def stop(self):
         """Gracefully stops the log monitoring thread."""
         self.running = False
 
-
 class MainWindow(QMainWindow):
-    update_display_signal = Signal()  # ✅ Create a signal
+    update_display_signal = Signal() 
     def __init__(self):
         super().__init__()
         self.update_display_signal.connect(self.update_display)
-        
+        sys.stdout = open("/opt/op25-project/logs/stdout_main.txt", "w")
+        sys.stderr = open("/opt/op25-project/logs/stderr_main.txt", "w")
         # NEW: config.ini 
         self.config = MyConfig("config.ini")
 
@@ -199,8 +221,8 @@ class MainWindow(QMainWindow):
         self.setDisabled(True)
         QApplication.processEvents()
         self.apply_stylesheet()
-        self.show()  # ✅ Ensures window renders before threads start
-            
+        self.showMaximized()
+    
 
     def on_talkgroup_changed(self):
         """Slot that gets called when OP25 is initialized and sets the initial zone and channel."""
@@ -416,7 +438,7 @@ class MainWindow(QMainWindow):
 
         font4 = QFont()
         font4.setFamily(u"FontAwesome")
-        font4.setWeight(QFont.Weight.Normal)  # ✅ Use enum instead of an integer
+        font4.setWeight(QFont.Weight.Normal)
 
         self.keypadLayout.addWidget(self.btnDel, 4, 0, 1, 1)
 
@@ -445,8 +467,6 @@ class MainWindow(QMainWindow):
 
 
         self.horizontalLayout_10.addLayout(self.keypadLayout)
-
-
         self.verticalLayout.addLayout(self.horizontalLayout_10)
 
         # -- FUNCTION BUTTON GRID LAYOUT (MENU, MUTE, EXIT)
@@ -458,18 +478,13 @@ class MainWindow(QMainWindow):
         self.functionButtonLayoutRow.setObjectName(u"functionButtonLayoutRow")
         
         # -- #1: MENU BUTTON
-        self.btnMenu = QPushButton(self.horizontalLayoutWidget)
+        self.btnMenu = self.createButton(self.horizontalLayoutWidget, "btnMenu", u"\uf0c9 ZONES" , "MainWindow", font4, self.toggle_talkgroup_menu)
+        self.btnMenu.setDisabled(True)   #TODO: Implement Menu Button & Remove
         self.functionButtonLayoutRow.addWidget(self.btnMenu)
-        self.btnMenu.setObjectName(u"btnMenu")
-        self.btnMenu.setFont(font4)
-        self.btnMenu.setDisabled(True)                          #TODO: Implement Menu Button & Remove
-        
-
-        self.btnGroups = QPushButton(self.horizontalLayoutWidget)
+       
         
         # -- #2: GROUPS BUTTON
-        self.btnGroups.setObjectName(u"btnGroups")
-        self.btnGroups.setFont(font4)
+        self.btnGroups = self.createButton(self.horizontalLayoutWidget, "btnGroups", u"\uf009 CHANNELS" , "MainWindow", font4, self.toggle_talkgroup_menu)
         self.functionButtonLayoutRow.addWidget(self.btnGroups)
 
         # -- #3: MUTE BUTTON
@@ -582,16 +597,12 @@ class MainWindow(QMainWindow):
         self.btn1.setText(QCoreApplication.translate("MainWindow", u"1", None))
         self.btn6.setText(QCoreApplication.translate("MainWindow", u"6", None))
         self.btn7.setText(QCoreApplication.translate("MainWindow", u"7", None))
-        self.btnMenu.setText(QCoreApplication.translate("MainWindow", u"\uf0c9 MENU", None))
         self.btnMute.setText(QCoreApplication.translate("MainWindow", u"MUTE", None))
         self.btnExit_2.setText(QCoreApplication.translate("MainWindow", u"EXIT", None))
         self.btnZnDown.setText(QCoreApplication.translate("MainWindow", u"Zn \uf107", None))
-        self.btnGroups.setText(QCoreApplication.translate("MainWindow", u"\uf009 ZONES", None))
         self.btnZnUp.setText(QCoreApplication.translate("MainWindow", u"Zn \uf106", None))
         self.btnChDown.setText(QCoreApplication.translate("MainWindow", u"Ch \uf106", None))
         self.btnChUp.setText(QCoreApplication.translate("MainWindow", u"Ch \uf106", None))
-
-        self.btnMenu.clicked.connect(self.toggle_talkgroup_menu)  # ✅ Correct function name
         self.btn0.clicked.connect(lambda: self.keypad_input("0"))
         self.btn1.clicked.connect(lambda: self.keypad_input("1"))
         self.btn2.clicked.connect(lambda: self.keypad_input("2"))
@@ -612,13 +623,8 @@ class MainWindow(QMainWindow):
         self.btnChDown.clicked.connect(self.channel_down)
         self.btnZnUp.clicked.connect(self.zone_up)   # CH ▲
         self.btnZnDown.clicked.connect(self.zone_down)   # CH ▼
-        self.btnGroups.clicked.connect(self.toggle_talkgroup_menu)  # Open Groups Menu
-    # retranslateUi
 
-    def extract_tg_number(self, line):
-        """Extracts the TG number from a voice update line."""
-        match = re.search(r'voice update:.*tg\((\d+)\)', line)
-        return match.group(1) if match else None
+    # retranslateUi
 
     def monitor_stderr(self, file_path):
         """Monitors the stderr2 file for new voice update lines."""
@@ -749,6 +755,16 @@ class MainWindow(QMainWindow):
         """Clears the TGID input on the LCD screen."""
         self.lcdNumber.display("")
    
+    def createButton(self, parent, objectName, text, context="MainWindow", font=None, callback=None):
+        btn = QPushButton(parent)
+        btn.setObjectName(objectName)
+        btn.setText(QCoreApplication.translate(context, text, None))
+        if font:
+            btn.setFont(font)
+        if callback:
+            btn.clicked.connect(callback)
+        return btn
+
     def toggle_talkgroup_menu(self):
         """Toggles the talkgroup menu visibility."""
 
@@ -811,7 +827,7 @@ class MainWindow(QMainWindow):
 
         if channel_list:
             self.tg_list.addItems(channel_list)
-            self.tg_list.show()  # ✅ Ensure the menu becomes visible
+            self.tg_list.show() 
         else:
             print("[WARNING] No channels available in the current zone.")
     
@@ -861,10 +877,10 @@ class MainWindow(QMainWindow):
             print(f"[ERROR] Talkgroup '{self.talkgroup_name}' not found in zone '{self.current_zone}'")
             return  # ✅ Exit early if the selection is invalid
 
-        # ✅ Set the selected talkgroup index
+        # Set the selected talkgroup index
         self.currentFile.current_tg_index = selected_channel["channel_number"]
 
-        # ✅ Use QTimer to delay execution without freezing UI
+        # Use QTimer to delay execution without freezing UI
         QTimer.singleShot(2000, self.change_talkgroup)  # ⏳ Delayed switch (non-blocking)
 
     def close_app(self):
@@ -873,6 +889,7 @@ class MainWindow(QMainWindow):
         if(self.speech_on):
             self.speech.stop()  # Stop speech engine before exit
         self.op25.stop()        #TODO: Send request to OP25 to stop gracefully.
+        self.monitor.stop()  # Ensures cleanup on exit
         self.close()
 
     def channel_up(self):
@@ -911,43 +928,61 @@ class MainWindow(QMainWindow):
 
     def zone_up(self):
         """Moves to the next zone, loops back if at the last zone."""
-        self.setDisabled(True)
-        QApplication.processEvents()  # Force UI to refresh immediately
-        next_zone = self.currentFile.get_next_zone(self.currentFile.current_zone_index)
-        if next_zone:
-            self.currentFile.current_zone_index = self.currentFile.zone_names.index(next_zone)
-            self.load_first_channel()  # Load first channel of the new zone
+        self.setDisabled(True)  # Disable UI to prevent rapid multiple clicks
+        QApplication.processEvents()  # Allow UI to update
 
-            # ✅ Only run if a channel was actually loaded
-            if self.currentFile.current_tg_index is not None:
+        try:
+            # Increment the zone index with wrap-around
+            self.currentFile.current_zone_index = (
+                self.currentFile.current_zone_index + 1
+            ) % len(self.currentFile.zone_names)
+            
+            current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
+            # Retrieve the first channel object in the new zone
+            first_channel_obj = self.currentFile.get_first_channel_in_zone(self.currentFile.current_zone_index)
+            
+            if first_channel_obj is not None:
+                # Update the current talkgroup index with the channel's number
+                self.currentFile.current_tg_index = first_channel_obj["channel_number"]
+
+                if self.speech_on:
+                    self.speech.speak(f"{current_zone} - {first_channel_obj['name']}")
+                
+                self.change_talkgroup()
                 self.update_display()
-                current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
-                first_channel = self.currentFile.get_channel_by_number(self.currentFile.current_tg_index)
-                if(self.speech_on): 
-                    self.speech.speak(f"{current_zone} - {first_channel['name'] if first_channel else 'No Channels'}")
-
-            self.change_talkgroup()
-        self.setDisabled(False)
+        except Exception as e:
+            print(f"[ERROR] zone_up encountered an issue: {e}")
+        finally:
+            self.setDisabled(False)  # Ensure UI is always re-enabled
 
     def zone_down(self):
         """Moves to the previous zone, loops to the last if at the first."""
         self.setDisabled(True)
-        QApplication.processEvents()  # Force UI to refresh immediately
-        prev_zone = self.currentFile.get_previous_zone(self.currentFile.current_zone_index)
-        if prev_zone:
+        QApplication.processEvents() 
+        
+        try:
+            prev_zone = self.currentFile.get_previous_zone(self.currentFile.current_zone_index)
+            if not prev_zone:
+                print("[ERROR] No previous zone found.")
+                return  # Exit early if no previous zone
+            
             self.currentFile.current_zone_index = self.currentFile.zone_names.index(prev_zone)
-            self.load_first_channel()  # Load first channel of the new zone
-
-            # ✅ Only run if a channel was actually loaded
+            
             if self.currentFile.current_tg_index is not None:
                 self.update_display()
                 current_zone = self.currentFile.zone_names[self.currentFile.current_zone_index]
                 first_channel = self.currentFile.get_channel_by_number(self.currentFile.current_tg_index)
-                if(self.speech_on): 
+                
+                if self.speech_on: 
                     self.speech.speak(f"{current_zone} - {first_channel['name'] if first_channel else 'No Channels'}")
 
-            self.change_talkgroup()
-        self.setDisabled(False)
+                self.change_talkgroup()
+
+            
+        except Exception as e:
+            print(f"[ERROR] zone_down encountered an issue: {e}")
+        finally:
+            self.setDisabled(False)  # Ensure UI is always re-enabled
 
     def load_first_channel(self):
         """Loads the first channel of the current zone and applies its talkgroup settings."""
@@ -988,7 +1023,7 @@ class MainWindow(QMainWindow):
                 print(f"[ERROR] Failed to switch talkgroup: {e}")
                 return
 
-        # ✅ Stop old worker before starting a new one
+        # Stop old worker before starting a new one
         if hasattr(self, "changeTalkgroupWorker") and self.changeTalkgroupWorker:
             if self.changeTalkgroupWorker.isRunning():
                 print("[DEBUG] Previous ChangeTalkgroupWorker still running, waiting...")
@@ -996,7 +1031,7 @@ class MainWindow(QMainWindow):
                 self.changeTalkgroupWorker.wait()
             self.changeTalkgroupWorker = None  
 
-        # ✅ Start a new worker safely
+        # Start a new worker safely
         self.changeTalkgroupWorker = ChangeTalkgroupWorker(self)
         self.changeTalkgroupWorker.signal_initialized.connect(self.update_display_signal.emit)  # ✅ Emit Signal
         self.changeTalkgroupWorker.start()
@@ -1011,6 +1046,6 @@ class MainWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    mainWindow = MainWindow()  # ✅ Instantiating MainWindow directly
+    mainWindow = MainWindow()  # Instantiating MainWindow directly
     mainWindow.show()
     sys.exit(app.exec())

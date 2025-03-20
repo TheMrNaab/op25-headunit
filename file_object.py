@@ -1,9 +1,11 @@
 import json
 import os
 import configparser
-
+import sys
 class FileObject:
     def __init__(self, file_path=None):
+        sys.stdout = open("/opt/op25-project/logs/stdout_main.txt", "a")
+        sys.stderr = open("/opt/op25-project/logs/stderr_main.txt", "a")
         if file_path is None:
             self.file_path = self.beta_file_path()
         else:
@@ -135,6 +137,7 @@ class FileObject:
     
     def get_next_zone(self, current_zone_index):
         """Finds the next zone, looping back if at the last one."""
+        print(f"Current_Zone_Index: {current_zone_index}")
         if not self.zone_names:
             return None  # No zones exist
         return self.zone_names[(current_zone_index + 1) % len(self.zone_names)]
@@ -144,6 +147,13 @@ class FileObject:
         if not self.zone_names:
             return None  # No zones exist
         return self.zone_names[(current_zone_index - 1) % len(self.zone_names)]
+    
+    def get_first_channel_in_zone(self, zone_index):
+        if not self.zone_names:
+            return None
+        zone_name = self.zone_names[zone_index % len(self.zone_names)]
+        channels = self.get_channels_by_zone(zone_name)
+        return channels[0] if channels else None
     
 class MyConfig:
     def __init__(self, config_file="config.ini"):

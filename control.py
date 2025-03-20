@@ -18,8 +18,8 @@ class OP25Controller:
         # Define OP25 executable path
         self.rx_script = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/rx.py")
         self.trunk_file = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_trunk.tsv")
-        self.stderr_file = os.path.expanduser("/opt/op25-project/logs/stderr.2")
-        self.stdout_file = os.path.expanduser("/opt/op25-project/logs/stdout.2")
+        self.stderr_file = os.path.expanduser("/opt/op25-project/logs/stderr_op25.log")
+        self.stdout_file = os.path.expanduser("/opt/op25-project/logs/stdout_op25.log")
         self.tgroups_file = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_tgroups.csv")
         self.defaultWhitelistFile = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_whitelist.tsv")
         self.defaultBlacklistFile = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_blist.tsv")
