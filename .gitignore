@@ -3,13 +3,7 @@ __pycache__/
 *.pyc
 *.log
 *.txt
-*.2
+logs/app_log.txt
 __pycache__/control.cpython-312.pyc
 __pycache__/file_object.cpython-312.pyc
 .vscode/
-logs/stderr.2
-logs/stdout.2
-logs/stderr.2
-logs/stderr.2
-logs/app_log.txt
-logs/stderr.2

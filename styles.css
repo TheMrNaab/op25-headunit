@@ -43,12 +43,14 @@ QPushButton {
 }
 
 /* ================================
-   FUNCTION BUTTONS (Menu, Groups, Mute, Exit)
+   FUNCTION BUTTONS (Channels, Zones, Mute, Exit)
    ================================ */
-QPushButton#btnMenu, 
-QPushButton#btnGroups, 
-QPushButton#btnMute,
-QPushButton#btnExit_2 {
+   QPushButton#btnGroups, 
+   QPushButton#btnMenu, 
+   QPushButton#btnChannels, 
+   QPushButton#btnZones, 
+   QPushButton#btnMute,
+   QPushButton#btnExit_2 {
     background-color: white;
     color: black;
     margin-left: 3px;
@@ -59,6 +61,8 @@ QPushButton#btnExit_2 {
 /* Pressed state */
 QPushButton#btnMenu:pressed, 
 QPushButton#btnGroups:pressed, 
+QPushButton#btnChannels:pressed, 
+QPushButton#btnZones:pressed,  
 QPushButton#btnMute:pressed,
 QPushButton#btnExit_2:pressed {
     background-color: #666;
@@ -69,6 +73,8 @@ QPushButton#btnExit_2:pressed {
 /* Disabled state */
 QPushButton#btnMenu:disabled, 
 QPushButton#btnGroups:disabled, 
+QPushButton#btnChannels:disabled, 
+QPushButton#btnZones:disabled, 
 QPushButton#btnMute:disabled,
 QPushButton#btnExit_2:disabled {
     color: darkgray;
