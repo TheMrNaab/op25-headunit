@@ -27,6 +27,7 @@ firefox-esr --kiosk http://localhost:8000/
 - Raspberry Pi 5 (recommended)  
 - RTL-SDR USB dongle  
 - Touchscreen display (recommended)  
+- AUX to USB dongle (Note: Pi5 does not include an AUX port)
 
 ### Software
 - **Operating System**: Ubuntu Server (recommended for OP25 compatibility)  
