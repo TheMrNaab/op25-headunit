@@ -43,9 +43,10 @@ sudo apt install xfce4 xfce4-goodies firefox-esr
 ```
 
 ## Tested Hardware
-- Raspberry Pi 4 (2GB) with Ubuntu Server  
+- Raspberry Pi 5 with Ubuntu Server installed  
 - Freenove 5" Touchscreen Monitor (800x480)  
 - RTL-SDR Blog V4 R828D RTL2832U 1PPM TCXO SMA SDR  
+- AUX to USB Adapter
 
 ## Installation
 
