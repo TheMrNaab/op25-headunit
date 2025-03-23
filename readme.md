@@ -104,9 +104,10 @@ Place your configuration file in:
     ```
 
 ## Future Plans
-- Add full IR remote support  
-- Improve UI responsiveness  
 - Expand customization options  
+- Implement `config.ini` fully
+- Implement voice to text that scans for alert keywords
+- Implement multi-system channels
 
 ## License
 This project is licensed under the MIT License.
