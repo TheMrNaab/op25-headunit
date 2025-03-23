@@ -61,7 +61,7 @@ cd op25
 
 ### 2. Install Required Python Packages
 ```bash
-pip install PySide6 pyttsx3
+pip install PySide6 watchdog Flask flask-cors
 ```
 
 ### 3. Clone This Project
