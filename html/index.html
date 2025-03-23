@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OP25 Scanner Control</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- PROGRESS Modal -->
+    <div class="modal fade" id="progressModal" tabindex="-1" aria-labelledby="progressModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="progressModalLabel">Progress</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Converted progress display -->
+                    <div id="progress-display" class="section progress-container">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 0%;">
+                                0%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- Optional close button -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KEYPAD Modal -->
+    <div class="modal modal-md fade" id="keypadModal" tabindex="-1" aria-labelledby="keypadModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="keypadModalLabel">Keypad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Large Textbox for Number Entry -->
+                    <div id="channel_error" class="text-danger mt-1" style="font-size: 0.9em;"></div>
+                    <label class="sr-only" for="inlineFormInputGroupUsername2">TAC</label>
+                    <div class="input-group mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">TAC</div>
+                        </div>
+                        <input type="text" class="form-control" id="channel_text" name="channel_text" maxlength="3" placeholder="0">
+                    </div>
+                    <!-- Keypad Grid (3 x 4) -->
+                    <div class="">
+                        <div class="row g-2 mb-2">
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-info btn-lg keypad-btn" disabled data-value="TAC">TAC</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-info btn-lg keypad-btn" disabled data-value="OPS">OPS</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-info btn-lg keypad-btn" disabled data-value="OT">OTHER</button>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn" data-value="1">1</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn" data-value="2">2</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn" data-value="3">3</button>
+                            </div>
+                        </div>
+                        <div class="row g-2 mt-2">
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn" data-value="4">4</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn" data-value="5">5</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn" data-value="6">6</button>
+                            </div>
+                        </div>
+                        <div class="row g-2 mt-2">
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn" data-value="7">7</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn" data-value="8">8</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn" data-value="9">9</button>
+                            </div>
+                        </div>
+                        <div class="row g-2 mt-2">
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-danger btn-lg" id="del-btn">DEL</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn" data-value="0">0</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-success btn-lg"  id="go-btn">GO</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Channel List Modal -->
+    <div class="modal fade" id="channelModal" tabindex="-1" aria-labelledby="channelModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="channelModalLabel">Channel List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body position-relative">
+                    <div class="select-control">
+                        <div class="select-wrapper">
+                            <select multiple id="channels">
+                                <option value="1">Channel 1</option>
+                                <option value="2">Channel 2</option>
+                                <option value="3">Channel 3</option>
+                                <option value="4">Channel 4</option>
+                            </select>
+                        </div>
+                        <div class="scroll-buttons-vertical">
+                            <button id="channel-list-up-btn"><i class="fas fa-chevron-up"></i></button>
+                            <button id="channel-list-accept-btn" style="background-color:green"><i class="fa fa-check"></i></button>
+                            <button id="channel-list-down-btn"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Apply Button in Modal Footer -->
+                <!-- <div class="modal-footer">
+                    <button id="channelApplyBtn" class="btn btn-success">Apply</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Zone List Modal -->
+    <div class="modal fade" id="zoneModal" tabindex="-1" aria-labelledby="zoneModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="zoneModalLabel">Zone List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body position-relative">
+                    <div class="select-control">
+                        <div class="select-wrapper">
+                            <select multiple id="zones">
+                                <option value="1">Channel 1</option>
+                                <option value="2">Channel 2</option>
+                                <option value="3">Channel 3</option>
+                                <option value="4">Channel 4</option>
+                            </select>
+                        </div>
+                        <div class="scroll-buttons-vertical">
+                            <button id="zone-list-up-btn"><i class="fas fa-chevron-up"></i></button>
+                            <button id="zone-list-accept-btn" style="background-color:green"><i class="fa fa-check"></i></button>
+                            <button id="zone-list-down-btn"><i class="fas fa-chevron-down"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Apply Button in Modal Footer -->
+                <div class="modal-footer">
+                    <!-- <button id="zoneApplyBtn" class="btn btn-success">Apply</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main" id="main">
+        <!-- Title Bar -->
+        <div class="title-bar">
+            <div class="title-text">OP25 Scanner</div>
+            <div class="status-icons">
+                <i id="error-icon" class="fas fa-shield" style="color: white;"></i>
+                <i id="admin-portal" class="ms-2 fas fa-wifi"></i>
+            </div>
+        </div>
+
+        <!-- Channel Information -->
+        <div class="container">
+            <div id="display_container" class="display mt-0">
+                <div id="main-display" class="section active">
+                  <table id="OnScreenDisplay" class="osd table-sm" style="width: 90%; margin-left: auto; margin-right:auto;">
+                    <tbody>
+                      <tr class="text-start">
+                        <td><span class="badge bg-dark fs-6">CH #</span></td>
+                        <td class="fs-6"><span id="channel-number">-1</span></td>
+                      </tr>
+                      <tr class="text-start fs-6"">
+                        <td><span class="badge bg-dark fs-6">CHANNEL</span></td>
+                        <td id="channel-name">Placeholder</td>
+                      </tr>
+                      <tr class="text-start fs-6">
+                        <td><span class="badge bg-dark fs-6">TALK GROUP</span></td>
+                        <td><span id="talkgroup">Talkgroup</span><button class="btn btn-sm btn-outline-secondary ms-5 disabled">HOLD</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Function Buttons -->
+    <div class="function-buttons">
+        <button id="btnZoneUp">
+            <i class="fas fa-arrow-up"></i>
+            <span>ZN</span>
+        </button>
+        <button id="btnZoneDown">
+            <i class="fas fa-arrow-down"></i>
+            <span>ZN</span>
+        </button>
+        <button id="btnChannelUp">
+            <i class="fas fa-caret-up"></i>
+            <span>CH</span>
+        </button>
+        <button id="btnChannelDown">
+            <i class="fas fa-caret-down"></i>
+            <span>CH</span>
+        </button>
+        <button id="btnChannelList">
+            <i class="fas fa-list"></i>
+            <span style="margin-top:6px">CH LIST</span>
+        </button>
+        <button id="btnZoneList">
+            <i class="fa fa-layer-group"></i>
+            <span style="margin-top:6px">ZN LIST</span>
+        </button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal" data-bs-target="#keypadModal">
+            <i class="fas fa-calculator"></i><span style="margin-top:6px">DIRECT</span>
+        </button>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/interface.js"></script>
+    <script src="js/keypad.js"></script>
+    <div id="channel-list" style="display:none" class="list-container">
+        <button class="btn btn-outline-primary w-100 mb-1 active-button" onclick="selectChannel('TAC 1')">TAC 1</button>
+        <button class="btn btn-outline-primary w-100 mb-1" onclick="selectChannel('TAC 2')">TAC 2</button>
+        <button class="btn btn-outline-primary w-100 mb-1" onclick="selectChannel('TAC 3')">TAC 3</button>
+    </div>
+</body>
+</html>

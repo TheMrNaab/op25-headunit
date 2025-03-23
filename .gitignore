@@ -7,3 +7,4 @@ logs/app_log.txt
 __pycache__/control.cpython-312.pyc
 __pycache__/file_object.cpython-312.pyc
 .vscode/
+scripts/

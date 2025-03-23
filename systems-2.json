@@ -1,0 +1,141 @@
+{
+    "zones": [
+        {
+            "name": "Fire",
+            "channels": [
+                {
+                    "channel_number": 0,
+                    "name": "Fire Scan",
+                    "type": "Scan",
+                    "tgid": [
+                        46949, 47021, 46940, 46800, 46801, 46802, 46803, 46804, 
+                        46805, 46806, 46807, 46808, 46809, 46810, 46811, 46812, 
+                        46813, 46814, 46815, 46816, 46817, 46818, 46819, 46820, 
+                        46821, 46822, 46823, 46824, 46825, 46826, 46827, 46828, 
+                        46829, 46830, 46831, 46832, 46833, 46834, 46835, 46836, 
+                        46837, 46838
+                    ]
+                },
+                {
+                    "channel_number": 1,
+                    "name": "ALERT SCAN",
+                    "type": "Scan",
+                    "tgid": [46949, 47021]
+                },
+                {
+                    "channel_number": 2,
+                    "name": "WC FD ALERT",
+                    "type": "Talkgroup",
+                    "tgid": [46949]
+                },
+                {
+                    "channel_number": 3,
+                    "name": "RFD ALERT",
+                    "type": "Talkgroup",
+                    "tgid": [47021]
+                },
+                {
+                    "channel_number": 4,
+                    "name": "WC FD DISP",
+                    "type": "Talkgroup",
+                    "tgid": [46940]
+                }
+            ]
+        },
+        {
+            "name": "Law",
+            "channels": [
+                {
+                    "channel_number": 0,
+                    "name": "Law Scan",
+                    "type": "Scan",
+                    "tgid": [46880, 46881, 46882, 46883, 47050, 47051, 47052, 47053, 47054, 47055]
+                },
+                {
+                    "channel_number": 1,
+                    "name": "RPD NWD DISP",
+                    "type": "Talkgroup",
+                    "tgid": [47050]
+                },
+                {
+                    "channel_number": 2,
+                    "name": "RPD NOD DISP",
+                    "type": "Talkgroup",
+                    "tgid": [47051]
+                },
+                {
+                    "channel_number": 3,
+                    "name": "RPD NED DISP",
+                    "type": "Talkgroup",
+                    "tgid": [47052]
+                },
+                {
+                    "channel_number": 4,
+                    "name": "RPD SED DISP",
+                    "type": "Talkgroup",
+                    "tgid": [47053]
+                },
+                {
+                    "channel_number": 5,
+                    "name": "RPD DTD DISP",
+                    "type": "Talkgroup",
+                    "tgid": [47054]
+                },
+                {
+                    "channel_number": 6,
+                    "name": "RPD SWD DISP",
+                    "type": "Talkgroup",
+                    "tgid": [47055]
+                },
+                {
+                    "channel_number": 7,
+                    "name": "WSO DISP 1",
+                    "type": "Talkgroup",
+                    "tgid": [46880]
+                },
+                {
+                    "channel_number": 8,
+                    "name": "WSO DISP 2",
+                    "type": "Talkgroup",
+                    "tgid": [46881]
+                },
+                {
+                    "channel_number": 9,
+                    "name": "WSO DISP 3",
+                    "type": "Talkgroup",
+                    "tgid": [46882]
+                },
+                {
+                    "channel_number": 10,
+                    "name": "WSO DISP 4",
+                    "type": "Talkgroup",
+                    "tgid": [46883]
+                },
+                {
+                    "channel_number": 11,
+                    "name": "WSO PAT 1",
+                    "type": "Talkgroup",
+                    "tgid": [46884]
+                },
+                {
+                    "channel_number": 12,
+                    "name": "WSO PAT 2",
+                    "type": "Talkgroup",
+                    "tgid": [46885]
+                },
+                {
+                    "channel_number": 13,
+                    "name": "WSO PAT 3",
+                    "type": "Talkgroup",
+                    "tgid": [46886]
+                },
+                {
+                    "channel_number": 14,
+                    "name": "WSO PAT 4",
+                    "type": "Talkgroup",
+                    "tgid": [46887]
+                }
+            ]
+        }
+    ]
+}

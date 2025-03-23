@@ -15,7 +15,7 @@ from PySide6.QtCore import (
 from PySide6.QtGui import QFont, QPixmap
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QLabel, QPushButton, QLCDNumber,
-    QVBoxLayout, QHBoxLayout, QGridLayout, QListWidget, QSpacerItem, QSizePolicy
+    QVBoxLayout, QHBoxLayout, QGridLayout, QListWidget, QSpacerItem, QSizePolicy, QLayout
 )
 
 # Project-Specific Imports
@@ -290,7 +290,8 @@ class MainWindow(QMainWindow):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(693, 374)
+            
+        MainWindow.resize(300, 300)
         MainWindow.setStyleSheet(u"background-color:black;")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
@@ -406,6 +407,7 @@ class MainWindow(QMainWindow):
         self.keypadLayout = QGridLayout()
         self.keypadLayout.setObjectName(u"keypadLayout")
         self.keypadLayout.setHorizontalSpacing(-1)
+        
         self.btnGo = QPushButton(self.horizontalLayoutWidget)
         self.btnGo.setObjectName(u"btnGo")
 
@@ -441,7 +443,7 @@ class MainWindow(QMainWindow):
         font4.setWeight(QFont.Weight.Normal)
 
         self.keypadLayout.addWidget(self.btnDel, 4, 0, 1, 1)
-
+    
         self.btn4 = QPushButton(self.horizontalLayoutWidget)
         self.btn4.setObjectName(u"btn4")
         self.keypadLayout.addWidget(self.btn4, 1, 0, 1, 1)
@@ -465,9 +467,14 @@ class MainWindow(QMainWindow):
         self.btn7.setObjectName(u"btn7")
         self.keypadLayout.addWidget(self.btn7, 2, 0, 1, 1)
 
-
+        self.horizontalLayout_10.addLayout(self.keypadLayout, 1)  # Stretch factor of 1
+        self.keypadLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.horizontalLayout_10.addLayout(self.keypadLayout)
         self.verticalLayout.addLayout(self.horizontalLayout_10)
+
+        for button in [self.btnGo, self.btn0, self.btn3, self.btn5, self.btn8, self.btn9,
+               self.btnDel, self.btn4, self.btn2, self.btn1, self.btn6, self.btn7]:
+                    button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # -- FUNCTION BUTTON GRID LAYOUT (MENU, MUTE, EXIT)
         self.functionButtonLayout = QGridLayout()

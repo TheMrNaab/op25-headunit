@@ -3,134 +3,110 @@
 ![Screen Shot](help/screenshot.png)
 
 ## Overview
-This project provides a graphical user interface (GUI) for OP25, a software-defined radio (SDR) scanner designed to run on a Raspberry Pi. It integrates OP25 with a touchscreen interface, making it easier to scan and monitor talkgroups in a vehicle at a low cost.
+This project provides a graphical user interface (GUI) for OP25, a software-defined radio (SDR) scanner running on a Raspberry Pi. It integrates OP25 with a touchscreen interface to simplify scanning and monitoring talkgroups in a vehicle at low cost.
+
+## User Interface
+The project serves the `/html` folder for the UI and uses `api.py` to handle interaction between the webpage and OP25. This setup uses fewer resources and allows layout flexibility based on screen size.
+
+After installing `firefox-esr`, add the following command to your system startup:
+
+```bash
+firefox-esr --kiosk http://localhost:8000/
+```
 
 ## Features
-- **Graphical Interface**: Provides an interactive UI for controlling OP25.
-- **Talkgroup Management**: Supports whitelisting, blacklisting, and dynamic talkgroup selection.
-- **IR Remote Support** (Under Development): Enables control via an IR remote.
-- **Text-to-Speech (TTS) Alerts**: Uses `pyttsx3` for audio feedback on talkgroup changes.
-- **Log Monitoring**: Captures OP25 logs for troubleshooting.
-- **Scan Mode**: Dynamically updates and reloads OP25’s whitelist.
-- **System Integration**: Currently, the system supports only one system at a time. Future updates will aim to integrate OP25's multi-system capabilities.
+- **Graphical Interface**: HTML-based UI for controlling OP25
+- **Talkgroup Management**: Supports whitelist, blacklist, and dynamic selection
+- **Scan Mode**: Reloads OP25’s whitelist dynamically
+- **System Integration**: Currently supports one system; future updates will address multi-system support
 
 ## Requirements
+
 ### Hardware
-- Raspberry Pi 4 (Recommended) 
-- RTL-SDR USB Dongle
-- Touchscreen Display (Optional)
+- Raspberry Pi 5 (recommended)  
+- RTL-SDR USB dongle  
+- Touchscreen display (recommended)  
 
 ### Software
-- **Operating System**: Ubuntu Server (recommended for better OP25 support)
-- **Dependencies**:
-  - OP25 (Installed in `/home/(user)/op25`)
-  - `PySide6` for GUI
-  - `pyttsx3` for text-to-speech
+- **Operating System**: Ubuntu Server (recommended for OP25 compatibility)  
+- **Dependencies**:  
+  - `OP25` (installed at `/home/(user)/op25`)  
+  - `PySide6` for GUI  
+  - `pyttsx3` for text-to-speech (upcoming feature)  
+  - `firefox-esr` for interface display  
 
-### Additional Notes for Ubuntu Server Users
-- Since Ubuntu Server does not come with a GUI, you will need to install one to use this project effectively.
-- You should also install a VNC server if you want to work on development and UI features remotely.
-  ```bash
-  sudo apt install xfce4 xfce4-goodies tightvncserver
-  ```
+### Notes for Ubuntu Server Users
+Ubuntu Server lacks a graphical interface by default. To install one:
+
+```bash
+sudo apt install xfce4 xfce4-goodies firefox-esr
+```
 
 ## Tested Hardware
-- **Raspberry Pi 4 (2GB Memory) with Ubuntu Server**  
-  [Buy on Amazon](https://www.amazon.com/dp/B09TTNPB4J?ref=ppx_yo2ov_dt_b_fed_asin_title)
-- **A1 FFCs - Sample Pack Flex Cable for Raspberry Pi Camera - Black 8, 15, 30, and 60 cm**  
-  [Buy on Amazon](https://www.amazon.com/dp/B097P6CMV1?ref=ppx_yo2ov_dt_b_fed_asin_title)
-- **FREENOVE 5 Inch Touchscreen Monitor for Raspberry Pi 5 4 B 3 B+ A+, 800x480 Pixel IPS Display, 5-Point Touch Capacitive Screen, Driver-Free MIPI DSI Port**  
-  [Buy on Amazon](https://www.amazon.com/dp/B0B455LDKH?ref=ppx_yo2ov_dt_b_fed_asin_title)
-- **RTL-SDR Blog V4 R828D RTL2832U 1PPM TCXO SMA Software Defined Radio (Dongle Only)**  
-  [Buy on Amazon](https://www.amazon.com/dp/B0CD745394?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_2)
+- Raspberry Pi 4 (2GB) with Ubuntu Server  
+- Freenove 5" Touchscreen Monitor (800x480)  
+- RTL-SDR Blog V4 R828D RTL2832U 1PPM TCXO SMA SDR  
 
 ## Installation
+
 ### 1. Install OP25
-Ensure OP25 is installed in `/home/(user)/op25`:
 ```bash
 cd ~
 git clone https://github.com/boatbod/op25.git
 cd op25
 ./install.sh
 ```
-See [op25-config.md](https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md) for additional details on this step. Installing OP25 on Raspberry Pi OS presented challenges, so I opted to install Ubuntu Server and manually configure the required modules. Since this is not my base code, I cannot provide support for this step, but there are plenty of online resources available.
-
 
 ### 2. Install Required Python Packages
 ```bash
-pip install PySide6 pyttsx3 RPi.GPIO
+pip install PySide6 pyttsx3
 ```
 
-### 3. Clone and Set Up This Project
+### 3. Clone This Project
 ```bash
 git clone https://github.com/TheMrNaab/op25-headunit
 sudo mv op25-vehicle-scanner /opt/op25-project
 ```
 
-### 4. Configure OP25
-Place the following required files inside the OP25 installation directory:
-- `_trunk.tsv`
-- `_whitelist.tsv`
-- `_tgroups.csv`
-- `_blist.tsv`
+### 4. Configure OP25 Files
+Place the following files in:
 
-These files must be located in:
 ```bash
 /home/(user)/op25/op25/gr-op25_repeater/apps/
 ```
 
-See [op25-config.md](https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md) for additional information on this step.
+- `_trunk.tsv`  
+- `_whitelist.tsv`  
+- `_tgroups.csv`  
+- `_blist.tsv`  
 
-### 5. Configure Your System
-Edit `system.json` in this installation directory of this script. See  [system-config.md](https://github.com/TheMrNaab/op25-headunit/blob/main/help/system-config.md) for additional information on this step.
+Utilities to generate these files are available in the `/html` folder.
 
-### 6. Configure Auto-Start
-- Enable automatic login and configure `main.py` to start with the GUI.
-- Manually edit `system.json` to configure your channels.
+See [op25-config.md](https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md) for details.
 
-### 7. Run the Scanner UI
+### 5. Create system.json
+Place your configuration file in:
+
 ```bash
-cd /opt/op25-project
-python3 main.py
+/opt/op25-project/system-2.json
 ```
 
-## File Structure
-```
-/opt/op25-project/
-├── main.py             # GUI Application
-├── logger.py           # Logging Utility
-├── fileobject.py       # JSON Data Handling
-├── tts.py              # Text-to-Speech Engine
-├── ir.py               # IR Remote Handler (WIP)
-├── control.py          # OP25 Process Controller
-├── customWidgets.py    # Custom GUI Widgets
-├── styles.css          # UI Styling (if applicable)
-├── system.json         # Zone and Talkgroup Configuration
-└── logs/               # Logs Directory
-└── templates/          # Template files for OP25 installation
-```
-
-## Troubleshooting
-### OP25 Not Connecting
-- Ensure OP25 is properly installed and running.
-- Try running OP25 manually:
-  ```bash
-  python3 /home/(user)/op25/op25/gr-op25_repeater/apps/rx.py -T /home/(user)/op25/op25/gr-op25_repeater/apps/_trunk.tsv
-  ```
-
-### IR Remote Not Working
-- Ensure `RPi.GPIO` is installed.
-- Check if the correct GPIO pin is used in `ir.py`.
-See the [ir.md](https://github.com/TheMrNaab/op25-headunit/blob/main/help/ir.md) for additional information on this step.
+### 6. Set Up Auto-Start
+- Enable auto-login on your Linux system  
+- Create a shell script to:
+  - Run `start.py`  
+  - Launch the UI:  
+    ```bash
+    firefox-esr --kiosk http://localhost:8000/
+    ```
 
 ## Future Plans
-- Implement full IR remote control.
-- Improve UI responsiveness.
-- Add more customization options.
+- Add full IR remote support  
+- Improve UI responsiveness  
+- Expand customization options  
 
 ## License
 This project is licensed under the MIT License.
 
 ## Credits
 Developed by David Naab.
-
