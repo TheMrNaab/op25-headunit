@@ -17,20 +17,26 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 ## Requirements
 
 ### Hardware
-- Raspberry Pi 5 (recommended)  
-- RTL-SDR USB dongle  
-- Touchscreen display (recommended)  
-- AUX to USB dongle (Note: Pi5 does not include an AUX port)
+- Raspberry Pi 4 
+- RTL-SDR USB dongle 
+- Touchscreen display 
+- **MicroSD Card**: Use a new card to avoid data loss. Install Ubuntu Server on its own MicroSD card. This script is in beta and may not be fully stable.
+
+### Pi 5 Compatibility
+- The Raspberry Pi 5 ran more reliably with increased memory. However, OP25 had trouble outputting audio through an AUX-to-USB adapter. A future update will allow selection of the default playback device. The OP25 back-end is still temperamental, and since it is not my script, solutions to common issues are limited and poorly documented online.
 
 ### Software
-- **Operating System**: Ubuntu Server (recommended for OP25 compatibility)  
+- **Operating System**: Ubuntu Server (recommended for OP25 compatibility).
+- **PI OS** The OP25 struggles with Pi OS and is not reccomdended. 
 - **Dependencies**:  
   - `OP25` (installed at `/home/(user)/op25`)    
   - `pyttsx3` for text-to-speech (upcoming feature)  
-  - `firefox-esr` for interface display  
+  - `firefox-esr` for interface display
+  - `flash` for serving API and webpages
+  - `openbox` for Firefox's GUI
 
 ### Notes for Ubuntu Server Users
-- Ubuntu Server lacks a graphical interface by default. To install one:
+- Ubuntu Server lacks a graphical interface by default and you must install these apps:
 
 ```bash
 sudo apt install openbox firefox-esr xinit x11-xserver-utils
