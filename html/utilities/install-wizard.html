@@ -16,10 +16,20 @@
   </style>
 </head>
 <body class="container py-4">
-  <h1 class="mb-4">OP25 Setup Wizard</h1>
+  <h1 class="mb-4">OP25 Head Unit Setup Wizard</h1>
+  
   <div id="wizard">
+    
+      <div class="wizard-step active" id="step-1">
+      <h4 class="step-title">Overview</h4>
+      <p class="step-description">This project adds a touchscreen-friendly graphical interface to OP25, a software-defined radio (SDR) scanner built for the Raspberry Pi. Designed for in-vehicle use, it simplifies talkgroup monitoring with a low-cost, low-power setup. The system serves the user interface from the /html directory and uses api.py to manage communication between the interface and OP25. It is optimized for minimal resource use and adapts to various screen sizes.</p>
 
-    <div class="wizard-step active" id="step-1">
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="nextStep()">Next</button>
+      </div>
+    </div>
+
+    <div class="wizard-step" id="step-2">
       <h4 class="step-title">Step 1: Install OP25</h4>
       <p class="step-description">This command clones the OP25 project and runs its install script.</p>
       <pre><code class="language-bash">cd ~
@@ -27,11 +37,12 @@ git clone https://github.com/boatbod/op25.git
 cd op25
 ./install.sh</code></pre>
       <div class="btn-group">
+        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
         <button class="btn btn-primary" onclick="nextStep()">Next</button>
       </div>
     </div>
 
-    <div class="wizard-step" id="step-2">
+    <div class="wizard-step" id="step-3">
       <h4 class="step-title">Step 2: Install Required Python Packages</h4>
       <p class="step-description">Install the Python libraries used by the user interface and backend API.</p>
       <pre><code class="language-bash">pip install PySide6 watchdog Flask flask-cors</code></pre>
@@ -41,7 +52,7 @@ cd op25
       </div>
     </div>
 
-    <div class="wizard-step" id="step-3">
+    <div class="wizard-step" id="step-4">
       <h4 class="step-title">Step 3: Clone the Headunit Project</h4>
       <p class="step-description">This project contains the HTML interface, API, and configuration utilities.</p>
       <pre><code class="language-bash">git clone https://github.com/TheMrNaab/op25-headunit
@@ -52,7 +63,7 @@ sudo mv op25-vehicle-scanner /opt/op25-project</code></pre>
       </div>
     </div>
 
-    <div class="wizard-step" id="step-4">
+    <div class="wizard-step" id="step-5">
       <h4 class="step-title">Step 4: Configure the Trunking System</h4>
       <p class="step-description">Use the <code>/html/utilities/trunk_system_editor.html</code> utility to generate your trunking system definition file.</p>
       <p class="step-description">Currently, only one system is supported, but you can define additional ones for future updates.</p>
@@ -67,13 +78,13 @@ sudo mv op25-vehicle-scanner /opt/op25-project</code></pre>
       </div>
     </div>
 
-    <div class="wizard-step" id="step-5">
+    <div class="wizard-step" id="step-6">
       <h4 class="step-title">Step 5: Configure Talkgroup Files</h4>
       <p class="step-description">Place the remaining configuration files in the same directory as the trunking file. Templates are available in the <code>/templates/</code> directory.</p>
       <p>Reference the <a href="https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md">OP25 config guide</a></p>
       <ul>
         <li><code>_whitelist.tsv</code> (always overwritten, do not modify)</li>
-        <li><code>_tgroups.csv</code> (optional, can contain names of each talkrouod) </li>
+       <li><code>_tgroups.csv</code> (optional, can contain names of each talkgroup)</li>
         <li><code>_blist.tsv</code> (always overwritten, do not modify)</li>
       </ul>
       <div class="btn-group">
@@ -82,7 +93,7 @@ sudo mv op25-vehicle-scanner /opt/op25-project</code></pre>
       </div>
     </div>
 
-    <div class="wizard-step" id="step-6">
+    <div class="wizard-step" id="step-7">
       <h4 class="step-title">Step 6: Create system2.json</h4>
       <p class="step-description">This file defines the zones and channels shown in the web interface. Generate it using the <code>/html/utilities/system-editor.html</code> utility.</p>
       <pre><code class="language-bash">/opt/op25-project/system-2.json</code></pre>
@@ -92,7 +103,7 @@ sudo mv op25-vehicle-scanner /opt/op25-project</code></pre>
       </div>
     </div>
 
-    <div class="wizard-step" id="step-7">
+    <div class="wizard-step" id="step-8">
       <h4 class="step-title">Step 7: Choose Startup Mode</h4>
       <p class="step-description">Would you like OP25 to start manually or automatically when your Pi boots?</p>
       <div class="btn-group">
@@ -151,8 +162,9 @@ firefox-esr --kiosk http://localhost:8000/ &</code></pre>
       showStep(currentStep);
     }
     function showBranch(type) {
-      document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
-      document.getElementById(`step-${type}`).classList.add('active');
+    currentStep = 8;
+    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+    document.getElementById(`step-${type}`).classList.add('active');
     }
     function backToChoice() {
       showStep(7);
