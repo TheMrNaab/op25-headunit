@@ -131,13 +131,21 @@ firefox-esr --kiosk http://localhost:8000/</code></pre>
         <li>Edit <code>~/.bash_profile</code>:
           <pre><code class="language-bash">[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx</code></pre>
         </li>
-        <li>Edit <code>~/.xinitrc</code>:
+        <li>Edit <code>~/.config/openbox/autostart</code>:
           <pre><code class="language-bash">exec openbox-session</code></pre>
         </li>
         <li>Configure OpenBox autostart:
-          <pre><code class="language-bash">python3 /opt/op25-project/api.py &
-sleep 3
-firefox-esr --kiosk http://localhost:8000/ &</code></pre>
+          <pre><code class="language-bash">
+            #xsetroot -solid black &  # Set background color
+            # Launch Flask API server in background
+            nohup python3 /opt/op25-project/api.py >/dev/null 2>&1 &
+            
+            # Delay briefly to ensure Flask starts before browser launches
+            sleep 10
+            
+            # Launch Firefox in kiosk mode
+            firefox-esr --kiosk http://localhost:8000/ &
+            </code></pre>
         </li>
       </ol>
       <div class="btn-group">
