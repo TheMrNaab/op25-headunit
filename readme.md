@@ -38,10 +38,10 @@ firefox-esr --kiosk http://localhost:8000/
   - `firefox-esr` for interface display  
 
 ### Notes for Ubuntu Server Users
-Ubuntu Server lacks a graphical interface by default. To install one:
+- Ubuntu Server lacks a graphical interface by default. To install one:
 
 ```bash
-sudo apt install xfce4 xfce4-goodies firefox-esr
+sudo apt install openbox firefox-esr xinit x11-xserver-utils
 ```
 
 ## Tested Hardware
@@ -70,12 +70,12 @@ git clone https://github.com/TheMrNaab/op25-headunit
 sudo mv op25-vehicle-scanner /opt/op25-project
 ```
 ### 4. Configure OP25
-Use the provided utilities in `/html/utilities/` the generate a `_trunk.tsv` 
+- Use the provided utilities in `/html/utilities/` the generate a `_trunk.tsv` 
 Place the file in the folder:
 ```bash
 /home/(user)/op25/op25/gr-op25_repeater/apps/
 ```
-Copy the remaining default files into the same directory: 
+- Copy the remaining default files into the same directory: 
 - `_whitelist.tsv`   
 - `_tgroups.csv`  
 - `_blist.tsv`  
@@ -92,15 +92,15 @@ See [op25-config.md](https://github.com/TheMrNaab/op25-headunit/blob/main/help/o
 ```bash
 nano ~/.bash_profile
 ```
-Append to the `.bashprofile`:
+- Append to the `.bashprofile`:
 ```bash
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx
 ```
-Open your `.xinitrc` configuration file:
+- Open your `.xinitrc` configuration file:
 ```bash
 nano ~/.xinitrc
 ```
-Open your `.xinitrc` configuration file:
+- Append to `.xinitrc` configuration file:
 ```bash
 exec openbox-session
 ```
