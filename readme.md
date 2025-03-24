@@ -45,10 +45,9 @@ sudo apt install xfce4 xfce4-goodies firefox-esr
 ```
 
 ## Tested Hardware
-- Raspberry Pi 5 with Ubuntu Server installed  
+- Raspberry Pi 4 with Ubuntu Server installed  
 - Freenove 5" Touchscreen Monitor (800x480)  
 - RTL-SDR Blog V4 R828D RTL2832U 1PPM TCXO SMA SDR  
-- AUX to USB Adapter
 
 ## Installation
 
@@ -70,38 +69,57 @@ pip install PySide6 watchdog Flask flask-cors
 git clone https://github.com/TheMrNaab/op25-headunit
 sudo mv op25-vehicle-scanner /opt/op25-project
 ```
-
-### 4. Configure OP25 Files
-Place the following files in:
-
+### 4. Configure OP25
+Use the provided utilities in `/html/utilities/` the generate a `_trunk.tsv` 
+Place the file in the folder:
 ```bash
 /home/(user)/op25/op25/gr-op25_repeater/apps/
 ```
-
-- `_trunk.tsv`  
-- `_whitelist.tsv`  
+Copy the remaining default files into the same directory: 
+- `_whitelist.tsv`   
 - `_tgroups.csv`  
 - `_blist.tsv`  
 
-Utilities to generate these files are available in the `/html` folder.
 
 See [op25-config.md](https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md) for details.
 
-### 5. Create system.json
-Place your configuration file in:
+### 5. Create a system2.json file (Zones and Channels)
+- Generate your OP25 Headunit configuration file using the utility in `/html/utilities`
+- Place the file inside this script's `/opt/op25-project/system-2.json` installation directory 
 
+### 6. CLI autologin setup with Openbox
+- Open your `.bash_profile` configuration file:
 ```bash
-/opt/op25-project/system-2.json
+nano ~/.bash_profile
+```
+Append to the `.bashprofile`:
+```bash
+[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx
+```
+Open your `.xinitrc` configuration file:
+```bash
+nano ~/.xinitrc
+```
+Open your `.xinitrc` configuration file:
+```bash
+exec openbox-session
 ```
 
-### 6. Set Up Auto-Start
-- Enable auto-login on your Linux system  
-- Create a shell script to:
-  - Run `start.py`  
-  - Launch the UI:  
-    ```bash
-    firefox-esr --kiosk http://localhost:8000/
-    ```
+### 7. Configure OpenBox's Autostart File
+Openbox uses this file to start apps automatically on session launch:
+```bash
+nano ~/.config/openbox/autostart
+```
+Paste this at the end of the file:
+```bash
+python3 /opt/op25-project/api.py &            # Launch Flask API server in background
+sleep 3                                       # Delay briefly to ensure Flask starts before browser launches
+firefox-esr --kiosk http://localhost:8000/ &  # Launch Firefox in kiosk mode
+
+```
+
+### 8. Set Up Auto-Start
+- Enable auto-login on your Linux system
 
 ## Future Plans
 - Expand customization options  
