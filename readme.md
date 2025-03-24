@@ -16,6 +16,7 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 - 
 
 ## Features Coming Soon
+- **OP25 Parameter Adjustments**: Values set in config.ini will be passed to the software. Currently, parameters are hardcoded in the Python script.
 - **Advanced Keypad Entry**: Enter a known TAC or OPS channel directly using the corresponding button.
 - **Active Voice Calls**: View the active talkgroup name or number (if not defined).
 - **Direct Programming**: Web-based utilities will handle software configuration directly, eliminating the need to manually copy configuration files.
@@ -54,4 +55,4 @@ sudo apt install openbox firefox-esr xinit x11-xserver-utils
 - RTL-SDR Blog V4 R828D RTL2832U 1PPM TCXO SMA SDR  
 
 ## Installation
-See the installation wizard in [/html/utilities/install-wizard.html](https://github.com/TheMrNaab/op25-headunit/blob/6022ac7fdb9acd2600f27025fefb03b12a39c06e/html/utilities/install-wizard.html)
+See the installation wizard at [/html/utilities/install-wizard.html](https://github.com/TheMrNaab/op25-headunit/blob/6022ac7fdb9acd2600f27025fefb03b12a39c06e/html/utilities/install-wizard.html).
