@@ -32,7 +32,10 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 ### Pi 5 Compatibility
 - The Raspberry Pi 5 ran more reliably with increased memory. However, OP25 had trouble outputting audio through an AUX-to-USB adapter. A future update will allow selection of the default playback device. The OP25 back-end is still temperamental, and since it is not my script, solutions to common issues are limited and poorly documented online.
 
-### Software
+### Installation
+Download and click through the installation wizard at [/html/utilities/install-wizard.html](https://github.com/TheMrNaab/op25-headunit/blob/6022ac7fdb9acd2600f27025fefb03b12a39c06e/html/utilities/install-wizard.html). 
+
+## Software
 - **Operating System**: Ubuntu Server (recommended for OP25 compatibility).
 - **PI OS** The OP25 struggles with Pi OS and is not reccomdended. 
 - **Dependencies**:  
@@ -42,8 +45,9 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
   - `flash` for serving API and webpages
   - `openbox` for Firefox's GUI
 
-### Notes for Ubuntu Server Users
-- Ubuntu Server lacks a graphical interface by default and you must install these apps:
+## Notes for Ubuntu Server Users
+- Ubuntu Server lacks a graphical interface by default and you must install these apps.
+- These are covered in the installation wizard.
 
 ```bash
 sudo apt install openbox firefox-esr xinit x11-xserver-utils
@@ -54,5 +58,4 @@ sudo apt install openbox firefox-esr xinit x11-xserver-utils
 - Freenove 5" Touchscreen Monitor (800x480)  
 - RTL-SDR Blog V4 R828D RTL2832U 1PPM TCXO SMA SDR  
 
-## Installation
-See the installation wizard at [/html/utilities/install-wizard.html](https://github.com/TheMrNaab/op25-headunit/blob/6022ac7fdb9acd2600f27025fefb03b12a39c06e/html/utilities/install-wizard.html).
+
