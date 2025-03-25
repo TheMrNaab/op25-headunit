@@ -20,6 +20,13 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 - **Advanced Keypad Entry**: Enter a known TAC or OPS channel directly using the corresponding button.
 - **Direct Programming**: Web-based utilities will handle software configuration directly, eliminating the need to manually copy configuration files.
 
+## Known Issues
+- **Auto Screen Off** The screen will power off after 5 minutes. I need to document how to adjust this setting for users.
+- **Singular P25 System Support** In the very near future, I will release a version that supports channels using different P25 systems.
+- **Utilities** The utilities folder contains webpages that create configuration files. I will streamline this process soon.
+- **OP25** This software requires building and rebuilding to meet the required dependancies. It is not my script, but the only one in existence that allows this Headunit to work. Be patient and the installation process will love you back.
+- **Audio Output** The audio works based off of your system's default audio out device. On a Pi 4, this is the AUX jack. On a Pi5, this is an HDMI jack. *I will update my code later this week with the option to select audio devices.* 
+
 ## Requirements
 
 ### Hardware
