@@ -14,6 +14,7 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 - **Scan Mode**: Reloads OP25’s whitelist dynamically
 - **System Integration**: Currently supports one system; future updates will address multi-system support
 - **Active Voice Calls**: View the active talkgroup name or number (if not defined).
+- **Volume Adjustment** Allows you to control the output volume on the home screen. 
   
 ## Features Coming Soon
 - **OP25 Parameter Adjustments**: Values set in config.ini will be passed to the software. Currently, parameters are hardcoded in the Python script.
@@ -21,11 +22,11 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 - **Direct Programming**: Web-based utilities will handle software configuration directly, eliminating the need to manually copy configuration files.
 
 ## Known Issues
-- **Auto Screen Off** The screen will power off after 5 minutes. I need to document how to adjust this setting for users.
-- **Singular P25 System Support** In the very near future, I will release a version that supports channels using different P25 systems.
-- **Utilities** The utilities folder contains webpages that create configuration files. I will streamline this process soon.
-- **OP25** This software requires building and rebuilding to meet the required dependancies. It is not my script, but the only one in existence that allows this Headunit to work. Be patient and the installation process will love you back.
-- **Audio Output** The audio works based off of your system's default audio out device. On a Pi 4, this is the AUX jack. On a Pi5, this is an HDMI jack. *I will update my code later this week with the option to select audio devices.* 
+- **Auto Screen Off**: The display powers off after 5 minutes of inactivity. To change this timeout, open Settings → Power → Screen Blank and select a different interval.
+- **Singular P25 System Support**: A future release will allow use of channels from multiple P25 systems simultaneously.
+-	**Utilities**: The utilities folder contains web pages that generate configuration files. This process will be simplified in an upcoming update.
+- **BoatBod’s OP25**: OP25 is the backend software powering this head unit. It must be built (and rebuilt when dependencies change). This isn’t my script—it’s the only available solution for this hardware—so please follow the build instructions exactly.
+**Audio Output**: Audio defaults to your system’s primary output (AUX on a Pi 4; HDMI on a Pi 5). An option to select a different audio device will be added later this week.
 
 ## Requirements
 
@@ -43,7 +44,8 @@ Download and click through the installation wizard at [/html/utilities/install-w
 
 ### Software
 - **Operating System**: Ubuntu Server (recommended for OP25 compatibility).
-- **PI OS** The OP25 struggles with Pi OS and is not reccomdended. 
+- **PI OS** The OP25 struggles with Pi OS and is not reccomdended.
+- **Tested On** ### Raspberry Pi 4 with Ubuntu Server installed, Freenove 5" Touchscreen Monitor (800x480) and RTL-SDR Blog V4 RTL2832U SDR
 - **Dependencies**:  
   - `OP25` (installed at `/home/(user)/op25`)    
   - `pyttsx3` for text-to-speech (upcoming feature)  
@@ -53,15 +55,8 @@ Download and click through the installation wizard at [/html/utilities/install-w
 
 ### Notes for Ubuntu Server Users
 - Ubuntu Server lacks a graphical interface by default and you must install these apps.
-- These are covered in the installation wizard.
+- This is covered in the installation wizard.
 
-```bash
-sudo apt install openbox firefox-esr xinit x11-xserver-utils
-```
 
-### Tested Hardware
-- Raspberry Pi 4 with Ubuntu Server installed  
-- Freenove 5" Touchscreen Monitor (800x480)  
-- RTL-SDR Blog V4 R828D RTL2832U 1PPM TCXO SMA SDR  
 
 
