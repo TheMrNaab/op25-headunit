@@ -15,18 +15,19 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 - **System Integration**: Currently supports one system; future updates will address multi-system support
 - **Active Voice Calls**: View the active talkgroup name or number (if not defined).
 - **Volume Adjustment** Allows you to control the output volume on the home screen. 
-  
-## Features Coming Soon
-- **OP25 Parameter Adjustments**: Values set in config.ini will be passed to the software. Currently, parameters are hardcoded in the Python script.
-- **Advanced Keypad Entry**: Enter a known TAC or OPS channel directly using the corresponding button.
-- **Direct Programming**: Web-based utilities will handle software configuration directly, eliminating the need to manually copy configuration files.
 
-## Known Issues
+### Known Issues
+- **Default Zone/Channel** When the webpage reloads (or loads for the first time), it will recall the last configuration used. However, the onscren display is not syncronized with that configuration. This is on my priority list to fix :-) 
 - **Auto Screen Off**: The display powers off after 5 minutes of inactivity. To change this timeout, open Settings → Power → Screen Blank and select a different interval.
 - **Singular P25 System Support**: A future release will allow use of channels from multiple P25 systems simultaneously.
 -	**Utilities**: The utilities folder contains web pages that generate configuration files. This process will be simplified in an upcoming update.
 - **BoatBod’s OP25**: OP25 is the backend software powering this head unit. It must be built (and rebuilt when dependencies change). This isn’t my script—it’s the only available solution for this hardware—so please follow the build instructions exactly.
 **Audio Output**: Audio defaults to your system’s primary output (AUX on a Pi 4; HDMI on a Pi 5). An option to select a different audio device will be added later this week.
+
+### Features Coming Soon
+- **OP25 Parameter Adjustments**: Values set in config.ini will be passed to the software. Currently, parameters are hardcoded in the Python script.
+- **Advanced Keypad Entry**: Enter a known TAC or OPS channel directly using the corresponding button.
+- **Direct Programming**: Web-based utilities will handle software configuration directly, eliminating the need to manually copy configuration files.
 
 ## Requirements
 
