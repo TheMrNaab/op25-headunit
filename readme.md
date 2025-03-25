@@ -1,6 +1,6 @@
 # OP25 Vehicle Scanner GUI
 
-<p><img src="help/screenshot.png" width="300"/> <img src="help/screenshot-animated.gif" width="300"/></p>
+<p><img src="help/screenshot-animated.gif" width="300"/></p>
 
 ## Overview
 This project provides a graphical user interface (GUI) for OP25, a software-defined radio (SDR) scanner running on a Raspberry Pi. It integrates OP25 with a touchscreen interface to simplify scanning and monitoring talkgroups in a vehicle at low cost.
