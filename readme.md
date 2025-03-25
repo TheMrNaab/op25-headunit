@@ -13,12 +13,20 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 - **Talkgroup Management**: Supports whitelist, blacklist, and dynamic selection
 - **Scan Mode**: Reloads OP25’s whitelist dynamically
 - **System Integration**: Currently supports one system; future updates will address multi-system support
-- 
+- **Active Voice Calls**: View the active talkgroup name or number (if not defined).
+- **Volume Adjustment** Allows you to control the output volume on the home screen. 
 
-## Features Coming Soon
+### Known Issues
+- **Default Zone/Channel** When the webpage reloads (or loads for the first time), it will recall the last configuration used. However, the onscren display is not syncronized with that configuration. This is on my priority list to fix :-) 
+- **Auto Screen Off**: The display powers off after 5 minutes of inactivity. To change this timeout, open Settings → Power → Screen Blank and select a different interval.
+- **Singular P25 System Support**: A future release will allow use of channels from multiple P25 systems simultaneously.
+-	**Utilities**: The utilities folder contains web pages that generate configuration files. This process will be simplified in an upcoming update.
+- **BoatBod’s OP25**: OP25 is the backend software powering this head unit. It must be built (and rebuilt when dependencies change). This isn’t my script—it’s the only available solution for this hardware—so please follow the build instructions exactly.
+**Audio Output**: Audio defaults to your system’s primary output (AUX on a Pi 4; HDMI on a Pi 5). An option to select a different audio device will be added later this week.
+
+### Features Coming Soon
 - **OP25 Parameter Adjustments**: Values set in config.ini will be passed to the software. Currently, parameters are hardcoded in the Python script.
 - **Advanced Keypad Entry**: Enter a known TAC or OPS channel directly using the corresponding button.
-- **Active Voice Calls**: View the active talkgroup name or number (if not defined).
 - **Direct Programming**: Web-based utilities will handle software configuration directly, eliminating the need to manually copy configuration files.
 
 ## Requirements
@@ -32,9 +40,13 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 ### Pi 5 Compatibility
 - The Raspberry Pi 5 ran more reliably with increased memory. However, OP25 had trouble outputting audio through an AUX-to-USB adapter. A future update will allow selection of the default playback device. The OP25 back-end is still temperamental, and since it is not my script, solutions to common issues are limited and poorly documented online.
 
+## Installation
+Download and click through the installation wizard at [/html/utilities/install-wizard.html](https://github.com/TheMrNaab/op25-headunit/blob/6022ac7fdb9acd2600f27025fefb03b12a39c06e/html/utilities/install-wizard.html). 
+
 ### Software
 - **Operating System**: Ubuntu Server (recommended for OP25 compatibility).
-- **PI OS** The OP25 struggles with Pi OS and is not reccomdended. 
+- **PI OS** The OP25 struggles with Pi OS and is not reccomdended.
+- **Tested On** ### Raspberry Pi 4 with Ubuntu Server installed, Freenove 5" Touchscreen Monitor (800x480) and RTL-SDR Blog V4 RTL2832U SDR
 - **Dependencies**:  
   - `OP25` (installed at `/home/(user)/op25`)    
   - `pyttsx3` for text-to-speech (upcoming feature)  
@@ -43,16 +55,9 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
   - `openbox` for Firefox's GUI
 
 ### Notes for Ubuntu Server Users
-- Ubuntu Server lacks a graphical interface by default and you must install these apps:
+- Ubuntu Server lacks a graphical interface by default and you must install these apps.
+- This is covered in the installation wizard.
 
-```bash
-sudo apt install openbox firefox-esr xinit x11-xserver-utils
-```
 
-## Tested Hardware
-- Raspberry Pi 4 with Ubuntu Server installed  
-- Freenove 5" Touchscreen Monitor (800x480)  
-- RTL-SDR Blog V4 R828D RTL2832U 1PPM TCXO SMA SDR  
 
-## Installation
-See the installation wizard at [/html/utilities/install-wizard.html](https://github.com/TheMrNaab/op25-headunit/blob/6022ac7fdb9acd2600f27025fefb03b12a39c06e/html/utilities/install-wizard.html).
+
