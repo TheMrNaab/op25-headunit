@@ -13,12 +13,11 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 - **Talkgroup Management**: Supports whitelist, blacklist, and dynamic selection
 - **Scan Mode**: Reloads OP25’s whitelist dynamically
 - **System Integration**: Currently supports one system; future updates will address multi-system support
-- 
-
+- **Active Voice Calls**: View the active talkgroup name or number (if not defined).
+  
 ## Features Coming Soon
 - **OP25 Parameter Adjustments**: Values set in config.ini will be passed to the software. Currently, parameters are hardcoded in the Python script.
 - **Advanced Keypad Entry**: Enter a known TAC or OPS channel directly using the corresponding button.
-- **Active Voice Calls**: View the active talkgroup name or number (if not defined).
 - **Direct Programming**: Web-based utilities will handle software configuration directly, eliminating the need to manually copy configuration files.
 
 ## Requirements
