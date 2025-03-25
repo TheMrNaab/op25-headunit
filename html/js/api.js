@@ -1,6 +1,61 @@
 // Define the new host with a different constant name
 
-const API_BASE_URL = "http://192.168.1.44:5001"; // Replace with your actual API base URL
+const API_BASE_URL = `http://${location.hostname}:5001`;
+
+// Send volume to server via POST
+async function sendVolume(level) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/volume/${level}`, {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(`Volume API error: ${error}`);
+        }
+        data = await response.json();
+        console.log(JSON.stringify(data, null, 2));
+    } catch (err) {
+        console.error("Failed to set volume:", err.message);
+    }
+}
+
+function listenLogStream() {
+    const source = new EventSource(API_BASE_URL + '/logging/stream');
+    source.onmessage = event => {
+      const data = JSON.parse(event.data);
+      console.log('Log update:', data);
+  
+      if ((data.Action === 'voice update') || (data.Update === 'voice update')) {
+        const tgName = data["Talkgroup Name"] || data.Talkgroup;
+        const el = document.getElementById('talkgroup');
+        if (el) el.textContent = tgName;
+      }
+    };
+    source.onerror = error => {
+      console.error('SSE error:', error);
+      source.close();
+    };
+  }
+  
+  // Call this once your DOM is ready
+  listenLogStream();
+
+async function fetchCurrentVolume() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/volume/simple`);
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(`Volume fetch error: ${error}`);
+        }
+
+        const data = await response.text()
+        document.getElementById("volumeRange").value = data;
+        updateSliderColor(data);
+    } catch (err) {
+        console.error("Error getting volume:", err.message);
+    }
+}
 
 // Reusable GET request helper with error handling
 async function apiGet(endpoint) {

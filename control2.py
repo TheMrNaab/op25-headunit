@@ -2,21 +2,22 @@ import subprocess
 import os
 import time
 import socket
+import socket
 import subprocess
 import json
 from typing import List
-from ch_manager import MyConfig
+from typing import List
+from PySide6.QtCore import QThread, Signal
+import csv
 #  echo '{"command": "whitelist", "arg1": 47021, "arg2": 0}' | nc -u 127.0.0.1 5000
 
 class OP25Controller:
     def __init__(self):
-        self.config = MyConfig()
-        
-        # TODO: Replace with configuration paths
+        # Define OP25 executable path
         self.rx_script = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/rx.py")
         self.trunk_file = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_trunk.tsv")
-        self.stderr_file = os.path.expanduser("/opt/op25-project/logs/stderr_op25.log")
-        self.stdout_file = os.path.expanduser("/opt/op25-project/logs/stdout_op25.log")
+        self.stderr_file = os.path.expanduser("/opt/op25-project/logs/stderr.2")
+        self.stdout_file = os.path.expanduser("/opt/op25-project/logs/stdout.2")
         self.tgroups_file = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_tgroups.csv")
         self.defaultWhitelistFile = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_whitelist.tsv")
         self.defaultBlacklistFile = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_blist.tsv")
@@ -24,23 +25,26 @@ class OP25Controller:
         self.whitelist_tgids = self.load_tgid_file(self.defaultWhitelistFile)
         self.blacklist_tgids = self.load_tgid_file(self.defaultBlacklistFile)
 
+        # Define Logger
+        #self.logFile = os.path.expanduser("/opt/op25-project/logs/app_log.txt")
+        #self.logger = CustomLogger(self.logFile)
+
         # Set environment variables correctly
-        os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":" + self.config.get("paths", "pythonpath")
+        os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":/home/dnaab/op25/op25/gr-op25_repeater/apps/tx:/home/dnaab/op25/build"
 
         # Kill any existing OP25 processes before starting a new one
         subprocess.run(["pkill", "-f", "rx.py"])
 
-        #TODO: Implement config.build_command()
+        # Define the OP25 command with arguments
         self.op25_command = [
             self.rx_script , "--nocrypt", "--args", "rtl",
-            "--gains", "lna:35", "-S", "960000", "-q", "0",
+            "--gains", "lna:40", "-S", "960000", "-q", "0",
             "-v", "1", "-2", "-V", "-U",
             "-T", self.trunk_file,
             "-U", "-l", "5000"
         ]
-        
     def start(self):
-        
+        # Start OP25 process and redirect stderr to a file
         self.op25_process = subprocess.Popen(
             self.op25_command,
             stdout=open(self.stdout_file, "w"),
@@ -48,14 +52,12 @@ class OP25Controller:
             text=True
         )
 
-        time.sleep(3) # GIVE TIME TO START AND CATCH UP
-        
+        time.sleep(14)
         if(self.isConnected()):
-            print("Connection Status", "OP25 Connected")
+             print("Connection Status", "OP25 Connected")
 
     def isConnected(self, timeout=30):
         """Continuously check for 'Reconfiguring NAC' in the log file until found or timeout."""
-        print("...", "isConnected()")
         start_time = time.time()
 
         while time.time() - start_time < timeout:
@@ -76,6 +78,7 @@ class OP25Controller:
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
                 message = json.dumps({"command": command, "arg1": arg2, "arg2": 0})
                 sock.sendto(message.encode(), server_address)
+                # self.logger.info(f"Sent {message}")
 
                 response, _ = sock.recvfrom(buffer_size)
                 response_data = json.loads(response.decode())
@@ -219,3 +222,7 @@ class OP25Controller:
         print("[INFO] Restarting OP25...")
         self.stop()
         self.start()
+
+v = OP25Controller()
+v.start()
+input("Ask")

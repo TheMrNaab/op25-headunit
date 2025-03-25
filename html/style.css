@@ -1,4 +1,49 @@
 /* Title Bar - Center Title Text Fully */
+/* Volume Slider below table */
+
+.slider {
+    --thumb-color: red; /* Default thumb color */
+    -webkit-appearance: none;
+    width: 70%;
+    height: 25px;
+    background: #e9ecef;
+    outline: none;
+    opacity: 1;
+    border-radius: 10px;
+  }
+  
+  .slider:hover {
+    opacity: 1;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: var(--thumb-color);  /* use the CSS variable */
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: var(--thumb-color);
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+  }
+
+  .volume-control {
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
 
 .title-bar {
     width: 100%;
@@ -99,6 +144,7 @@ body {
     align-items: center;  /* Vertically centers the content */
     justify-content: center; /* Horizontally centers the content */
     margin: 0 auto;
+    flex-direction: column;
 }
 
 .container, body{

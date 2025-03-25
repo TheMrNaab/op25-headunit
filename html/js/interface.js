@@ -20,25 +20,45 @@ init();
 
 function init() {
   document.addEventListener("DOMContentLoaded", async () => {
-    console.log("DOM fully loaded and parsed");
 
-    try {
-      const data = await fetchAllZones();
-      const zones = data.zones || [];
+  //AKNOWLEDGE LOADING
+  console.log("DOM fully loaded and parsed");
 
-      updateConfig(zones, 0, 0);
+  // VOLUME ADJUSTMENT LISTENER
+  document.getElementById("volumeRange").addEventListener("change", function () {
+    const level = this.value;
+    sendVolume(level);
+  });
+
+  // SET CURRENT VOLUME AND UPDATE THE INITIAL SLIDER COLOR
+  fetchCurrentVolume();
 
 
-    } catch (err) {
-      console.error("Failed to load zones:", err);
-      showAlert("Failed to load zones.");
-    }
+  // SET THE EVENT LISTENER FOR UPDATING SLIDER COLOR BASED ON VALUE
+  slider.addEventListener("input", () => {
+      updateSliderColor(slider.value);
+  });
 
-    // Button listeners
-    const btnZoneList = document.getElementById("btnZoneList");
-    if (btnZoneList) {
-      btnZoneList.addEventListener("click", openZoneModal);
-    }
+
+  try {
+    const data = await fetchAllZones();
+    const zones = data.zones || [];
+    config.allZones = zones;
+    config.activeZoneData = zones[0];
+    config.activeZoneIndex = 0;
+    config.activeZoneName = zones[0].name;
+    updateConfig2(config.allZones[0].channels[0]);
+
+  } catch (err) {
+    console.error("Failed to load zones:", err);
+    showAlert("Failed to load zones.");
+  }
+
+  // Button listeners
+  const btnZoneList = document.getElementById("btnZoneList");
+  if (btnZoneList) {
+    btnZoneList.addEventListener("click", openZoneModal);
+  }
 
     const btnChannelList = document.getElementById("btnChannelList");
     if (btnChannelList) {
@@ -135,6 +155,8 @@ function init() {
       }
 
     });
+
+
   });
 }
 
@@ -250,7 +272,8 @@ function findChannelIndex(zones, zone_index, channel_id) {
 function updateUI() {
   updateElement('channel-number', config.activeChannelNumber.toString());
   updateElement('channel-name', config.activeChannel.name); 
-  updateElement('talkgroup', config.activeZoneName);
+  console.log("Active Zone", config.activeZoneName)
+  updateElement('zone', config.activeZoneName);
 }
 
 function updateElement(id, text){
@@ -280,8 +303,6 @@ function showProgressModal() {
  * Open the zone selection modal and populate it with zones.
  */
 async function openZoneModal() {
-  console.log('openZoneModal');
-
   const zoneModalEl = document.getElementById('zoneModal');
   const zoneModal = new bootstrap.Modal(zoneModalEl, { backdrop: 'static', keyboard: false });
   zoneModal.show();
@@ -567,4 +588,21 @@ async function populateZoneList() {
     showAlert(error.message);
   }
 }
+const slider = document.getElementById("volumeRange");
+
+function updateSliderColor(value) {
+    console.log(value);
+    let color;
+    if (value < 33) {
+        color = "red";
+    } else if (value < 66) {
+        color = "orange";
+    } else {
+        color = "green";
+    }
+  document.getElementById('volume_percent').textContent = value + "%";
+
+    slider.style.setProperty('--thumb-color', color);
+}
+
 

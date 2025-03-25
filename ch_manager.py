@@ -2,12 +2,29 @@ import json
 import os
 import configparser
 import sys
+import csv
 
 class ChannelManager:
     def __init__(self, file_path):
-        """Initialize with the path to the JSON file."""
+        """Initialize with the path to the JSON file and configuration manager for config.ini."""
         self.file_path = file_path
         self.data = self._load_file()
+        self.config = MyConfig()
+
+        self._tg_cache = {}
+
+    def get_alpha_tag(self, tgid: int) -> str:
+        csv_path = self.config.get('paths','tgroups_file')
+        if not self._tg_cache:
+            with open(csv_path, newline='') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    try:
+                        self._tg_cache[int(row['Decimal'])] = row['Alpha Tag']
+                    except ValueError:
+                        continue
+        return self._tg_cache.get(tgid, f"Unknown - {tgid}")
+
     def _load_file(self):
         """Loads the JSON file and returns data."""
         try:
