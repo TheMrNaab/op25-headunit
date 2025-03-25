@@ -34,7 +34,7 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 ### Hardware
 - Raspberry Pi 4 
 - RTL-SDR USB dongle 
-- Touchscreen display 
+- Touchscreen display (or any monitor with a mouse)
 - **MicroSD Card**: Use a new card to avoid data loss. Install Ubuntu Server on its own MicroSD card. This script is in beta and may not be fully stable.
 
 ### Pi 5 Compatibility
