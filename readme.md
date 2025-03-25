@@ -55,7 +55,7 @@ Download and click through the installation wizard at [/html/utilities/install-w
   - `openbox` for Firefox's GUI
 
 ### Notes for Ubuntu Server Users
-- Ubuntu Server lacks a graphical interface by default and you must install these apps.
+- Ubuntu Server lacks a graphical interface by default and you must a GUI app to run this app.
 - This is covered in the installation wizard.
 
 
