@@ -7,9 +7,12 @@ This project adds a touchscreen-friendly graphical interface to OP25, a software
 
 ## Step 1: Install OP25
 
-1. **Compile and Install BoatBod's OP25** 
+1. **Download Raspberry Pi Imager**
+   [Download](https://www.raspberrypi.com/software/) Raspberry Pi Imager and use it to flash Ubuntu Server onto a new MicroSD card. During setup, configure your WiFi settings as needed.
+   
+3. **Compile and Install BoatBod's OP25** 
    This command clones the OP25 project and runs its install script:
-
+   *You may need to recomplile numerous times to solve dependancy issues* 
    ```bash
    cd ~
    git clone https://github.com/boatbod/op25.git
@@ -17,7 +20,7 @@ This project adds a touchscreen-friendly graphical interface to OP25, a software
    ./install.sh
    ```
 
-2. **Replace Modified OP25 Files**  
+4. **Replace Modified OP25 Files**  
    Changes had to be made to `terminal.py` and `rx.py` for this to work.
    ```bash
    cp /opt/op25-project/templates/terminal.py /home/$(whoami)/op25/op25/gr-op25_repeater/apps/
@@ -56,15 +59,15 @@ Use the `/html/utilities/trunk_system_editor.html` utility to generate your trun
 Place the generated file in:
 
 ```bash
-/home/(user)/op25/op25/gr-op25_repeater/apps/
+cd /home/$(whoami)/op25/op25/gr-op25_repeater/apps/
 ```
 
 ---
 
 ## Step 5: Configure Talkgroup Files
 
-Place the remaining configuration files in the same directory as the trunking file. Templates are available in the `/templates/` directory.  
-Reference the [OP25 config guide](https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md).
+1. Place the remaining configuration files in the same directory as the trunking file. Templates are available in the `/templates/` directory.  
+2. Reference the [OP25 config guide](https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md).
 
 Files:
 
@@ -76,12 +79,12 @@ Files:
 
 ## Step 6: Create `system2.json`
 
-This file defines the zones and channels shown in the web interface. Generate it using the `/html/utilities/system-editor.html` utility.
+1. This file defines the zones and channels shown in the web interface. Generate it using the `/html/utilities/system-editor.html` utility.
 
-Place the file here:
+2. Place the file here:
 
 ```bash
-/opt/op25-project/system-2.json
+cd /opt/op25-project/system-2.json
 ```
 
 ---
