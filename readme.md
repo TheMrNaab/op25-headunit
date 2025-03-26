@@ -41,7 +41,7 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 - The Raspberry Pi 5 ran more reliably with increased memory. However, OP25 had trouble outputting audio through an AUX-to-USB adapter. A future update will allow selection of the default playback device. The OP25 back-end is still temperamental, and since it is not my script, solutions to common issues are limited and poorly documented online.
 
 ## Installation
-Download and click through the installation wizard at [/html/utilities/install-wizard.html](https://github.com/TheMrNaab/op25-headunit/blob/6022ac7fdb9acd2600f27025fefb03b12a39c06e/html/utilities/install-wizard.html). 
+Follow the installation wizard at [/html/utilities/install-wizard.html]([html/utilities/wizard.md)). 
 
 **Be sure to follow all configuration steps including the replacement of terminal.py in the OP25 installation.**
 
