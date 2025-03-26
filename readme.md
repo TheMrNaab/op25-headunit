@@ -19,7 +19,7 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 ### Known Issues
 -	**Utilities**: The utilities folder contains web pages that generate configuration files. This process will be simplified in an upcoming update.
 - **BoatBod’s OP25**: OP25 is the backend software powering this head unit. It must be built (and rebuilt when dependencies change). This isn’t my script—it’s the only available solution for this hardware—so please follow the build instructions exactly.
-### Issues Marked Resolved in Next Release
+#### Issues Marked Resolved in Next Release
 - **Default Zone/Channel**: On page load (or reload), the app restores the last‑used zone and channel behind the scenes. However, the on‑screen display won’t update automatically—you’ll need to reselect the channel to see the restored setting. This is on my priority list to fix.
 - **Auto Screen Off**: The display powers off after 5 minutes of inactivity.
 - **Singular P25 System Support**: A future release will allow use of channels from multiple P25 systems simultaneously.
