@@ -7,7 +7,7 @@ This project adds a touchscreen-friendly graphical interface to OP25, a software
 
 ## Step 1: Install OP25
 
-1.**Compile and Install BoatBod's OP25** 
+1. **Compile and Install BoatBod's OP25** 
    This command clones the OP25 project and runs its install script:
 
    ```bash
