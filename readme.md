@@ -43,6 +43,8 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 ## Installation
 Download and click through the installation wizard at [/html/utilities/install-wizard.html](https://github.com/TheMrNaab/op25-headunit/blob/6022ac7fdb9acd2600f27025fefb03b12a39c06e/html/utilities/install-wizard.html). 
 
+**Be sure to follow all configuration steps including the replacement of terminal.py in the OP25 installation.**
+
 ### Software
 - **Operating System**: Ubuntu Server (recommended for OP25 compatibility).
 - **PI OS** The OP25 struggles with Pi OS and is not reccomdended.
