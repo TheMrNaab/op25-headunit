@@ -115,5 +115,9 @@ Configure your Pi to start the API and browser automatically on boot:
    sleep 3
    firefox-esr --kiosk http://localhost:8000/ &
    ```
-
----
+   
+4. **Replace Modified OP25 Files**  
+   Changes had to be made to `terminal.py` and `rx.py` for this to work.
+   ```bash
+   cp /opt/op25-project/templates/terminal.py /home/$(whoami)/op25/op25/gr-op25_repeater/apps/
+   cp /opt/op25-project/templates/rx.py /home/$(whoami)/op25/op25/gr-op25_repeater/apps/
