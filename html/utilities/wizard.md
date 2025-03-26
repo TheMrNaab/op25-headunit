@@ -1,174 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OP25 Setup Wizard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet"/>
-  <style>
-    .wizard-step { display: none; margin-top: 2rem; }
-    .wizard-step.active { display: block; }
-    pre code { background: #f5f5f5; border-radius: 5px; padding: 1rem; display: block; }
-    .step-title { margin-bottom: 1rem; }
-    .step-description { margin-bottom: 1rem; font-size: 0.95rem; color: #555; }
-    .btn-group { margin-top: 1.5rem; }
-  </style>
-</head>
-<body class="container py-4">
-  <h1 class="mb-4">OP25 Head Unit Setup Wizard</h1>
-  
-  <div id="wizard">
-    
-      <div class="wizard-step active" id="step-1">
-      <h4 class="step-title">Overview</h4>
-      <p class="step-description">This project adds a touchscreen-friendly graphical interface to OP25, a software-defined radio (SDR) scanner built for the Raspberry Pi. Designed for in-vehicle use, it simplifies talkgroup monitoring with a low-cost, low-power setup. The system serves the user interface from the /html directory and uses api.py to manage communication between the interface and OP25. It is optimized for minimal resource use and adapts to various screen sizes.</p>
 
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="nextStep()">Next</button>
-      </div>
-    </div>
+# OP25 Head Unit Setup Wizard
 
-    <div class="wizard-step" id="step-2">
-      <h4 class="step-title">Step 1: Install OP25</h4>
-      <p class="step-description">This command clones the OP25 project and runs its install script.</p>
-      <pre><code class="language-bash">cd ~
+This project adds a touchscreen-friendly graphical interface to OP25, a software-defined radio (SDR) scanner built for the Raspberry Pi. Designed for in-vehicle use, it simplifies talkgroup monitoring with a low-cost, low-power setup. The system serves the user interface from the `/html` directory and uses `api.py` to manage communication between the interface and OP25. It is optimized for minimal resource use and adapts to various screen sizes.
+
+---
+
+## Step 1: Install OP25
+
+This command clones the OP25 project and runs its install script:
+
+```bash
+cd ~
 git clone https://github.com/boatbod/op25.git
 cd op25
-./install.sh</code></pre>
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Next</button>
-      </div>
-    </div>
+./install.sh
+```
 
-    <div class="wizard-step" id="step-3">
-      <h4 class="step-title">Step 2: Install Required Python Packages</h4>
-      <p class="step-description">Install the Python libraries used by the user interface and backend API.</p>
-      <pre><code class="language-bash">pip install PySide6 watchdog Flask flask-cors</code></pre>
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Next</button>
-      </div>
-    </div>
+---
 
-    <div class="wizard-step" id="step-4">
-      <h4 class="step-title">Step 3: Clone the Headunit Project</h4>
-      <p class="step-description">This project contains the HTML interface, API, and configuration utilities.</p>
-      <pre><code class="language-bash">git clone https://github.com/TheMrNaab/op25-headunit
-sudo mv op25-vehicle-scanner /opt/op25-project</code></pre>
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Next</button>
-      </div>
-    </div>
+## Step 2: Install Required Python Packages
 
-    <div class="wizard-step" id="step-5">
-      <h4 class="step-title">Step 4: Configure the Trunking System</h4>
-      <p class="step-description">Use the <code>/html/utilities/trunk_system_editor.html</code> utility to generate your trunking system definition file.</p>
-      <p class="step-description">Currently, only one system is supported, but you can define additional ones for future updates.</p>
-      <p class="step-description">More details about this file can be found in the <a href="https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md" target="_blank">OP25 config guide</a>.</p>
-      <p class="step-description">Place the generated file in:</p>
-      <pre><code class="language-bash">/home/(user)/op25/op25/gr-op25_repeater/apps/</code></pre>
-      
-      
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Next</button>
-      </div>
-    </div>
+Install the Python libraries used by the user interface and backend API:
 
-    <div class="wizard-step" id="step-6">
-      <h4 class="step-title">Step 5: Configure Talkgroup Files</h4>
-      <p class="step-description">Place the remaining configuration files in the same directory as the trunking file. Templates are available in the <code>/templates/</code> directory.</p>
-      <p>Reference the <a href="https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md">OP25 config guide</a></p>
-      <ul>
-        <li><code>_whitelist.tsv</code> (always overwritten, do not modify)</li>
-       <li><code>_tgroups.csv</code> (optional, can contain names of each talkgroup)</li>
-        <li><code>_blist.tsv</code> (always overwritten, do not modify)</li>
-      </ul>
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Next</button>
-      </div>
-    </div>
+```bash
+pip install PySide6 watchdog Flask flask-cors
+```
 
-    <div class="wizard-step" id="step-7">
-      <h4 class="step-title">Step 6: Create system2.json</h4>
-      <p class="step-description">This file defines the zones and channels shown in the web interface. Generate it using the <code>/html/utilities/system-editor.html</code> utility.</p>
-      <pre><code class="language-bash">/opt/op25-project/system-2.json</code></pre>
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Next</button>
-      </div>
-    </div>
+---
 
-    <div class="wizard-step" id="step-8">
-      <h4 class="step-title">Step 7: Choose Startup Mode</h4>
-      <p class="step-description">Would you like OP25 to start manually or automatically when your Pi boots?</p>
-      <div class="btn-group">
-        <button class="btn btn-outline-primary" onclick="showBranch('manual')">Manual Start</button>
-        <button class="btn btn-outline-success" onclick="showBranch('auto')">Auto Start</button>
-        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
-      </div>
-    </div>
+## Step 3: Clone the Headunit Project
 
-    <div class="wizard-step" id="step-manual">
-      <h4 class="step-title">Manual Start Instructions</h4>
-      <p class="step-description">Run these commands manually whenever you want to launch the system.</p>
-      <pre><code class="language-bash">openbox-session
+This project contains the HTML interface, API, and configuration utilities:
+
+```bash
+git clone https://github.com/TheMrNaab/op25-headunit
+sudo mv op25-vehicle-scanner /opt/op25-project
+```
+
+---
+
+## Step 4: Configure the Trunking System
+
+Use the `/html/utilities/trunk_system_editor.html` utility to generate your trunking system definition file.
+
+- Currently, only one system is supported, but you can define additional ones for future updates.
+- More details about this file can be found in the [OP25 config guide](https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md).
+
+Place the generated file in:
+
+```bash
+/home/(user)/op25/op25/gr-op25_repeater/apps/
+```
+
+---
+
+## Step 5: Configure Talkgroup Files
+
+Place the remaining configuration files in the same directory as the trunking file. Templates are available in the `/templates/` directory.  
+Reference the [OP25 config guide](https://github.com/TheMrNaab/op25-headunit/blob/main/help/op25-config.md).
+
+Files:
+
+- `_whitelist.tsv` *(always overwritten, do not modify)*
+- `_tgroups.csv` *(optional, can contain names of each talkgroup)*
+- `_blist.tsv` *(always overwritten, do not modify)*
+
+---
+
+## Step 6: Create `system2.json`
+
+This file defines the zones and channels shown in the web interface. Generate it using the `/html/utilities/system-editor.html` utility.
+
+Place the file here:
+
+```bash
+/opt/op25-project/system-2.json
+```
+
+---
+
+## Step 7: Choose Startup Mode
+
+Would you like OP25 to start manually or automatically when your Pi boots?
+
+### Manual Start Instructions
+
+Run these commands manually whenever you want to launch the system:
+
+```bash
+openbox-session
 python3 /opt/op25-project/api.py &
-firefox-esr --kiosk http://localhost:8000/</code></pre>
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="backToChoice()">Back</button>
-      </div>
-    </div>
+firefox-esr --kiosk http://localhost:8000/
+```
 
-    <div class="wizard-step" id="step-auto">
-      <h4 class="step-title">Auto Start Configuration</h4>
-      <p class="step-description">Configure your Pi to start the API and browser automatically on boot.</p>
-      <ol>
-        <li>Edit <code>~/.bash_profile</code>:
-          <pre><code class="language-bash">[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx</code></pre>
-        </li>
-        <li>Edit <code>~/.xinitrc</code>:
-          <pre><code class="language-bash">exec openbox-session</code></pre>
-        </li>
-        <li>Configure OpenBox autostart:
-          <pre><code class="language-bash">python3 /opt/op25-project/api.py &
-sleep 3
-firefox-esr --kiosk http://localhost:8000/ &</code></pre>
-        </li>
-      </ol>
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="backToChoice()">Back</button>
-      </div>
-    </div>
+---
 
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
-  <script>
-    let currentStep = 1;
-    function showStep(step) {
-      document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
-      document.getElementById(`step-${step}`).classList.add('active');
-    }
-    function nextStep() {
-      currentStep++;
-      showStep(currentStep);
-    }
-    function prevStep() {
-      currentStep--;
-      showStep(currentStep);
-    }
-    function showBranch(type) {
-    currentStep = 8;
-    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
-    document.getElementById(`step-${type}`).classList.add('active');
-    }
-    function backToChoice() {
-      showStep(7);
-    }
-  </script>
-</body>
-</html>
+### Auto Start Configuration
+
+Configure your Pi to start the API and browser automatically on boot:
+
+1. **Edit `~/.bash_profile`:**
+   ```bash
+   [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx
+   ```
+
+2. **Edit `~/.xinitrc`:**
+   ```bash
+   exec openbox-session
+   ```
+
+3. **Configure OpenBox autostart:**
+   ```bash
+   python3 /opt/op25-project/api.py &
+   sleep 3
+   firefox-esr --kiosk http://localhost:8000/ &
+   ```
+
+---
