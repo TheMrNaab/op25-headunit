@@ -3,7 +3,7 @@
 <p><img src="help/screenshot-updated.png" width="300"/> <img src="help/screenshot-animated.gif" width="300"/></p>
 
 ## Overview
-This project provides a graphical user interface (GUI) for OP25, a software-defined radio (SDR) scanner running on a Raspberry Pi. It integrates OP25 with a touchscreen interface to simplify scanning and monitoring talkgroups in a vehicle at low cost.
+This project adds a touchscreen-friendly graphical interface to OP25, a software-defined radio (SDR) scanner for the Raspberry Pi. Designed for public safety personnel and radio enthusiasts, it offers a low-cost alternative to expensive commercial scanners like the Bearcat. The interface simplifies talkgroup scanning and monitoring in a vehicle without the high price tag.
 
 ## User Interface
 The project serves the `/html` folder for the UI and uses `api.py` to handle interaction between the webpage and OP25. This setup uses fewer resources and allows layout flexibility based on screen size.
