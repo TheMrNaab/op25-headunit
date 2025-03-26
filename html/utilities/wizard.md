@@ -7,14 +7,21 @@ This project adds a touchscreen-friendly graphical interface to OP25, a software
 
 ## Step 1: Install OP25
 
-This command clones the OP25 project and runs its install script:
+1.**Compile and Install BoatBod's OP25** 
+   This command clones the OP25 project and runs its install script:
 
-```bash
-cd ~
-git clone https://github.com/boatbod/op25.git
-cd op25
-./install.sh
-```
+   ```bash
+   cd ~
+   git clone https://github.com/boatbod/op25.git
+   cd op25
+   ./install.sh
+   ```
+
+2. **Replace Modified OP25 Files**  
+   Changes had to be made to `terminal.py` and `rx.py` for this to work.
+   ```bash
+   cp /opt/op25-project/templates/terminal.py /home/$(whoami)/op25/op25/gr-op25_repeater/apps/
+   cp /opt/op25-project/templates/rx.py /home/$(whoami)/op25/op25/gr-op25_repeater/apps/
 
 ---
 
@@ -116,8 +123,4 @@ Configure your Pi to start the API and browser automatically on boot:
    firefox-esr --kiosk http://localhost:8000/ &
    ```
    
-4. **Replace Modified OP25 Files**  
-   Changes had to be made to `terminal.py` and `rx.py` for this to work.
-   ```bash
-   cp /opt/op25-project/templates/terminal.py /home/$(whoami)/op25/op25/gr-op25_repeater/apps/
-   cp /opt/op25-project/templates/rx.py /home/$(whoami)/op25/op25/gr-op25_repeater/apps/
+
