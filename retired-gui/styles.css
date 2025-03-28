@@ -1,0 +1,191 @@
+/* ================================
+   GLOBAL STYLES
+   ================================ */
+   QWidget {
+    background-color: black;
+}
+
+QListWidget {
+    font-size: 18pt;
+}
+
+/* ================================
+   LABELS
+   ================================ */
+QLabel#lblZone,
+QLabel#lblChannelName_2 {
+    font-size: 13px;
+}
+
+BlinkingLabel#lblChannelName_2 {
+    background-color: white;
+    color: red;
+}
+
+QLabel#lblSoundStatus,
+QLabel#lblError,
+QLabel#lblChanelType,
+QLabel#lblSync,
+QLabel#lblConnectionStatus {
+    background-color:white;
+    font-weight: 100;
+    font-size: 13px;
+}
+
+/* ================================
+   GENERAL BUTTON STYLING
+   ================================ */
+QPushButton {
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #666;
+    padding: 8px;
+}
+
+/* ================================
+   FUNCTION BUTTONS (Channels, Zones, Mute, Exit)
+   ================================ */
+   QPushButton#btnGroups, 
+   QPushButton#btnMenu, 
+   QPushButton#btnChannels, 
+   QPushButton#btnZones, 
+   QPushButton#btnMute,
+   QPushButton#btnExit_2 {
+    background-color: white;
+    color: black;
+    margin-left: 3px;
+    margin-top: 10px;
+    font-weight: 100;
+}
+
+/* Pressed state */
+QPushButton#btnMenu:pressed, 
+QPushButton#btnGroups:pressed, 
+QPushButton#btnChannels:pressed, 
+QPushButton#btnZones:pressed,  
+QPushButton#btnMute:pressed,
+QPushButton#btnExit_2:pressed {
+    background-color: #666;
+    color: white;
+    border: 2px solid white;
+}
+
+/* Disabled state */
+QPushButton#btnMenu:disabled, 
+QPushButton#btnGroups:disabled, 
+QPushButton#btnChannels:disabled, 
+QPushButton#btnZones:disabled, 
+QPushButton#btnMute:disabled,
+QPushButton#btnExit_2:disabled {
+    color: darkgray;
+    background: black;
+}
+
+/* ================================
+   NAVIGATION BUTTONS (Channel & Zone Up/Down)
+   ================================ */
+QPushButton#btnZnDown, 
+QPushButton#btnZnUp,
+QPushButton#btnChDown, 
+QPushButton#btnChUp {
+    background-color: white;
+    color: black;
+    margin-top: 10px;
+    margin-left: 3px;
+}
+
+/* Pressed state */
+QPushButton#btnChDown:pressed, 
+QPushButton#btnChUp:pressed, 
+QPushButton#btnZnDown:pressed, 
+QPushButton#btnZnUp:pressed {
+    color: darkgray;
+    background: black;
+}
+
+/* Disabled state */
+QPushButton#btnChDown:disabled,
+QPushButton#btnChUp:disabled,
+QPushButton#btnZnUp:disabled,
+QPushButton#btnZnDown:disabled {
+    color: darkgray;
+    background: black;
+}
+
+/* ================================
+   NUMBER PAD BUTTONS (0-9)
+   ================================ */
+QPushButton#btn0,
+QPushButton#btn1,
+QPushButton#btn2,
+QPushButton#btn3,
+QPushButton#btn4,
+QPushButton#btn5,
+QPushButton#btn6,
+QPushButton#btn7,
+QPushButton#btn8,
+QPushButton#btn9 {
+    background-color: white;
+    color: black;
+    font-weight: normal;
+}
+
+/* Pressed state */
+QPushButton#btn0:pressed,
+QPushButton#btn1:pressed,
+QPushButton#btn2:pressed,
+QPushButton#btn3:pressed,
+QPushButton#btn4:pressed,
+QPushButton#btn5:pressed,
+QPushButton#btn6:pressed,
+QPushButton#btn7:pressed,
+QPushButton#btn8:pressed,
+QPushButton#btn9:pressed {
+    background-color: #666;
+}
+
+/* Disabled state */
+QPushButton#btn0:disabled,
+QPushButton#btn1:disabled,
+QPushButton#btn2:disabled,
+QPushButton#btn3:disabled,
+QPushButton#btn4:disabled,
+QPushButton#btn5:disabled,
+QPushButton#btn6:disabled,
+QPushButton#btn7:disabled,
+QPushButton#btn8:disabled,
+QPushButton#btn9:disabled {
+    color: darkgray;
+    background: black;
+}
+
+/* ================================
+   SPECIAL BUTTONS (GO & DELETE)
+   ================================ */
+QPushButton#btnGo {
+    background-color: green;
+    color: white;
+}
+
+QPushButton#btnDel {
+    background-color: red;
+    color: white;
+}
+
+/* Disabled state */
+QPushButton#btnGo:disabled,
+QPushButton#btnDel:disabled {
+    background-color: #5a5a5a; /* Dimmed gray */
+    color: #c0c0c0; /* Lighter text */
+    border: 2px solid #777; /* Less contrast */
+    opacity: 0.6; /* Make it look faded */
+    font-weight: normal;
+}
+
+/* Pressed state */
+QPushButton#btnGo:pressed,
+QPushButton#btnDel:pressed {
+    background-color: #5a5a5a;
+    color: #c0c0c0;
+    border: 2px solid #777;
+}

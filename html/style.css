@@ -1,0 +1,338 @@
+/* Title Bar - Center Title Text Fully */
+/* Volume Slider below table */
+
+.slider {
+    --thumb-color: red; /* Default thumb color */
+    -webkit-appearance: none;
+    width: 70%;
+    height: 25px;
+    background: #e9ecef;
+    outline: none;
+    opacity: 1;
+    border-radius: 10px;
+  }
+  
+  .slider:hover {
+    opacity: 1;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: var(--thumb-color);  /* use the CSS variable */
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: var(--thumb-color);
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+  }
+
+  .volume-control {
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+.title-bar {
+    width: 100%;
+    background: var(--bs-gray-800);
+    color: #fff;
+    padding: 14px 0 14px 0;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #000;
+    max-height: 37px;
+    position: relative; /* Needed for absolute positioning */
+}
+
+.title-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8em;
+    text-align: center;
+    font-weight: bold;
+    width: 100%; /* Ensures full width */
+    flex-grow: 1;
+}
+
+.status-icons {
+    position: absolute;
+    right: 10px; /* Keeps icons on the right */
+    font-size: 15px !important;
+    padding-right: 15px;
+    font-size: .8em;
+}
+
+/* Button Layout - Add ZN and CH Labels */
+.function-buttons {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #222;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+    border-top: 2px solid #000;
+}
+
+.function-buttons button {
+    width: 80px;
+    height: 80px;
+    font-size: 1.5rem;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    background-color: #444;
+    display: flex;
+    flex-direction: column; /* Stack icon and text */
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s ease-in-out; /* Smooth scaling */
+}
+
+.function-buttons button span {
+    font-size: 0.8rem;
+    margin-top: 3px;
+}
+
+.function-buttons button:active {
+    transform: scale(0.9); /* Slightly shrink on click */
+}
+
+.function-buttons button:hover {
+    filter: brightness(1.3);
+}
+
+/* Hide Labels on Small Screens */
+@media (max-width: 500px) {
+    .function-buttons button span {
+        display: none; /* Hide text on smaller screens */
+    }
+}
+
+/* Main Display */
+#main-display {
+    display: block;
+}
+
+body {
+    background-color: (--bs-gray-900);
+    color: #000;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+
+.container {
+    max-width: 700px;
+    height: calc(100vh - 37px - 80px); /* Available space between title bar and bottom buttons */
+    display: flex;
+    align-items: center;  /* Vertically centers the content */
+    justify-content: center; /* Horizontally centers the content */
+    margin: 0 auto;
+    flex-direction: column;
+}
+
+.container, body{
+    background: var(--bs-gray-900);
+}
+
+#main-display, #OnScreenDisplay {
+    background:var(--bs-gray-200);
+
+}
+
+.display {
+    background: var(--bs-gray-200);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #000;
+    position: relative;
+    min-height: 150px;
+    transition: opacity 0.3s ease-in-out;
+    width: 90%;
+}
+
+.channel-number {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.text-2rem {
+    font-size: 2rem !important;
+}
+
+.talkgroup {
+    font-size: 2rem;
+    color: #333;
+}
+
+.system-name {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+/* Sections for Display Swapping */
+.section {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+/* Channel/Zone List */
+.list-container {
+    text-align: left;
+    max-height: 300px;
+    overflow-y: auto;
+    position: relative;
+    padding-right: 50px; /* space for the scroll buttons */
+}
+
+.list-container button {
+    background: #ddd;
+    color: #000;
+    border: none;
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-bottom: 1px solid #bbb;
+}
+
+.list-container button:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* Progress Container - Full Height Centering */
+.progress-container {
+    display: none; /* Keep hidden until needed */
+    width: 100%;
+    height: 150px;
+    background: #fff;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress {
+    width: 80%;
+    height: 30px;
+}
+
+.progress-bar {
+    height: 100%;
+}
+
+/* Full-screen overlay */
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent grey */
+    z-index: 900; /* Below progress bar but above main UI */
+    display: none; /* Hidden by default */
+}
+
+/* Disable user interaction while overlay is active */
+.disabled {
+    pointer-events: none; /* Prevents all interactions */
+    opacity: 0.5; /* Greyed-out effect */
+}
+
+/* Optional custom styling */
+.keypad-btn, #del-btn, #go-btn {
+    width: 100%;
+}
+
+.scroll-buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.scroll-buttons button {
+    pointer-events: auto;
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+}
+
+.active-button {
+    background-color: #0d6efd; /* Bootstrap primary color */
+    color: white;
+}
+
+.select-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.select-wrapper {
+    flex: 1;
+    position: relative;
+}
+
+#channels, #zones {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.scroll-buttons-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.scroll-buttons-vertical button {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+    border: none;
+    background-color: #444;
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-buttons-vertical button:hover {
+    filter: brightness(1.3);
+}
