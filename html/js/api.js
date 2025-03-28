@@ -138,27 +138,40 @@ async function switchTalkGroups(channelData) {
 }
 
 
-// Example usage (wrap in try/catch if calling from UI event handlers)
-async function testCalls() {
-    try {
-        const zone = await fetchZone(0);
-        console.log("Zone 0:", zone);
 
-        const nextZone = await fetchNextZone(0);
-        console.log("Next Zone:", nextZone);
 
-        const channelZone = await fetchChannelZone(47);
-        console.log("Zone for Channel 47:", channelZone);
 
-        const nextChannel = await fetchNextChannel(47);
-        console.log("Next Channel after 47:", nextChannel);
 
-        const prevChannel = await fetchPreviousChannel(47);
-        console.log("Previous Channel before 47:", prevChannel);
-    } catch (err) {
-        console.error("API error:", err.message);
+class Channel {
+    constructor(data) {
+        this.data = data || {};
+    }
+
+    get channel_number() {
+        return this.data.channel_number;
+    }
+
+    get name() {
+        return this.data.name;
+    }
+
+    get type() {
+        return this.data.type;
+    }
+
+    get tgid() {
+        return this.data.tgid || [];
+    }
+
+    get sysid() {
+        return this.data.sysid;
+    }
+
+    get zone_id() {
+        return this.data.zone_id;
+    }
+
+    toJSON() {
+        return this.data;
     }
 }
-
-
-
