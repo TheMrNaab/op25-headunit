@@ -90,7 +90,7 @@ class API:
         session['activeZoneIndex'] = channel.zone_id
         session['activeSystemId'] = channel.sysid
         session['activeChannel'] = channel.toJSON()
-
+         
         return True
 
     def register_routes(self):
