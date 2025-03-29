@@ -2,49 +2,60 @@ import subprocess
 import os
 import time
 import socket
-import socket
 import subprocess
 import json
 from typing import List
-from typing import List
-from PySide6.QtCore import QThread, Signal
-import csv
+from modules.myConfiguration import MyConfig
+from modules.sessionHandler import session
+from modules.systemsHandler import op25FilesPackage
 #  echo '{"command": "whitelist", "arg1": 47021, "arg2": 0}' | nc -u 127.0.0.1 5000
 
 class OP25Controller:
-    def __init__(self):
-        # Define OP25 executable path
-        self.rx_script = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/rx.py")
-        self.trunk_file = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_trunk.tsv")
-        self.stderr_file = os.path.expanduser("/opt/op25-project/logs/stderr.2")
-        self.stdout_file = os.path.expanduser("/opt/op25-project/logs/stdout.2")
-        self.tgroups_file = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_tgroups.csv")
-        self.defaultWhitelistFile = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_whitelist.tsv")
-        self.defaultBlacklistFile = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/_blist.tsv")
+    def __init__(self, configMgr:MyConfig, _session:session):
+        
+        # SET MANAGERS
+        self.configManager = configMgr
+        self._activeSession = _session
 
-        self.whitelist_tgids = self.load_tgid_file(self.defaultWhitelistFile)
-        self.blacklist_tgids = self.load_tgid_file(self.defaultBlacklistFile)
+        # SET CUSTOM CONFIGURATIONS
+        # TODO: Replace with configuration paths
+        self._rx_script = os.path.expanduser("~/op25/op25/gr-op25_repeater/apps/rx.py")
+        self._stderr_file = os.path.expanduser("/opt/op25-project/logs/stderr_op25.log")
+        self._stdout_file = os.path.expanduser("/opt/op25-project/logs/stdout_op25.log")
 
-        # Define Logger
-        #self.logFile = os.path.expanduser("/opt/op25-project/logs/app_log.txt")
-        #self.logger = CustomLogger(self.logFile)
+        # SET PERSISTENT ENVOIRNMENTAL VARIABLES CORRECTLY
+        os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":" + self.configManager.get("paths", "pythonpath")
 
-        # Set environment variables correctly
-        os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":/home/dnaab/op25/op25/gr-op25_repeater/apps/tx:/home/dnaab/op25/build"
-
-        # Kill any existing OP25 processes before starting a new one
+        # KILL EXISTING PROCESSES
         subprocess.run(["pkill", "-f", "rx.py"])
 
-        # Define the OP25 command with arguments
+        self.session:session = _session
+        files:op25FilesPackage = self.session.sessionManager.op25ConfigFiles()
+        self.session.activeSys.toTrunkTSV(files)
+
+        #TODO: Implement config.build_command()
         self.op25_command = [
             self.rx_script , "--nocrypt", "--args", "rtl",
-            "--gains", "lna:40", "-S", "960000", "-q", "0",
+            "--gains", "lna:35", "-S", "960000", "-q", "0",
             "-v", "1", "-2", "-V", "-U",
             "-T", self.trunk_file,
             "-U", "-l", "5000"
         ]
+
+    @property
+    def rx_script(self):
+        return self._rx_script
+    
+    @property
+    def stderr_file(self):
+        return self._stderr_file
+    
+    @property
+    def stdout_file(self):
+        return self._stdout_file
+        
     def start(self):
-        # Start OP25 process and redirect stderr to a file
+        
         self.op25_process = subprocess.Popen(
             self.op25_command,
             stdout=open(self.stdout_file, "w"),
@@ -52,12 +63,14 @@ class OP25Controller:
             text=True
         )
 
-        time.sleep(14)
+        time.sleep(3) # GIVE TIME TO START AND CATCH UP
+        
         if(self.isConnected()):
-             print("Connection Status", "OP25 Connected")
+            print("Connection Status", "OP25 Connected")
 
     def isConnected(self, timeout=30):
         """Continuously check for 'Reconfiguring NAC' in the log file until found or timeout."""
+        print("...", "isConnected()")
         start_time = time.time()
 
         while time.time() - start_time < timeout:
@@ -78,7 +91,6 @@ class OP25Controller:
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
                 message = json.dumps({"command": command, "arg1": arg2, "arg2": 0})
                 sock.sendto(message.encode(), server_address)
-                # self.logger.info(f"Sent {message}")
 
                 response, _ = sock.recvfrom(buffer_size)
                 response_data = json.loads(response.decode())
@@ -98,28 +110,29 @@ class OP25Controller:
             subprocess.run(["pkill", "-f", "rx.py"])        #TODO: Send API request to end gracefuuly
                                                             #TODO: PKILL ensures rx.py is closed for now 
 
-    def whitelist(self, data):
-        print("Placeholder for whitelist(self, data)")
+    @property
+    def activeSession (self):
+        return self._activeSession
 
-
-    def switchGroup(self, wlist=[1000], blist=[2000]):
+    def switchTalkgroup(self, thisSession:session):
         """Switches OP25 to a new talkgroup."""
         if not self.op25_process or self.op25_process.poll() is not None:
             print("[ERROR] OP25 is not running.")
             return
 
-        # Overwrite the whitelist file with the contents of wlist
-        with open(self.defaultWhitelistFile, 'w') as file:
-            for tgid in wlist:
-                file.write(f"{tgid}\n")
 
-        # Overwrite the blacklist file with the contents of blist
-        with open(self.defaultBlacklistFile, 'w') as file:
-            for tgid in blist:
-                file.write(f"{tgid}\n")
 
         # Command to reload OP25 configuration, assuming self.command is implemented
         self.command("reload", 0)
+
+    def switchSystem(self, thisSession:session):
+        """Switches OP25 to a new P25 system with the first zone and channel set automatically."""
+        #TODO: Implement multisystem
+
+        # Command to reload OP25 configuration, assuming self.command is implemented
+        
+        #self.command("reload", 0)
+        pass
 
     def command(self, cmd, data):
         """Sends a command to OP25. Ensures proper handling for hold, whitelist, and reload."""
@@ -171,7 +184,6 @@ class OP25Controller:
             else:
                 print(f"[ERROR] Command '{cmd}' failed. No response received.")
 
-
     def update_scan_list(self, new_tgids: List[int]):
         """Updates the scan list by writing TGIDs directly to the whitelist file, then reloads OP25."""
         
@@ -204,25 +216,7 @@ class OP25Controller:
 
         print("[INFO] Scan list update complete.")
     
-    def load_tgid_file(self, filepath):
-        """Loads talkgroup IDs from a file, one per line."""
-        tgids = []
-        if os.path.exists(filepath):
-            with open(filepath, "r") as file:
-                for line in file:
-                    try:
-                        tgids.append(int(line.strip()))  # Convert each line to an integer
-                    except ValueError:
-                        print(f"[WARNING] Invalid TGID in {filepath}: {line.strip()}")  # Skip invalid lines
-        else:
-            print(f"[WARNING] Talkgroup file not found: {filepath}")
-        return tgids
-
     def restart(self):
         print("[INFO] Restarting OP25...")
         self.stop()
         self.start()
-
-v = OP25Controller()
-v.start()
-input("Ask")

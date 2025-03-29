@@ -1,0 +1,26 @@
+{
+    "0": 
+      {
+        "sysname": "Wake County Simulcast",
+        "control_channels": [853.1500, 853.4625, 853.9250, 853.9625],
+        "offset": 0,
+        "nac": "0x000",
+        "modulation": "",
+        "tgid_tags_file": "_tgroups.csv",
+        "whitelist": "_whitelist.tsv",
+        "blacklist": "_blist.tsv",
+        "center_frequency": null
+      },
+      "1": 
+      {
+        "sysname": "Wake County Simulcast II FAKE",
+        "control_channels": [853.4600, 853.3625, 853.250, 853.525],
+        "offset": 0,
+        "nac": "0x000",
+        "modulation": "",
+        "tgid_tags_file": "_tgroups.csv",
+        "whitelist": "_whitelist.tsv",
+        "blacklist": "_blist.tsv",
+        "center_frequency": null
+      }
+  }

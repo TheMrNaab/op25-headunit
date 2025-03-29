@@ -59,11 +59,16 @@ async function fetchCurrentVolume() {
 
 // Reusable GET request helper with error handling
 async function apiGet(endpoint) {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`);
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'GET',
+        credentials: 'include' // Needed when server uses supports_credentials=True
+    });
+
     if (!response.ok) {
         const error = await response.text();
         throw new Error(`API error: ${error}`);
     }
+
     return await response.json();
 }
 

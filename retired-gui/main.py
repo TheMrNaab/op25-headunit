@@ -22,7 +22,7 @@ from PySide6.QtWidgets import (
 from tts import SpeechEngine
 from file_object import FileObject
 from file_object import MyConfig
-from control import OP25Controller
+from modules.OP25_Controller import OP25Controller
 from customWidgets import BlinkingLabel
 
 class ScanListWorker(QThread):

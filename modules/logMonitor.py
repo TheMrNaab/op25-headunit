@@ -6,7 +6,7 @@ import threading
 import queue
 from watchdog.observers import Observer  # type: ignore
 from watchdog.events import FileSystemEventHandler  # type: ignore
-
+import os
 VOICE_REGEX = re.compile(
     r'(?P<Date>\d{2}/\d{2}/\d{2})\s+'
     r'(?P<Time>\d{2}:\d{2}:\d{2}\.\d+)\s+'
@@ -57,11 +57,19 @@ class logMonitorOP25:
         self.sender_thread = threading.Thread(target=self._sender_worker, daemon=True)
         self.sender_thread.start()
         self.api = API
+        self.initFile()
+
+    def initFile(self):
+        if not os.path.exists(self.source):
+            # Create the file
+            open(self.source, 'w').close()  # Creates an empty file
+
         try:
-            with open(self.source) as f:
+            with open(self.source, 'r') as f:
                 self.lines = f.readlines()
         except Exception as e:
             raise IOError(f"Unable to read log file: {e}")
+
         self.append_new_entries(self.lines)
 
     def read(self):

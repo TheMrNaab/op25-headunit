@@ -1,36 +1,40 @@
 import subprocess
 import os
 import signal
-import logging
 import re
-from flask import Flask, Response, request, jsonify, session
-from flask_cors import CORS
-from control import OP25Controller
+from configobj import ConfigObj
+from flask import Flask, Response, request, jsonify, session as flask_session
+from flask_cors import CORS, cross_origin
+from modules.OP25_Controller import OP25Controller
+from modules.sessionHandler import sessionHandler
 import hashlib
 
-from logMonitor import LogFileHandler, LogFileWatcher, logMonitorOP25
+from modules.logMonitor import LogFileHandler, LogFileWatcher, logMonitorOP25
+from modules.sessionHandler import sessionHandler, session
 import time
 import threading
 from queue import Queue
 import json
 import logging
 import secrets
+from __future__ import annotations
 
-# NEW
-from zoneHandler import ZoneData, Zone, Channel
-from myConfiguration import MyConfig
-from ch_manager import ChannelManager
+# NOTE: MIGHT NEED TO REMOVE; KEEPING FOR NOW DUE TO CODE HINTING
+from modules.systemsHandler import SystemFileHandler, System
+from modules.zoneHandler import ZoneData, Zone, Channel
+from modules.myConfiguration import MyConfig
+from modules.talkGroupsHandler import TalkgroupsHandler
 
 logging.getLogger('watchdog').setLevel(logging.WARNING)
 logging.getLogger('urllib3').setLevel(logging.WARNING)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
 logging.getLogger("requests").setLevel(logging.WARNING)
 
-class errrorHandler:
+class errorHandler:
     def __init__(self, api):
-        self.config = MyConfig()
+        self.configManager = MyConfig()
         self.API = api
-        LOG_FILE = self.config.get_path("paths", "app_log")
+        LOG_FILE = self.configManager.get_path("paths", "app_log")
 
         logging.basicConfig(
             filename=LOG_FILE,
@@ -44,192 +48,232 @@ class errrorHandler:
             logging.getLogger(lib).setLevel(logging.WARNING)
             
 class API:
+    
     def __init__(self):
+        # SET LOGGING LEVEL
+        logging.basicConfig(level=logging.DEBUG)
+        
+        # FLASH SETUP
         self.app = Flask(__name__)
-        CORS(self.app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
-
+        CORS(
+            self.app,
+            supports_credentials=True,
+            resources={r"/*": {"origins": "http://192.168.1.46:8000"}}
+        )
+        
         # SET SESSIONS SECRET
         self.app.secret_key = secrets.token_hex(32)
 
-        # SET SESSIONS VARS
-        session['activeChannelIndex'] = -1
-        session['activeZoneIndex'] = -1
-        session['activeSystemId'] = -200  
-        session['activeChannel'] = {}
-
         # IMPLEMENT CONFIGURATION
-        self.config = MyConfig()
+        self._configManager = MyConfig()
 
         # FREE PORTS & KILL OUTSTANDING PROCESSES
-        self.free_port(8000)
-        self.free_port(5001)
-        self.kill_named_scripts(["rx.py", "terminal.py"])
-        logging.basicConfig(level=logging.DEBUG)
+        self.killAndFree()
 
         # INITIALIZE ERROR HANDLER 
-        self.errHandler = errrorHandler(self)
+        self._errorHandler = errorHandler(self)
+        
+        # INITIALIZE SESSION HANDLER
+        self._sessionManager = sessionHandler(self.op25Manager, 0, 0, 0)
+        self._session = self.sessionManager.thisSession
 
         # INITIALIZE OP25 CONTROLLER
-        self.op25 = OP25Controller()
-        self.file_obj = ChannelManager('/opt/op25-project/systems-2.json')
+        self.startOP25Controller()
 
         # SET LOGGER STREAM FOR OP25 UPDATES
-        end_point = f"{self.file_obj.config.get('hosts','api_host')}/logging/update"
-        monitor = logMonitorOP25(self, file=self.file_obj.config.get("paths","stderr_file"), endpoint = end_point)
-        watcher = LogFileWatcher(monitor)
-        watcher.start_in_thread()
+        self.startLoggerStream()        
 
-        # IMPLEMENT ZONE MANAGER
-        self.zoneManager = ZoneData(self.config.defaultZonesFile)
+        self.progress = 0
+        self.lock = threading.Lock()
 
         # REGISTER ROUTES
         self.register_routes()
 
-    def updateSession(self, channel:Channel):
-        session['activeChannelIndex'] = channel.channel_number
-        session['activeZoneIndex'] = channel.zone_id
-        session['activeSystemId'] = channel.sysid
-        session['activeChannel'] = channel.toJSON()
-         
-        return True
+    def killAndFree(self):
+        self.free_port(8000)
+        self.free_port(5001)
+        self.kill_named_scripts(["rx.py", "terminal.py"])
+
+    def startOP25Controller(self):
+        self._op25Manager = OP25Controller(configMgr=self.configManager)
+
+
+    def startLoggerStream(self):
+        self._end_point = f"{self.configManager.get('hosts', 'api_host')}/logging/update"
+        self._monitor = logMonitorOP25(self, file=self.configManager.get("paths", "stderr_file"), endpoint=self._end_point)
+        self._watcher = LogFileWatcher(self._monitor)
+        self._watcher.start_in_thread()
+        self._log_queue = Queue()
+
+    @property
+    def logQueue(self) -> Queue:
+        return self._log_queue
+
+    @property
+    def configManager(self) -> ConfigObj:
+        return self._configManager
+    
+    @property
+    def errorManager(self) -> errorHandler:
+        return self._errorHandler
+    
+    @property
+    def op25Manager(self) -> OP25Controller:
+        return self._op25Manager
+    
+    @property
+    def sessionManager(self) -> sessionHandler:
+        return self._sessionManager 
+
+    @property
+    def activeSession(self) -> session:
+        return self.sessionManager.thisSession
+    
+    @property
+    def zoneManager(self) -> ZoneData:
+        return self.sessionManager.zoneManager
 
     def register_routes(self):
+        from modules.linuxSystem.sound import SoundSys
 
-        # ======       SYSTEM MANAGEMENT       =======
+        # Set session defaults before each request
+        @self.app.before_request
+        def initialize_session_defaults():
+            session.setdefault('activeChannelIndex', -1)
+            session.setdefault('activeZoneIndex', -1)
+            session.setdefault('activeSystemId', -200)
+            session.setdefault('activeChannel', {})
 
-        # 1: GET THE VOLUME
+        # ====== SYSTEM CONTROL ======
+
+        # 1: [GET] Get system volume level (0–100)
         @self.app.route('/volume/simple', methods=['GET'])
         def get_volume():
-            command = ["amixer", "get", "PCM"]
-            try:
-                result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-                match = re.search(r"\[(\d+)%\]", result.stdout)
-                if match:
-                    return match.group(1)  # plain text, just "97"
-                else:
-                    return "unknown", 500
-            except subprocess.CalledProcessError as e:
-                return f"error: {e.stderr.strip()}", 500
-        
-        # 2: SET THE VOLUME
+            return SoundSys.get_volume_percent()
+
+        # 2: [POST] Set system volume level
         @self.app.route('/volume/<int:level>', methods=['POST'])
         def set_volume(level):
-            # EXAMPLE OUTPUT: { "output": "Simple mixer control 'PCM',0\nCapabilities: pvolume pvolume-joined pswitch pswitch-joined\nPlayback channels: Mono\nLimits: Playback -10239 - 400\nMono: Playback -9175 [10%] [-91.75dB] [on]" }
-            command = ["amixer", "set", "PCM", f"{level}%"]
-            try:
-                result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-            except subprocess.CalledProcessError as e:
-                # Return error information if the command fails
-                return jsonify({"error": e.stderr.strip()}), 500
+            return SoundSys.set_volume(level)
 
-            # Return all raw information as a JSON string
-            return parse_volume(result)
+        # ====== CHANNEL DATA BY ZONE ======
 
-        # 3: PARSE THE VOLUME
-        def parse_volume(result):
-  
-            # Process and parse amixer output into structured JSON
-            lines = result.stdout.strip().splitlines()
-            parsed = {}
-
-            # Line 1: Output name
-            if lines:
-                match = re.match(r"Simple mixer control '(\w+)',(\d+)", lines[0])
-                if match:
-                    parsed["output"] = lines[0].strip()
-                    parsed["pcm"] = int(match.group(2))
-
-            # Line 2: Capabilities
-            for line in lines:
-                if "Capabilities:" in line:
-                    parsed["capabilities"] = line.split(":", 1)[1].strip().split()
-
-            # Line 3: Playback channels
-            for line in lines:
-                if "Playback channels:" in line:
-                    parsed["playback_channels"] = line.split(":", 1)[1].strip()
-
-            # Line 4: Limits
-            for line in lines:
-                if "Limits:" in line:
-                    parts = re.findall(r"-?\d+", line)
-                    if len(parts) == 2:
-                        parsed["limits"] = {
-                            "playback_min": int(parts[0]),
-                            "playback_max": int(parts[1])
-                        }
-
-            # Line 5: Mono playback line
-            for line in lines:
-                if "Mono:" in line and "Playback" in line:
-                    # Example: Mono: Playback 33 [97%] [0.33dB] [on]
-                    values = re.findall(r"Playback (\d+) \[(\d+)%\] \[([-\d.]+)dB\] \[(on|off)\]", line)
-                    if values:
-                        raw, percent, db, status = values[0]
-                        parsed["playback"] = {
-                            "level_raw": int(raw),
-                            "level_percent": int(percent),
-                            "level_db": float(db),
-                            "status": status
-                        }
-                        parsed["volume_percent"] = int(percent)
-                    break
-
-            return jsonify(parsed)
-
-
-        # ======       CHANNEL DATA       =======
-
-        # 1: CAPTURE CHANNEL BASED ON CHANNEL AND ZONE NUMBER
-        @self.app.route('/zone/<int:zone_number>/channel/<int:channel_number>/', methods=['GET'])
+        # 3: [GET] Get channel by zone and channel number
+        @self.app.route('/zone/<int:zone_number>/channel/<int:channel_number>', methods=['GET'])
         def channel(zone_number, channel_number):
             return jsonify(self.zoneManager.getChannel(zone_number, channel_number)), 200
 
-        # 2: CAPTURE NEXT CHANNEL BASED ON CHANNEL #
+        # 4: [GET] Get next channel in the zone
         @self.app.route('/zone/<int:zone_number>/channel/<int:channel_number>/next', methods=['GET'])
         def channel_next(zone_number, channel_number):
             return jsonify(self.zoneManager.getNextChannel(zone_number, channel_number)), 200
 
-        # 3: CAPTURE PREVIOUS CHANNEL BY ZONE & CHANNEL NUMBER 
+        # 5: [GET] Get previous channel in the zone
         @self.app.route('/zone/<int:zone_number>/channel/<int:channel_number>/previous', methods=['GET'])
         def channel_previous(zone_number, channel_number):
             return jsonify(self.zoneManager.getPreviousChannel(zone_number, channel_number)), 200
- 
 
-        # ======       SESSION DATA       ======= #
+        # ====== ACTIVE SESSION STATE ======
 
-        # 1: GET SESSION CHANNEL'S PROPERTY
+        # 6: [GET] Return one field from the active channel
         @self.app.route('/session/channel/field/<field_name>', methods=['GET'])
         def get_active_channel_property(field_name):
-            if 'activeChannel' not in session:
+            if not self.activeSession.activeChannel:
                 return {"error": "No active channel in session"}, 400
+            channel_dict = self.activeSession.activeChannel.to_dict()
+            if field_name in channel_dict:
+                return jsonify({field_name: channel_dict[field_name]})
+            return {"error": f"Field '{field_name}' not found in active channel"}, 404
 
-            try:
-                channel = Channel(session['activeChannel'])
-            except Exception as e:
-                return {"error": f"Invalid channel data: {str(e)}"}, 400
+        # 7: [GET] Get the full active channel object
+        @self.app.route('/session/channel', methods=['GET'])
+        def get_active_channel_object():
+            if not self.activeSession.activeChannel:
+                return {"error": "No active channel in session"}, 400
+            return jsonify(self.activeSession.activeChannel.to_dict())
 
-            if not hasattr(channel, field_name):
-                return {"error": f"Field '{field_name}' not found on Channel"}, 400
+        # 8: [GET] Get the full active zone object
+        @self.app.route('/session/zone', methods=['GET'])
+        def get_active_zone_object():
+            if not self.activeSession.activeChannel:
+                return {"error": "No active zone in session"}, 400
+            return jsonify(self.activeSession.activeZone.to_dict())
 
-            try:
-                value = getattr(channel, field_name)
-                if value is None:
-                    return {"error": f"Field '{field_name}' is empty or null"}, 400
-                return str(value)
-            except Exception as e:
-                return {"error": f"Error retrieving field '{field_name}': {str(e)}"}, 400
+        # 9: [GET] Get name of TGID from active system
+        @self.app.route('/session/talkgroups/<tgid>/name/plaintext', methods=['GET'])
+        def get_active_tgid_name(tgid):
+            if not self.activeSession.activeTGIDList:
+                return {"error": "No active TGID list in session"}, 400
+            return self.activeSession.activeTGIDList.getTalkgroup(tgid)
 
+        # 10: [GET] Get all TGIDs from active system
+        @self.app.route('/session/talkgroups', methods=['GET'])
+        def get_active_tgid_object():
+            if not self.activeSession.activeTGIDList:
+                return {"error": "No active TGID list in session"}, 400
+            return jsonify(self.activeSession.activeTGIDList.to_dict())
 
+        # ====== SESSION MODIFIERS ======
 
-        # ======       ZONE DATA       ======= #
+        # 11: [PUT] Set active channel by ID
+        @self.app.route('/session/channel/<int:id>', methods=['PUT'])
+        def set_active_channel(id):
+            zone_index = self.activeSession.activeZoneIndex
+            ch_data = self.sessionManager.zoneManager.getChannel(zone_index, id)
+            if not ch_data:
+                return {"error": f"Channel {id} not found in zone {zone_index}"}, 404
+            zone = self.sessionManager.zoneManager.getZoneByIndex(zone_index)
+            channel = Channel(ch_data, zone_index)
+            sys = self.sessionManager.systemsManager.getSystemByIndex(channel.sysid)
+            if not sys:
+                return {"error": f"System with sysid {channel.sysid} not found"}, 404
+            self.activeSession.updateSession(channel, zone, sys)
+            return {"message": "Channel updated successfully"}
 
-        # 1: CAPTURE ALL ZONES
+        # 12: [PUT] Move to next channel
+        @self.app.route('/session/channel/next', methods=['PUT'])
+        def next_channel():
+            return self.activeSession.nextChannel()
+
+        # 13: [PUT] Move to previous channel
+        @self.app.route('/session/channel/previous', methods=['PUT'])
+        def previous_channel():
+            return self.activeSession.previousChannel()
+
+        # 14: [PUT] Set zone by index (loads first channel)
+        @self.app.route('/session/zone/<int:id>', methods=['PUT'])
+        def set_active_zone(id):
+            zone = self.sessionManager.zoneManager.getZoneByIndex(id)
+            if not zone:
+                return {"error": f"Zone {id} not found"}, 404
+            channels = zone.channels
+            if not channels:
+                return {"error": "Zone has no channels"}, 404
+            channel = channels[0]
+            sys = self.sessionManager.systemsManager.getSystemByIndex(channel.sysid)
+            if not sys:
+                return {"error": f"System with sysid {channel.sysid} not found"}, 404
+            self.activeSession.updateSession(channel, zone, sys)
+            return {"message": "Zone updated successfully"}
+
+        # 15: [PUT] Move to next zone (loads first channel)
+        @self.app.route('/session/zone/next', methods=['PUT'])
+        def next_zone():
+            return self.activeSession.nextZone()
+
+        # 16: [PUT] Move to previous zone (loads first channel)
+        @self.app.route('/session/zone/previous', methods=['PUT'])
+        def previous_zone():
+            return self.activeSession.previousZone()
+
+        # ====== ZONE DATA ======
+
+        # 17: [GET] All zones from zones.json
         @self.app.route('/zones', methods=['GET'])
-        def getAllZones(self):
-            return {"zones": [zone.to_dict() for zone in self.zones]}
+        def getAllZones():
+            return jsonify(self.zoneManager.data)
 
-        # 2: CAPTURE ZONE BY NUMBER
+        # 18: [GET] Zone by index
         @self.app.route('/zone/<int:zone_number>', methods=['GET'])
         def get_zone(zone_number):
             zone = self.zoneManager.getZoneByIndex(zone_number)
@@ -237,20 +281,20 @@ class API:
                 return jsonify({"error": "Zone not found"}), 404
             return jsonify(zone.to_dict()), 200
 
-        # 3: CAPTURE PREVIOUS ZONE
+        # 19: [GET] Previous zone
         @self.app.route('/zone/<int:zone_number>/previous', methods=['GET'])
         def zone_previous(zone_number):
             return jsonify(self.zoneManager.previousZone(zone_number)), 200
 
-        # 4: CAPTURE NEXT ZONE
+        # 20: [GET] Next zone
         @self.app.route('/zone/<int:zone_number>/next', methods=['GET'])
         def zone_next(zone_number):
             return jsonify(self.zoneManager.nextZone(zone_number)), 200
-
+       
         # ======    OP25 RADIO CONTROLS      =======
-
-        # 1: TODO: WHITELIST TGIDS (SWITCH TGIDS)
-        @self.app.route('/whitelist', methods=['POST'])
+        
+        # 21: TODO: WHITELIST TGIDS (SWITCH TGIDS)
+        @self.app.route('/session/controller/whitelist', methods=['POST'])
         def whitelist():
             payload = request.get_json() or {}
             tgids = payload.get("tgid", [])
@@ -260,76 +304,80 @@ class API:
                 return jsonify({"error": "No TGIDs provided", "payload": payload}), 400
             
             # SEND ARRAY OF WHITELISTED TALKGROUPS TO CONTROLLER
-            self.op25.switchGroup(tgids)
-            self.updateSession(channel.channel_number, channel.zone_id, channel.sysid)
+            self.op25Manager.switchGroup(tgids)
 
             return jsonify({"message": "TGIDs added to whitelist", "payload": payload}), 200
+        
+        # 22: BLACKLIST TGID (LOCKOUT COMMAND IN CONTROLLER)
+        @self.app.route('/session/controller/lockout/<int:tgid>', methods=['PUT'])
+        def put_lockout(tgid):
+            # NOTE: CONSTRUCT LATER
+            # NOTE: ENSURE WE TRACK THE LOCK OUT AND CLEAR IT BEFORE CHANGING CHANNELS (UPDATE COMMAND)
+            # NOTE: I DO NOT THINK WE NEED TO REWRITE FILES FOR THIS
+            return jsonify({"Error":"Function requires implementation"})
+        
+        # 23: LOCK ONTO TGID (LOCK COMMAND IN CONTROLLER)
+        @self.app.route('/session/controller/hold/<int:tgid>', methods=['PUT'])
+        def put_hold(tgid):
+            # NOTE: CONSTRUCT LATER
+            # NOTE: ENSURE WE TRACK THE HOLD AND CLEAR IT BEFORE CHANGING CHANNELS (UPDATE COMMAND)
+            # NOTE: AND REWRITE THE BLACKLIST FILE CONTENTS
+            return jsonify({"Error":"Hold function requires implementation"})
 
-        # ======        UNTILIES          =======
-
-        # 1: TODO: RESTART OP25
-        @self.app.route('utilities/restart', methods=['POST'])
+        # 24: [PUT] RESTART OP25 
+        @self.app.route('/controller/restart', methods=['PUT'])
         def restart():
-            self.op25.restart()
-            # self.re
+            self.op25Manager.restart()
             return jsonify({"message": "OP25 restarted"}), 200
 
-        # ======    STREAMING & LOGS      =======
+        # ======    STREAMING & LOGGING      =======
 
-        # LOG STREAMING UPDATES
-        log_queue = Queue()
-
-        # UPDATE LOG
-        @self.app.route('/logging/update', methods=['POST'])
+        # 25: [POST] Receive log data for SSE broadcast
+        @self.app.route('/controller/logging/update', methods=['POST'])
         def receive_log_update():
             data = request.get_json() or {}
-            log_queue.put(data)
+            self.logQueue.put(data)
             return jsonify(success=True), 200
 
-        # LOG STREAM
-        def log_event_stream():
-            while True:
-                data = log_queue.get()
-                yield f"data: {json.dumps(data)}\n\n"
-
-        # LOG STREAM ENDPOING
-        @self.app.route('/logging/stream', methods=['GET'])
+        # 26: [GET] Stream log data as Server-Sent Events (SSE)
+        @self.app.route('/controller/logging/stream', methods=['GET'])
         def logging_stream():
+            def log_event_stream():
+                while True:
+                    data = self.logQueue.get()
+                    yield f"data: {json.dumps(data)}\n\n"
             return Response(log_event_stream(), mimetype='text/event-stream')
 
-        # 1 === PROGRESS & SYNC LOCK ====
-        
-        # + TODO: MODIFY RX.PY TO STREAM STATUS UPDATE IN {}
-        progress = 0
-        lock = threading.Lock()
+        # 27: [GET] Stream OP25 TGID update progress (0–100) as SSE
+        @self.app.route('/controller/progress', methods=['GET'])
+        def get_stream_progress():
+            """Streams the current TGID update progress as plain text using SSE."""
+            def progress_streamer():
+                while True:
+                    with self.lock:
+                        current = self.progress
+                    yield f"data: {current}\n\n"
+                    time.sleep(1)
+            return Response(progress_streamer(), mimetype="text/event-stream")
 
-        # 4 === SSE ENDPOINT ===
-        @self.app.route('/progress', methods=['POST'])
-        def progress_stream():
-            return Response(event_stream(), mimetype="text/event-stream")
-
-
-        # 2 === PROGRESS ENDPOINT ====      
-        @self.app.route('/update/<int:percent>', methods=['POST'])
-        def update_progress(percent): # In practice, your talk group update code would update the progress value.
-            global progress
+        # 28: [POST] Update TGID progress value (0–100)
+        @self.app.route('/controller/progress/update/<int:percent>', methods=['POST'])
+        def update_progress(percent):
+            """Updates the current progress value. JSON input can override the URL value."""
             data = request.get_json()
-            with lock:
-                progress = data.get("progress", progress)
+            with self.lock:
+                self.progress = data.get("progress", percent)
             return jsonify(success=True)
-        
-        # 3 === SSE EVENT GENERATOR (UPDATE EVERY SECOND) ====   
-        def event_stream():
-            global progress
-            while True:
-                with lock:
-                    current = progress
-                yield f"data: {current}\n\n"
-                time.sleep(1)
-
 
     def run(self):
-        self.op25.start()
+
+        # This is the reloader child — run normal startup
+        self.op25Manager.start()
+
+        self.free_port(8000)
+        self.free_port(5001)
+        self.kill_named_scripts(["rx.py", "terminal.py"])
+
         # Launch static frontend server
         http_proc = subprocess.Popen([
             "python3", "-m", "http.server", "8000",
@@ -377,8 +425,7 @@ class API:
             except Exception as e:
                 print(f"Error killing {name}: {e}")
 
-class sound(object):
-
+class sound:
     @staticmethod
     def percent_to_raw(min_val, max_val, percent):
         """

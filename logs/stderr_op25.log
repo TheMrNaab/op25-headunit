@@ -1,0 +1,36 @@
+Using Python /usr/bin/python3
+gr-osmosdr 0.2.0.0 (0.2.0) gnuradio 3.10.11.0
+built-in source types: file fcd rtl rtl_tcp uhd miri hackrf bladerf rfspace airspy airspyhf soapy redpitaya freesrp xtrx 
+Using device #0 RTLSDRBlog Blog V4 SN: 00000001
+Found Rafael Micro R828D tuner
+RTL-SDR Blog V4 Detected
+gain: name: LNA range: start 0 stop 49 step 0
+setting gain lna to 35
+supported sample rates 250000-2560000 step 24000
+demodulator: xlator if_rate=24000, input_rate=960000, decim=40, if taps=[193,49], resampled_rate=24000, sps=5
+op25_audio::open_socket(): enabled udp host(127.0.0.1), wireshark(23456), audio(23456)
+p25_frame_assembler_impl: do_imbe[1], do_output[0], do_audio_output[1], do_phase2_tdma[1], do_nocrypt[0]
+03/28/25 17:49:37.023485 Reading whitelist file
+03/28/25 17:49:37.023845 added talkgroup 1000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_whitelist.tsv
+03/28/25 17:49:37.024007 Reading blacklist file
+03/28/25 17:49:37.024206 added talkgroup 2000 from /home/dnaab/op25/op25/gr-op25_repeater/apps/_blist.tsv
+metadata update not enabled
+using ALSA sound system
+audio device: default
+Listening on 127.0.0.1:23456
+python version detected: 3.12.7 (main, Feb  4 2025, 14:46:03) [GCC 14.2.0]
+Allocating 15 zero-copy buffers
+03/28/25 17:49:38.115792 control channel timeout
+03/28/25 17:49:39.207420 control channel timeout
+03/28/25 17:49:40.298236 control channel timeout
+03/28/25 17:49:41.392519 control channel timeout
+03/28/25 17:49:42.481368 control channel timeout
+03/28/25 17:49:43.577184 control channel timeout
+03/28/25 17:49:44.673152 control channel timeout
+03/28/25 17:49:45.760606 control channel timeout
+03/28/25 17:49:46.847682 control channel timeout
+03/28/25 17:49:47.942707 control channel timeout
+03/28/25 17:49:49.040915 control channel timeout
+03/28/25 17:49:50.125397 control channel timeout
+03/28/25 17:49:51.222825 control channel timeout
+03/28/25 17:49:51.633470 Reconfiguring NAC from 0x000 to 0x592
