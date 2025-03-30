@@ -104,7 +104,8 @@ class OP25System:
     @property
     def trunkFilePath(self) -> str:
         if not hasattr(self, "_trunkFilePath") or not self._trunkFilePath:
-            self._trunkFilePath = os.path.join(tempfile.gettempdir(), f"{self.sysname}_trunk.tsv")
+            safe_name = self.sysname.replace(" ", "_")  # Replace spaces with underscores
+            self._trunkFilePath = os.path.join(tempfile.gettempdir(), f"{safe_name}_trunk.tsv")
         return self._trunkFilePath
 
 

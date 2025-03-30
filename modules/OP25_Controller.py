@@ -64,6 +64,8 @@ class OP25Controller:
             "-T", self.session.activeSystem.toTrunkTSV(session_obj),
             "-U", "-l", "5000"
         ]
+        
+        print(self.op25_command)
 
         # Start subprocess
         self.op25_process = subprocess.Popen(

@@ -2,15 +2,76 @@ Using Python /usr/bin/python3
 gr-osmosdr 0.2.0.0 (0.2.0) gnuradio 3.10.11.0
 built-in source types: file fcd rtl rtl_tcp uhd miri hackrf bladerf rfspace airspy airspyhf soapy redpitaya freesrp xtrx 
 Using device #0 RTLSDRBlog Blog V4 SN: 00000001
-usb_claim_interface error -6
-Traceback (most recent call last):
-  File "/home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py", line 1102, in <module>
-    rx = rx_main()
-         ^^^^^^^^^
-  File "/home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py", line 1006, in __init__
-    self.tb = p25_rx_block(self.options)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py", line 169, in __init__
-    gain_names = self.src.get_gain_names()
-                 ^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'NoneType' object has no attribute 'get_gain_names'
+Found Rafael Micro R828D tuner
+RTL-SDR Blog V4 Detected
+gain: name: LNA range: start 0 stop 49 step 0
+setting gain lna to 35
+supported sample rates 250000-2560000 step 24000
+demodulator: xlator if_rate=24000, input_rate=960000, decim=40, if taps=[193,49], resampled_rate=24000, sps=5
+op25_audio::open_socket(): enabled udp host(127.0.0.1), wireshark(23456), audio(23456)
+p25_frame_assembler_impl: do_imbe[1], do_output[0], do_audio_output[1], do_phase2_tdma[1], do_nocrypt[0]
+03/29/25 21:33:26.958475 Reading whitelist file
+03/29/25 21:33:26.959013 added talkgroup 46949 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.959243 added talkgroup 47021 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.959369 added talkgroup 46940 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.959490 added talkgroup 46800 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.959610 added talkgroup 46801 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.959727 added talkgroup 46802 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.959843 added talkgroup 46803 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.959956 added talkgroup 46804 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.960070 added talkgroup 46805 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.960248 added talkgroup 46806 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.960366 added talkgroup 46807 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.960484 added talkgroup 46808 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.960597 added talkgroup 46809 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.960708 added talkgroup 46810 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.960821 added talkgroup 46811 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.960932 added talkgroup 46812 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.961045 added talkgroup 46813 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.961206 added talkgroup 46814 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.961320 added talkgroup 46815 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.961433 added talkgroup 46816 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.961544 added talkgroup 46817 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.961659 added talkgroup 46818 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.961773 added talkgroup 46819 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.961883 added talkgroup 46820 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.961997 added talkgroup 46821 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.962261 added talkgroup 46822 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.962391 added talkgroup 46823 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.962504 added talkgroup 46824 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.962623 added talkgroup 46825 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.962737 added talkgroup 46826 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.962848 added talkgroup 46827 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.962962 added talkgroup 46828 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.963074 added talkgroup 46829 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.963234 added talkgroup 46830 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.963351 added talkgroup 46831 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.963462 added talkgroup 46832 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.963573 added talkgroup 46833 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.963684 added talkgroup 46834 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.963796 added talkgroup 46835 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.963908 added talkgroup 46836 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.964019 added talkgroup 46837 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.964234 added talkgroup 46838 from /tmp/_whitelist_Fire_Scan.tsv
+03/29/25 21:33:26.964494 Reading blacklist file
+03/29/25 21:33:26.964836 added talkgroup 0 from /tmp/_blacklist_Fire_Scan.tsv
+metadata update not enabled
+using ALSA sound system
+audio device: default
+Listening on 127.0.0.1:23456
+python version detected: 3.12.7 (main, Feb  4 2025, 14:46:03) [GCC 14.2.0]
+Allocating 15 zero-copy buffers
+03/29/25 21:33:28.090518 control channel timeout
+03/29/25 21:33:29.189486 control channel timeout
+03/29/25 21:33:30.274010 control channel timeout
+03/29/25 21:33:31.365570 control channel timeout
+03/29/25 21:33:32.464391 control channel timeout
+03/29/25 21:33:33.553025 control channel timeout
+03/29/25 21:33:34.641917 control channel timeout
+03/29/25 21:33:35.735718 control channel timeout
+03/29/25 21:33:36.833880 control channel timeout
+03/29/25 21:33:37.843365 control channel timeout
+03/29/25 21:33:38.899335 control channel timeout
+03/29/25 21:33:39.967128 control channel timeout
+03/29/25 21:33:41.067181 control channel timeout
+03/29/25 21:33:41.756790 Reconfiguring NAC from 0x000 to 0x592

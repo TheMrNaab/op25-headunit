@@ -110,7 +110,7 @@ class API:
 
 
     def startLoggerStream(self):
-        self._end_point = f"{self.configManager.get('hosts', 'api_host')}/logging/update"
+        self._end_point = f"{self.configManager.get('hosts', 'api_host')}/controller/logging/update"
         self._monitor = logMonitorOP25(self, file=self.configManager.get("paths", "stderr_file"), endpoint=self._end_point)
         self._watcher = LogFileWatcher(self._monitor)
         self._watcher.start_in_thread()
@@ -437,7 +437,7 @@ class API:
     def run(self):
 
         # This is the reloader child — run normal startup
-        self.op25Manager.start(self.activeSession)
+        # self.op25Manager.start(self.activeSession)
 
         self.free_port(8000)
         self.free_port(5001)
