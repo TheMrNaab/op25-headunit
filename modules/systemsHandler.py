@@ -37,12 +37,6 @@ class OP25System:
         self._index = index
         self._blacklistFilePath = ""
         self._systemTSVFilePath = ""
-    
-    @property
-    def blacklistFilePath(self):
-        if not self._blacklistFilePath:
-            self._blacklistFilePath = os.path.join(tempfile.gettempdir(), f"_blacklist_{self.sysname}.tsv")
-        return self._blacklistFilePath 
 
     @property
     def systemTSVFilePath(self) -> str:

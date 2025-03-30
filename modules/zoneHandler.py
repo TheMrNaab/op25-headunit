@@ -95,7 +95,7 @@ class Channel:
                     tsvfile.write(f"{tgid}\n")
                     
                 if(len(self.blacklistTGIDs)) == 0:
-                    tsvfile.write(f"0\n")
+                    tsvfile.write(f"1234\n")
             return self.blacklistFilePath
         
         except Exception as e:

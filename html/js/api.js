@@ -7,40 +7,36 @@ export const API_BASE_URL = `http://${location.hostname}:5001`;
 // API endpoints organized into logical groups
 export const APIEndpoints = Object.freeze({
     SYSTEMS: {
-        LIST: "/v2/systems/list",
-        GET_ONE: (id) => `/v2/systems/${id}`,
-        NEW: "/v2/systems/new",
-        TGID_ALL: (id) => `/v2/systems/${id}/tgid/`,
-        TGID_ONE: (id, tgid) => `/v2/systems/${id}/tgid/${tgid}`
+        // These endpoints do not exist in your current API, keep only if you plan to add them
     },
 
     LOGGING: {
-        UPDATE: "/logging/update",
-        STREAM: "/logging/stream"
+        UPDATE: "/controller/logging/update",
+        STREAM: "/controller/logging/stream"
     },
 
     ZONES: {
-        LIST: "/v2/zones",
-        GET_ONE: (index) => `/v2/zones/${index}`,
-        CHANNELS_ALL: (index) => `/v2/zones/${index}/channels`,
-        CHANNEL_ONE: (index, ch) => `/v2/zones/${index}/channel/${ch}`,
-        NEW: "/v2/zones/new",
-        CHANNELS_NEW: (index) => `/v2/zones/${index}/channels/new`,
-        CHANNEL_NEW: (index) => `/v2/zones/${index}/channel/new`
+        LIST: "/zones",
+        GET_ONE: (index) => `/zone/${index}`,
+        CHANNEL_ONE: (zone, ch) => `/zone/${zone}/channel/${ch}`,
+        CHANNEL_NEXT: (zone, ch) => `/zone/${zone}/channel/${ch}/next`,
+        CHANNEL_PREVIOUS: (zone, ch) => `/zone/${zone}/channel/${ch}/previous`,
+        ZONE_NEXT: (zone) => `/zone/${zone}/next`,
+        ZONE_PREVIOUS: (zone) => `/zone/${zone}/previous`
     },
 
     SESSION: {
-        START: "/v2/session/start",
-        STATUS: "/v2/session/status",
-        SYSTEM_CURRENT: "/v2/session/system/current",
-        CHANNEL_CURRENT: "/v2/session/channel/current",
-        CHANNEL_NEXT: "/v2/session/channel/next",
-        CHANNEL_PREVIOUS: "/v2/session/channel/previous",
-        ZONE_NEXT: "/v2/session/zone/next",
-        ZONE_PREVIOUS: "/v2/session/zone/previous",
-        ZONE_CURRENT: "/v2/session/zone/current",
-        CHANNEL_SELECT: (channelNumber) => `/v2/session/channel/${channelNumber}`,
-        ZONE_SELECT: (id) => `/v2/session/zone/${id}`
+        CHANNEL_CURRENT: "/session/channel",
+        ZONE_CURRENT: "/session/zone",
+        TALKGROUP_NAME: (tgid) => `/session/talkgroups/${tgid}/name/plaintext`,
+        TALKGROUP_LIST: "/session/talkgroups",
+        CHANNEL_FIELD: (field) => `/session/channel/field/${field}`,
+        CHANNEL_SELECT: (id) => `/session/channel/${id}`,
+        CHANNEL_NEXT: "/session/channel/next",
+        CHANNEL_PREVIOUS: "/session/channel/previous",
+        ZONE_SELECT: (id) => `/session/zone/${id}`,
+        ZONE_NEXT: "/session/zone/next",
+        ZONE_PREVIOUS: "/session/zone/previous"
     },
 
     VOLUME: {
@@ -49,23 +45,12 @@ export const APIEndpoints = Object.freeze({
     },
 
     PROGRESS: {
-        STREAM: "/progress",
-        UPDATE: (percent) => `/update/${percent}`
+        STREAM: "/controller/progress",
+        UPDATE: (percent) => `/controller/progress/update/${percent}`
     },
 
     UTILITIES: {
         QR_CODE: (content) => `/utilities/qrcode/${encodeURIComponent(content)}`
-    },
-
-    DISPLAY: {
-        SET_SLEEP: (id, timeout) => `/config/openbox/display/${id}/sleep/set/${timeout}`,
-        GET_SLEEP: (id) => `/config/openbox/display/${id}/sleep/`,
-        LIST: "/config/openbox/device/displays"
-    },
-
-    DEVICE: {
-        SET_SLEEP: (timeout) => `/config/openbox/device/sleep/set/${timeout}`,
-        GET_SLEEP: "/config/openbox/device/sleep/"
     },
 
     CONFIG: {
@@ -75,24 +60,24 @@ export const APIEndpoints = Object.freeze({
         SET_JSON: "/config/set/json"
     },
 
+    DISPLAY: {
+        SET_SLEEP: (id, timeout) => `/config/openbox/display/${id}/sleep/set/${timeout}`,
+        GET_SLEEP: (id) => `/config/openbox/display/${id}/sleep`
+    },
+
+    DEVICE: {
+        SET_SLEEP: (timeout) => `/config/openbox/device/sleep/set/${timeout}`,
+        GET_SLEEP: "/config/openbox/device/sleep"
+    },
+
     NETWORK: "/config/network",
 
-    SYSTEM_CONFIG: {
-        GET: "/config/system/",
-        UPDATE: "/config/system/update"
-    },
-
-    CHANNEL_CONFIG: {
-        GET: "/config/channels/",
-        UPDATE: "/config/channels/update"
-    },
-
-    TALKGROUP_CONFIG: {
-        GET: "/config/talkgroups/",
-        UPDATE: "/config/talkgroups/update"
-    },
-
-    RESTART: "/restart"
+    CONTROLLER: {
+        WHITELIST: "/session/controller/whitelist",
+        LOCKOUT: (tgid) => `/session/controller/lockout/${tgid}`,
+        HOLD: (tgid) => `/session/controller/hold/${tgid}`,
+        RESTART: "/controller/restart"
+    }
 });
 
 export async function apiGet(url) {

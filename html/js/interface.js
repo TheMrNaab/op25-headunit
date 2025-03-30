@@ -2,13 +2,15 @@ import { API_BASE_URL, APIEndpoints, apiGet, apiPut } from "./api.js";
 
 const print_debug = true; // or false, depending on your use case
 
+
+
 function listenLogStream() {
   const source = new EventSource(API_BASE_URL + APIEndpoints.LOGGING.STREAM); // ✅ uses enum
-
+  console.log("Listening to stream", "listenLogStream()")
   source.onmessage = (event) => {
     try {
       const data = JSON.parse(event.data);
-      if (print_debug) console.log('Log update:', data);
+      console.log('Log update:', data);
 
       const updateType = data.Action || data.Update;
       const tgName = data["Talkgroup Name"] || data.Talkgroup;
@@ -22,15 +24,70 @@ function listenLogStream() {
     }
   };
 
-  source.onerror = (error) => {
-    console.error('SSE error:', error);
-    source.close();
+  source.onerror = (err) => {
+    console.error("SSE stream error:", err);
+    source.close(); // optional: reconnect logic could go here
   };
+  
 }
 
 // UI
 
+function badge(badgeText, outerText, badgeClass = "badge badge-secondary") {
+  return `<p><span class="${badgeClass}">${badgeText}</span> ${outerText}</p>`;
+}
 
+function showDynamicModal(title = "Dynamic Modal", bodyContent = "") {
+  // Remove any existing modal
+  const existing = document.getElementById("dynamicModal");
+  if (existing) existing.remove();
+
+  // Create modal wrapper
+  const modal = document.createElement("div");
+  modal.innerHTML = `
+  <div class="modal fade" id="dynamicModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">${title}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  ${bodyContent}
+              </div>
+          </div>
+      </div>
+  </div>
+  `;
+  document.body.appendChild(modal);
+
+  const bsModal = new bootstrap.Modal(modal.querySelector("#dynamicModal"));
+  bsModal.show();
+}
+
+function updateNetworkModal(data) {
+  if (!data) {
+      console.warn("No network data provided");
+      return;
+  }
+
+  const fieldMap = {
+      'Status': data.Status,
+      'WiFi Network': data['WiFi Network'],
+      'Connection': data.Connection,
+      'Memory': data.Memory,
+      'CPU Temp': data['CPU Temp'],
+      'Audio Output': data['Audio Output']
+  };
+
+  let bodyContent = "";
+
+  for (const [label, value] of Object.entries(fieldMap)) {
+      bodyContent += badge(label, value ?? "N/A");
+  }
+
+  showDynamicModal("Network Status", bodyContent);
+}
 
 async function updateUIFromChannel(channel) {
   updateElement('channel-number', channel.number);
@@ -44,7 +101,24 @@ async function updateUIFromChannel(channel) {
     updateElement('zone', ""); // fallback if fetch fails
   }
 
-  // Optionally: update talkgroup display, etc.
+}
+
+async function updateUI() {
+  //updateElement('channel-number', channel.number);
+  //updateElement('channel-name', channel.name);
+
+  try {
+    const zone = await apiGet(APIEndpoints.SESSION.ZONE_CURRENT);
+    const channel = await apiGet(APIEndpoints.SESSION.CHANNEL_CURRENT)
+    updateElement('zone', zone.name);
+    updateElement('channel-name', channel.name); 
+    updateElement('channel-number', channel.channel_number);
+
+  } catch (err) {
+    console.warn("Could not fetch zone name for UI:", err);
+    updateElement('zone', ""); // fallback if fetch fails
+  }
+
 }
 
 
@@ -329,35 +403,6 @@ function _zoneList(){ openZoneModal();}
   
 function _channelList() { openChannelModal();}
 
-function updateNetworkModal(data) {
-  if (!data) {
-      console.warn("No network data provided");
-      return;
-  }
-
-  const fieldMap = {
-      'network-status': data.Status,
-      'wifi-name': data['WiFi Network'],
-      'connection-type': data.Connection,
-      'memory-available': data.Memory,
-      'cpu-temp': data['CPU Temp'],
-      'audio-output': data['Audio Output']
-  };
-
-  for (const [id, value] of Object.entries(fieldMap)) {
-      const el = document.getElementById(id);
-      if (el) el.textContent = value ?? "N/A";
-      else console.warn(`Element #${id} not found`);
-  }
-
-  const modalEl = document.getElementById('wifiModal');
-  if (modalEl) {
-      const modal = new bootstrap.Modal(modalEl);
-      modal.show();
-  } else {
-      console.warn("Network modal element not found");
-  }
-}
 async function _channelApplyBtn() {
   const selectElement = document.getElementById('channels');
   if (!selectElement) {
@@ -426,23 +471,6 @@ function updateElement(id, text) {
   element.textContent = text ?? "";
 }
 
-/** Initialize shield icon and modal */
-function setupShieldIcon() {
-  const shieldIcon = document.getElementById("shield-icon");
-  const networkModalEl = document.getElementById("networkModal");
-
-  if (!shieldIcon || !networkModalEl) {
-      console.error("Shield icon or network modal not found.");
-      return;
-  }
-
-  const networkModal = new bootstrap.Modal(networkModalEl);
-  shieldIcon.addEventListener("click", () => {
-      fetchNetworkInfo();
-      networkModal.show();
-  });
-}
-
 /** Initialize volume slider and input coloring */
 function setupVolumeControls() {
   const volumeSlider = document.getElementById("volumeRange");
@@ -478,8 +506,8 @@ function setupZoneAndChannelButtons() {
       { id: "btnZoneUp", handler: _btnZoneUp },
       { id: "btnZoneDown", handler: _btnZoneDown },
       { id: "btnChannelUp", handler: _btnChannelUp },
-      { id: "btnChannelDown", handler: _btnChannelDown },
-      { id: "channel-apply", handler: _channelApplyBtn }
+      { id: "btnChannelDown", handler: _btnChannelDown }
+      // { id: "channel-apply", handler: _channelApplyBtn }
   ];
 
   buttonMap.forEach(({ id, handler }) => {
@@ -492,25 +520,24 @@ function setupZoneAndChannelButtons() {
   });
 }
 
+
+
 document.addEventListener("DOMContentLoaded", async () => {
-  console.log("DOM fully loaded and parsed");
-
-  try {
-    await apiPut(APIEndpoints.SESSION.START); // 🔥 Ensure session starts
-    console.log("Session started successfully.");
-
-    const channel = await apiGet(APIEndpoints.SESSION.CHANNEL_CURRENT);
-    await updateUIFromChannel(channel);
-  } catch (err) {
-    console.error("Session start or UI update failed:", err.message);
-    showAlert("Failed to initialize session. Cannot load zone/channel data.");
-    return;
-  }
+  
+  console.log("DOMContentLoaded", "interface.js");
+  
+  // CONSTANTS
+  
+  document.getElementById('status-network-info').addEventListener("click", () => {
+      fetchNetworkInfo();
+      console.log("addEventListener", "status-network-info")
+  });
 
   listenLogStream();
-  setupShieldIcon();
+  await updateUI();
+  
   setupVolumeControls();
-  setupNetworkIcon();
+  // setupNetworkIcon();
   setupZoneAndChannelButtons();
   fetchCurrentVolume();
 });

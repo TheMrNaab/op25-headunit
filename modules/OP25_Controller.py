@@ -6,6 +6,8 @@ import socket
 import subprocess
 import json
 from typing import List
+
+from flask import jsonify
 from modules.sessionTypes import session
 from modules.myConfiguration import MyConfig
 from modules.systemsHandler import OP25FilesPackage
@@ -25,16 +27,25 @@ class OP25Controller:
         self._stdout_file = os.path.expanduser("/opt/op25-project/logs/stdout_op25.log")
 
         # SET PERSISTENT ENVOIRNMENTAL VARIABLES CORRECTLY
-        os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":" + self.configManager.get("paths", "pythonpath")
+        
 
         # KILL EXISTING PROCESSES
-        subprocess.run(["pkill", "-f", "rx.py"])
+        # subprocess.run(["pkill", "-f", "rx.py"])
 
         self.session:session = None
+        self._alreadyStarted = False
+       
         
     def set_session(self, session):
         self._activeSession = session
         self.session = session
+
+    def set_alreadyStarted(self, val:bool):
+        self._alreadyStarted = val
+
+    @property
+    def alreadyStarted(self) -> bool:
+        return self._alreadyStarted
 
     @property
     def rx_script(self):
@@ -48,40 +59,41 @@ class OP25Controller:
     def stdout_file(self):
         return self._stdout_file
         
-    def start(self, session_obj: session):
-        if session_obj:
-            self._activeSession = session_obj
-            self.session = session_obj
+    def start(self) -> bool | None:
+        print("Starting...", self.alreadyStarted)
+        if self.alreadyStarted == False:
+            os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":" + self.configManager.get("paths", "pythonpath")
+            # self.op25_command = [
+            #     self.rx_script , "--nocrypt", "--args", "rtl",
+            #     "--gains", "lna:35", "-S", "960000", "-q", "0",
+            #     "-v", "1", "-2", "-V", "-U",
+            #     "-T", "/opt/op25-project/templates/_trunk.tsv",
+            #     "-U", "-l", "5000"
+            # ]
 
-        if not self.session:
-            print("[ERROR] No session available. Cannot start OP25.")
-            return
-
-        self.op25_command = [
-            self.rx_script, "--nocrypt", "--args", "rtl",
-            "--gains", "lna:35", "-S", "960000", "-q", "0",
-            "-v", "1", "-2", "-V", "-U",
-            "-T", self.session.activeSystem.toTrunkTSV(session_obj),
-            "-U", "-l", "5000"
-        ]
+            self.op25_command = [
+                self.rx_script, "--nocrypt", "--args", "rtl",
+                "--gains", "lna:35", "-S", "960000", "-q", "0",
+                "-v", "1", "-2", "-V", "-U",
+                "-T", self.session.activeSystem.toTrunkTSV(self.session),
+                "-U", "-l", "5000"
+            ]
+            # print(self.op25_command, flush=True)
+            # Start subprocess
+            self.op25_process = subprocess.Popen(
+                self.op25_command,
+                stdout=open(self.stdout_file, "w"),
+                stderr=open(self.stderr_file, "w"),
+                text=True
+            )
+            time.sleep(3)  # Wait for startup
+            self.set_alreadyStarted(True) # Ensure we do not accidentally start the process again
+            print("Process Ignition Complete")
+            return True
         
-        print(self.op25_command)
-
-        # Start subprocess
-        self.op25_process = subprocess.Popen(
-            self.op25_command,
-            stdout=open(self.stdout_file, "w"),
-            stderr=open(self.stderr_file, "w"),
-            text=True
-        )
-
-        time.sleep(3)  # Wait for startup
-
-        if self.isConnected():
-            print("Connection Status:", "OP25 Connected")
-        else:
-            print("[WARNING] OP25 may not have connected successfully.")
-
+        elif(not self.session):
+            raise Exception("[FATAL] Session uavailable. Cannot start OP25.")
+                
     def isConnected(self, timeout=30):
         """Continuously check for 'Reconfiguring NAC' in the log file until found or timeout."""
         print("...", "isConnected()")
@@ -134,8 +146,17 @@ class OP25Controller:
             print("[ERROR] OP25 is not running.")
             return
 
-
-
+        logEntry= {
+            "action" : "switchTalkgroup",
+            "channel_number" : f"{session.activeChannel.channel_number}",
+            "channel_name" : session.activeChannel.name,
+            "zone_name" : session.activeZone.name,
+            "system_name" : session.activeSystem.sysname
+        }
+        
+        entry = json.dumps(logEntry)
+        self.session.sessionManager.apiManager.sendManualLogEntry([entry])
+        
         # Command to reload OP25 configuration, assuming self.command is implemented
         self.command("reload", 0)
 

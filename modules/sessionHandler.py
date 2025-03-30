@@ -1,5 +1,8 @@
 #sessionHandler.py
 from __future__ import annotations
+from typing import List, TYPE_CHECKING
+if TYPE_CHECKING:
+    from api import API
 from modules.myConfiguration import MyConfig
 from modules.OP25_Controller import OP25Controller
 from modules.systemsHandler import OP25FilesPackage, OP25SystemManager, OP25System
@@ -12,7 +15,8 @@ class sessionHandler(object):
     def __init__(self, opManager: OP25Controller, 
                  defaultSystemIndex:int,
                  defaultChannelIndex:int, 
-                 defaultZoneIndex:int):
+                 defaultZoneIndex:int,
+                 api: "API"):
         from modules.OP25_Controller import OP25Controller
         # TODO: USE DEFAULT SETTINGS FOR PATHS IN THE FUTURE 
         # NOTE: TO MYSELF
@@ -20,11 +24,13 @@ class sessionHandler(object):
         self._talkgroupsManager = TalkgroupsHandler("/opt/op25-project/talkgroups.json")
         self._systemsManager = OP25SystemManager("/opt/op25-project/systems.json")
         self._op25Manager: OP25Controller = opManager
-
-
+        self._apiManager = api
         # Pass self into session to resolve the circular reference
         self._thisSession = session(self, defaultSystemIndex, defaultZoneIndex, defaultChannelIndex)
     
+    @property 
+    def apiManager(self) -> "API":
+        return self._apiManager
     @property
     def zoneManager(self) -> ZoneData:
         return self._zoneManager
@@ -44,12 +50,3 @@ class sessionHandler(object):
     @property
     def thisSession(self) -> session:
         return self._thisSession
-
-    # def op25ConfigFiles(self) -> OP25FilesPackage:
-    #     """Returns a dictionary of all the configuration files (trunk, whitelist, blacklist)"""
-    #     return OP25FilesPackage(
-    #         Blacklist = self.thisSession.activeChannel.toBlacklistTSV(),
-    #         Whitelist = self.thisSession.activeChannel.toWhitelistTSV(), 
-    #         Trunk     = self.thisSession.activeSystem.toTrunkTSV(),  # <-- FIXED: removed ()
-    #         TGIDFile  = self.thisSession.activeTGIDList.toTalkgroupsCSV()
-    #     )

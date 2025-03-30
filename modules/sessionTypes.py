@@ -24,9 +24,6 @@ class session(object):
         self._activeSysIndex = systemIndex
         self._activeTGIDList =  self.sessionManager.talkgroupsManager.getTalkgroupSetById(sysid=self.activeSysIndex)
         
-
-
-
     @property
     def activeTGIDList(self) -> TalkgroupSet:
         return self._activeTGIDList

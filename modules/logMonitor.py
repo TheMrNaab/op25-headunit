@@ -1,3 +1,4 @@
+#logMonitor.py
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from api import API  # Replace with actual class name if different
@@ -107,19 +108,32 @@ class logMonitorOP25:
                 self.queue.task_done()
 
     def interpretLine(self, line):
+        # import json
+        # # Step 1: Try parsing as JSON
+        # try:
+        #     parsed = json.loads(line)
+        #     if isinstance(parsed, dict):
+        #         # You can add tagging or routing logic here
+        #         return parsed
+        # except json.JSONDecodeError:
+        #     pass  # Not JSON, continue to regex matching
+
+        # Step 2: Check VOICE_REGEX
         m = VOICE_REGEX.match(line)
         if m:
             entry = m.groupdict()
-            entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(self.api.sessionManager.thisSession.activeSystem.index, m)
-             # REMOVED: get_alpha_tag(int(entry["Talkgroup"])) 
+            entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(
+                self.api.sessionManager.thisSession.activeSystem.index, m
+            )
             return entry
-        
+
+        # Step 3: Check TG_REGEX
         m = TG_REGEX.match(line)
         if m:
             entry = m.groupdict()
-            entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(self.api.sessionManager.thisSession.activeSystem.index, m)
-            
-            # REMOVED: get_alpha_tag(int(entry["Talkgroup"])) 
+            entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(
+                self.api.sessionManager.thisSession.activeSystem.index, m
+            )
             return entry
 
         return None

@@ -1,56 +1,59 @@
+# api.py
 from __future__ import annotations
+from queue import Queue, Empty
 import subprocess
 import os
 import signal
 from configobj import ConfigObj
 from flask import Flask, Response, request, jsonify, send_file
-from flask_cors import CORS, cross_origin
-from modules.linuxSystem.sound import SoundSys as sound  # Ensure this path matches your project
+from flask_cors import CORS
+from modules.linuxSystem.sound import soundSys # Ensure this path matches your project
 from modules.linuxSystem.linuxUtils import LinuxUtilities
-from modules.logMonitor import LogFileHandler, LogFileWatcher, logMonitorOP25
+from modules.logMonitor import LogFileWatcher, logMonitorOP25
 from modules.sessionTypes import session
 from modules.sessionHandler import sessionHandler 
-from modules.systemsHandler import OP25FilesPackage
 from modules.OP25_Controller import OP25Controller
 import time
 import threading
 from queue import Queue
 import json
 import logging
-import secrets
 
-# NOTE: MIGHT NEED TO REMOVE; KEEPING FOR NOW DUE TO CODE HINTING
 from modules.zoneHandler import ZoneData, Zone, Channel
 from modules.myConfiguration import MyConfig
 from modules.talkGroupsHandler import TalkgroupsHandler
 
-logging.getLogger('watchdog').setLevel(logging.WARNING)
-logging.getLogger('urllib3').setLevel(logging.WARNING)
-logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
-logging.getLogger("requests").setLevel(logging.WARNING)
+# class errorHandler:
+#     def __init__(self, api):
+#         self.configManager = MyConfig()
+#         self.API = api
+#         LOG_FILE = self.configManager.get("paths", "app_log")
+#         print("paths -> app_log", LOG_FILE)
 
-class errorHandler:
-    def __init__(self, api):
-        self.configManager = MyConfig()
-        self.API = api
-        LOG_FILE = self.configManager.get_path("paths", "app_log")
+#         # Get the root logger and configure it
+#         logger = logging.getLogger()
+#         logger.setLevel(logging.DEBUG)
+#         for h in logger.handlers[:]:
+#             logger.removeHandler(h)
+#         handler = logging.FileHandler(LOG_FILE, mode="w")
+#         formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
+#         handler.setFormatter(formatter)
+#         logger.addHandler(handler)
 
-        logging.basicConfig(
-            filename=LOG_FILE,
-            filemode="a",
-            level=logging.ERROR,
-            format="%(asctime)s %(levelname)s %(name)s: %(message)s"
-        )
+#         # Silence noisy libraries
+#         for lib in ("watchdog", "urllib3", "urllib3.connectionpool", "requests", "root"):
+#             logging.getLogger(lib).setLevel(logging.WARNING)
 
-        # Silence noisy libraries
-        for lib in ("watchdog", "urllib3", "urllib3.connectionpool", "requests", "root"):
-            logging.getLogger(lib).setLevel(logging.WARNING)
-            
+#     def logError(self, msg, *args, **kwargs):
+#         logging.error(msg, *args, **kwargs)
+
+#     def logInfo(self, msg, *args, **kwargs):
+#         logging.info(msg, *args, **kwargs)
+        
 class API:
     def __init__(self):
-        # SET LOGGING LEVEL
-        logging.basicConfig(level=logging.DEBUG)
-
+        # self._errorHandler = errorHandler(self)
+        
         # FLASK SETUP
         self.app = Flask(__name__)
         CORS(
@@ -58,13 +61,10 @@ class API:
             supports_credentials=True,
             resources={r"/*": {"origins": "http://192.168.1.46:8000"}}
         )
-
-        # SET SESSION SECRET
-        self.app.secret_key = secrets.token_hex(32)
-
+     
         # INITIALIZE CONFIGURATION & ERROR HANDLER
         self._configManager = MyConfig()
-        self._errorHandler = errorHandler(self)
+        
 
         # CLEANUP PORTS AND PROCESSES
         self.killAndFree()
@@ -76,21 +76,26 @@ class API:
         self._op25Manager = OP25Controller(configMgr=self.configManager)
 
         # STEP 3: INIT SESSION HANDLER NOW THAT CONTROLLER EXISTS
-        self._sessionManager = sessionHandler(self.op25Manager, 0, 0, 0)
+        self._sessionManager = sessionHandler(self.op25Manager, 0, 0, 0, self)
+
+        # LOGGER STREAM FOR OP25
+        self._monitor = None
+        self.startLoggerStream()
 
         # STEP 4: SET SESSION ON CONTROLLER
         self._session = self.sessionManager.thisSession
         self.op25Manager.set_session(self._session)
-        self.op25Manager.start(self._session)
-
-        # LOGGER STREAM FOR OP25
-        self.startLoggerStream()
+        self.op25Manager.start()
 
         self.progress = 0
         self.lock = threading.Lock()
 
         # REGISTER API ROUTES
         self.register_routes()
+     
+    @property
+    def logMonitor(self) -> logMonitorOP25:
+        return self._monitor
 
     def set_session(self, session: session):
         self._activeSession = session
@@ -105,17 +110,13 @@ class API:
         self.free_port(5001)
         self.kill_named_scripts(["rx.py", "terminal.py"])
 
-    def startOP25Controller(self):
-        self._op25Manager = OP25Controller(configMgr=self.configManager)
-
-
     def startLoggerStream(self):
         self._end_point = f"{self.configManager.get('hosts', 'api_host')}/controller/logging/update"
         self._monitor = logMonitorOP25(self, file=self.configManager.get("paths", "stderr_file"), endpoint=self._end_point)
         self._watcher = LogFileWatcher(self._monitor)
         self._watcher.start_in_thread()
         self._log_queue = Queue()
-
+        
     @property
     def logQueue(self) -> Queue:
         return self._log_queue
@@ -123,11 +124,7 @@ class API:
     @property
     def configManager(self) -> ConfigObj:
         return self._configManager
-    
-    @property
-    def errorManager(self) -> errorHandler:
-        return self._errorHandler
-    
+
     @property
     def op25Manager(self) -> OP25Controller:
         return self._op25Manager
@@ -151,12 +148,12 @@ class API:
         # 1: [GET] Get system volume level (0–100)
         @self.app.route('/volume/simple', methods=['GET'])
         def get_volume():
-            return sound.get_volume_percent()
+            return soundSys.get_volume_percent()
 
         # 2: [POST] Set system volume level
         @self.app.route('/volume/<int:level>', methods=['POST'])
         def set_volume(level):
-            return sound.set_volume(level)
+            return soundSys.set_volume(level)
         
         # ====== SYSTEM UTILITIES & CONTROL ======
 
@@ -184,6 +181,7 @@ class API:
             except Exception as e:
                 return jsonify({"error": str(e)}), 500
 
+        
 
         # ====== DEVICE SLEEP SETTINGS ======
 
@@ -407,10 +405,15 @@ class API:
         # 26: [GET] Stream log data as Server-Sent Events (SSE)
         @self.app.route('/controller/logging/stream', methods=['GET'])
         def logging_stream():
+            
             def log_event_stream():
                 while True:
-                    data = self.logQueue.get()
-                    yield f"data: {json.dumps(data)}\n\n"
+                    try:
+                        data = self.logQueue.get(timeout=5)
+                        yield f"data: {json.dumps(data)}\n\n"
+                    except Empty:
+                        # Prevent client timeout
+                        yield f": keep-alive\n\n"
             return Response(log_event_stream(), mimetype='text/event-stream')
 
         # 27: [GET] Stream OP25 TGID update progress (0–100) as SSE
@@ -441,7 +444,7 @@ class API:
 
         self.free_port(8000)
         self.free_port(5001)
-        self.kill_named_scripts(["rx.py", "terminal.py"])
+        #self.kill_named_scripts(["rx.py", "terminal.py"])
 
         # Launch static frontend server
         http_proc = subprocess.Popen([
@@ -490,47 +493,11 @@ class API:
             except Exception as e:
                 print(f"Error killing {name}: {e}")
 
-class sound:
-    @staticmethod
-    def percent_to_raw(min_val, max_val, percent):
-        """
-        Convert percent (0–100) to raw ALSA value
-        """
-        if percent < 0 or percent > 100:
-            raise ValueError("Percent must be between 0 and 100")
-        range_span = max_val - min_val
-        raw = round(min_val + (range_span * (percent / 100)))
-        return raw
-
-    @staticmethod
-    def raw_to_percent(min_val, max_val, raw):
-        """
-        Convert raw ALSA value to percent
-        """
-        if raw < min_val or raw > max_val:
-            raise ValueError("Raw value out of range")
-        range_span = max_val - min_val
-        percent = ((raw - min_val) / range_span) * 100
-        return round(percent, 2)
-
-    @staticmethod
-    def raw_to_db(raw):
-        """
-        Convert ALSA raw value to dB (rough estimation)
-        ALSA uses 100 steps = 1 dB
-        So: -10239 = -102.39 dB, etc.
-        """
-        return round(raw / 100, 2)
-    @staticmethod
-    def db_to_raw(db):
-        """
-        Convert dB to raw ALSA value (if using 100 steps per dB)
-        """
-        return round(db * 100)
 
 
 # ======== Launch from here ========
 if __name__ == '__main__':
     api_server = API()
     #api_server.run(debug=True, host="0.0.0.0", port=5001) # Debug mode - be sure to turn off
+    #TODO: Delete temporary files on exit, but how?
     api_server.run() 
