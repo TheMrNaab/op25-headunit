@@ -1,0 +1,690 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Channel Manager</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="backend.css">
+  <style>
+    .tgid-pill {
+      margin-right: 5px;
+      margin-bottom: 5px;
+      display: inline-flex;
+      align-items: center;
+    }
+    #about p {
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+  </style>
+  <style>
+    .autocomplete-suggestions {
+      border: 1px solid #ccc;
+      max-height: 150px;
+      overflow-y: auto;
+      position: absolute;
+      z-index: 1000;
+      background: white;
+      color: black;
+      width: 100%;
+    }
+    .autocomplete-suggestion {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .autocomplete-suggestion:hover {
+      background-color: #eee;
+    }
+    .autocomplete-highlight {
+  background-color: #ddd;
+}
+  </style>
+</head>
+<body>
+<div class="container mt-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">RadioApp</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="system.html">System</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="talkgroups.html">Talkgroups</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="channels.html">Channels</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+  <div class="main-container">
+  <h2 class="mt-2">Channel Manager</h2>
+  <p>
+    This configuration editor is designed to create a configuration file for the OP25 Scanner Head Unit software.
+    It encourages users to consult <a href="https://www.radioreference.com/" target="_blank">RadioReference</a> for talk group information.
+    Currently, it supports one p25 system only; multi-system support is planned for future releases.
+    Note that there is no support for conventional systems at this time.
+  </p>
+  <p>
+    Use the form below to add, edit, or remove channels. For valid TGIDs, refer to
+    <a href="https://www.radioreference.com/" target="_blank">RadioReference</a>.
+  </p>
+
+  <!-- Button Group -->
+  <div class="btn-group mb-3" role="group">
+    <button class="btn btn-outline-primary" onclick="newChannel()"><i class="fas fa-plus me-2"></i>New Channel</button>
+    <!-- <button class="btn btn-outline-primary" onclick="openZoneModal()">New Zone</button> -->
+    <button class="btn btn-outline-primary" onclick="postChannelData()"><i class="fas fa-save me-2"></i>Save</button>
+    <button class="btn btn-outline-primary" onclick="copyJSONToClipboard()"><i class="fas fa-copy me-2"></i></button>
+  </div>
+
+  <!-- Channel Modal Dialog -->
+  <div class="modal fade" id="channelModal" tabindex="-1" aria-labelledby="channelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="channelModalLabel">Edit Channel</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="channel-form">
+            <input type="hidden" id="edit-zone-index">
+            <input type="hidden" id="edit-channel-index">
+
+            <div class="input-group mb-3">
+              <span class="input-group-text">Ch. #</span>
+              <input type="number" id="channel-number" class="form-control" style="max-width: 6ch;" disabled>
+              <span class="input-group-text">Channel Name</span>
+              <input type="text" id="channel-name" class="form-control fw-bold" placeholder="Channel Name" required>
+            </div>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text">Zone</span>
+              <select id="channel-zone" class="form-select" required></select>
+              <span class="input-group-text">Channel Type</span>
+              <select id="channel-type" class="form-select" required>
+                <option value="Scan">Scan</option>
+                <option value="Talkgroup">Talkgroup</option>
+              </select>
+              <span class="input-group-text">System</span>
+              <select id="system-id" class="form-select">
+                <option value="Default">Default</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">TGIDs</label>
+              <div id="tgidContainer" class="mb-2"></div>
+              <input type="text" id="tgidInput" class="form-control" placeholder="Type a TGID and press space or paste comma list">
+              <!-- INSIDE MODAL, AFTER #tgidInput -->
+              <div id="autocompleteSuggestions" class="autocomplete-suggestions"></div>
+
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" form="channel-form" class="btn btn-primary">Save Channel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- New Zone Modal -->
+<div class="modal fade" id="zoneModal" tabindex="-1" aria-labelledby="zoneModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="zone-form" onsubmit="saveZone(event)">
+          <div class="modal-header">
+            <h5 class="modal-title" id="zoneModalLabel">Zone</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="zone-modal-index">
+            <label for="zone-name" class="form-label">Zone Name</label>
+            <input type="text" id="zone-name" class="form-control" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Zone</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+      <div class="row">
+        <div class="col-md-3">
+          <h3>Zones</h3>
+          <!-- Zone list defined statically with a default New Zone button -->
+          <div id="zone-list" class="list-group">
+            <button id="newZoneButton" type="button" class="list-group-item list-group-item-action list-group-item-light" onclick="openZoneModal()"><i class="fas fa-plus me-2"></i>
+              New Zone
+            </button>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <h3>Channels</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Channel #</th>
+                <th>Name</th>
+                <th>Zone</th>
+                <th>Type</th>
+                <th>TGIDs</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="channel-list"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav tabs -->
+        <!-- Import Tab -->
+      <div class="tab-pane fade" id="json" role="tabpanel">
+        <p>Paste your JSON data in the box below. Click "Load JSON" to populate the editor with your data.</p>
+        <textarea id="json-input" class="form-control" rows="10" placeholder="Paste JSON here..."></textarea>
+        <button class="btn btn-primary mt-2" onclick="loadJson()">Load JSON</button>
+        <button class="btn btn-secondary mt-2" onclick="newFile()">New File</button>
+      </div>
+      <!-- Editor Tab -->
+      <div class="tab-pane fade" id="editor" role="tabpanel">
+       
+      <!-- Export Tab -->
+     
+
+ 
+  
+  <!-- New Zone Modal -->
+  <div class="modal fade" id="newZoneModal" tabindex="-1" aria-labelledby="newZoneModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newZoneModalLabel">Create New Zone</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="new-zone-form">
+            <div class="mb-3">
+              <label for="new-zone-number" class="form-label">Zone Number</label>
+              <input type="number" id="new-zone-number" class="form-control" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="new-zone-name" class="form-label">Zone Name</label>
+              <input type="text" id="new-zone-name" class="form-control" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="saveNewZone()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit Zone Modal -->
+  <div class="modal fade" id="editZoneModal" tabindex="-1" aria-labelledby="editZoneModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editZoneModalLabel">Edit Zone</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="edit-zone-form">
+            <div class="mb-3">
+              <label for="edit-zone-number" class="form-label">Zone Number</label>
+              <input type="number" id="edit-zone-number" class="form-control" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="edit-zone-name" class="form-label">Zone Name</label>
+              <input type="text" id="edit-zone-name" class="form-control" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" onclick="deleteZone()">Delete</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="saveZoneEdits()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>    
+<script>
+  let data = { zones: [] };
+  let selectedZoneIndex = -1;
+  let tgids = [];
+  let talkgroupMap = [];
+  let channelModal = null;
+
+  const tgidInput = document.getElementById('tgidInput');
+  const suggestionsDiv = document.getElementById('autocompleteSuggestions');
+  
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    loadSystemOptions();
+    loadTalkgroupMap();
+    loadChannelData();
+    attachTGIDListeners();
+  });
+  
+  function attachTGIDListeners() {
+    tgidInput.addEventListener('input', () => {
+      const v = tgidInput.value.trim();
+      v.length >= 2 ? showSuggestions(v) : suggestionsDiv.innerHTML = '';
+    });
+    
+    tgidInput.addEventListener('paste', e => {
+      e.preventDefault();
+      e.clipboardData.getData('text/plain')
+        .split(',').map(s => s.trim()).filter(Boolean)
+        .forEach(addTGID);
+    });
+  }
+  
+  function addTGID(value) {
+    if (value) tgids.push(value);
+    renderTGIDPills();
+    tgidInput.value = '';
+    suggestionsDiv.innerHTML = '';
+  }
+  
+  function loadTalkgroupMap() {
+    fetch(`http://${location.hostname}:5001/v2/systems/tgid_tags/all`)
+      .then(r => r.json())
+      .then(json => {
+        talkgroupMap = [];
+        Object.values(json).forEach(sys => {
+          Object.values(sys).forEach(tg => {
+            talkgroupMap.push({ id: tg.tgid, name: tg.name });
+          });
+        });
+      })
+      .catch(console.error);
+  }
+  
+  function showSuggestions(query) {
+    suggestionsDiv.innerHTML = '';
+    talkgroupMap.filter(t =>
+      t.name.toLowerCase().includes(query.toLowerCase()) ||
+      t.id.toString().startsWith(query)
+    ).slice(0,10).forEach(tg => {
+      const div = document.createElement('div');
+      div.className = 'autocomplete-suggestion';
+      div.textContent = `${tg.name} (${tg.id})`;
+      div.onclick = () => addTGID(tg.id.toString());
+      suggestionsDiv.appendChild(div);
+    });
+  }
+  let currentSuggestionIndex = -1;
+
+  tgidInput.addEventListener('keydown', (e) => {
+    const items = suggestionsDiv.querySelectorAll('.autocomplete-suggestion');
+    if (!items.length) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      currentSuggestionIndex = (currentSuggestionIndex + 1) % items.length;
+      highlightSuggestion(items);
+    }
+    else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      currentSuggestionIndex = (currentSuggestionIndex - 1 + items.length) % items.length;
+      highlightSuggestion(items);
+    }
+    else if (e.key === 'Enter' && currentSuggestionIndex > -1) {
+      e.preventDefault();
+      items[currentSuggestionIndex].click();
+      currentSuggestionIndex = -1;
+    }
+  });
+
+  function highlightSuggestion(items) {
+    items.forEach((el, i) => {
+      el.classList.toggle('autocomplete-highlight', i === currentSuggestionIndex);
+    });
+  }
+  
+  function renderTGIDPills() {
+    const container = document.getElementById('tgidContainer');
+    container.innerHTML = '';
+    tgids.forEach((tg, i) => {
+      const pill = document.createElement('span');
+      pill.className = 'badge bg-primary tgid-pill';
+      const known = talkgroupMap.find(x => x.id === parseInt(tg));
+      pill.textContent = known ? `${known.name} (${known.id})` : tg;
+      const btn = document.createElement('button');
+      btn.className = 'btn-close btn-close-white btn-sm ms-2';
+      btn.onclick = () => { tgids.splice(i,1); renderTGIDPills(); };
+      pill.appendChild(btn);
+      container.appendChild(pill);
+    });
+  }
+  
+  function loadSystemOptions() {
+  fetch(`http://${location.hostname}:5001/v2/systems/list`)
+    .then(r => r.json())
+    .then(systems => {
+      const sel = document.getElementById('system-id');
+      sel.innerHTML = '';
+      systems.forEach(s => {
+        const o = document.createElement('option');
+        o.value = s.sysid;
+        o.textContent = s.sysname || `System ${s.sysid}`;
+        sel.appendChild(o);
+      });
+    })
+    .catch(console.error);
+}
+  
+function loadChannelData() {
+  return fetch(`http://${location.hostname}:5001/v2/zones/all`)
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(json => {
+      data = { zones: Object.values(json.zones || {}) };
+      selectedZoneIndex = data.zones.length ? 0 : -1;
+      renderZones();
+      renderChannels();
+      populateZoneSelect();
+    })
+    .catch(console.error);
+}
+  
+  function populateZoneSelect() {
+    const sel = document.getElementById('channel-zone');
+    sel.innerHTML = '';
+    data.zones.forEach(z => {
+      const o = document.createElement('option');
+      o.value = z.name; o.textContent = z.name;
+      sel.appendChild(o);
+    });
+  }
+  
+  function clearChannelForm() {
+    ['edit-zone-index','edit-channel-index','channel-number','channel-name','tgidInput']
+      .forEach(id=>document.getElementById(id).value='');
+    document.getElementById('channel-type').value='Scan';
+    document.getElementById('system-id').value='Default';
+    tgids = [];
+    renderTGIDPills();
+  }
+  
+function newChannel() {
+  clearChannelForm();
+  populateZoneSelect();
+  if (selectedZoneIndex > -1) {
+    document.getElementById("channel-zone").value = data.zones[selectedZoneIndex].name;
+    const zoneChannels = data.zones[selectedZoneIndex].channels || {};
+    const nextNumber = Math.max(0, ...Object.keys(zoneChannels).map(Number)) + 1;
+    document.getElementById("channel-number").value = nextNumber;
+  }
+
+  channelModal = new bootstrap.Modal(document.getElementById("channelModal"));
+  channelModal.show();
+}
+  // RENDER ZONES
+function renderZones() {
+  const zoneList = document.getElementById("zone-list");
+  const newZoneButton = document.getElementById("newZoneButton");
+  zoneList.innerHTML = "";
+  zoneList.appendChild(newZoneButton);
+
+  data.zones.forEach((zone, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `list-group-item list-group-item-action${selectedZoneIndex === i ? " active" : ""}`;
+    btn.innerHTML = `${zone.name} <i class="fas fa-edit float-end" onclick="event.stopPropagation(); openZoneModal(${i});"></i>`;
+    btn.onclick = () => selectZone(i);
+    zoneList.appendChild(btn);
+  });
+}
+
+function renderChannels() {
+  const channelList = document.getElementById("channel-list");
+  channelList.innerHTML = "";
+  if (selectedZoneIndex === -1) return;
+
+  const channels = Object.values(data.zones[selectedZoneIndex].channels || {});
+  channels.forEach((ch, idx) => {
+    if (!ch.system) ch.system = "Default";
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${ch.number}</td>
+      <td>${ch.name}</td>
+      <td>${data.zones[selectedZoneIndex].name}</td>
+      <td>${ch.type}<br><i>(${ch.system})</i></td>
+      <td>${(ch.tgids || []).join(", ")}</td>
+      <td>
+        <button class="btn btn-link btn-sm" onclick="moveChannelUp(${selectedZoneIndex}, ${idx})"><i class="fas fa-arrow-up"></i></button>
+        <button class="btn btn-link btn-sm" onclick="moveChannelDown(${selectedZoneIndex}, ${idx})"><i class="fas fa-arrow-down"></i></button>
+        <button class="btn btn-link btn-sm text-warning" onclick="editChannel(${selectedZoneIndex}, ${idx})"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-link btn-sm text-danger" onclick="removeChannel(${selectedZoneIndex}, ${idx})"><i class="fas fa-trash"></i></button>
+      </td>`;
+    channelList.appendChild(row);
+  });
+}
+
+
+function moveChannelUp(zIdx, cIdx) {
+  const channelEntries = Object.entries(data.zones[zIdx].channels);
+  if (cIdx === 0) return;
+
+  [channelEntries[cIdx - 1], channelEntries[cIdx]] = [channelEntries[cIdx], channelEntries[cIdx - 1]];
+
+  // Rebuild dictionary with updated order and corrected "number"
+  const reordered = {};
+  channelEntries.forEach(([key, ch], i) => {
+    ch.number = i + 1;
+    reordered[(i + 1).toString()] = ch;
+  });
+
+  data.zones[zIdx].channels = reordered;
+  renderChannels();
+}
+
+function moveChannelDown(zIdx, cIdx) {
+  const channelEntries = Object.entries(data.zones[zIdx].channels);
+  if (cIdx === channelEntries.length - 1) return;
+
+  [channelEntries[cIdx + 1], channelEntries[cIdx]] = [channelEntries[cIdx], channelEntries[cIdx + 1]];
+
+  // Rebuild dictionary with updated order and corrected "number"
+  const reordered = {};
+  channelEntries.forEach(([key, ch], i) => {
+    ch.number = i + 1;
+    reordered[(i + 1).toString()] = ch;
+  });
+
+  data.zones[zIdx].channels = reordered;
+  renderChannels();
+}
+
+function editChannel(zIdx, cIdx) {
+  const channel = Object.values(data.zones[zIdx].channels)[cIdx];
+  document.getElementById("edit-zone-index").value = zIdx;
+  document.getElementById("edit-channel-index").value = cIdx;
+  document.getElementById("channel-number").value = channel.number;
+  document.getElementById("channel-name").value = channel.name;
+  setZoneField(data.zones[zIdx].name, true);
+  document.getElementById("channel-type").value = channel.type;
+  document.getElementById("system-id").value = channel.system;
+  tgids = (channel.tgids || []).map(String);
+  renderTGIDPills();
+    // ✅ Ensure modal is shown on edit
+  channelModal = new bootstrap.Modal(document.getElementById("channelModal"));
+  channelModal.show();
+}
+
+function removeChannel(zIdx, cIdx) {
+  const channelKeys = Object.keys(data.zones[zIdx].channels);
+  const keyToDelete = channelKeys[cIdx];
+  if (keyToDelete) {
+    delete data.zones[zIdx].channels[keyToDelete];
+    renderChannels();
+  }
+}
+
+function openZoneModal(index = -1) {
+  document.getElementById("zone-modal-index").value = index;
+  document.getElementById("zone-name").value = index === -1 ? "" : data.zones[index].name;
+  new bootstrap.Modal(document.getElementById("zoneModal")).show();
+}
+
+function saveZone(event) {
+  event.preventDefault();
+  const idx = +document.getElementById("zone-modal-index").value;
+  const name = document.getElementById("zone-name").value.trim();
+  if (!name) return;
+  if (idx === -1) data.zones.push({ name, channels: [] });
+  else data.zones[idx].name = name;
+  renderZones();
+  renderChannels();
+  new bootstrap.Modal(document.getElementById("zoneModal")).hide();
+}
+
+function saveZoneEdits() {
+  const newName = document.getElementById("edit-zone-name").value.trim();
+  if (!newName) return alert("Zone name cannot be empty");
+  data.zones[editingZoneIndex].name = newName;
+  setZoneField(newName, true);
+  renderZones();
+  renderChannels();
+  new bootstrap.Modal(document.getElementById("editZoneModal")).hide();
+}
+
+function deleteZone() {
+  if (!confirm("Delete this zone?")) return;
+  data.zones.splice(editingZoneIndex, 1);
+  selectedZoneIndex = data.zones.length ? 0 : -1;
+  setZoneField(selectedZoneIndex > -1 ? data.zones[selectedZoneIndex].name : "", true);
+  renderZones();
+  renderChannels();
+  new bootstrap.Modal(document.getElementById("editZoneModal")).hide();
+}
+
+function selectZone(index) {
+  selectedZoneIndex = index;
+  setZoneField(data.zones[index].name, true);
+  renderZones();
+  renderChannels();
+}
+
+function saveNewZone() {
+  const name = document.getElementById("new-zone-name").value.trim();
+  if (!name) return alert("Zone name cannot be empty");
+  data.zones.push({ name, channels: [] });
+  selectZone(data.zones.length - 1);
+  new bootstrap.Modal(document.getElementById("newZoneModal")).hide();
+}
+
+function setZoneField(val, readOnly) {
+  const sel = document.getElementById("channel-zone");
+  sel.value = val;
+  readOnly ? sel.setAttribute("readonly","") : sel.removeAttribute("readonly");
+}
+
+function loadJson() {
+  try {
+    data = JSON.parse(document.getElementById("json-input").value);
+    selectZone(data.zones.length ? 0 : -1);
+  } catch { alert("Invalid JSON"); }
+}
+
+
+function ensureSystemField() {
+  data.zones.forEach(z => {
+    Object.values(z.channels || {}).forEach(ch => {
+      if (!ch.system) ch.system = "Default";
+    });
+  });
+}
+
+function copyJSONToClipboard() {
+  ensureSystemField();
+  navigator.clipboard.writeText(JSON.stringify(data, null, 2)).catch(e => alert(e));
+}
+
+function postChannelData() {
+  ensureSystemField();
+  fetch(`http://${location.hostname}:5001/v2/zones/all/update`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ zones: Object.fromEntries(data.zones.map((z, i) => [i + 1, z])) })
+  })
+  .then(r => r.ok ? alert("Saved") : alert("Failed"))
+  .catch(e => alert(e));
+}
+
+document.getElementById("channel-form").addEventListener("submit", event => {
+  event.preventDefault();
+  const zoneName = document.getElementById("channel-zone").value.trim();
+  const zIdx = +document.getElementById("edit-zone-index").value;
+  const cIdx = +document.getElementById("edit-channel-index").value;
+  const channel = {
+    number: +document.getElementById("channel-number").value,
+    name: document.getElementById("channel-name").value,
+    type: document.getElementById("channel-type").value,
+    tgids: tgids.map(Number),
+    system: +document.getElementById("system-id").value
+  };
+
+  if (zIdx >= 0) {
+    let zone = data.zones[zIdx];
+    if (!zone.channels) zone.channels = {};
+    const key = String(channel.number);
+    zone.channels[key] = channel;
+  }
+
+  renderZones();
+  renderChannels();
+  clearChannelForm();
+  channelModal?.hide();
+});
+
+// NEW FILE & LOAD JSON
+function newFile() {
+  data = { zones: [] };
+  document.getElementById("json-input").value = JSON.stringify(data, null, 2);
+  selectedZoneIndex = -1;
+  renderZones();
+  renderChannels();
+}
+function loadJson() {
+  try {
+    data = JSON.parse(document.getElementById("json-input").value);
+    selectZone(data.zones.length ? 0 : -1);
+  } catch {
+    alert("Invalid JSON");
+  }
+}
+
+// EXPORT JSON DOWNLOAD
+function exportData() {
+  ensureSystemField();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "channels.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+tgidInput.addEventListener('blur', () => setTimeout(() => suggestionsDiv.innerHTML = '', 200));
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Systems Config Editor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="backend.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-4">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">RadioApp</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="system.html">System</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="talkgroups.html">Talkgroups</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="channels.html">Channels</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-container">
+  <!-- Import Modal Trigger Button (kept in button group) -->
+<!-- Import Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="importModalLabel">Import Configuration</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3>Import Radio Reference File</h3>
+        <input type="file" id="fileInput" accept=".csv" class="form-control mb-2">
+        <button class="btn btn-primary" onclick="handleImport()">Import</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <h2 class="mt-4">System Configuration</h2>
+  <p>
+    This tool allows you to configure P25 trunked radio systems for use with the OP25 scanner platform.
+    Use the <strong>Import</strong> button to load a system site file exported from <a href="https://www.radioreference.com/" target="_blank">RadioReference</a>.
+    Only control channels (frequencies ending in <code>C</code>) will be imported. Other frequencies are ignored.
+  </p>
+  <p>
+    Once imported, you may review and edit the details of each system. When ready, click <strong>Save</strong> to upload the configuration
+    to the server. This setup supports only one system at a time. Each row represents a radio system site with a list of its control channels.
+  </p>
+  <div class="btn-group mb-3" role="group">
+    <button class="btn btn-outline-secondary" onclick="createNew()">New</button>
+    <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#importModal">Import</button>
+    <div class="vr mx-2"></div>
+    <button class="btn btn-outline-secondary" onclick="postJSON()">Save</button>
+    <!-- ADD SPACER? -->
+    <button class="btn btn-outline-secondary" onclick="addRow()">Add Row</button>
+
+  </div>
+
+  <table class="table table-bordered" id="dataTable">
+    <thead>
+      <tr>
+        <th>Index</th>
+        <th>Sysname</th>
+        <th>Control Channel List</th>
+        <th>Offset</th>
+        <th>NAC</th>
+        <th>Modulation</th>
+        <th>Center Frequency</th>
+        <th></th> <!-- Delete icon column -->
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+</div>
+</div>
+<script>
+const API_BASE_URL = `http://${location.hostname}:5001`;
+
+document.addEventListener('DOMContentLoaded', async function () {
+  await loadSystemConfig();
+});
+
+function postJSON() {
+  const systemsOutput = {};
+  records.forEach((record, index) => {
+    const sysid = record["Sysid"] || `sys${index + 1}`;
+    const systemObj = {};
+
+    fullFields.forEach(field => {
+      const key = convertToKey(field);
+      let val = record[field];
+
+      if (key === "control_channels") {
+        val = (val || "").split(',').map(f => parseFloat(f.trim())).filter(f => !isNaN(f));
+      }
+
+      if (val === "") val = null;
+      systemObj[key] = val;
+    });
+
+    systemObj["sysid"] = sysid;
+    systemsOutput[sysid] = systemObj;
+  });
+
+  const payload = { systems: systemsOutput };
+
+  fetch(`${API_BASE_URL}/v2/session/system/all/update`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload, null, 2)
+  })
+  .then(response => {
+    if (response.ok) {
+      alert('Configuration saved successfully.');
+    } else {
+      alert('Failed to save configuration.');
+    }
+  })
+  .catch(error => {
+    console.error('Fetch error:', error);
+    alert('Error saving configuration.');
+  });
+}
+
+const shownFields = [
+  "Sysid",
+  "Sysname",
+  "Control Channel List",
+  "Offset",
+  "NAC",
+  "Center Frequency"
+];
+
+const fullFields = [
+  "Sysid",
+  "Sysname",
+  "Control Channel List",
+  "Offset",
+  "NAC",
+  "Modulation",
+  "TGID Tags File",
+  "Whitelist",
+  "Blacklist",
+  "Center Frequency"
+];
+
+let records = [];
+
+function handleImport() {
+  const file = document.getElementById('fileInput').files[0];
+  if (!file) return alert("Please select a file.");
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    parseRRCSV(reader.result);
+    const importModalEl = document.getElementById('importModal');
+    const modal = bootstrap.Modal.getInstance(importModalEl);
+    modal.hide();
+  };
+  reader.readAsText(file);
+}
+
+function parseRRCSV(text) {
+  const lines = text.trim().split(/\r?\n/);
+  const header = lines[0].split(',').map(h => h.trim());
+  const data = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const row = lines[i].split(',').map(cell => cell.trim());
+    if (row.length <= header.length) continue;
+
+    const base = {};
+    header.forEach((key, idx) => base[key] = row[idx]);
+
+    const freqs = row.slice(header.length);
+    const controlFreqs = freqs.filter(f => f.toUpperCase().endsWith('C'));
+
+    if (controlFreqs.length === 0) continue;
+
+    const record = {
+      "Sysid": `auto${i}`,
+      "Sysname": (base["Description"] || "Unknown").replace(/"/g, '').trim(),
+      "Control Channel List": controlFreqs.map(f => f.replace(/c$/i, '')).join(','),
+      "Offset": "",
+      "NAC": base["Site NAC"] || "",
+      "Modulation": "",
+      "TGID Tags File": null,
+      "Whitelist": null,
+      "Blacklist": null,
+      "Center Frequency": ""
+    };
+
+    data.push(record);
+  }
+
+  records = data;
+  renderTable();
+}
+
+function createNew() {
+  records = [];
+  renderTable();
+}
+
+function renderTable() {
+  const tbody = document.querySelector('#dataTable tbody');
+  tbody.innerHTML = '';
+
+  records.forEach((rec, i) => {
+    const row = document.createElement('tr');
+
+    const cells = shownFields.map(field => {
+      let value = rec[field];
+
+      // Convert arrays to comma-separated string
+      if (Array.isArray(value)) {
+        value = value.join(',');
+      }
+
+      value = String(value ?? '');
+      value = value.replace(/"/g, '&quot;');
+
+      return `
+        <td><input class="form-control form-control-sm" value="${value}"
+        onchange="updateField(${i}, '${field}', this.value)"></td>
+      `;
+    });
+
+    // Add delete icon column
+    cells.push(`
+      <td class="text-center">
+        <i class="fas fa-trash-alt text-danger" role="button" onclick="deleteRow(${i})"></i>
+      </td>
+    `);
+
+    row.innerHTML = `<td>${i + 1}</td>` + cells.join('');
+    tbody.appendChild(row);
+  });
+}
+
+function deleteRow(index) {
+  if (confirm("Are you sure you want to delete this row?")) {
+    records.splice(index, 1);
+    renderTable();
+  }
+}
+
+function updateField(index, field, value) {
+  if (!records[index]) records[index] = {};
+  records[index][field] = value;
+}
+
+function addRow() {
+  const newRow = {};
+  shownFields.forEach(field => newRow[field] = '');
+  records.push(newRow);
+  renderTable();
+}
+
+function convertToKey(label) {
+  const map = {
+    "Sysid": "sysid",
+    "Sysname": "sysname",
+    "Control Channel List": "control_channels",
+    "Offset": "offset",
+    "NAC": "NAC",
+    "Modulation": "modulation",
+    "TGID Tags File": "tgid_tags",
+    "Whitelist": "whitelist",
+    "Blacklist": "blacklist",
+    "Center Frequency": "center_frequency"
+  };
+  return map[label] || label;
+}
+
+
+function loadSystemConfig() {
+  fetch(`${API_BASE_URL}/v2/session/system/all`)
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to load system config');
+      return response.json();
+    })
+    .then(data => {
+      records = Object.entries(data).map(([sysid, obj]) => {
+        return {
+          "Sysid": sysid,
+          "Sysname": obj.sysname || '',
+          "Control Channel List": (obj.control_channels || []).join(','),
+          "Offset": obj.offset || '',
+          "NAC": obj.NAC || '',
+          "Modulation": obj.modulation || '',
+          "TGID Tags File": obj.tgid_tags || '',
+          "Whitelist": obj.whitelist || '',
+          "Blacklist": obj.blacklist || '',
+          "Center Frequency": obj.center_frequency || ''
+        };
+      });
+      renderTable();
+    })
+    .catch(error => {
+      console.error('System config load error:', error);
+      alert('Failed to load system configuration from server.');
+    });
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

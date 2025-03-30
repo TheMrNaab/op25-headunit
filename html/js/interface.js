@@ -1,198 +1,79 @@
+import { API_BASE_URL, APIEndpoints, apiGet, apiPut } from "./api.js";
 
+const print_debug = true; // or false, depending on your use case
 
-// Global Variables
-// API URL for the new API is in api.js
+function listenLogStream() {
+  const source = new EventSource(API_BASE_URL + APIEndpoints.LOGGING.STREAM); // ✅ uses enum
 
-const config = {
-  channelEntryTimer: null,
-  print_debug: true,
-  allZones: [],
-  activeChannelNumber: null,
-  activeChannelIndex: -1,
-  activeChannel: [],
-  activeZoneData: [],   // Store the full zone object
-  activeZoneName: null,
-  activeZoneIndex: -1,
-  whitelist: []
-};
+  source.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      if (print_debug) console.log('Log update:', data);
 
-init();
+      const updateType = data.Action || data.Update;
+      const tgName = data["Talkgroup Name"] || data.Talkgroup;
 
-function init() {
-  document.addEventListener("DOMContentLoaded", async () => {
-
-  //AKNOWLEDGE LOADING
-  console.log("DOM fully loaded and parsed");
-
-  // VOLUME ADJUSTMENT LISTENER
-  document.getElementById("volumeRange").addEventListener("change", function () {
-    const level = this.value;
-    sendVolume(level);
-  });
-
-  // SET CURRENT VOLUME AND UPDATE THE INITIAL SLIDER COLOR
-  fetchCurrentVolume();
-
-
-  // SET THE EVENT LISTENER FOR UPDATING SLIDER COLOR BASED ON VALUE
-  slider.addEventListener("input", () => {
-      updateSliderColor(slider.value);
-  });
-
-
-  try {
-    const data = await fetchAllZones();
-    const zones = data.zones || [];
-    config.allZones = zones;
-    config.activeZoneData = zones[0];
-    config.activeZoneIndex = 0;
-    config.activeZoneName = zones[0].name;
-    updateConfig2(config.allZones[0].channels[0]);
-
-  } catch (err) {
-    console.error("Failed to load zones:", err);
-    showAlert("Failed to load zones.");
-  }
-
-  // Button listeners
-  const btnZoneList = document.getElementById("btnZoneList");
-  if (btnZoneList) {
-    btnZoneList.addEventListener("click", openZoneModal);
-  }
-
-    const btnChannelList = document.getElementById("btnChannelList");
-    if (btnChannelList) {
-      btnChannelList.addEventListener("click", _channelList);
-    }
-
-    const btnZoneUp = document.getElementById("btnZoneUp");
-    if (btnZoneUp) {
-      btnZoneUp.addEventListener("click", _btnZoneUp);
-    }
-
-    const btnZoneDown = document.getElementById("btnZoneDown"); // fixed ID typo
-    if (btnZoneDown) {
-      btnZoneDown.addEventListener("click", _btnZoneDown);
-    }
-
-    const btnChannelUp = document.getElementById("btnChannelUp");
-    if (btnChannelUp) {
-      btnChannelUp.addEventListener("click", _btnChannelUp);
-    }
-
-    const btnChannelDown = document.getElementById("btnChannelDown");
-    if (btnChannelDown) {
-      btnChannelDown.addEventListener("click", _btnChannelDown);
-    }
-
-    const zoneApplyBtn = document.getElementById("zone-apply");
-    if (zoneApplyBtn) {
-      zoneApplyBtn.addEventListener("click", _zoneApplyBtn);
-    }
-
-    const channelApplyBtn = document.getElementById("channel-apply");
-    if (channelApplyBtn) {
-      channelApplyBtn.addEventListener("click", _channelApplyBtn);
-    }
-
-    function _channelApplyBtn() {
-      const selectElement = document.getElementById('channels'); // Ensure selectElement is defined
-      const channels = config.activeZoneData.channels; // Ensure channels is defined
-    
-      const selectedChannelNumber = parseInt(selectElement.value);
-      const selectedChannel = channels.find(ch => ch.channel_number === selectedChannelNumber);
-      if (!selectedChannel) {
-        console.error("Channel not found in zone:", selectedChannelNumber);
-        return;
+      if (updateType === 'voice update' && tgName) {
+        const el = document.getElementById('talkgroup');
+        if (el) el.textContent = tgName;
       }
-      try {
-        updateConfig2(selectedChannel);
-        updateUI();
-        channelModal.hide();
-        switchTalkGroups(config.activeChannel.tgid).catch(error => {
-          console.error("Error setting channel:", error);
-          alert("Error setting channel: " + error.message);
-        });
-      } catch (error) {
-        console.error("Error setting channel:", error);
-        alert("Error setting channel: " + error.message);
-      }
+    } catch (err) {
+      console.warn("Invalid log stream data:", err);
     }
+  };
 
-    // Control mappings for select elements
-    const controls = [
-      {
-        list: document.getElementById("zones"),
-        upBtn: document.getElementById("zone-list-up-btn"),
-        downBtn: document.getElementById("zone-list-down-btn"),
-      },
-      {
-        list: document.getElementById("channels"),
-        upBtn: document.getElementById("channel-list-up-btn"),
-        downBtn: document.getElementById("channel-list-down-btn"),
-      }
-    ];
-
-    controls.forEach(({ list, upBtn, downBtn, acceptBtn }) => {
-      if (!list) return;
-
-      if (upBtn) {
-        upBtn.addEventListener("click", () => {
-          if (list.selectedIndex > 0) {
-            list.selectedIndex -= 1;
-            list.dispatchEvent(new Event("change"));
-          }
-        });
-      }
-
-      if (downBtn) {
-        downBtn.addEventListener("click", () => {
-          if (list.selectedIndex < list.options.length - 1) {
-            list.selectedIndex += 1;
-            list.dispatchEvent(new Event("change"));
-          }
-        });
-      }
-
-    });
-
-
-  });
+  source.onerror = (error) => {
+    console.error('SSE error:', error);
+    source.close();
+  };
 }
 
-function _zoneList(){ openZoneModal();}
-
-function _channelList() { openChannelModal();}
+// UI
 
 
-async function _btnChannelUp() {
+
+async function updateUIFromChannel(channel) {
+  updateElement('channel-number', channel.number);
+  updateElement('channel-name', channel.name);
+
   try {
-    const nextChannel = await fetchNextChannel(config.activeZoneIndex, config.activeChannelNumber);
-    updateConfig2(nextChannel);
-    await switchTalkGroups(config.activeChannel.tgid);
+    const zone = await apiGet(APIEndpoints.SESSION.ZONE_CURRENT);
+    updateElement('zone', zone.name);
   } catch (err) {
-    console.error("Failed to go to next channel:", err);
-    showAlert("Failed to go to next channel.");
+    console.warn("Could not fetch zone name for UI:", err);
+    updateElement('zone', ""); // fallback if fetch fails
   }
+
+  // Optionally: update talkgroup display, etc.
 }
+
 
 async function _btnChannelDown() {
   try {
-    const previousChannel = await fetchPreviousChannel(config.activeZoneIndex, config.activeChannelNumber);
-    updateConfig2(previousChannel);
-    await switchTalkGroups(config.activeChannel.tgid);
+    const prevChannel = await apiPut(APIEndpoints.SESSION.CHANNEL_PREVIOUS);
+    updateUIFromChannel(prevChannel);
   } catch (err) {
     console.error("Failed to go to previous channel:", err);
     showAlert("Failed to go to previous channel.");
   }
 }
 
+async function _btnChannelUp() {
+  try {
+    const nextChannel = await apiPut(APIEndpoints.SESSION.CHANNEL_NEXT);
+    updateUIFromChannel(nextChannel);
+  } catch (err) {
+    console.error("Failed to go to next channel:", err);
+    showAlert("Failed to go to next channel.");
+  }
+}
+
 async function _btnZoneUp() {
   try {
-    const next_zone = await fetchNextZone(config.activeZoneIndex);
-    updateConfig(config.allZones, next_zone.zone_index, next_zone.channels[0].channel_number);
-    await switchTalkGroups(next_zone.channels[0])
-    updateUI();
+    const nextZone = await apiPut(APIEndpoints.SESSION.ZONE_NEXT);
+    const firstChannel = nextZone.channels?.[0];
+    if (!firstChannel) throw new Error("No channels in next zone.");
+    updateUIFromChannel(firstChannel);
   } catch (err) {
     console.error("Zone up error:", err);
     showAlert("Failed to go to next zone.");
@@ -201,251 +82,204 @@ async function _btnZoneUp() {
 
 async function _btnZoneDown() {
   try {
-    const prev_zone = await fetchPreviousZone(config.activeZoneIndex);
-    updateConfig(config.allZones, prev_zone.zone_index, prev_zone.channels[0].channel_number);
-    await switchTalkGroups(prev_zone.channels[0])
-    updateUI();
+    const prevZone = await apiPut(APIEndpoints.SESSION.ZONE_PREVIOUS);
+    const firstChannel = prevZone.channels?.[0];
+    if (!firstChannel) throw new Error("No channels in previous zone.");
+    updateUIFromChannel(firstChannel);
   } catch (err) {
     console.error("Zone down error:", err);
     showAlert("Failed to go to previous zone.");
   }
 }
 
-/**
- * Update the configuration with the provided zones, zone index, and channel index.
- * @param {Array} zones - List of zones.
- * @param {number} zone_index - Index of the active zone.
- * @param {number} channel_index - Index of the active channel.
- */
-function updateConfig(zones, zone_index, channel_index) {
-  if (!zones[zone_index] || !zones[zone_index].channels[channel_index]) {
-    console.error("Invalid zone or channel index in updateConfig");
-    //console.log(zones, zone_index, channel_index)
-    return;
-  }
-  
-  config.allZones = zones;
-  config.activeZoneIndex = zone_index;
-  config.activeChannelIndex = channel_index;
-  config.activeChannel = zones[zone_index].channels[channel_index];
-  config.activeZoneName = zones[zone_index].name;
-  config.activeChannelNumber = zones[zone_index].channels[channel_index].channel_number;
-  config.activeZoneData = zones[zone_index];
-  config.whitelist = zones[zone_index].channels[channel_index].tgid;
-
-  console.log("Updated config:", config);
-
-  updateUI();
-
-}
-
-function updateConfig2(channel) {
-  if (channel.zone && channel.zone.name) {
-    config.activeZoneName = channel.zone.name;
-    config.activeZoneData = zones[channel.zone_index];
-
-  } else {
-    console.log("No value found.");
-  }
-  config.activeZoneIndex = channel.zone_index;
-  config.activeChannelIndex = channel.channel_number;
-  config.activeChannel = channel;
-  config.activeChannelNumber = channel.channel_number;
-  
-  config.whitelist = channel.tgid;
-  console.log("Updated config:", config);
-  updateUI();
-}
-
-function findChannelIndex(zones, zone_index, channel_id) {
-  for (let i = 0; i < zones[zone_index].channels.length; i++) {
-      if (zones[zone_index].channels[i].id === channel_id) {
-          return i;
-      }
-  }
-  return -1; // Channel not found
-}
-
-/**
- * Update the UI elements with the current configuration.
- */
-function updateUI() {
-  updateElement('channel-number', config.activeChannelNumber.toString());
-  updateElement('channel-name', config.activeChannel.name); 
-  console.log("Active Zone", config.activeZoneName)
-  updateElement('zone', config.activeZoneName);
-}
-
-function updateElement(id, text){
-  const element = document.getElementById(id);
-  if (element) {
-    element.textContent = text;
-  } else {
-    console.error(`Element with ID ${id} not found.`);
-  }
-}
-
-/**
- * Show the progress modal.
- */
-function showProgressModal() {
-  const modalEl = document.getElementById('progressModal');
-  const progressBar = document.querySelector("#progress-display .progress-bar");
-  const progressModal = new bootstrap.Modal(modalEl, {
-    backdrop: 'static',
-    keyboard: false
-  });
-
-  progressModal.show();
-}
-
-/**
- * Open the zone selection modal and populate it with zones.
- */
 async function openZoneModal() {
   const zoneModalEl = document.getElementById('zoneModal');
   const zoneModal = new bootstrap.Modal(zoneModalEl, { backdrop: 'static', keyboard: false });
   zoneModal.show();
 
   try {
-    // Assume config.allZones is an array of zone objects.
+    const zones = await apiGet(APIEndpoints.ZONES.LIST);
     const selectElement = document.getElementById('zones');
-    selectElement.innerHTML = ""; // Clear existing options
+    selectElement.innerHTML = "";
 
-    config.allZones.forEach((zone, index) => {
+    Object.entries(zones).forEach(([index, zone]) => {
       const option = document.createElement('option');
-      option.value = index;  // Use the zone index as the value
+      option.value = index;
       option.textContent = `Zone ${index} - ${zone.name}`;
-      if (index === config.activeZoneIndex) {
-        option.selected = true;
-      }
       selectElement.appendChild(option);
     });
 
-    // Attach click listener to the Apply button.
-    const zoneApplyBtn = document.getElementById('zone-list-accept-btn');
-    zoneApplyBtn.onclick = async function () {
+    document.getElementById('zone-list-accept-btn').onclick = async function () {
       try {
-        const selectedZoneIndex = parseInt(selectElement.value);
-        const firstChannel = config.allZones[selectedZoneIndex].channels[0];
-
-        // Update configuration, update the UI, and switch talkgroups.
-        updateConfig(config.allZones, selectedZoneIndex, firstChannel.channel_number);
-        updateUI();
+        const selectedZoneIndex = selectElement.value;
+    
+        await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectedZoneIndex)); // sets new zone + channel
+    
+        const zone = await apiGet(APIEndpoints.SESSION.ZONE_CURRENT);
+        updateElement('zone', zone.name);
+    
+        const channel = await apiGet(APIEndpoints.SESSION.CHANNEL_CURRENT);
+        updateUIFromChannel(channel);
+    
         zoneModal.hide();
-        await switchTalkGroups(firstChannel.tgid);
       } catch (error) {
-        console.error("Error setting zone:", error);
-        alert("Error setting zone: " + error.message);
+        console.error("Error applying zone:", error);
+        alert("Failed to apply selected zone.");
       }
     };
-  } catch (error) {
-    console.error("Error loading zones:", error);
-    alert("Failed to load zones: " + error.message);
+
+  } catch (err) {
+    console.error("Error loading zones:", err);
+    alert("Failed to load zones.");
     zoneModal.hide();
   }
 }
 
-/**
- * Open the channel selection modal for a given zone index and populate it with channels.
- * @param {number} zone_index - Index of the zone to load channels from.
- */
 async function openChannelModal() {
   const channelModalEl = document.getElementById('channelModal');
   const channelModal = new bootstrap.Modal(channelModalEl, { backdrop: 'static', keyboard: false });
   channelModal.show();
 
   try {
-    // Use activeZoneData if available, otherwise use config.allZones at activeZoneIndex.
-    const zone = config.activeZoneData || config.allZones[config.activeZoneIndex];
-    if (!zone) throw new Error("Active zone not found");
-
-    const channels = zone.channels || [];
+    // ✅ Get the current zone from session
+    const zone = await apiGet(APIEndpoints.SESSION.ZONE_CURRENT);
+    const channels = zone.channels || {};
     const selectElement = channelModalEl.querySelector('#channels');
     selectElement.innerHTML = ""; // Clear existing options
 
-    channels.forEach(channel => {
+    Object.entries(channels).forEach(([channelNum, channel]) => {
       const option = document.createElement('option');
-      option.value = channel.channel_number;
-      option.textContent = `${channel.channel_number} - ${channel.name}`;
-      if (channel.channel_number === config.activeChannelNumber) {
-        option.selected = true;
-      }
+      option.value = channelNum;
+      option.textContent = `${channelNum} - ${channel.name}`;
       selectElement.appendChild(option);
     });
 
-    // Trigger selection when the accept button is clicked.
+    // ✅ Accept button listener
     const acceptBtn = channelModalEl.querySelector('#channel-list-accept-btn');
     acceptBtn.onclick = async function () {
-      const selectedChannelNumber = parseInt(selectElement.value);
-      const selectedChannel = channels.find(ch => ch.channel_number === selectedChannelNumber);
-      if (!selectedChannel) {
-        console.error("Channel not found in zone:", selectedChannelNumber);
-        return;
-      }
+      const selectedChannelNumber = selectElement.value;
+
       try {
-        updateConfig2(selectedChannel);
+        await apiPut(APIEndpoints.SESSION.CHANNEL_SELECT(selectedChannelNumber));
         updateUI();
         channelModal.hide();
-        await switchTalkGroups(config.activeChannel.tgid);
       } catch (error) {
         console.error("Error setting channel:", error);
-        alert("Error setting channel: " + error.message);
+        alert("Failed to set channel.");
       }
     };
+
   } catch (error) {
     console.error("Error loading channels:", error);
-    alert("Failed to load channels: " + error.message);
+    alert("Failed to load channels.");
     channelModal.hide();
   }
 }
 
+async function fetchNetworkInfo() {
+  try {
+      const data = await apiGet(APIEndpoints.CONFIG.HOSTS);
 
-/**
- * Scroll down through the list of buttons in the specified container.
- * @param {string} containerId - ID of the container element.
- */
-function scrollDown(containerId) {
-  const container = document.getElementById(containerId);
-  if (!container) {
-    console.error(`Container with id ${containerId} not found.`);
-    return;
+      const adminURL = `${data.lan_ip}/utilities/index.html`;
+      const qrCodeSource = API_BASE_URL + APIEndpoints.UTILITIES.QR_CODE(adminURL);
+      document.getElementById('adminPanelQR').src = qrCodeSource;
+
+      if (data.localhost) document.getElementById('localhost').textContent = data.localhost;
+      if (data.hostname) document.getElementById('hostname').textContent = data.hostname;
+      if (data.fqdn) document.getElementById('fqdn').textContent = data.fqdn;
+      if (data.lan_ip) document.getElementById('lan_ip').textContent = data.lan_ip;
+  } catch (err) {
+      console.error("Failed to fetch network info:", err.message);
   }
-
-  // Select only the list buttons (exclude any non-list buttons if needed)
-  const buttons = container.querySelectorAll("button");
-  if (!buttons || buttons.length === 0) {
-    console.error(`No buttons found in container ${containerId}.`);
-    return;
-  }
-
-  // Find the currently active button index.
-  let activeIndex = -1;
-  buttons.forEach((btn, index) => {
-    if (btn.classList.contains("active-button")) {
-      activeIndex = index;
-    }
-  });
-
-  // If none active, select the first button.
-  // Otherwise, move to the next button, wrapping around if needed.
-  let newIndex = (activeIndex === -1) ? 0 : (activeIndex + 1) % buttons.length;
-
-  // Remove active class from all buttons.
-  buttons.forEach(btn => btn.classList.remove("active-button"));
-
-  // Add active class to the new active button.
-  const newActiveButton = buttons[newIndex];
-  newActiveButton.classList.add("active-button");
-
-  // Scroll the new active button into view.
-  newActiveButton.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-/**
- * Scroll up through the list of buttons in the specified container.
- * @param {string} containerId - ID of the container element.
- */
+async function fetchNetworkStatus() {
+  try {
+      const data = await apiGet(APIEndpoints.NETWORK);
+      updateNetworkModal(data);
+  } catch (err) {
+      console.error("Failed to fetch network status:", err.message);
+  }
+}
+
+async function sendVolume(level) {
+  try {
+    const response = await fetch(`${API_BASE_URL}${APIEndpoints.VOLUME.SET(level)}`, {
+      method: "PUT",
+      credentials: "include"
+    });
+
+      if (!response.ok) {
+          const error = await response.text();
+          throw new Error(`Volume API error: ${error}`);
+      }
+
+      const data = await response.json();
+      console.log(JSON.stringify(data, null, 2));
+  } catch (err) {
+      console.error("Failed to set volume:", err.message);
+  }
+}
+async function fetchCurrentVolume() {
+  try {
+    const response = await fetch(`${API_BASE_URL}${APIEndpoints.VOLUME.GET_SIMPLE}`);
+      if (!response.ok) {
+          const error = await response.text();
+          throw new Error(`Volume fetch error: ${error}`);
+      }
+
+      const data = await response.text(); 
+      document.getElementById("volumeRange").value = data;
+      updateSliderColor(data);
+  } catch (err) {
+      console.error("Error getting volume:", err.message);
+  }
+}
+
+async function populateZoneList() {
+  try {
+      const zones = await apiGet(APIEndpoints.ZONES.LIST);
+
+      const zoneListContainer = document.getElementById("zones");
+      zoneListContainer.innerHTML = "";
+
+      Object.entries(zones).forEach(([index, zone]) => {
+          const option = document.createElement("option");
+          option.textContent = zone.name;
+          option.setAttribute("data-zone_index", index);
+          option.setAttribute("data-zone_name", zone.name);
+
+          if (zone.name.toLowerCase() === currentZoneName?.toLowerCase()) {
+              option.classList.add("active-item");
+          }
+
+          zoneListContainer.appendChild(option);
+      });
+
+  } catch (error) {
+      console.error("Error fetching zones:", error);
+      showAlert(error.message);
+  }
+}
+
+function showAlert(message, type = "danger") {
+  const container = document.getElementById("alert-container");
+  if (!container) return;
+  container.innerHTML = "";
+  const alertDiv = document.createElement("div");
+  alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+  alertDiv.setAttribute("role", "alert");
+  alertDiv.textContent = message;
+  const closeBtn = document.createElement("button");
+  closeBtn.type = "button";
+  closeBtn.className = "btn-close";
+  closeBtn.setAttribute("data-bs-dismiss", "alert");
+  closeBtn.setAttribute("aria-label", "Close");
+  alertDiv.appendChild(closeBtn);
+  container.appendChild(alertDiv);
+  if (print_debug) console.log("ALERT:", message);
+}
+
 function scrollUp(containerId) {
   const container = document.getElementById(containerId);
   if (!container) {
@@ -479,130 +313,204 @@ function scrollUp(containerId) {
   newActiveButton.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-/**
- * Select a channel by name and update the UI.
- * @param {string} name - Name of the channel to select.
- */
 function selectChannel(name) {
-  toggleDisplay("channel-list"); // Ensure channel list is hidden
+  toggleDisplay("channel-list");
+
   toggleProgress(() => {
-    document.getElementById('talkgroup').textContent = name;
-    toggleDisplay('main-display');
+      const talkgroupEl = document.getElementById('talkgroup');
+      if (talkgroupEl) talkgroupEl.textContent = name;
+
+      toggleDisplay('main-display');
   });
 }
 
-/**
- * Show an alert message in the alert container.
- * @param {string} message - The message to display.
- * @param {string} [type="danger"] - The type of alert (e.g., "success", "danger").
- */
-function showAlert(message, type = "danger") {
-  const container = document.getElementById("alert-container");
-  if (!container) return;
-  container.innerHTML = "";
-  const alertDiv = document.createElement("div");
-  alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-  alertDiv.setAttribute("role", "alert");
-  alertDiv.textContent = message;
-  const closeBtn = document.createElement("button");
-  closeBtn.type = "button";
-  closeBtn.className = "btn-close";
-  closeBtn.setAttribute("data-bs-dismiss", "alert");
-  closeBtn.setAttribute("aria-label", "Close");
-  alertDiv.appendChild(closeBtn);
-  container.appendChild(alertDiv);
-  if (print_debug) console.log("ALERT:", message);
-}
+ 
+function _zoneList(){ openZoneModal();}
+  
+function _channelList() { openChannelModal();}
 
-/**
- * Toggle the display of an element by its ID.
- * @param {string} elementId - The ID of the element to toggle.
- */
-function toggleDisplay(elementId) {
-  const el = document.getElementById(elementId);
-  if (el) {
-    el.classList.toggle("active");
+function updateNetworkModal(data) {
+  if (!data) {
+      console.warn("No network data provided");
+      return;
+  }
+
+  const fieldMap = {
+      'network-status': data.Status,
+      'wifi-name': data['WiFi Network'],
+      'connection-type': data.Connection,
+      'memory-available': data.Memory,
+      'cpu-temp': data['CPU Temp'],
+      'audio-output': data['Audio Output']
+  };
+
+  for (const [id, value] of Object.entries(fieldMap)) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value ?? "N/A";
+      else console.warn(`Element #${id} not found`);
+  }
+
+  const modalEl = document.getElementById('wifiModal');
+  if (modalEl) {
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+  } else {
+      console.warn("Network modal element not found");
   }
 }
-
-/**
- * Show the progress modal.
- */
-function showProgressModal() {
-  const modalEl = document.getElementById('progressModal');
-  const modal = new bootstrap.Modal(modalEl, { backdrop: 'static', keyboard: false });
-  modal.show();
-}
-
-/**
- * Hide the progress modal.
- */
-function hideProgressModal() {
-  const modalEl = document.getElementById('progressModal');
-  const modal = bootstrap.Modal.getInstance(modalEl);
-  if (modal) modal.hide();
-}
-
-/**
- * Toggle the progress indicator and execute a callback function.
- * @param {Function} callback - The callback function to execute.
- */
-async function toggleProgress(callback) {
-  // Show spinner if implemented
-  try {
-    await callback();
-  } catch (error) {
-    console.error("Error during progress:", error);
-  } finally {
-    // Hide spinner if implemented
+async function _channelApplyBtn() {
+  const selectElement = document.getElementById('channels');
+  if (!selectElement) {
+      console.error("Channel select element not found");
+      return;
   }
-}
 
-/**
- * Populate the zone list and highlight the current zone.
- */
-async function populateZoneList() {
+  const selectedChannelNumber = parseInt(selectElement.value);
+  if (isNaN(selectedChannelNumber)) {
+      console.error("Invalid channel number selected");
+      return;
+  }
+
   try {
-    const data = await fetchAllZones(); // Uses the new helper
+      // Use the new PUT endpoint to update session to the selected channel
+      const channel = await apiPut(APIEndpoints.SESSION.CHANNEL_SELECT(selectedChannelNumber));
 
-    const zoneListContainer = document.getElementById("zones");
-    zoneListContainer.innerHTML = "";
+      // Update UI with response
+      updateElement('channel-number', channel.number);
+      updateElement('channel-name', channel.name);
 
-    const zones = data.zones || [];
+      const zone = await apiGet(APIEndpoints.SESSION.ZONE_CURRENT); // get current zone
+      updateElement('zone', zone.name);
 
-    zones.forEach(zone => {
-      const option = document.createElement("option");
-      option.textContent = zone.name;
-      option.setAttribute("data-zone_index", zone.zone_index);
-      option.setAttribute("data-zone_name", zone.name);
-
-      if (zone.name.toLowerCase() === currentZoneName?.toLowerCase()) {
-        option.classList.add("active-item");
-      }
-
-      zoneListContainer.appendChild(option);
-    });
+      // ✅ Close the modal safely using Bootstrap API
+      const modalEl = document.getElementById('channelModal');
+      const modalInstance = bootstrap.Modal.getInstance(modalEl);
+      if (modalInstance) modalInstance.hide();
 
   } catch (error) {
-    console.error("Error fetching zones:", error);
-    showAlert(error.message);
+      console.error("Error setting channel:", error);
+      alert("Error setting channel: " + error.message);
   }
 }
-const slider = document.getElementById("volumeRange");
 
 function updateSliderColor(value) {
-    console.log(value);
-    let color;
-    if (value < 33) {
-        color = "red";
-    } else if (value < 66) {
-        color = "orange";
-    } else {
-        color = "green";
-    }
-  document.getElementById('volume_percent').textContent = value + "%";
+  console.log("Volume slider value:", value);
 
-    slider.style.setProperty('--thumb-color', color);
+  const slider = document.getElementById("volumeRange");
+  const volumeLabel = document.getElementById("volume_percent");
+
+  if (!slider || !volumeLabel) {
+      console.warn("Slider or volume label not found.");
+      return;
+  }
+
+  let color = "green";
+  if (value < 33) {
+      color = "red";
+  } else if (value < 66) {
+      color = "orange";
+  }
+
+  volumeLabel.textContent = `${value}%`;
+  slider.style.setProperty('--thumb-color', color);
 }
 
+function updateElement(id, text) {
+  const element = document.getElementById(id);
 
+  if (!element) {
+      console.warn(`updateElement: No element found with ID "${id}"`);
+      return;
+  }
+
+  element.textContent = text ?? "";
+}
+
+/** Initialize shield icon and modal */
+function setupShieldIcon() {
+  const shieldIcon = document.getElementById("shield-icon");
+  const networkModalEl = document.getElementById("networkModal");
+
+  if (!shieldIcon || !networkModalEl) {
+      console.error("Shield icon or network modal not found.");
+      return;
+  }
+
+  const networkModal = new bootstrap.Modal(networkModalEl);
+  shieldIcon.addEventListener("click", () => {
+      fetchNetworkInfo();
+      networkModal.show();
+  });
+}
+
+/** Initialize volume slider and input coloring */
+function setupVolumeControls() {
+  const volumeSlider = document.getElementById("volumeRange");
+  if (!volumeSlider) {
+      console.error("Volume slider not found.");
+      return;
+  }
+
+  volumeSlider.addEventListener("change", () => {
+      sendVolume(volumeSlider.value);
+  });
+
+  volumeSlider.addEventListener("input", () => {
+      updateSliderColor(volumeSlider.value);
+  });
+}
+
+/** Initialize Wi-Fi icon click for fetching network status */
+function setupNetworkIcon() {
+  const wifiIcon = document.getElementById("wifi-icon");
+  if (wifiIcon) {
+      wifiIcon.addEventListener("click", fetchNetworkStatus);
+  } else {
+      console.warn("WiFi icon not found.");
+  }
+}
+
+/** Hook up all zone/channel buttons */
+function setupZoneAndChannelButtons() {
+  const buttonMap = [
+      { id: "btnZoneList", handler: openZoneModal },
+      { id: "btnChannelList", handler: _channelList },
+      { id: "btnZoneUp", handler: _btnZoneUp },
+      { id: "btnZoneDown", handler: _btnZoneDown },
+      { id: "btnChannelUp", handler: _btnChannelUp },
+      { id: "btnChannelDown", handler: _btnChannelDown },
+      { id: "channel-apply", handler: _channelApplyBtn }
+  ];
+
+  buttonMap.forEach(({ id, handler }) => {
+      const el = document.getElementById(id);
+      if (el) {
+          el.addEventListener("click", handler);
+      } else {
+          console.warn(`Element not found: ${id}`);
+      }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  console.log("DOM fully loaded and parsed");
+
+  try {
+    await apiPut(APIEndpoints.SESSION.START); // 🔥 Ensure session starts
+    console.log("Session started successfully.");
+
+    const channel = await apiGet(APIEndpoints.SESSION.CHANNEL_CURRENT);
+    await updateUIFromChannel(channel);
+  } catch (err) {
+    console.error("Session start or UI update failed:", err.message);
+    showAlert("Failed to initialize session. Cannot load zone/channel data.");
+    return;
+  }
+
+  listenLogStream();
+  setupShieldIcon();
+  setupVolumeControls();
+  setupNetworkIcon();
+  setupZoneAndChannelButtons();
+  fetchCurrentVolume();
+});

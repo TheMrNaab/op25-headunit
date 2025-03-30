@@ -16,6 +16,8 @@
     opacity: 1;
   }
   
+
+  
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -103,6 +105,10 @@
     align-items: center;
     justify-content: center;
     transition: transform 0.1s ease-in-out; /* Smooth scaling */
+}
+
+.txt-dark {
+    color: black !important;
 }
 
 .function-buttons button span {
@@ -336,3 +342,12 @@ body {
 .scroll-buttons-vertical button:hover {
     filter: brightness(1.3);
 }
+.custom-alert {
+    background-color: #8a1c1c;
+    color: #fff;
+    border: 1px solid #cc3a3a;
+  }
+
+  .custom-alert strong {
+    color: #ffd6d6;
+  }

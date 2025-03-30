@@ -41,6 +41,50 @@
         </div>
     </div>
 
+       <!-- Network Modal -->
+<div class="modal fade" id="networkModal" tabindex="-1" aria-labelledby="networkModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="networkModalLabel">Network Information</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-start" style="font-size: 13px;">
+            <p><span class="badge bg-dark me-3 fs-6">Local Host</span><span id="localhost">-</span></p>
+            <p><span class="badge bg-dark me-3 fs-6">Host Name</span> <span id="hostname">-</span></p>
+            <p><span class="badge bg-dark me-3 fs-6">Domain Name</span> <span id="fqdn">-</span></p>
+            <p><span class="badge bg-dark me-3 fs-6">LAN IP</span> <span id="lan_ip">-</span></p>
+        </div>
+      <div class="modal-footer text-start">
+        <p class="text-left" style="font-size:12px; color:darkgrey;">Scan this QR code on any LAN device for Admin panel.<img src="" id="adminPanelQR" class="float-left" width="42"/></p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- NETWORK MODAL -->
+<div class="modal fade" id="wifiModal" tabindex="-1" aria-labelledby="networkModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="networkModalLabel">Network Status</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="font-size: 13px;">
+          <p><strong>Status:</strong> <span id="network-status">Loading...</span></p>
+          <p><strong>Connection:</strong> <span id="connection-type">Loading...</span></p>
+          <p><strong>WiFi Adapter:</strong> <span id="wifi-name">Loading...</span></p>
+          <hr>
+          <p><strong>Memory Available:</strong> <span id="memory-available">Loading...</span></p>
+          <p><strong>CPU Temperature:</strong> <span id="cpu-temp">Loading...</span></p>
+          <p><strong>Audio Output:</strong> <span id="audio-output">Loading...</span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <!-- KEYPAD Modal -->
     <div class="modal modal-md fade" id="keypadModal" tabindex="-1" aria-labelledby="keypadModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -147,10 +191,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Apply Button in Modal Footer -->
-                <!-- <div class="modal-footer">
-                    <button id="channelApplyBtn" class="btn btn-success">Apply</button>
-                </div> -->
+                <button id="channel-apply" class="btn btn-success">Apply</button>
             </div>
         </div>
     </div>
@@ -193,8 +234,8 @@
         <div class="title-bar">
             <div class="title-text">OP25 Scanner</div>
             <div class="status-icons">
-                <i id="error-icon" class="fas fa-shield" style="color: white;"></i>
-                <i id="admin-portal" class="ms-2 fas fa-wifi"></i>
+                <i id="shield-icon" class="fas fa-shield" style="color: white;"></i>
+                <i id="wifi-icon" style="color: white;" class="ms-2 fas fa-wifi"></i>
             </div>
         </div>
 
@@ -263,8 +304,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/interface.js"></script>
+    <script type="module" src="js/interface.js"></script>
     <script src="js/keypad.js"></script>
     <div id="channel-list" style="display:none" class="list-container">
         <button class="btn btn-outline-primary w-100 mb-1 active-button" onclick="selectChannel('TAC 1')">TAC 1</button>

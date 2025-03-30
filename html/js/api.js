@@ -1,182 +1,116 @@
-// Define the new host with a different constant name
+// api.js
+export const print_debug = true; // Toggle debug output
 
-const API_BASE_URL = `http://${location.hostname}:5001`;
+// Set base API URL dynamically based on the current hostname
+export const API_BASE_URL = `http://${location.hostname}:5001`;
 
-// Send volume to server via POST
-async function sendVolume(level) {
-    try {
-        const response = await fetch(`${API_BASE_URL}/volume/${level}`, {
-            method: "POST"
-        });
+// API endpoints organized into logical groups
+export const APIEndpoints = Object.freeze({
+    SYSTEMS: {
+        LIST: "/v2/systems/list",
+        GET_ONE: (id) => `/v2/systems/${id}`,
+        NEW: "/v2/systems/new",
+        TGID_ALL: (id) => `/v2/systems/${id}/tgid/`,
+        TGID_ONE: (id, tgid) => `/v2/systems/${id}/tgid/${tgid}`
+    },
 
-        if (!response.ok) {
-            const error = await response.text();
-            throw new Error(`Volume API error: ${error}`);
-        }
-        data = await response.json();
-        console.log(JSON.stringify(data, null, 2));
-    } catch (err) {
-        console.error("Failed to set volume:", err.message);
-    }
-}
+    LOGGING: {
+        UPDATE: "/logging/update",
+        STREAM: "/logging/stream"
+    },
 
-function listenLogStream() {
-    const source = new EventSource(API_BASE_URL + '/logging/stream');
-    source.onmessage = event => {
-      const data = JSON.parse(event.data);
-      console.log('Log update:', data);
-  
-      if ((data.Action === 'voice update') || (data.Update === 'voice update')) {
-        const tgName = data["Talkgroup Name"] || data.Talkgroup;
-        const el = document.getElementById('talkgroup');
-        if (el) el.textContent = tgName;
-      }
-    };
-    source.onerror = error => {
-      console.error('SSE error:', error);
-      source.close();
-    };
+    ZONES: {
+        LIST: "/v2/zones",
+        GET_ONE: (index) => `/v2/zones/${index}`,
+        CHANNELS_ALL: (index) => `/v2/zones/${index}/channels`,
+        CHANNEL_ONE: (index, ch) => `/v2/zones/${index}/channel/${ch}`,
+        NEW: "/v2/zones/new",
+        CHANNELS_NEW: (index) => `/v2/zones/${index}/channels/new`,
+        CHANNEL_NEW: (index) => `/v2/zones/${index}/channel/new`
+    },
+
+    SESSION: {
+        START: "/v2/session/start",
+        STATUS: "/v2/session/status",
+        SYSTEM_CURRENT: "/v2/session/system/current",
+        CHANNEL_CURRENT: "/v2/session/channel/current",
+        CHANNEL_NEXT: "/v2/session/channel/next",
+        CHANNEL_PREVIOUS: "/v2/session/channel/previous",
+        ZONE_NEXT: "/v2/session/zone/next",
+        ZONE_PREVIOUS: "/v2/session/zone/previous",
+        ZONE_CURRENT: "/v2/session/zone/current",
+        CHANNEL_SELECT: (channelNumber) => `/v2/session/channel/${channelNumber}`,
+        ZONE_SELECT: (id) => `/v2/session/zone/${id}`
+    },
+
+    VOLUME: {
+        GET_SIMPLE: "/volume/simple",
+        SET: (level) => `/volume/${level}`
+    },
+
+    PROGRESS: {
+        STREAM: "/progress",
+        UPDATE: (percent) => `/update/${percent}`
+    },
+
+    UTILITIES: {
+        QR_CODE: (content) => `/utilities/qrcode/${encodeURIComponent(content)}`
+    },
+
+    DISPLAY: {
+        SET_SLEEP: (id, timeout) => `/config/openbox/display/${id}/sleep/set/${timeout}`,
+        GET_SLEEP: (id) => `/config/openbox/display/${id}/sleep/`,
+        LIST: "/config/openbox/device/displays"
+    },
+
+    DEVICE: {
+        SET_SLEEP: (timeout) => `/config/openbox/device/sleep/set/${timeout}`,
+        GET_SLEEP: "/config/openbox/device/sleep/"
+    },
+
+    CONFIG: {
+        HOSTS: "/config/host",
+        SET: (section, property, value) => `/config/set/${section}/${property}/${value}`,
+        GET_JSON: "/config/get/json",
+        SET_JSON: "/config/set/json"
+    },
+
+    NETWORK: "/config/network",
+
+    SYSTEM_CONFIG: {
+        GET: "/config/system/",
+        UPDATE: "/config/system/update"
+    },
+
+    CHANNEL_CONFIG: {
+        GET: "/config/channels/",
+        UPDATE: "/config/channels/update"
+    },
+
+    TALKGROUP_CONFIG: {
+        GET: "/config/talkgroups/",
+        UPDATE: "/config/talkgroups/update"
+    },
+
+    RESTART: "/restart"
+});
+
+export async function apiGet(url) {
+    const res = await fetch(`${API_BASE_URL}${url}`, {
+      method: "GET",
+      credentials: "include"
+    });
+    if (!res.ok) throw new Error(`API error: ${await res.text()}`);
+    return res.json();
   }
   
-  // Call this once your DOM is ready
-  listenLogStream();
-
-async function fetchCurrentVolume() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/volume/simple`);
-        if (!response.ok) {
-            const error = await response.text();
-            throw new Error(`Volume fetch error: ${error}`);
-        }
-
-        const data = await response.text()
-        document.getElementById("volumeRange").value = data;
-        updateSliderColor(data);
-    } catch (err) {
-        console.error("Error getting volume:", err.message);
-    }
-}
-
-// Reusable GET request helper with error handling
-async function apiGet(endpoint) {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-        method: 'GET',
-        credentials: 'include' // Needed when server uses supports_credentials=True
+  export async function apiPut(url, body = null) {
+    const res = await fetch(`${API_BASE_URL}${url}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: body ? JSON.stringify(body) : null
     });
-
-    if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`API error: ${error}`);
-    }
-
-    return await response.json();
-}
-
-// Get zone of a specific channel
-async function fetchChannelZone(channelNumber) {
-    return await apiGet(`/channel/${channelNumber}/zone`);
-}
-
-async function fetchNextChannel(zoneNumber, channelNumber) {
-    return await apiGet(`/zone/${zoneNumber}/channel/${channelNumber}/next`);
-}
-
-async function fetchPreviousChannel(zoneNumber, channelNumber) {
-    return await apiGet(`/zone/${zoneNumber}/channel/${channelNumber}/previous`);
-}
-
-// Get all zones
-async function fetchAllZones() {
-    return await apiGet("/zones");
-}
-
-// FETCH ZONE
-async function fetchZone(zoneNumber) {
-    return await apiGet(`/zone/${zoneNumber}/next`);
-}
-
-// Get next zone relative to the current one
-async function fetchNextZone(zoneNumber) {
-    return await apiGet(`/zone/${zoneNumber}/next`);
-}
-
-// Get previous zone relative to the current one
-async function fetchPreviousZone(zoneNumber) {
-    return await apiGet(`/zone/${zoneNumber}/previous`);
-}
-
-async function fetchChannel(zoneNumber, channelNumber) {
-    return await apiGet(`/zone/${zoneNumber}/channel/${channelNumber}`);
-}
-
-async function switchTalkGroups(channelData) {
-    console.log("channelData:", channelData);
-    try {
-        let tgids;
-        if (Array.isArray(channelData)) {
-            tgids = channelData;
-        } else if (Array.isArray(channelData.tgid)) {
-            tgids = channelData.tgid;
-        } else {
-            throw new Error("No TGIDs provided in channelData");
-        }
-
-        const response = await fetch(`${API_BASE_URL}/whitelist`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ tgid: tgids })
-        });
-
-        if (!response.ok) {
-            const error = await response.text();
-            throw new Error(`Whitelist API error: ${error}`);
-        }
-
-        const result = await response.json();
-        // console.log("Whitelist success:", result);
-        return result;
-    } catch (err) {
-        console.error("Failed to send whitelist:", err.message);
-    }
-}
-
-
-
-
-
-
-class Channel {
-    constructor(data) {
-        this.data = data || {};
-    }
-
-    get channel_number() {
-        return this.data.channel_number;
-    }
-
-    get name() {
-        return this.data.name;
-    }
-
-    get type() {
-        return this.data.type;
-    }
-
-    get tgid() {
-        return this.data.tgid || [];
-    }
-
-    get sysid() {
-        return this.data.sysid;
-    }
-
-    get zone_id() {
-        return this.data.zone_id;
-    }
-
-    toJSON() {
-        return this.data;
-    }
-}
+    if (!res.ok) throw new Error(`API error: ${await res.text()}`);
+    return res.json();
+  }

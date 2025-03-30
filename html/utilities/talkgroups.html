@@ -1,0 +1,286 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Channel Manager</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="backend.css">
+</head>
+<body>
+  <div class="container mt-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">RadioApp</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="system.html">System</a></li>
+            <li class="nav-item"><a class="nav-link active" href="talkgroups.html">Talkgroups</a></li>
+            <li class="nav-item"><a class="nav-link" href="channels.html">Channels</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="main-container">
+    <h2 class="mb-3">TGID Manager</h2>
+    <div class="alert alert-warning custom-alert" role="alert">
+      <strong>Note:</strong> Priority Talkgroups are not yet functional due to a known limitation in BoatBod’s OP25 backend script. You may still enter values for reference.
+    </div>
+    <p>This tool allows you to manage and edit your Talkgroup ID (TGID) list for use with OP25 scanner configurations. You may import from a CSV/TSV file or build the list manually.</p>
+  
+    <div class="btn-group mb-3" role="group">
+      <button class="btn btn-outline-primary" onclick="createNew()"><i class="fas fa-file-medical me-1"></i>New</button>
+      <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#importModal"><i class="fas fa-file-import me-1"></i>Import</button>
+      <div class="vr mx-2"></div>
+      <button class="btn btn-outline-secondary" onclick="postJSON()"><i class="fas fa-save me-1"></i>Save</button>
+      <button class="btn btn-outline-secondary" onclick="addRow()"><i class="fas fa-plus me-1"></i>Add Row</button>
+    </div>
+    <div class="mb-3">
+      <label for="systemFilter" class="form-label fw-bold">Filter by System</label>
+      <select id="systemFilter" class="form-select" onchange="renderTable()">
+        <option value="">Show All</option>
+      </select>
+    </div>
+    <!-- Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="importModalLabel">Import TGID File</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="file" id="fileInput" accept=".csv" class="form-control mb-3">
+            <label for="default-system" class="form-label mt-2">Default System</label>
+            <select id="default-system" class="form-select"></select>
+            <button class="btn btn-primary w-100" onclick="clearData()" data-bs-dismiss="modal">
+              <i class="fas fa-file-import me-2"></i>Import File
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <table class="table table-bordered table-striped" id="dataTable">
+      <thead class="table-light">
+        <tr>
+          <th>Index</th>
+          <th>Decimal</th>
+          <th>Priority</th>
+          <th>Alpha Tag</th>
+          <th>System</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+  
+ 
+<script>
+  let records = [];
+  let systems = [];
+  let defaultSystemIndex = 0;
+  const API_BASE_URL = `http://${location.hostname}:5001`;
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchSystems().then(() => {
+      populateSystemDropdown(document.getElementById('default-system'));
+      loadTalkgroupData();
+    });
+  });
+  
+  function fetchSystems() {
+    return fetch(`${API_BASE_URL}/v2/systems/list`)
+      .then(res => res.json())
+      .then(json => {
+        systems = json.map((sys, idx) => ({ ...sys, index: sys.index ?? idx }));
+        populateSystemDropdown(document.getElementById('default-system'));
+        populateSystemFilterDropdown();
+      })
+      .catch(err => {
+        console.error("Failed to fetch systems:", err);
+        systems = [];
+      });
+  }
+  
+  function parseFile(text, filename) {
+    const delim = filename.endsWith('.tsv') ? '\t' : ',';
+    const rows = text.trim().split(/\r?\n/).map(r => r.split(delim).map(cell => cell.trim()));
+    let header = rows.shift().map(h => h.trim().toLowerCase());
+  
+    const decIdx = header.findIndex(h => h.includes('decimal'));
+    const descIdx = header.findIndex(h => h.includes('description') || h.includes('alpha'));
+    const prioIdx = header.findIndex(h => h.includes('priority'));
+  
+    if (decIdx === -1 || descIdx === -1) {
+      alert("Missing required columns: 'Decimal' or 'Description'");
+      return;
+    }
+  
+    records = rows.map(row => ({
+      decimal: row[decIdx] || '',
+      alpha: row[descIdx]?.replace(/^"(.*)"$/, '$1') || '',
+      priority: prioIdx !== -1 ? parseInt(row[prioIdx]) || 3 : 3,
+      system: defaultSystemIndex
+    }));
+  
+    renderTable();
+  }
+  
+  function clearData() {
+    const file = document.getElementById('fileInput').files[0];
+    if (!file) {
+      alert("Please select a file first.");
+      return;
+    }
+  
+    const reader = new FileReader();
+    reader.onload = () => parseFile(reader.result, file.name);
+    reader.readAsText(file);
+  }
+  
+  function postJSON() {
+    const output = {};
+    console.log("Saving records:", records);
+    records.forEach(r => {
+      console.log(`Processing record:`, r);
+
+      if (!r.decimal || isNaN(parseInt(r.decimal))) return;
+
+      const sysObj = systems.find(s => parseInt(s.index) === parseInt(r.system));
+      console.log(` → Matched system:`, sysObj);
+
+      const sysid = sysObj?.sysid;
+      if (!sysid) return;
+
+      if (!output[sysid]) output[sysid] = {};
+      output[sysid][r.decimal] = {
+        name: r.alpha || '',
+        tgid: parseInt(r.decimal),
+        priority: parseInt(r.priority) || 3
+      };
+    });
+  
+    payload = JSON.stringify(output, null, 2)
+    console.log("Posting", payload)  
+    fetch(`${API_BASE_URL}/v2/systems/tgid_tags/all/update`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: payload
+    })
+      .then(res => {
+        if (res.ok) {
+          alert('Talkgroup data saved.');
+        } else {
+          alert('Failed to save talkgroup data.');
+        }
+      })
+      .catch(err => {
+        console.error('POST error:', err);
+        alert('Error saving talkgroup data.');
+      });
+  }
+  
+  function populateSystemDropdown(selectElement) {
+    selectElement.innerHTML = '';
+    systems.forEach((sys, idx) => {
+      const opt = document.createElement('option');
+      opt.value = sys.index;
+      opt.textContent = sys.sysname || `System ${sys.index}`;
+      selectElement.appendChild(opt);
+    });
+    selectElement.value = systems[0]?.index ?? 0;
+    selectElement.addEventListener('change', () => {
+      defaultSystemIndex = parseInt(selectElement.value);
+    });
+  }
+  
+  function renderTable() {
+    const tbody = document.querySelector('#dataTable tbody');
+    tbody.innerHTML = '';
+  
+    const selectedSystem = document.getElementById('systemFilter')?.value;
+    const filteredRecords = selectedSystem === "" ? records : records.filter(r => r.system == selectedSystem);
+  
+    filteredRecords.forEach((rec, i) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${i + 1}</td>
+        <td><input class="form-control" style="max-width: 15ch;" value="${rec.decimal}" onchange="updateField(${i}, 'decimal', this.value)"></td>
+        <td>
+          <select class="form-select" style="max-width: 6ch;" onchange="updateField(${i}, 'priority', this.value)">
+            <option value="1" ${rec.priority == 1 ? 'selected' : ''}>1</option>
+            <option value="2" ${rec.priority == 2 ? 'selected' : ''}>2</option>
+            <option value="3" ${rec.priority == 3 ? 'selected' : ''}>3</option>
+          </select>
+        </td>
+        <td><input class="form-control" value="${rec.alpha}" onchange="updateField(${i}, 'alpha', this.value)"></td>
+        <td>
+          <select class="form-select" onchange="updateField(${i}, 'system', this.value)">
+            ${systems.map((sys) => `<option value="${sys.index}" ${rec.system == sys.index ? 'selected' : ''}>${sys.sysname || 'System ' + sys.index}</option>`).join('')}
+          </select>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+  
+  function updateField(i, field, value) {
+    records[i][field] = field === 'priority' ? parseInt(value) || 3 : value;
+  }
+  
+  function addRow() {
+    records.push({ decimal: '', alpha: '', priority: 3, system: defaultSystemIndex });
+    renderTable();
+  }
+  
+  function loadTalkgroupData() {
+    fetch(`${API_BASE_URL}/v2/systems/tgid_tags/all`)
+      .then(res => res.json())
+      .then(json => {
+        records = [];
+        Object.entries(json).forEach(([sysid, tgMap]) => {
+          const matchingSystem = systems.find(s => s.sysid == sysid);
+          const sysIndex = matchingSystem?.index ?? 0;
+  
+          Object.entries(tgMap).forEach(([tgid, tag]) => {
+            records.push({
+              decimal: tgid,
+              alpha: tag.name || '',
+              priority: tag.priority || 3,
+              system: sysIndex
+            });
+          });
+        });
+        renderTable();
+      })
+      .catch(err => {
+        console.error("Error loading talkgroup data:", err);
+        alert("Failed to load talkgroup data.");
+      });
+  }
+  
+  function populateSystemFilterDropdown() {
+    const filterSelect = document.getElementById('systemFilter');
+    if (!filterSelect) return;
+  
+    filterSelect.innerHTML = '<option value="">Show All</option>';
+    systems.forEach((sys) => {
+      const opt = document.createElement('option');
+      opt.value = sys.index;
+      opt.textContent = sys.sysname || `System ${sys.index}`;
+      filterSelect.appendChild(opt);
+    });
+  }
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+</body>
+</html>

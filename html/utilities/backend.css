@@ -1,0 +1,151 @@
+:root {
+    --fire-red: #8B0000;
+    --fire-red-light: #A52A2A;
+    --fire-black: #121212;
+    --fire-gray: #2c2c2c;
+    --fire-white: #f8f9fa;
+  }
+  
+  /* Full-page body */
+  html, body {
+    height: 100%;
+    background-color: var(--fire-black);
+    color: var(--fire-white);
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Navigation bar */
+  .navbar {
+    background-color: var(--fire-red) !important;
+  }
+  .navbar-brand,
+  .navbar-nav .nav-link {
+    color: var(--fire-white) !important;
+  }
+  .navbar-nav .nav-link:hover {
+    color: var(--fire-red-light) !important;
+  }
+  
+  /* Main container */
+  .main-container {
+    background-color: var(--fire-red);
+    min-height: calc(100vh - 56px); /* adjust based on navbar height */
+    padding: 1.5rem;
+  }
+  
+  /* Headings */
+  h1, h2, h3, h4 {
+    color: var(--fire-white);
+  }
+  
+  /* Buttons */
+  .btn {
+    border-radius: 4px;
+  }
+  
+  .btn-outline-secondary {
+    color: var(--fire-white);
+    border-color: var(--fire-gray);
+  }
+  .btn-outline-secondary:hover {
+    background-color: var(--fire-gray);
+  }
+  
+  .btn-outline-success {
+    color: var(--fire-white);
+    border-color: var(--fire-red-light);
+  }
+  .btn-outline-success:hover {
+    background-color: var(--fire-red-light);
+    color: var(--fire-white);
+  }
+  
+  .btn-outline-danger {
+    color: var(--fire-white);
+    border-color: var(--fire-red);
+  }
+  .btn-outline-danger:hover {
+    background-color: var(--fire-red);
+    color: var(--fire-white);
+  }
+  
+  .btn-outline-primary {
+    color: var(--fire-white);
+    border-color: #555;
+  }
+  .btn-outline-primary:hover {
+    background-color: #555;
+  }
+  
+  /* Table */
+  .table {
+    background-color: var(--fire-gray);
+    color: var(--fire-white);
+  }
+  .table thead {
+    background-color: var(--fire-red);
+  }
+  .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #1a1a1a;
+  }
+  
+  /* Inputs and Selects */
+  .form-control,
+  .form-select {
+    background-color: var(--fire-black);
+    color: var(--fire-white);
+    border-color: var(--fire-gray);
+  }
+  .form-control:focus,
+  .form-select:focus {
+    background-color: var(--fire-black);
+    border-color: var(--fire-red);
+    color: var(--fire-white);
+    box-shadow: none;
+  }
+  
+  /* Modal */
+  .modal-content {
+    background-color: var(--fire-gray);
+    color: var(--fire-white);
+  }
+  .modal-header {
+    background-color: var(--fire-red);
+    border-bottom: 1px solid var(--fire-black);
+  }
+  .modal-footer {
+    background-color: var(--fire-gray);
+    border-top: 1px solid var(--fire-black);
+  }
+  
+  /* Pills */
+  .badge.bg-primary {
+    background-color: var(--fire-red-light);
+  }
+
+  .btn-outline-secondary, .btn-outline-primary {
+    border-color:white;
+
+  }
+
+  .navbar-nav .nav-link.active {
+    background-color: var(--fire-red-light) !important;
+    color: var(--fire-white) !important;
+    border-radius: 0.25rem;
+  }
+
+
+  
+  a {
+    color: white; /* muted red */
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color 0.2s ease-in-out, border-bottom 0.2s ease-in-out;
+    border-bottom: 2px solid transparent;
+  }
+
+  .form-control:disabled {
+    background-color:white !important;
+    color: darkgrey !important;
+  }

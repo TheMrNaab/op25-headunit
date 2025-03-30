@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Systems Config Editor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+   <!-- Font Awesome Icons -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+   <link href="backend.css?v=3" rel="stylesheet">
+</head>
+<body>
+<div class="container my-4">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">RadioApp</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="system.html">System</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="talkgroups.html">Talkgroups</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="channels.html">Channels</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Import Modal Trigger Button (kept in button group) -->
+  <div class="main-container">
+    <div class="alert alert-warning custom-alert" role="alert">
+      <strong>Note:</strong> These settings are not yet editable. This webpage will be available in the future.
+    </div>
+    <h2 class="mt-4">System Configuration</h2>
+    <p>
+      This tool allows you to configure the overall system settings for the OP25 scanner platform. Only modify settings that you understand.
+    </p>
+    <form id="config-form">
+      <h4><i class="fa fa-code me-2"></i>Hosts</h4>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="api_host" class="form-label">API Host</label>
+          <input type="text" class="form-control form-control-sm" id="api_host" >
+        </div>
+        <div class="col-md-4">
+          <label for="default_system_file" class="form-label">Default System File</label>
+          <input type="text" class="form-control-sm form-control" id="default_system_file" >
+        </div>
+        <div class="col-md-4">
+          <label for="op_25_directory" class="form-label">OP25 Directory</label>
+          <input type="text" class="form-control-sm form-control" id="rx_script" >
+        </div>
+    </div>
+
+    <!-- OP25 Settings -->
+        <h4 class="mt-4 mb-4"><i class="fa fa-code me-2"></i>OP25 Settings</h4>
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">SDR Args</label>
+              <input type="text" id="args" class="form-control form-control-sm" >
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Sample Rate</label>
+              <input type="number" id="sample_rate" class="form-control form-control-sm" >
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Frequency Correction</label>
+              <input type="number" id="frequency_correction" class="form-control form-control-sm" >
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="rx_script" class="form-label">RX Script</label>
+              <input type="text" class="form-control-sm form-control" id="rx_script" >
+            </div>
+              <div class="col-md-6">
+                <label for="pythonpath" class="form-label">Python Path</label>
+                <input type="text" class="form-control-sm form-control" id="pythonpath" >
+              </div>
+            </div>
+        <!-- UDP SETTINGS -->
+        <h4 class="mt-4 mb-4"><i class="fa fa-code me-2"></i>Audio</h4>
+        <div class="row mb-3">
+            <div class="col-md-6 ">
+              <!-- MAKE AUTO ENABLE/DISABLE DATA-REL CONTROL -->
+              <input type="checkbox" data-rel="udp_output_port" id="udp_output" class="form-check-input" >
+              <label class="form-check-label mb-2" for="udp_output">UDP Output</label>
+              <input type="number" id="udp_output_port" class="form-control form-control-sm" >
+            </div>
+            <div class="col-md-6">
+              <input type="checkbox" id="override_default_audio_device" class="form-check-input">
+              <label class="form-check-label mb-2" for="override_default_audio_device">Audio Output Device</label>
+              <input type="text" id="audio_output" class="form-control form-control-sm">
+            </div>
+        </div>
+
+          <h4 class="mt-4 mb-4"><i class="fa fa-code me-2"></i>Logging</h4>
+          <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">
+                  Log Level
+                  <i class="fas fa-info-circle text-muted ms-1" data-bs-toggle="popover" title="Verbosity" data-bs-content="Controls how much log information is printed. 0 = silent, 3 = most verbose."></i>
+                </label>
+                <select id="verbosity" class="form-select form-select-sm" >
+                  <option value="0">0 - Silent</option>
+                  <option value="1">1 - Info</option>
+                  <option value="2">2 - Debug</option>
+                  <option value="3">3 - Trace</option>
+                </select>
+                </div>
+                <div class="col-md-5"> 
+                  <label class="form-check-label mb-2" for="voice_logging">Voice Logging</label><br>
+                      <input type="checkbox" id="voice_logging" class="form-check-input">  
+                </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="stderr_file" class="form-label">Stderr Log File</label>
+                <input type="text" class="form-control-sm form-control" id="stderr_file" >
+              </div>
+              <div class="col-md-4">
+                <label for="stdout_file" class="form-label">Stdout Log File</label>
+                <input type="text" class="form-control-sm form-control" id="stdout_file" >
+              </div>
+              <div class="col-md-4">
+                <label for="app_log" class="form-label">App Log File</label>
+                <input type="text" class="form-control-sm form-control" id="app_log" >
+              </div>
+            </div>
+        
+        <h3 class="mt-4 mb-4"><i class="fa fa-code me-2"></i>Additional Settings</h3>
+        <div class="row mb-3">
+          <div class="col-md-4 ms-3 mt-1 form-check">
+            <input type="checkbox" id="nocrypt" class="form-check-input" >
+            <label class="form-check-label" for="nocrypt">
+              Mute Enrcruption
+              <i class="fas fa-info-circle text-muted ms-1" data-bs-toggle="popover" title="NoCrypt" data-bs-content="Skips encrypted talkgroups instead of printing gibberish or static. Should usually be enabled."></i>
+            </label>
+          </div>
+          <div class="col-md-4 ms-3 mt-1 form-check">
+            <input type="checkbox" id="two_tuner_mode" class="form-check-input" >
+            <label class="form-check-label" for="two_tuner_mode">
+              Two Tuner Mode
+              <i class="fas fa-info-circle text-muted ms-1" data-bs-toggle="popover" title="Two Tuner Mode" data-bs-content="Uses one tuner for control channel and another for voice traffic. Improves performance."></i>
+            </label>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary">Save</button>
+      </form>
+
+      <!-- <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+          [...popoverTriggerList].forEach(el => new bootstrap.Popover(el));
+        });
+      </script> -->
+    
+    <script src="../js/api.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const configValues = await fetchConfigProperties();
+      applyConfig(configValues);
+    });
+    
+  
+    function applyConfig(response) {
+  if (!response.payload) return;
+
+  const flatten = (obj, prefix = '') =>
+    Object.entries(obj).reduce((acc, [k, v]) => {
+      const key = prefix ? `${prefix}.${k}` : k;
+      if (typeof v === 'object' && v !== null && !Array.isArray(v)) {
+        Object.assign(acc, flatten(v, key));
+      } else {
+        acc[key] = v;
+      }
+      return acc;
+    }, {});
+
+  const flatConfig = flatten(response.payload);
+
+  const idMap = {
+    "hosts.api_host": "api_host",
+    "paths.rx_script": "rx_script_path",
+    "paths.trunk_file": "trunk_file",
+    "paths.stderr_file": "stderr_file",
+    "paths.stdout_file": "stdout_file",
+    "paths.app_log": "app_log",
+    "paths.tgroups_file": "tgroups_file",
+    "paths.defaultwhitelistfile": "defaultWhitelistFile",
+    "paths.defaultblacklistfile": "defaultBlacklistFile",
+    "paths.pythonpath": "pythonpath",
+    "paths.default_system_file": "default_system_file",
+    "op25.rx_script": "op25_rx_script",
+    "op25.args": "args",
+    "op25.sample_rate": "sample_rate",
+    "op25.frequency_correction": "frequency_correction",
+    "op25.audio_output": "audio_output",
+    "op25.override_default_audio_device": "override_default_audio_device",
+    "op25.verbosity": "verbosity",
+    "op25.udp_output_port": "udp_output_port",
+    "op25.nocrypt": "nocrypt",
+    "op25.two_tuner_mode": "two_tuner_mode",
+    "op25.voice_logging": "voice_logging",
+    "op25.udp_output": "udp_output"
+  };
+
+  Object.keys(flatConfig).forEach(key => {
+    const mappedId = idMap[key];
+    if (!mappedId) return;
+
+    const el = document.getElementById(mappedId);
+    if (!el) return;
+
+    const value = flatConfig[key];
+
+    if (el.type === 'checkbox') {
+      el.checked = value === true || value === 'true';
+    } else {
+      el.value = value;
+    }
+  });
+}
+
+  </script>
+  
+
+</div>
+</div>
