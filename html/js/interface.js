@@ -14,10 +14,12 @@ function listenLogStream() {
 
       const updateType = data.Action || data.Update;
       const tgName = data["Talkgroup Name"] || data.Talkgroup;
-
-      if (updateType === 'voice update' && tgName) {
+      const tgid = data["Talkgroup"] || -1
+      if (updateType === 'voice update') {
+        resp = apiGet(APIEndpoints.SESSION.TALKGROUP_NAME(tgid))
+        data = resp.json()
         const el = document.getElementById('talkgroup');
-        if (el) el.textContent = tgName;
+        if (el) el.textContent = data['name'];
       }
     } catch (err) {
       console.warn("Invalid log stream data:", err);

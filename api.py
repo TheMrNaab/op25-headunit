@@ -6,7 +6,7 @@ import os
 import signal
 from configobj import ConfigObj
 from flask import Flask, Response, request, jsonify, send_file
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from modules.linuxSystem.sound import soundSys # Ensure this path matches your project
 from modules.linuxSystem.linuxUtils import LinuxUtilities
 from modules.logMonitor import LogFileWatcher, logMonitorOP25
@@ -22,38 +22,10 @@ import logging
 from modules.zoneHandler import ZoneData, Zone, Channel
 from modules.myConfiguration import MyConfig
 from modules.talkGroupsHandler import TalkgroupsHandler
-
-# class errorHandler:
-#     def __init__(self, api):
-#         self.configManager = MyConfig()
-#         self.API = api
-#         LOG_FILE = self.configManager.get("paths", "app_log")
-#         print("paths -> app_log", LOG_FILE)
-
-#         # Get the root logger and configure it
-#         logger = logging.getLogger()
-#         logger.setLevel(logging.DEBUG)
-#         for h in logger.handlers[:]:
-#             logger.removeHandler(h)
-#         handler = logging.FileHandler(LOG_FILE, mode="w")
-#         formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
-#         handler.setFormatter(formatter)
-#         logger.addHandler(handler)
-
-#         # Silence noisy libraries
-#         for lib in ("watchdog", "urllib3", "urllib3.connectionpool", "requests", "root"):
-#             logging.getLogger(lib).setLevel(logging.WARNING)
-
-#     def logError(self, msg, *args, **kwargs):
-#         logging.error(msg, *args, **kwargs)
-
-#     def logInfo(self, msg, *args, **kwargs):
-#         logging.info(msg, *args, **kwargs)
-        
+  
 class API:
     def __init__(self):
-        # self._errorHandler = errorHandler(self)
-        
+
         # FLASK SETUP
         self.app = Flask(__name__)
         CORS(
@@ -266,8 +238,11 @@ class API:
         @self.app.route('/session/talkgroups/<tgid>/name/plaintext', methods=['GET'])
         def get_active_tgid_name(tgid):
             if not self.activeSession.activeTGIDList:
-                return {"error": "No active TGID list in session"}, 400
-            return self.activeSession.activeTGIDList.getTalkgroup(tgid)
+                return jsonify({"error": "No active TGID list in session"}), 400
+            tg = self.activeSession.activeTGIDList.getTalkgroup(tgid)
+            if not tg:
+                return jsonify({"error": f"Talkgroup {tgid} not found"}), 404
+            return jsonify({"name": f"tg.name"}), 200
 
         # 10: [GET] Get all TGIDs from active system
         @self.app.route('/session/talkgroups', methods=['GET'])

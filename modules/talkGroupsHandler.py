@@ -60,7 +60,12 @@ class TalkgroupSet:
     
     @property
     def talkgroups(self):
-        return [Talkgroup(tg) for tg in self._talkgroups.values()]
+        print("Type of _talkgroups:", type(self._talkgroups))
+        if isinstance(self._talkgroups, dict):
+            return [Talkgroup(tg) for tg in self._talkgroups.values()]
+        else:
+            # Optionally, handle other types
+            return list(self._talkgroups)
 
     def getTalkgroup(self, tgid) -> Talkgroup | None:
         try:
