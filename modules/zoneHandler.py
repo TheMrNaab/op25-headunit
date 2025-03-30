@@ -2,6 +2,7 @@ import json
 import os
 import tempfile
 from typing import List
+import re
 
 class ZoneFileHandler:
     def __init__(self, file_path):
@@ -43,8 +44,7 @@ class Channel:
             str: The file path of the whitelist TSV file, or None on error.
         """
         # If _whitelistFilePath doesn't exist, create it.
-        if not self._whitelistFilePath:
-            self._whitelistFilePath = os.path.join(tempfile.gettempdir(), f"_whitelist_{self.name}.tsv")
+        
 
         try:
             with open(self.whitelistFilePath, "w", newline='') as tsvfile:
@@ -59,10 +59,9 @@ class Channel:
     @property
     def blacklistFilePath(self) -> str:
         """Returns the file path of the blacklist TGIDs. If it is unset, one is created and returned."""
-        
         if not self._blacklistFilePath:
-            self._blacklistFilePath = os.path.join(tempfile.gettempdir(), f"_blacklist_{self.name}.tsv")
-        
+            safe_name = re.sub(r'\W+', '_', self.name)  # Replace non-alphanumeric characters with underscores
+            self._blacklistFilePath = os.path.join(tempfile.gettempdir(), f"_blacklist_{safe_name}.tsv")
         return self._blacklistFilePath
     
     @property
@@ -94,6 +93,9 @@ class Channel:
             with open(self.blacklistFilePath, "w", newline='') as tsvfile:
                 for tgid in self.blacklistTGIDs:
                     tsvfile.write(f"{tgid}\n")
+                    
+                if(len(self.blacklistTGIDs)) == 0:
+                    tsvfile.write(f"0\n")
             return self.blacklistFilePath
         
         except Exception as e:
@@ -101,10 +103,13 @@ class Channel:
             return None # Return nothing for now
 
     @property
-    def whitelistFilePath(self)->str:
-        """Returns the temporary path used to create the whitelist file (if available)."""
+    def whitelistFilePath(self) -> str:
+        """Returns the sanitized temporary path used to create the whitelist file."""
+        if not self._whitelistFilePath:
+            safe_name = re.sub(r'\W+', '_', self.name)  # Replace non-alphanumeric characters with underscores
+            self._whitelistFilePath = os.path.join(tempfile.gettempdir(), f"_whitelist_{safe_name}.tsv")
         return self._whitelistFilePath
-
+    
     @property
     def channel_number(self)->int:
         return int(self._data.get("channel_number"))
