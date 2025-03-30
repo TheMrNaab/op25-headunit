@@ -3,48 +3,7 @@ import os
 import csv
 import tempfile
 import re
-from modules.talkGroupsHandler import TalkgroupSet, Talkgroup
 
-class TalkgroupsHandler:
-    def __init__(self, file_path):
-        self.file_path = file_path
-        self.data = self._read_file()
-
-    def _read_file(self):
-        if not os.path.exists(self.file_path):
-            return {}
-        with open(self.file_path, 'r') as f:
-            return json.load(f)
-
-    def update(self, new_data):
-        self.data = new_data
-        with open(self.file_path, 'w') as f:
-            json.dump(self.data, f, indent=4)
-
-    @property
-    def talkgroup_sets(self):
-        return [TalkgroupSet(sysid, tg_data) for sysid, tg_data in self.data.items()]
-
-    def getTalkgroupSetById(self, sysid) -> TalkgroupSet | None:
-        if str(sysid) in self.data:
-            return TalkgroupSet(sysid, self.data[str(sysid)])
-        return None
-
-    def getTalkgroup(self, sysIndex, tgid) -> Talkgroup | None:
-        try:
-            sysid = list(self.data.keys())[sysIndex]
-            return TalkgroupSet(sysid, self.data[sysid]).getTalkgroup(tgid)
-        except (IndexError, KeyError):
-            return None
-
-    def getTalkgroupName(self, sysIndex, tgid) -> str:
-        tg = self.getTalkgroup(sysIndex, tgid)
-        if tg:
-            return tg.name
-        return f"Undefined ({tgid})"
-
-    def toJSON(self):
-        return json.dumps(self.data, indent=4)
 
 
 class Talkgroup:
@@ -68,7 +27,6 @@ class Talkgroup:
 
     def toJSON(self):
         return json.dumps(self._data, indent=4)
-
 
 class TalkgroupSet:
     def __init__(self, sysid, tg_data):
@@ -115,3 +73,44 @@ class TalkgroupSet:
 
     def toJSON(self):
         return json.dumps(self._talkgroups, indent=4)
+
+class TalkgroupsHandler:
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self.data = self._read_file()
+
+    def _read_file(self):
+        if not os.path.exists(self.file_path):
+            return {}
+        with open(self.file_path, 'r') as f:
+            return json.load(f)
+
+    def update(self, new_data):
+        self.data = new_data
+        with open(self.file_path, 'w') as f:
+            json.dump(self.data, f, indent=4)
+
+    @property
+    def talkgroup_sets(self):
+        return [TalkgroupSet(sysid, tg_data) for sysid, tg_data in self.data.items()]
+
+    def getTalkgroupSetById(self, sysid) -> TalkgroupSet | None:
+        if str(sysid) in self.data:
+            return TalkgroupSet(sysid, self.data[str(sysid)])
+        return None
+
+    def getTalkgroup(self, sysIndex, tgid) -> Talkgroup | None:
+        try:
+            sysid = list(self.data.keys())[sysIndex]
+            return TalkgroupSet(sysid, self.data[sysid]).getTalkgroup(tgid)
+        except (IndexError, KeyError):
+            return None
+
+    def getTalkgroupName(self, sysIndex, tgid) -> str:
+        tg = self.getTalkgroup(sysIndex, tgid)
+        if tg:
+            return tg.name
+        return f"Undefined ({tgid})"
+
+    def toJSON(self):
+        return json.dumps(self.data, indent=4)

@@ -1,9 +1,10 @@
 import subprocess
-import re
-from flask import jsonify
+from flask import jsonify, send_file
 import subprocess
 import re
-from flask import jsonify
+import io
+import qrcode
+import psutil
 
 class SoundSys:
     @staticmethod
@@ -65,3 +66,4 @@ class SoundSys:
                 break
 
         return jsonify(parsed)
+    

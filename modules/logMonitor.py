@@ -1,3 +1,6 @@
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from api import API  # Replace with actual class name if different
 import logging
 import requests
 import re
@@ -48,7 +51,7 @@ class LogFileWatcher:
         thread.start()
 
 class logMonitorOP25:
-    def __init__(self, API, file="/opt/op25-project/logs/stderr_op25.log", endpoint=None):
+    def __init__(self, API: "API", file="/opt/op25-project/logs/stderr_op25.log", endpoint=None):
         self.source = file
         self.endpoint = endpoint
         self.lines = []
@@ -56,8 +59,12 @@ class logMonitorOP25:
         self.queue = queue.Queue()
         self.sender_thread = threading.Thread(target=self._sender_worker, daemon=True)
         self.sender_thread.start()
-        self.api = API
+        self._api = API
         self.initFile()
+
+    @property
+    def api(self) -> "API":
+        return self._api
 
     def initFile(self):
         if not os.path.exists(self.source):
@@ -103,13 +110,16 @@ class logMonitorOP25:
         m = VOICE_REGEX.match(line)
         if m:
             entry = m.groupdict()
-            entry["Talkgroup Name"] = self.api.file_obj.get_alpha_tag(int(entry["Talkgroup"]))
+            entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(self.api.sessionManager.thisSession.activeSystem.index, m)
+             # REMOVED: get_alpha_tag(int(entry["Talkgroup"])) 
             return entry
-
+        
         m = TG_REGEX.match(line)
         if m:
             entry = m.groupdict()
-            entry["Talkgroup Name"] = self.api.file_obj.get_alpha_tag(int(entry["Talkgroup"]))
+            entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(self.api.sessionManager.thisSession.activeSystem.index, m)
+            
+            # REMOVED: get_alpha_tag(int(entry["Talkgroup"])) 
             return entry
 
         return None

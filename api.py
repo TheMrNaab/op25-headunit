@@ -1,26 +1,25 @@
+from __future__ import annotations
 import subprocess
 import os
 import signal
-import re
 from configobj import ConfigObj
-from flask import Flask, Response, request, jsonify, session as flask_session
+from flask import Flask, Response, request, jsonify, send_file
 from flask_cors import CORS, cross_origin
-from modules.OP25_Controller import OP25Controller
-from modules.sessionHandler import sessionHandler
-import hashlib
-
+from modules.linuxSystem.sound import SoundSys as sound  # Ensure this path matches your project
+from modules.linuxSystem.linuxUtils import LinuxUtilities
 from modules.logMonitor import LogFileHandler, LogFileWatcher, logMonitorOP25
-from modules.sessionHandler import sessionHandler, session
+from modules.sessionTypes import session
+from modules.sessionHandler import sessionHandler 
+from modules.systemsHandler import OP25FilesPackage
+from modules.OP25_Controller import OP25Controller
 import time
 import threading
 from queue import Queue
 import json
 import logging
 import secrets
-from __future__ import annotations
 
 # NOTE: MIGHT NEED TO REMOVE; KEEPING FOR NOW DUE TO CODE HINTING
-from modules.systemsHandler import SystemFileHandler, System
 from modules.zoneHandler import ZoneData, Zone, Channel
 from modules.myConfiguration import MyConfig
 from modules.talkGroupsHandler import TalkgroupsHandler
@@ -48,46 +47,58 @@ class errorHandler:
             logging.getLogger(lib).setLevel(logging.WARNING)
             
 class API:
-    
     def __init__(self):
         # SET LOGGING LEVEL
         logging.basicConfig(level=logging.DEBUG)
-        
-        # FLASH SETUP
+
+        # FLASK SETUP
         self.app = Flask(__name__)
         CORS(
             self.app,
             supports_credentials=True,
             resources={r"/*": {"origins": "http://192.168.1.46:8000"}}
         )
-        
-        # SET SESSIONS SECRET
+
+        # SET SESSION SECRET
         self.app.secret_key = secrets.token_hex(32)
 
-        # IMPLEMENT CONFIGURATION
+        # INITIALIZE CONFIGURATION & ERROR HANDLER
         self._configManager = MyConfig()
+        self._errorHandler = errorHandler(self)
 
-        # FREE PORTS & KILL OUTSTANDING PROCESSES
+        # CLEANUP PORTS AND PROCESSES
         self.killAndFree()
 
-        # INITIALIZE ERROR HANDLER 
-        self._errorHandler = errorHandler(self)
-        
-        # INITIALIZE SESSION HANDLER
+        # STEP 1: INIT DUMMY SESSION (placeholder)
+        self._session = None
+
+        # STEP 2: INIT OP25 CONTROLLER WITH TEMP SESSION
+        self._op25Manager = OP25Controller(configMgr=self.configManager)
+
+        # STEP 3: INIT SESSION HANDLER NOW THAT CONTROLLER EXISTS
         self._sessionManager = sessionHandler(self.op25Manager, 0, 0, 0)
+
+        # STEP 4: SET SESSION ON CONTROLLER
         self._session = self.sessionManager.thisSession
+        self.op25Manager.set_session(self._session)
+        self.op25Manager.start(self._session)
 
-        # INITIALIZE OP25 CONTROLLER
-        self.startOP25Controller()
-
-        # SET LOGGER STREAM FOR OP25 UPDATES
-        self.startLoggerStream()        
+        # LOGGER STREAM FOR OP25
+        self.startLoggerStream()
 
         self.progress = 0
         self.lock = threading.Lock()
 
-        # REGISTER ROUTES
+        # REGISTER API ROUTES
         self.register_routes()
+
+    def set_session(self, session: session):
+        self._activeSession = session
+        self.session = session
+
+    def init_from_session(self):
+        files = self.session.sessionManager.op25ConfigFiles()
+        self.session.activeSys.toTrunkTSV(files)
 
     def killAndFree(self):
         self.free_port(8000)
@@ -134,27 +145,81 @@ class API:
         return self.sessionManager.zoneManager
 
     def register_routes(self):
-        from modules.linuxSystem.sound import SoundSys
-
-        # Set session defaults before each request
-        @self.app.before_request
-        def initialize_session_defaults():
-            session.setdefault('activeChannelIndex', -1)
-            session.setdefault('activeZoneIndex', -1)
-            session.setdefault('activeSystemId', -200)
-            session.setdefault('activeChannel', {})
 
         # ====== SYSTEM CONTROL ======
 
         # 1: [GET] Get system volume level (0–100)
         @self.app.route('/volume/simple', methods=['GET'])
         def get_volume():
-            return SoundSys.get_volume_percent()
+            return sound.get_volume_percent()
 
         # 2: [POST] Set system volume level
         @self.app.route('/volume/<int:level>', methods=['POST'])
         def set_volume(level):
-            return SoundSys.set_volume(level)
+            return sound.set_volume(level)
+        
+        # ====== SYSTEM UTILITIES & CONTROL ======
+
+        @self.app.route('/utilities/qrcode/<path:content>', methods=['GET'])
+        def generate_qr(content):
+            img_io = LinuxUtilities.generate_qrcode_image(content)
+            return send_file(img_io, mimetype='image/png')
+
+
+        # ====== DISPLAY SLEEP SETTINGS ======
+
+        @self.app.route('/config/openbox/display/<int:id>/sleep/set/<int:timeout>', methods=['POST'])
+        def set_display_timeout(id, timeout):
+            try:
+                LinuxUtilities.set_display_timeout(id, timeout)
+                return jsonify({"display_id": id, "sleep_timeout_minutes": timeout})
+            except subprocess.CalledProcessError:
+                return jsonify({"error": "Failed to set display timeout"}), 500
+
+        @self.app.route('/config/openbox/display/<int:id>/sleep', methods=['GET'])
+        def get_display_timeout(id):
+            try:
+                timeout = LinuxUtilities.get_display_timeout(id)
+                return jsonify({"sleep_timeout_minutes": timeout})
+            except Exception as e:
+                return jsonify({"error": str(e)}), 500
+
+
+        # ====== DEVICE SLEEP SETTINGS ======
+
+        @self.app.route('/config/openbox/device/sleep/set/<int:timeout>', methods=['POST'])
+        def set_device_sleep_timeout(timeout):
+            try:
+                LinuxUtilities.set_device_sleep_timeout(timeout)
+                return jsonify({"sleep_timeout_minutes": timeout})
+            except subprocess.CalledProcessError:
+                return jsonify({"error": "Failed to set device sleep timeout"}), 500
+
+        @self.app.route('/config/openbox/device/sleep', methods=['GET'])
+        def get_device_sleep_timeout():
+            try:
+                timeout = LinuxUtilities.get_device_sleep_timeout()
+                return jsonify({"sleep_timeout_minutes": timeout})
+            except Exception as e:
+                return jsonify({"error": str(e)}), 500
+
+
+        # ====== DISPLAY LISTING ======
+
+        @self.app.route('/config/openbox/device/displays', methods=['GET'])
+        def list_displays():
+            try:
+                return jsonify(LinuxUtilities.list_displays())
+            except Exception as e:
+                return jsonify({"error": str(e)}), 500
+
+
+        # ====== SYSTEM NETWORK STATUS ======
+
+        #1: [GET] NETWORK STATUS
+        @self.app.route('/config/network', methods=['GET'])
+        def get_network_status():
+            return jsonify(LinuxUtilities.get_network_status())
 
         # ====== CHANNEL DATA BY ZONE ======
 
@@ -372,7 +437,7 @@ class API:
     def run(self):
 
         # This is the reloader child — run normal startup
-        self.op25Manager.start()
+        self.op25Manager.start(self.activeSession)
 
         self.free_port(8000)
         self.free_port(5001)

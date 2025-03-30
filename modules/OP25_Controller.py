@@ -1,3 +1,4 @@
+#OP25_Controller.py
 import subprocess
 import os
 import time
@@ -5,17 +6,17 @@ import socket
 import subprocess
 import json
 from typing import List
+from modules.sessionTypes import session
 from modules.myConfiguration import MyConfig
-from modules.sessionHandler import session
-from modules.systemsHandler import op25FilesPackage
+from modules.systemsHandler import OP25FilesPackage
 #  echo '{"command": "whitelist", "arg1": 47021, "arg2": 0}' | nc -u 127.0.0.1 5000
 
 class OP25Controller:
-    def __init__(self, configMgr:MyConfig, _session:session):
+    def __init__(self, configMgr:MyConfig):
         
         # SET MANAGERS
         self.configManager = configMgr
-        self._activeSession = _session
+        self._activeSession = None
 
         # SET CUSTOM CONFIGURATIONS
         # TODO: Replace with configuration paths
@@ -29,18 +30,11 @@ class OP25Controller:
         # KILL EXISTING PROCESSES
         subprocess.run(["pkill", "-f", "rx.py"])
 
-        self.session:session = _session
-        files:op25FilesPackage = self.session.sessionManager.op25ConfigFiles()
-        self.session.activeSys.toTrunkTSV(files)
-
-        #TODO: Implement config.build_command()
-        self.op25_command = [
-            self.rx_script , "--nocrypt", "--args", "rtl",
-            "--gains", "lna:35", "-S", "960000", "-q", "0",
-            "-v", "1", "-2", "-V", "-U",
-            "-T", self.trunk_file,
-            "-U", "-l", "5000"
-        ]
+        self.session:session = None
+        
+    def set_session(self, session):
+        self._activeSession = session
+        self.session = session
 
     @property
     def rx_script(self):
@@ -54,8 +48,24 @@ class OP25Controller:
     def stdout_file(self):
         return self._stdout_file
         
-    def start(self):
-        
+    def start(self, session_obj: session):
+        if session_obj:
+            self._activeSession = session_obj
+            self.session = session_obj
+
+        if not self.session:
+            print("[ERROR] No session available. Cannot start OP25.")
+            return
+
+        self.op25_command = [
+            self.rx_script, "--nocrypt", "--args", "rtl",
+            "--gains", "lna:35", "-S", "960000", "-q", "0",
+            "-v", "1", "-2", "-V", "-U",
+            "-T", self.session.activeSystem.toTrunkTSV(session_obj),
+            "-U", "-l", "5000"
+        ]
+
+        # Start subprocess
         self.op25_process = subprocess.Popen(
             self.op25_command,
             stdout=open(self.stdout_file, "w"),
@@ -63,10 +73,12 @@ class OP25Controller:
             text=True
         )
 
-        time.sleep(3) # GIVE TIME TO START AND CATCH UP
-        
-        if(self.isConnected()):
-            print("Connection Status", "OP25 Connected")
+        time.sleep(3)  # Wait for startup
+
+        if self.isConnected():
+            print("Connection Status:", "OP25 Connected")
+        else:
+            print("[WARNING] OP25 may not have connected successfully.")
 
     def isConnected(self, timeout=30):
         """Continuously check for 'Reconfiguring NAC' in the log file until found or timeout."""

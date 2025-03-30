@@ -1,7 +1,12 @@
+from __future__ import annotations  # You already have this
 import json
 import os
 import tempfile
-from typing import List
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from modules.sessionTypes import session
+
+
 class OP25FilesPackage:
     def __init__(self, Blacklist: str, Whitelist: str, Trunk: str, TGIDFile:str):
         self._Blacklist = Blacklist
@@ -102,13 +107,13 @@ class OP25System:
             self._trunkFilePath = os.path.join(tempfile.gettempdir(), f"{self.sysname}_trunk.tsv")
         return self._trunkFilePath
 
-    def toTrunkTSV(self, files:OP25FilesPackage):
-        """
-        Writes the trunk.tsv file for OP25 using the provided file package.
 
-        Args:
-            files (OP25FilesPackage): Includes Whitelist, Blacklist, TGID, and Trunk paths.
+    def toTrunkTSV(self, _session: "session"):
         """
+        Writes the trunk.tsv file for OP25 using the provided session object.
+        """
+        from modules.sessionTypes import session
+      
         headers = [
             "Sysname",
             "Control Channel List",
@@ -120,16 +125,16 @@ class OP25System:
             "Blacklist",
             "Center Frequency"
         ]
-
+ 
         values = [
             self.sysname or "",
             ",".join(map(str, self.control_channels)) if self.control_channels else "",
             str(self.offset or ""),
             self.nac or "",
             self.modulation or "",
-            files.TGID or "",
-            files.Whitelist,
-            files.Blacklist,
+            _session.activeTGIDList.toTalkgroupsCSV() or "",
+            _session.activeChannel.toWhitelistTSV(),                                  # changed from files.whitelist
+            _session.activeChannel.toBlacklistTSV(),                    # changed from files.blacklist
             str(self.center_frequency or "")
         ]
 
