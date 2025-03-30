@@ -14,3 +14,7 @@ Utilize the System Configurator in `/html/utilities/system-editor`
 
 ### Copy Downloaded File
 Copy the downloaded file to `/opt/op25-project/system2.json`
+
+## Other Requirements
+Install other packages that are needed
+```sudo apt install nodejs npm```
