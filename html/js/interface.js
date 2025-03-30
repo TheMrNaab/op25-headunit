@@ -2,40 +2,50 @@ import { API_BASE_URL, APIEndpoints, apiGet, apiPut } from "./api.js";
 
 const print_debug = true; // or false, depending on your use case
 
-
+async function fetchTalkgroupName(tgid) {
+  const response = await fetch(`/session/talkgroups/${tgid}/name/plaintext`);
+  if (response.ok) {
+    const data = await response.json();
+    document.getElementById('talkgroup-name').textContent = data.name;
+  } else {
+    console.error('Error fetching talkgroup name');
+  }
+}
 
 function listenLogStream() {
-  const source = new EventSource(API_BASE_URL + APIEndpoints.LOGGING.STREAM); // ✅ uses enum
-  console.log("Listening to stream", "listenLogStream()")
-  source.onmessage = (event) => {
+  const source = new EventSource(API_BASE_URL + APIEndpoints.LOGGING.STREAM);
+  console.log("Listening to stream", "listenLogStream()");
+  source.onmessage = async (event) => {
     try {
       const data = JSON.parse(event.data);
-      console.log('Log update:', data);
+      console.log("Log update:", data);
 
       const updateType = data.Action || data.Update;
-      const tgName = data["Talkgroup Name"] || data.Talkgroup;
-      const tgid = data["Talkgroup"] || -1
-      if (updateType === 'voice update') {
-        resp = apiGet(APIEndpoints.SESSION.TALKGROUP_NAME(tgid))
-        data = resp.json()
-        const el = document.getElementById('talkgroup');
-        if (el) el.textContent = data['name'];
+      const tgid = data["Talkgroup"] || -1;
+      if (updateType === "voice update" && tgid !== -1) {
+        try {
+          const response = await fetch(API_BASE_URL + APIEndpoints.SESSION.TALKGROUP_NAME(tgid));
+          const jsonData = await response.json();
+          const el = document.getElementById("talkgroup");
+          if (el) el.textContent = jsonData.name;
+        } catch (fetchError) {
+          console.error("Error fetching talkgroup name:", fetchError);
+        }
       }
-    } catch (err) {
-      console.warn("Invalid log stream data:", err);
+    } catch (parseError) {
+      console.warn("Invalid log stream data:", parseError);
     }
   };
 
   source.onerror = (err) => {
-    console.error("SSE stream error:", err);
-    source.close(); // optional: reconnect logic could go here
+    console.warn("SSE stream error:", err);
   };
-  
 }
+
 
 // UI
 
-function badge(badgeText, outerText, badgeClass = "badge badge-secondary") {
+function badge(badgeText, outerText, badgeClass = "badge rectangle-pill bg-secondary") {
   return `<p><span class="${badgeClass}">${badgeText}</span> ${outerText}</p>`;
 }
 
@@ -54,7 +64,7 @@ function showDynamicModal(title = "Dynamic Modal", bodyContent = "") {
                   <h5 class="modal-title">${title}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body">
+              <div class="modal-body text-start">
                   ${bodyContent}
               </div>
           </div>
@@ -74,12 +84,12 @@ function updateNetworkModal(data) {
   }
 
   const fieldMap = {
-      'Status': data.Status,
-      'WiFi Network': data['WiFi Network'],
-      'Connection': data.Connection,
-      'Memory': data.Memory,
-      'CPU Temp': data['CPU Temp'],
-      'Audio Output': data['Audio Output']
+      'Audio Output': data.audio_output,
+      'Connection Type': data.connection_type,
+      'Network Device': data.wifi_name,
+      'CPU Temp': data.cpu_temp, 
+      'Memory': data.mem_available,
+      'Status': data.status
   };
 
   let bodyContent = "";
@@ -88,7 +98,7 @@ function updateNetworkModal(data) {
       bodyContent += badge(label, value ?? "N/A");
   }
 
-  showDynamicModal("Network Status", bodyContent);
+  showDynamicModal("Device Status", bodyContent);
 }
 
 async function updateUIFromChannel(channel) {
@@ -252,22 +262,22 @@ async function openChannelModal() {
   }
 }
 
-async function fetchNetworkInfo() {
-  try {
-      const data = await apiGet(APIEndpoints.CONFIG.HOSTS);
+// async function fetchNetworkInfo() {
+//   try {
+//       const data = await apiGet(APIEndpoints.CONFIG.NETWORK);
 
-      const adminURL = `${data.lan_ip}/utilities/index.html`;
-      const qrCodeSource = API_BASE_URL + APIEndpoints.UTILITIES.QR_CODE(adminURL);
-      document.getElementById('adminPanelQR').src = qrCodeSource;
+//       const adminURL = `${data.lan_ip}/utilities/index.html`;
+//       const qrCodeSource = API_BASE_URL + APIEndpoints.UTILITIES.QR_CODE(adminURL);
+//       document.getElementById('adminPanelQR').src = qrCodeSource;
 
-      if (data.localhost) document.getElementById('localhost').textContent = data.localhost;
-      if (data.hostname) document.getElementById('hostname').textContent = data.hostname;
-      if (data.fqdn) document.getElementById('fqdn').textContent = data.fqdn;
-      if (data.lan_ip) document.getElementById('lan_ip').textContent = data.lan_ip;
-  } catch (err) {
-      console.error("Failed to fetch network info:", err.message);
-  }
-}
+//       if (data.localhost) document.getElementById('localhost').textContent = data.localhost;
+//       if (data.hostname) document.getElementById('hostname').textContent = data.hostname;
+//       if (data.fqdn) document.getElementById('fqdn').textContent = data.fqdn;
+//       if (data.lan_ip) document.getElementById('lan_ip').textContent = data.lan_ip;
+//   } catch (err) {
+//       console.error("Failed to fetch network info:", err.message);
+//   }
+// }
 
 async function fetchNetworkStatus() {
   try {
@@ -531,7 +541,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // CONSTANTS
   
   document.getElementById('status-network-info').addEventListener("click", () => {
-      fetchNetworkInfo();
+      fetchNetworkStatus();
       console.log("addEventListener", "status-network-info")
   });
 

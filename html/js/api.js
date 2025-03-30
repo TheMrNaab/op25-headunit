@@ -54,7 +54,7 @@ export const APIEndpoints = Object.freeze({
     },
 
     CONFIG: {
-        HOSTS: "/config/host",
+        NETWORK: "/config/network",
         SET: (section, property, value) => `/config/set/${section}/${property}/${value}`,
         GET_JSON: "/config/get/json",
         SET_JSON: "/config/set/json"
@@ -81,7 +81,9 @@ export const APIEndpoints = Object.freeze({
 });
 
 export async function apiGet(url) {
-    const res = await fetch(`${API_BASE_URL}${url}`, {
+    var url = `${API_BASE_URL}${url}`;
+    console.log(url);
+    const res = await fetch(`${url}`, {
       method: "GET",
       credentials: "include"
     });

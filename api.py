@@ -242,7 +242,7 @@ class API:
             tg = self.activeSession.activeTGIDList.getTalkgroup(tgid)
             if not tg:
                 return jsonify({"error": f"Talkgroup {tgid} not found"}), 404
-            return jsonify({"name": f"tg.name"}), 200
+            return jsonify({"name": f"{tg.name}"}), 200
 
         # 10: [GET] Get all TGIDs from active system
         @self.app.route('/session/talkgroups', methods=['GET'])
