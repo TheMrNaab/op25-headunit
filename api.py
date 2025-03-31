@@ -137,6 +137,23 @@ class API:
         def set_volume(level):
             return soundSys.set_volume(level)
         
+        # [GET] Returns the active sound device address
+        @self.app.route('/device/audio/properties', methods=['GET'])
+        def get_audio_properties():
+            return LinuxUtilities.get_audio_sink_properties()
+        
+        # [GET] Returns a specific property from the active sound device
+        @self.app.route('/device/audio/properties/<property>', methods=['GET'])
+        def get_audio_property(property):
+            props = LinuxUtilities.get_audio_sink_properties()
+            if "error" in props:
+                return jsonify(props), 500
+
+            if property in props:
+                return jsonify({property: props[property]})
+            else:
+                return jsonify({"error": f"Property '{property}' not found"}), 404
+        
         # ====== SYSTEM UTILITIES & CONTROL ======
 
         @self.app.route('/utilities/qrcode/<path:content>', methods=['GET'])
@@ -332,7 +349,7 @@ class API:
         # 17: [GET] All zones from zones.json
         @self.app.route('/zones', methods=['GET'])
         def getAllZones():
-            return jsonify(self.zoneManager.data)
+            return jsonify(self.zoneManager._data)
 
         # 18: [GET] Zone by index
         @self.app.route('/zone/<int:zone_number>', methods=['GET'])
@@ -437,7 +454,45 @@ class API:
             with self.lock:
                 self.progress = data.get("progress", percent)
             return jsonify(success=True)
+        
+        # ADMIN PORTAL #
+        
+        # 29: [GET] GET THE ENTIRE SYSTEMS FILE
+        @self.app.route('/admin/systems/', methods=['GET'])
+        def admin_systems_get():
+            return jsonify(self.sessionManager.systemsManager.data), 200
+        
+        # 30:[POST] UPDATE THE ENTIRE SYSTEMS FILE
+        @self.app.route('/admin/systems/update', methods=['POST'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        def admin_systems_post():
+            data = request.get_json()
+            if not data:
+                return jsonify({"error": "No data received"}), 400
+            try:
+                self.sessionManager.systemsManager.update(data)  # your existing update logic
+                return jsonify({"status": "ok"}), 200  # ✅ must return something
+            except Exception as e:
+                return jsonify({"error": str(e)}), 500  # ✅ handles errors gracefully
+                data = request.get_json()
+                
+        # 31: [GET] Get all TGIDs
+        @self.app.route('/admin/talkgroups/all', methods=['GET'])
+        def get_all_tgid_objects():
+            return jsonify(self.sessionManager.talkgroupsManager._data)
 
+        # 30:[POST] UPDATE THE ENTIRE ZONES FILE
+        @self.app.route('/admin/zones/update', methods=['POST'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        def admin_update_zones_post():
+            data = request.get_json()
+            if not data:
+                return jsonify({"error": "No data received"}), 400
+            try:
+                self.sessionManager.zoneManager.update(data)  # Call your updated method
+                return jsonify({"status": "ok"}), 200
+            except Exception as e:
+                return jsonify({"error": str(e)}), 500
     def run(self):
 
         # This is the reloader child — run normal startup

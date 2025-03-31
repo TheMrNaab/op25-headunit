@@ -96,7 +96,7 @@
   });
   
   function fetchSystems() {
-    return fetch(`${API_BASE_URL}/v2/systems/list`)
+    return fetch(`${API_BASE_URL}/systems/list`)
       .then(res => res.json())
       .then(json => {
         systems = json.map((sys, idx) => ({ ...sys, index: sys.index ?? idx }));
@@ -241,7 +241,7 @@
   }
   
   function loadTalkgroupData() {
-    fetch(`${API_BASE_URL}/v2/systems/tgid_tags/all`)
+    fetch(`${API_BASE_URL}/admin/talkgroups/all`)
       .then(res => res.json())
       .then(json => {
         records = [];

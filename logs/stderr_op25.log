@@ -10,125 +10,176 @@ supported sample rates 250000-2560000 step 24000
 demodulator: xlator if_rate=24000, input_rate=960000, decim=40, if taps=[193,49], resampled_rate=24000, sps=5
 op25_audio::open_socket(): enabled udp host(127.0.0.1), wireshark(23456), audio(23456)
 p25_frame_assembler_impl: do_imbe[1], do_output[0], do_audio_output[1], do_phase2_tdma[1], do_nocrypt[0]
-03/30/25 23:34:35.084175 Reading whitelist file
-03/30/25 23:34:35.084849 added talkgroup 46949 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.085153 added talkgroup 47021 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.085329 added talkgroup 46940 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.085469 added talkgroup 46800 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.085605 added talkgroup 46801 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.085843 added talkgroup 46802 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.085979 added talkgroup 46803 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.086109 added talkgroup 46804 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.086240 added talkgroup 46805 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.086364 added talkgroup 46806 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.086496 added talkgroup 46807 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.086623 added talkgroup 46808 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.086796 added talkgroup 46809 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.086922 added talkgroup 46810 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.087045 added talkgroup 46811 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.087168 added talkgroup 46812 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.087290 added talkgroup 46813 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.087413 added talkgroup 46814 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.087533 added talkgroup 46815 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.087679 added talkgroup 46816 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.087822 added talkgroup 46817 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.087949 added talkgroup 46818 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.088069 added talkgroup 46819 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.088187 added talkgroup 46820 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.088307 added talkgroup 46821 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.088432 added talkgroup 46822 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.088559 added talkgroup 46823 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.088719 added talkgroup 46824 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.088858 added talkgroup 46825 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.088984 added talkgroup 46826 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.089108 added talkgroup 46827 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.089235 added talkgroup 46828 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.089363 added talkgroup 46829 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.089489 added talkgroup 46830 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.089615 added talkgroup 46831 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.089793 added talkgroup 46832 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.089923 added talkgroup 46833 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.090051 added talkgroup 46834 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.090178 added talkgroup 46835 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.090306 added talkgroup 46836 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.090429 added talkgroup 46837 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.090609 added talkgroup 46838 from /tmp/_whitelist_Fire_Scan.tsv
-03/30/25 23:34:35.091136 Reading blacklist file
-03/30/25 23:34:35.091702 added talkgroup 1234 from /tmp/_blacklist_Fire_Scan.tsv
+03/31/25 14:59:51.367882 Reading whitelist file
+03/31/25 14:59:51.369138 added talkgroup 46949 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.369460 added talkgroup 47021 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.369601 added talkgroup 46940 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.369722 added talkgroup 46800 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.369840 added talkgroup 46801 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.369955 added talkgroup 46802 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.371738 added talkgroup 46803 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.373098 added talkgroup 46804 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.373557 added talkgroup 46805 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.374008 added talkgroup 46806 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.374464 added talkgroup 46807 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.374660 added talkgroup 46808 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.374784 added talkgroup 46809 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.374898 added talkgroup 46810 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.375005 added talkgroup 46811 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.375113 added talkgroup 46812 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.375220 added talkgroup 46813 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.375415 added talkgroup 46814 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.375535 added talkgroup 46815 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.375650 added talkgroup 46816 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.376311 added talkgroup 46817 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.376650 added talkgroup 46818 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.377574 added talkgroup 46819 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.377734 added talkgroup 46820 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.377858 added talkgroup 46821 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.377989 added talkgroup 46822 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.378104 added talkgroup 46823 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.378213 added talkgroup 46824 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.378401 added talkgroup 46825 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.378512 added talkgroup 46826 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.378619 added talkgroup 46827 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.378723 added talkgroup 46828 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.378847 added talkgroup 46829 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.378954 added talkgroup 46830 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.379058 added talkgroup 46831 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.379164 added talkgroup 46832 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.379320 added talkgroup 46833 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.379459 added talkgroup 46834 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.379568 added talkgroup 46835 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.379813 added talkgroup 46836 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.379939 added talkgroup 46837 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.380132 added talkgroup 46838 from /tmp/_whitelist_Fire_Scan.tsv
+03/31/25 14:59:51.380485 Reading blacklist file
+03/31/25 14:59:51.380973 added talkgroup 1234 from /tmp/_blacklist_Fire_Scan.tsv
 metadata update not enabled
 using ALSA sound system
 audio device: default
 Listening on 127.0.0.1:23456
 python version detected: 3.12.7 (main, Feb  4 2025, 14:46:03) [GCC 14.2.0]
 Allocating 15 zero-copy buffers
-03/30/25 23:34:36.822303 control channel timeout
-03/30/25 23:34:37.876809 control channel timeout
-03/30/25 23:34:38.965260 control channel timeout
-03/30/25 23:34:40.052577 control channel timeout
-03/30/25 23:34:41.147808 control channel timeout
-03/30/25 23:34:42.246757 control channel timeout
-03/30/25 23:34:43.332293 control channel timeout
-03/30/25 23:34:44.424015 control channel timeout
-03/30/25 23:34:45.514637 control channel timeout
-03/30/25 23:34:46.613623 control channel timeout
-03/30/25 23:34:47.702190 control channel timeout
-03/30/25 23:34:48.793225 control channel timeout
-03/30/25 23:34:49.897076 control channel timeout
-03/30/25 23:34:50.458997 Reconfiguring NAC from 0x000 to 0x592
-03/30/25 23:35:15.555279 voice update:  tg(46838), freq(855462500), slot(-), prio(3)
-03/30/25 23:35:27.848755 voice update:  tg(46838), freq(852650000), slot(-), prio(3)
-03/30/25 23:35:28.937622 PCM underrun
-03/30/25 23:35:30.035517 voice update:  tg(46838), freq(852650000), slot(-), prio(3)
-03/30/25 23:35:38.769899 voice update:  tg(46838), freq(852787500), slot(-), prio(3)
-03/30/25 23:35:43.279258 PCM underrun
-03/30/25 23:35:45.327316 voice update:  tg(46838), freq(852787500), slot(-), prio(3)
-03/30/25 23:35:48.326186 PCM underrun
-03/30/25 23:35:49.709922 voice update:  tg(46838), freq(852787500), slot(-), prio(3)
-03/30/25 23:35:52.859319 voice update:  tg(46838), freq(852787500), slot(-), prio(3)
-03/30/25 23:36:01.040099 voice update:  tg(46838), freq(851462500), slot(-), prio(3)
-03/30/25 23:36:02.947575 voice update:  tg(46838), freq(851462500), slot(-), prio(3)
-03/30/25 23:36:05.972040 voice update:  tg(46838), freq(851537500), slot(-), prio(3)
-03/30/25 23:36:13.731113 voice update:  tg(46815), freq(851150000), slot(-), prio(3)
-03/30/25 23:36:18.653754 voice update:  tg(46815), freq(851150000), slot(-), prio(3)
-03/30/25 23:36:20.549505 voice update:  tg(46815), freq(851150000), slot(-), prio(3)
-03/30/25 23:36:21.537966 voice update:  tg(46815), freq(851150000), slot(-), prio(3)
-03/30/25 23:36:28.196111 voice update:  tg(46838), freq(851262500), slot(-), prio(3)
-03/30/25 23:37:12.022004 voice update:  tg(46838), freq(853262500), slot(-), prio(3)
-03/30/25 23:37:18.996152 voice update:  tg(46838), freq(853262500), slot(-), prio(3)
-03/30/25 23:37:40.690994 control channel timeout
-03/30/25 23:37:45.337417 voice update:  tg(46838), freq(851537500), slot(-), prio(3)
-03/30/25 23:37:49.026749 voice update:  tg(46838), freq(851537500), slot(-), prio(3)
-03/30/25 23:37:49.976925 PCM underrun
-03/30/25 23:38:06.651298 voice update:  tg(46838), freq(851537500), slot(-), prio(3)
-03/30/25 23:38:07.735307 voice update:  tg(46838), freq(851537500), slot(-), prio(3)
-03/30/25 23:38:09.247390 voice update:  tg(46838), freq(851537500), slot(-), prio(3)
-03/30/25 23:38:10.469497 voice update:  tg(46838), freq(851537500), slot(-), prio(3)
-03/30/25 23:39:03.314071 voice update:  tg(46815), freq(851150000), slot(-), prio(3)
-03/30/25 23:39:06.593879 voice update:  tg(46815), freq(851150000), slot(-), prio(3)
-03/30/25 23:40:00.778916 control channel timeout
-03/30/25 23:43:44.148273 voice update:  tg(46815), freq(851150000), slot(-), prio(3)
-03/30/25 23:43:48.803986 voice update:  tg(46815), freq(851150000), slot(-), prio(3)
-03/30/25 23:44:13.637244 control channel timeout
-03/30/25 23:45:56.859531 control channel timeout
-03/30/25 23:46:51.877478 voice update:  tg(46815), freq(851537500), slot(-), prio(3)
-03/30/25 23:46:55.325130 voice update:  tg(46815), freq(851537500), slot(-), prio(3)
-03/30/25 23:47:14.949062 voice update:  tg(46815), freq(851762500), slot(-), prio(3)
-03/30/25 23:47:18.019970 voice update:  tg(46815), freq(851762500), slot(-), prio(3)
-03/30/25 23:47:19.875400 voice update:  tg(46815), freq(853650000), slot(-), prio(3)
-03/30/25 23:47:22.349852 voice update:  tg(46815), freq(853650000), slot(-), prio(3)
-03/30/25 23:47:23.753310 voice update:  tg(46815), freq(853650000), slot(-), prio(3)
-03/30/25 23:48:01.645557 control channel timeout
-03/30/25 23:48:02.732536 control channel timeout
-03/30/25 23:48:27.856306 control channel timeout
-03/30/25 23:49:41.361402 control channel timeout
-03/30/25 23:53:27.953985 control channel timeout
-03/30/25 23:54:15.743541 control channel timeout
-03/30/25 23:55:27.014896 voice update:  tg(46949), freq(851762500), slot(-), prio(3)
-03/30/25 23:55:28.519813 PCM underrun
-03/30/25 23:55:59.509247 control channel timeout
-03/30/25 23:56:10.974865 voice update:  tg(46814), freq(851537500), slot(-), prio(3)
-03/30/25 23:56:14.670806 voice update:  tg(46814), freq(851537500), slot(-), prio(3)
-03/30/25 23:57:16.107234 voice update:  tg(46814), freq(851150000), slot(-), prio(3)
-03/30/25 23:57:17.473896 PCM underrun
-03/30/25 23:57:19.529840 voice update:  tg(46814), freq(851150000), slot(-), prio(3)
-03/30/25 23:58:13.855132 voice update:  tg(47021), freq(852962500), slot(-), prio(3)
+03/31/25 14:59:55.293842 control channel timeout
+03/31/25 14:59:56.369034 control channel timeout
+03/31/25 14:59:57.466122 control channel timeout
+03/31/25 14:59:58.550607 control channel timeout
+03/31/25 14:59:59.646518 control channel timeout
+03/31/25 15:00:00.738534 control channel timeout
+03/31/25 15:00:01.828457 control channel timeout
+03/31/25 15:00:02.925583 control channel timeout
+03/31/25 15:00:04.020076 control channel timeout
+03/31/25 15:00:05.109582 control channel timeout
+03/31/25 15:00:06.198179 control channel timeout
+03/31/25 15:00:07.297422 control channel timeout
+03/31/25 15:00:08.292544 control channel timeout
+03/31/25 15:00:09.356177 control channel timeout
+03/31/25 15:00:10.430982 control channel timeout
+03/31/25 15:00:11.532166 control channel timeout
+03/31/25 15:00:12.622060 control channel timeout
+03/31/25 15:00:13.712542 control channel timeout
+03/31/25 15:00:14.804017 control channel timeout
+03/31/25 15:00:15.899636 control channel timeout
+03/31/25 15:00:16.990703 control channel timeout
+03/31/25 15:00:18.082693 control channel timeout
+03/31/25 15:00:19.172473 control channel timeout
+03/31/25 15:00:20.262092 control channel timeout
+03/31/25 15:00:21.349809 control channel timeout
+03/31/25 15:00:22.449975 control channel timeout
+03/31/25 15:00:23.538616 control channel timeout
+03/31/25 15:00:24.626773 control channel timeout
+03/31/25 15:00:25.728324 control channel timeout
+03/31/25 15:00:26.817005 control channel timeout
+03/31/25 15:00:27.907065 control channel timeout
+03/31/25 15:00:29.002547 control channel timeout
+03/31/25 15:00:30.090950 control channel timeout
+03/31/25 15:00:31.190420 control channel timeout
+03/31/25 15:00:32.279396 control channel timeout
+03/31/25 15:00:33.373857 control channel timeout
+03/31/25 15:00:34.471419 control channel timeout
+03/31/25 15:00:35.558447 control channel timeout
+03/31/25 15:00:36.561662 control channel timeout
+03/31/25 15:00:37.598960 control channel timeout
+03/31/25 15:00:38.698645 control channel timeout
+03/31/25 15:00:39.786729 control channel timeout
+03/31/25 15:00:40.882029 control channel timeout
+03/31/25 15:00:41.973154 control channel timeout
+03/31/25 15:00:43.061723 control channel timeout
+03/31/25 15:00:44.160949 control channel timeout
+03/31/25 15:00:45.249541 control channel timeout
+03/31/25 15:00:46.341227 control channel timeout
+03/31/25 15:00:47.435480 control channel timeout
+03/31/25 15:00:48.529627 control channel timeout
+03/31/25 15:00:49.619594 control channel timeout
+03/31/25 15:00:50.706607 control channel timeout
+03/31/25 15:00:51.806683 control channel timeout
+03/31/25 15:00:52.897980 control channel timeout
+03/31/25 15:00:53.990428 control channel timeout
+03/31/25 15:00:55.080738 control channel timeout
+03/31/25 15:00:56.183716 control channel timeout
+03/31/25 15:00:57.272138 control channel timeout
+03/31/25 15:00:58.357945 control channel timeout
+03/31/25 15:00:59.452425 control channel timeout
+03/31/25 15:01:00.544362 control channel timeout
+03/31/25 15:01:01.640779 control channel timeout
+03/31/25 15:01:02.727615 control channel timeout
+03/31/25 15:01:03.819373 control channel timeout
+03/31/25 15:01:04.905145 control channel timeout
+03/31/25 15:01:05.996584 control channel timeout
+03/31/25 15:01:07.094705 control channel timeout
+03/31/25 15:01:08.203797 control channel timeout
+03/31/25 15:01:09.278925 control channel timeout
+03/31/25 15:01:10.369622 control channel timeout
+03/31/25 15:01:11.463062 control channel timeout
+03/31/25 15:01:12.553512 control channel timeout
+03/31/25 15:01:13.641786 control channel timeout
+03/31/25 15:01:14.736214 control channel timeout
+03/31/25 15:01:15.834698 control channel timeout
+03/31/25 15:01:16.925510 control channel timeout
+03/31/25 15:01:18.022288 control channel timeout
+03/31/25 15:01:19.105984 control channel timeout
+03/31/25 15:01:20.194377 control channel timeout
+03/31/25 15:01:21.292391 control channel timeout
+03/31/25 15:01:22.380122 control channel timeout
+03/31/25 15:01:23.479492 control channel timeout
+03/31/25 15:01:24.576020 control channel timeout
+03/31/25 15:01:25.664489 control channel timeout
+03/31/25 15:01:26.760713 control channel timeout
+03/31/25 15:01:27.861820 control channel timeout
+03/31/25 15:01:28.935581 control channel timeout
+03/31/25 15:01:29.941845 control channel timeout
+03/31/25 15:01:31.014277 control channel timeout
+03/31/25 15:01:32.087981 control channel timeout
+03/31/25 15:01:33.086205 control channel timeout
+03/31/25 15:01:34.263554 control channel timeout
+03/31/25 15:01:35.358512 control channel timeout
+03/31/25 15:01:36.460362 control channel timeout
+03/31/25 15:01:37.544444 control channel timeout
+03/31/25 15:01:38.653733 control channel timeout
+03/31/25 15:01:39.653845 control channel timeout
+03/31/25 15:01:40.818195 control channel timeout
+03/31/25 15:01:41.913413 control channel timeout
+03/31/25 15:01:43.010318 control channel timeout
+03/31/25 15:01:44.101702 control channel timeout
+03/31/25 15:01:45.183392 control channel timeout
+03/31/25 15:01:46.284892 control channel timeout
+03/31/25 15:01:47.389854 control channel timeout
+03/31/25 15:01:48.484541 control channel timeout
+03/31/25 15:01:49.551718 control channel timeout
+03/31/25 15:01:50.641452 control channel timeout
+03/31/25 15:01:51.744867 control channel timeout
+03/31/25 15:01:52.840520 control channel timeout
+03/31/25 15:01:53.927788 control channel timeout
+03/31/25 15:01:54.939116 control channel timeout
+03/31/25 15:01:55.999799 control channel timeout
+03/31/25 15:01:56.999051 control channel timeout
+03/31/25 15:01:58.024530 control channel timeout
+03/31/25 15:01:59.028172 control channel timeout
+03/31/25 15:02:00.087713 control channel timeout
+03/31/25 15:02:01.088128 control channel timeout
+03/31/25 15:02:02.135493 control channel timeout
+03/31/25 15:02:03.141560 control channel timeout
+03/31/25 15:02:04.180862 control channel timeout
+03/31/25 15:02:05.259681 control channel timeout
+03/31/25 15:02:06.353121 control channel timeout

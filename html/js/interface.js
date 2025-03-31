@@ -1,3 +1,4 @@
+// INTERFACE.JS
 import { API_BASE_URL, APIEndpoints, apiGet, apiPut, apiGetV2 } from "./api.js";
 
 const print_debug = true; // or false, depending on your use case
@@ -42,13 +43,7 @@ function listenLogStream() {
   };
 }
 
-
 // UI
-
-
-
-
-
 function showDynamicModal(title = "Dynamic Modal", bodyContent = "") {
   // Remove any existing modal
   const existing = document.getElementById("dynamicModal");
@@ -76,14 +71,18 @@ function showDynamicModal(title = "Dynamic Modal", bodyContent = "") {
   const bsModal = new bootstrap.Modal(modal.querySelector("#dynamicModal"));
   bsModal.show();
 }
-function updateNetworkModal(data) {
+
+async function updateNetworkModal(data) {
   if (!data) {
       console.warn("No network data provided");
       return;
   }
 
+  var audio_req = await apiGetV2(APIEndpoints.DEVICE.GET_AUDIO_PROPERTY("api.alsa.path"));
+  var response = await audio_req.json();
+
   const fieldMap = {
-      'Audio Output': data.audio_output,
+      'Audio Output': response['api.alsa.path'],
       'Connection Type': data.connection_type,
       'Network Device': data.wifi_name,
       'CPU Temp': data.cpu_temp, 

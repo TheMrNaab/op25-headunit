@@ -6,7 +6,6 @@
                     "channel_number": 0,
                     "name": "Fire Scan",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46949,
                         47021,
@@ -52,52 +51,53 @@
                         46838
                     ],
                     "type": "Scan",
-                    "zone_index": 0
+                    "zone_index": 0,
+                    "system": "Default"
                 },
                 {
                     "channel_number": 1,
                     "name": "ALERT SCAN",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46949,
                         47021
                     ],
                     "type": "Scan",
-                    "zone_index": 0
+                    "zone_index": 0,
+                    "system": "Default"
                 },
                 {
                     "channel_number": 2,
                     "name": "WC FD ALERT",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46949
                     ],
                     "type": "Talkgroup",
-                    "zone_index": 0
+                    "zone_index": 0,
+                    "system": "Default"
                 },
                 {
                     "channel_number": 3,
                     "name": "RFD ALERT",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         47021
                     ],
                     "type": "Talkgroup",
-                    "zone_index": 0
+                    "zone_index": 0,
+                    "system": "Default"
                 },
                 {
                     "channel_number": 4,
                     "name": "WC FD DISP",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46940
                     ],
                     "type": "Talkgroup",
-                    "zone_index": 0
+                    "zone_index": 0,
+                    "system": "Default"
                 }
             ],
             "name": "Fire",
@@ -109,7 +109,6 @@
                     "channel_number": 0,
                     "name": "Law Scan",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46880,
                         46881,
@@ -122,147 +121,148 @@
                         47054,
                         47055
                     ],
-                    "type": "Scan"
+                    "type": "Scan",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 1,
                     "name": "RPD NWD DISP",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         47050
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 2,
                     "name": "RPD NOD DISP",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         47051
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 3,
                     "name": "RPD NED DISP",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         47052
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 4,
                     "name": "RPD SED DISP",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         47053
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 5,
                     "name": "RPD DTD DISP",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         47054
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 6,
                     "name": "RPD SWD DISP",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         47055
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 7,
                     "name": "WSO DISP 1",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46880
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 8,
                     "name": "WSO DISP 2",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46881
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 9,
                     "name": "WSO DISP 3",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46882
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 10,
                     "name": "WSO DISP 4",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46883
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 11,
                     "name": "WSO PAT 1",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46884
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 12,
                     "name": "WSO PAT 2",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46885
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 13,
                     "name": "WSO PAT 3",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46886
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 },
                 {
                     "channel_number": 14,
                     "name": "WSO PAT 4",
                     "sysid": "0",
-                    "system": "Default",
                     "tgid": [
                         46887
                     ],
-                    "type": "Talkgroup"
+                    "type": "Talkgroup",
+                    "system": "Default"
                 }
             ],
             "name": "Law",

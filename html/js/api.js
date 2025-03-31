@@ -67,7 +67,9 @@ export const APIEndpoints = Object.freeze({
 
     DEVICE: {
         SET_SLEEP: (timeout) => `/config/openbox/device/sleep/set/${timeout}`,
-        GET_SLEEP: "/config/openbox/device/sleep"
+        GET_SLEEP: "/config/openbox/device/sleep",
+        GET_AUDIO_PROPERTY: (property) => `/device/audio/properties/${property}`,
+        GET_AUDIO_PROPERTIES: "/device/audio/properties"
     },
 
     NETWORK: "/config/network",

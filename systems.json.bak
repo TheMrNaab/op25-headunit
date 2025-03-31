@@ -13,8 +13,7 @@
         "tgid_tags_file": null,
         "whitelist": null,
         "blacklist": null,
-        "center_frequency": "",
-        "index": 0
+        "center_frequency": ""
     },
     "1": {
         "sysid": "",
@@ -30,7 +29,6 @@
         "tgid_tags_file": null,
         "whitelist": null,
         "blacklist": null,
-        "center_frequency": "",
-        "index": 1
+        "center_frequency": ""
     }
 }

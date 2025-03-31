@@ -53,7 +53,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="index.html">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="system.html">System</a>
@@ -304,7 +304,7 @@
   }
   
   function loadTalkgroupMap() {
-    fetch(`http://${location.hostname}:5001/v2/systems/tgid_tags/all`)
+    fetch(`http://${location.hostname}:5001/admin/talkgroups/all`)
       .then(r => r.json())
       .then(json => {
         talkgroupMap = [];
@@ -376,23 +376,24 @@
   }
   
   function loadSystemOptions() {
-  fetch(`http://${location.hostname}:5001/v2/systems/list`)
-    .then(r => r.json())
-    .then(systems => {
-      const sel = document.getElementById('system-id');
-      sel.innerHTML = '';
-      systems.forEach(s => {
-        const o = document.createElement('option');
-        o.value = s.sysid;
-        o.textContent = s.sysname || `System ${s.sysid}`;
-        sel.appendChild(o);
-      });
-    })
-    .catch(console.error);
-}
+    fetch(`http://${location.hostname}:5001/admin/systems/`)
+      .then(r => r.json())
+      .then(systems => {
+        const sel = document.getElementById('system-id');
+        sel.innerHTML = '';
+  
+        Object.entries(systems).forEach(([index, s]) => {
+          const o = document.createElement('option');
+          o.value = index; // Use index as the value
+          o.textContent = s.sysname || `System ${index}`;
+          sel.appendChild(o);
+        });
+      })
+      .catch(console.error);
+  }
   
 function loadChannelData() {
-  return fetch(`http://${location.hostname}:5001/v2/zones/all`)
+  return fetch(`http://${location.hostname}:5001/zones`)
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(json => {
       data = { zones: Object.values(json.zones || {}) };
@@ -463,11 +464,11 @@ function renderChannels() {
     if (!ch.system) ch.system = "Default";
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${ch.number}</td>
+      <td>${ch.channel_number}</td>
       <td>${ch.name}</td>
       <td>${data.zones[selectedZoneIndex].name}</td>
       <td>${ch.type}<br><i>(${ch.system})</i></td>
-      <td>${(ch.tgids || []).join(", ")}</td>
+      <td>${(ch.tgid || []).join(", ")}</td>
       <td>
         <button class="btn btn-link btn-sm" onclick="moveChannelUp(${selectedZoneIndex}, ${idx})"><i class="fas fa-arrow-up"></i></button>
         <button class="btn btn-link btn-sm" onclick="moveChannelDown(${selectedZoneIndex}, ${idx})"><i class="fas fa-arrow-down"></i></button>
@@ -517,17 +518,19 @@ function editChannel(zIdx, cIdx) {
   const channel = Object.values(data.zones[zIdx].channels)[cIdx];
   document.getElementById("edit-zone-index").value = zIdx;
   document.getElementById("edit-channel-index").value = cIdx;
-  document.getElementById("channel-number").value = channel.number;
+  document.getElementById("channel-number").value = channel.channel_number;
   document.getElementById("channel-name").value = channel.name;
   setZoneField(data.zones[zIdx].name, true);
   document.getElementById("channel-type").value = channel.type;
-  document.getElementById("system-id").value = channel.system;
-  tgids = (channel.tgids || []).map(String);
+  document.getElementById("system-id").value = channel.sysid; // FIX HERE, NEED THE INDEX
+  console.log(channel)
+  console.log(channel.index)
+  tgids = (channel.tgid || []).map(String);
   renderTGIDPills();
-    // ✅ Ensure modal is shown on edit
   channelModal = new bootstrap.Modal(document.getElementById("channelModal"));
   channelModal.show();
 }
+
 
 function removeChannel(zIdx, cIdx) {
   const channelKeys = Object.keys(data.zones[zIdx].channels);
@@ -620,7 +623,7 @@ function copyJSONToClipboard() {
 
 function postChannelData() {
   ensureSystemField();
-  fetch(`http://${location.hostname}:5001/v2/zones/all/update`, {
+  fetch(`http://${location.hostname}:5001/admin/zones/update`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ zones: Object.fromEntries(data.zones.map((z, i) => [i + 1, z])) })
@@ -638,7 +641,7 @@ document.getElementById("channel-form").addEventListener("submit", event => {
     number: +document.getElementById("channel-number").value,
     name: document.getElementById("channel-name").value,
     type: document.getElementById("channel-type").value,
-    tgids: tgids.map(Number),
+    tgid: tgid.map(Number),
     system: +document.getElementById("system-id").value
   };
 

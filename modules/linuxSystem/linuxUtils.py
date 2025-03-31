@@ -3,7 +3,47 @@ import qrcode
 import io
 import psutil
 import re
+import json
+from flask import jsonify
+
+
 class LinuxUtilities:
+
+    @staticmethod
+    def get_active_audio_device_old():
+        try:
+            # Run the pw-dump with jq filtering command
+            cmd = 'pw-dump | jq -r \'.[] | select(.type == "PipeWire:Interface:Node") | select(.info.props."media.class" == "Audio/Sink") | .info.props\''
+            result = subprocess.check_output(cmd, shell=True, text=True)
+            
+            # Parse the result to a Python dictionary
+            props = json.loads(result)
+            return props
+        except subprocess.CalledProcessError as e:
+            return {"error": f"Command failed: {e}"}
+        except json.JSONDecodeError:
+            return {"error": "Failed to parse JSON output"}
+
+    @staticmethod
+    def get_audio_sink_properties():
+        try:
+            cmd = (
+                'pw-dump | jq -c \'.[] | '
+                'select(.type == "PipeWire:Interface:Node") | '
+                'select(.info.props["media.class"] == "Audio/Sink") | '
+                '.info.props\''
+            )
+            result = subprocess.check_output(cmd, shell=True, text=True)
+            lines = result.strip().splitlines()
+            if not lines:
+                return {"error": "No audio sink found"}
+
+            return json.loads(lines[0])  # Return full props dictionary
+
+        except subprocess.CalledProcessError as e:
+            return {"error": f"Command failed: {e}"}
+        except json.JSONDecodeError as e:
+            return {"error": f"JSON parse error: {e}"}
 
     @staticmethod
     def get_volume_percent():
@@ -52,6 +92,7 @@ class LinuxUtilities:
             if line.startswith("IdleDelay="):
                 return int(line.split("=")[1]) // 60
         raise ValueError("Could not parse device sleep timeout")
+
 
     @staticmethod
     def list_displays():

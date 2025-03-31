@@ -4,11 +4,8 @@ import os
 import tempfile
 from typing import List, Optional
 import re
+import shutil
 
-import json
-import os
-import tempfile
-import re
 from typing import List, Optional
 
 class zoneManager:
@@ -17,19 +14,36 @@ class zoneManager:
     Provides methods to access, update, and navigate zones and channels.
     """
     def __init__(self, file_path: str):
+        print("Init...")
         self.file_path = file_path
         self._zones = self._load_zones()
 
     def _load_zones(self) -> List["zoneMember"]:
+        print("Load Zones...")
         if not os.path.exists(self.file_path):
+            raise FileNotFoundError(f"Zone file not found: {self.file_path}")
             return []
         with open(self.file_path, 'r') as f:
-            data = json.load(f)
-        return [zoneMember(zone, idx) for idx, zone in enumerate(data.get("zones", []))]
+            self._data = json.load(f)
+            print(self._data)
+        return [zoneMember(zone_data, idx) for idx, zone_data in enumerate(self._data.get("zones", {}).values())]
 
     def save(self):
         with open(self.file_path, 'w') as f:
             json.dump({"zones": [zone.to_dict() for zone in self._zones]}, f, indent=4)
+
+    def update(self, data):
+        # Create a backup if the file exists
+        if os.path.exists(self.file_path):
+            backup_path = self.file_path + '.bak'
+            shutil.copy2(self.file_path, backup_path)
+
+        # Write the updated data as-is
+        with open(self.file_path, 'w') as f:
+            json.dump(data, f, indent=4)
+            
+        self._zones = self._load_zones()  # ✅ FIXED
+    
 
     @property
     def zones(self) -> List["zoneMember"]:
