@@ -1,4 +1,4 @@
-import { API_BASE_URL, APIEndpoints, apiGet, apiPut } from "./api.js";
+import { API_BASE_URL, APIEndpoints, apiGet, apiPut, apiGetV2 } from "./api.js";
 
 const print_debug = true; // or false, depending on your use case
 
@@ -45,9 +45,9 @@ function listenLogStream() {
 
 // UI
 
-function badge(badgeText, outerText, badgeClass = "badge rectangle-pill bg-secondary") {
-  return `<p><span class="${badgeClass}">${badgeText}</span> ${outerText}</p>`;
-}
+
+
+
 
 function showDynamicModal(title = "Dynamic Modal", bodyContent = "") {
   // Remove any existing modal
@@ -76,7 +76,6 @@ function showDynamicModal(title = "Dynamic Modal", bodyContent = "") {
   const bsModal = new bootstrap.Modal(modal.querySelector("#dynamicModal"));
   bsModal.show();
 }
-
 function updateNetworkModal(data) {
   if (!data) {
       console.warn("No network data provided");
@@ -94,37 +93,83 @@ function updateNetworkModal(data) {
 
   let bodyContent = "";
 
-  for (const [label, value] of Object.entries(fieldMap)) {
-      bodyContent += badge(label, value ?? "N/A");
-  }
+  let collection = [];
 
+  for (const [label, value] of Object.entries(fieldMap)) {
+      
+      let col1 = createBootstrapCol(4, badge(label, ""));
+      let col2 = createBootstrapCol(4, createP(value));
+      let row = createBootstrapRow(col1, col2);
+      collection.push(row);
+  }
+  collection.forEach((row) => {
+      bodyContent += row.outerHTML;
+  });
   showDynamicModal("Device Status", bodyContent);
 }
 
-async function updateUIFromChannel(channel) {
-  updateElement('channel-number', channel.number);
-  updateElement('channel-name', channel.name);
+function createBootstrapRow(...elements) {
+  const rowDiv = document.createElement("div");
+  rowDiv.className = "row";
 
-  try {
-    const zone = await apiGet(APIEndpoints.SESSION.ZONE_CURRENT);
-    updateElement('zone', zone.name);
-  } catch (err) {
-    console.warn("Could not fetch zone name for UI:", err);
-    updateElement('zone', ""); // fallback if fetch fails
+  elements.forEach((element) => {
+    if (element instanceof HTMLElement) {
+      rowDiv.appendChild(element);
+    } else {
+      console.warn("Invalid element provided, skipping:", element);
+    }
+  });
+
+  return rowDiv;
+}
+
+function createBootstrapCol(size, ...elements) {
+  const colDiv = document.createElement("div");
+  colDiv.className = `col-${size}`;
+
+  elements.forEach((element) => {
+    if (element instanceof HTMLElement) {
+      colDiv.appendChild(element);
+    } else {
+      console.warn("Invalid element provided, skipping:", element);
+    }
+  });
+
+  return colDiv;
+}
+
+function createP(text, className = "") {
+  const p = document.createElement("p");
+  p.textContent = text;
+  if (className) {
+    p.className = className;
   }
+  return p;
+}
 
+function badge(badgeText, outerText, badgeClass = "badge rectangle-pill bg-secondary") {
+  const p = document.createElement("p");
+
+  const span = document.createElement("span");
+  span.className = badgeClass;
+  span.textContent = badgeText;
+
+  p.appendChild(span);
+  p.appendChild(document.createTextNode(" " + outerText));
+
+  return p;
 }
 
 async function updateUI() {
-  //updateElement('channel-number', channel.number);
-  //updateElement('channel-name', channel.name);
-
   try {
     const zone = await apiGet(APIEndpoints.SESSION.ZONE_CURRENT);
     const channel = await apiGet(APIEndpoints.SESSION.CHANNEL_CURRENT)
+    console.log("zone", zone);
+    console.log("channel", channel);
     updateElement('zone', zone.name);
     updateElement('channel-name', channel.name); 
     updateElement('channel-number', channel.channel_number);
+    updateElement('talkgroup', ''); // NOTE: BLANK BECAUSE WE HAVE NO CALL YET
 
   } catch (err) {
     console.warn("Could not fetch zone name for UI:", err);
@@ -132,12 +177,11 @@ async function updateUI() {
   }
 
 }
-
 
 async function _btnChannelDown() {
   try {
     const prevChannel = await apiPut(APIEndpoints.SESSION.CHANNEL_PREVIOUS);
-    updateUIFromChannel(prevChannel);
+    updateUI();
   } catch (err) {
     console.error("Failed to go to previous channel:", err);
     showAlert("Failed to go to previous channel.");
@@ -147,7 +191,7 @@ async function _btnChannelDown() {
 async function _btnChannelUp() {
   try {
     const nextChannel = await apiPut(APIEndpoints.SESSION.CHANNEL_NEXT);
-    updateUIFromChannel(nextChannel);
+    updateUI();
   } catch (err) {
     console.error("Failed to go to next channel:", err);
     showAlert("Failed to go to next channel.");
@@ -156,10 +200,9 @@ async function _btnChannelUp() {
 
 async function _btnZoneUp() {
   try {
-    const nextZone = await apiPut(APIEndpoints.SESSION.ZONE_NEXT);
-    const firstChannel = nextZone.channels?.[0];
-    if (!firstChannel) throw new Error("No channels in next zone.");
-    updateUIFromChannel(firstChannel);
+    const response = await apiPut(APIEndpoints.SESSION.ZONE_NEXT);
+    if (!response) throw new Error("Unable to advance to the previous zone.");
+    updateUI();
   } catch (err) {
     console.error("Zone up error:", err);
     showAlert("Failed to go to next zone.");
@@ -168,10 +211,9 @@ async function _btnZoneUp() {
 
 async function _btnZoneDown() {
   try {
-    const prevZone = await apiPut(APIEndpoints.SESSION.ZONE_PREVIOUS);
-    const firstChannel = prevZone.channels?.[0];
-    if (!firstChannel) throw new Error("No channels in previous zone.");
-    updateUIFromChannel(firstChannel);
+    const response = await apiPut(APIEndpoints.SESSION.ZONE_PREVIOUS);  
+    if (!response) throw new Error("Unable to advance to next zone.");
+    updateUI();
   } catch (err) {
     console.error("Zone down error:", err);
     showAlert("Failed to go to previous zone.");
@@ -181,41 +223,57 @@ async function _btnZoneDown() {
 async function openZoneModal() {
   const zoneModalEl = document.getElementById('zoneModal');
   const zoneModal = new bootstrap.Modal(zoneModalEl, { backdrop: 'static', keyboard: false });
-  zoneModal.show();
 
   try {
-    const zones = await apiGet(APIEndpoints.ZONES.LIST);
-    const selectElement = document.getElementById('zones');
-    selectElement.innerHTML = "";
+    // Fetch the list of zones
+    const response = await apiGetV2(APIEndpoints.ZONES.LIST);
 
-    Object.entries(zones).forEach(([index, zone]) => {
+    // Parse the response as JSON
+    const data = await response.json();
+
+    // Debugging: Log the parsed zones
+    console.log("Parsed Zones:", data);
+
+    // Access the zones array
+    const zones = data.zones;
+
+    // Populate the dropdown
+    const selectElement = document.getElementById('zones');
+    selectElement.innerHTML = ""; // Clear existing options
+
+    zones.forEach((zone) => {
       const option = document.createElement('option');
-      option.value = index;
-      option.textContent = `Zone ${index} - ${zone.name}`;
+      option.value = zone.zone_index;
+      option.textContent = `Zone ${zone.zone_index} - ${zone.name || "undefined"}`;
       selectElement.appendChild(option);
     });
 
+    // Show the modal
+    zoneModal.show();
+
+    // Handle the accept button click
     document.getElementById('zone-list-accept-btn').onclick = async function () {
       try {
+        console.log("Select Field Element:",selectElement )
+        console.log("Selected zone index:", selectElement.value);
+        
         const selectedZoneIndex = selectElement.value;
-    
-        await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectedZoneIndex)); // sets new zone + channel
-    
-        const zone = await apiGet(APIEndpoints.SESSION.ZONE_CURRENT);
-        updateElement('zone', zone.name);
-    
-        const channel = await apiGet(APIEndpoints.SESSION.CHANNEL_CURRENT);
-        updateUIFromChannel(channel);
-    
+
+        // Set the new zone
+        await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectedZoneIndex));
+
+        // Update the UI
+        updateUI();
+
+        // Hide the modal
         zoneModal.hide();
       } catch (error) {
         console.error("Error applying zone:", error);
         alert("Failed to apply selected zone.");
       }
     };
-
-  } catch (err) {
-    console.error("Error loading zones:", err);
+  } catch (error) {
+    console.error("Error loading zones:", error);
     alert("Failed to load zones.");
     zoneModal.hide();
   }
@@ -262,22 +320,6 @@ async function openChannelModal() {
   }
 }
 
-// async function fetchNetworkInfo() {
-//   try {
-//       const data = await apiGet(APIEndpoints.CONFIG.NETWORK);
-
-//       const adminURL = `${data.lan_ip}/utilities/index.html`;
-//       const qrCodeSource = API_BASE_URL + APIEndpoints.UTILITIES.QR_CODE(adminURL);
-//       document.getElementById('adminPanelQR').src = qrCodeSource;
-
-//       if (data.localhost) document.getElementById('localhost').textContent = data.localhost;
-//       if (data.hostname) document.getElementById('hostname').textContent = data.hostname;
-//       if (data.fqdn) document.getElementById('fqdn').textContent = data.fqdn;
-//       if (data.lan_ip) document.getElementById('lan_ip').textContent = data.lan_ip;
-//   } catch (err) {
-//       console.error("Failed to fetch network info:", err.message);
-//   }
-// }
 
 async function fetchNetworkStatus() {
   try {
@@ -325,6 +367,8 @@ async function fetchCurrentVolume() {
 async function populateZoneList() {
   try {
       const zones = await apiGet(APIEndpoints.ZONES.LIST);
+      console.log("Loading Populate Zones")
+      console.log(zones);
 
       const zoneListContainer = document.getElementById("zones");
       zoneListContainer.innerHTML = "";

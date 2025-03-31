@@ -90,8 +90,19 @@ export async function apiGet(url) {
     if (!res.ok) throw new Error(`API error: ${await res.text()}`);
     return res.json();
   }
+
+export async function apiGetV2(url) {
+    var url = `${API_BASE_URL}${url}`;
+    console.log(url);
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response; // This should be a Response object
+  }
   
   export async function apiPut(url, body = null) {
+
     const res = await fetch(`${API_BASE_URL}${url}`, {
       method: "PUT",
       credentials: "include",

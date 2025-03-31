@@ -1,0 +1,35 @@
+ self.append_line_to_file("\nnextChannel()")
+            # Get the next channel from the zone manager
+            next_ch_data = self.sessionManager.zoneManager.getNextChannel(current_zone_index, current_channel_number)
+            if not next_ch_data:
+                self.append_line_to_file("No next channel found")
+                return {"debug": debug_messages, "error": "No next channel found"}, 404
+
+            # Get Zone and Channel objects
+            zone = self.sessionManager.zoneManager.getZoneByIndex(current_zone_index)
+            if not zone:
+                self.append_line_to_file("Zone not found")
+                return {"debug": debug_messages, "error": "Zone not found"}, 404
+
+            channel = Channel(next_ch_data, zone.index)
+            if not channel:
+                self.append_line_to_file("Channel object creation failed")
+                return {"debug": debug_messages, "error": "Channel object creation failed"}, 404
+
+            # Find system by sysid
+            sys = self.sessionManager.systemsManager.getSystemByIndex(channel.sysid)
+            if not sys:
+                self.append_line_to_file(f"System not found {channel.sysid}")
+                return {"debug": debug_messages, "error": f"System with sysid {channel.sysid} not found"}, 404
+
+            # Update session
+            session_debug = self.updateSession(channel, zone, sys)
+
+            # Return updated session info with debug messages
+            # return {
+            #     "debug": debug_messages,
+            #     "zone_index": zone.index,
+            #     "channel_number": channel.channel_number,
+            #     "channel_name": channel.name,
+            #     "sysid": channel.sysid
+            # }

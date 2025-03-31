@@ -3,11 +3,13 @@ import json
 import os
 import tempfile
 from typing import TYPE_CHECKING
+
+from modules._talkgroupSet import TalkgroupManager
 if TYPE_CHECKING:
-    from modules.sessionTypes import session
+    from modules._session import session
 
 
-class OP25FilesPackage:
+class systemsFilesPackage:
     def __init__(self, Blacklist: str, Whitelist: str, Trunk: str, TGIDFile:str):
         self._Blacklist = Blacklist
         self._Whitelist = Whitelist
@@ -30,13 +32,18 @@ class OP25FilesPackage:
     def TGID(self) -> str:
         return self._tgid
     
-class OP25System:
-    """Represents a single OP25 system """
-    def __init__(self, system_data, index=None):
+class systemsMember:
+    """Represents a single system member."""
+    def __init__(self, system_data, parent: systemsManager, index=None):
         self._data = system_data
+        self._parent = parent
         self._index = index
         self._blacklistFilePath = ""
         self._systemTSVFilePath = ""
+
+    @property
+    def parent(self) -> systemsManager:
+        return self._parent
 
     @property
     def systemTSVFilePath(self) -> str:
@@ -88,11 +95,11 @@ class OP25System:
         return self._data.get("center_frequency")
 
     def to_dict(self):
-        """Returns this single OP25 system as a dictionary."""
+        """Returns this single system member as a dictionary."""
         return self._data
 
     def toJSON(self):
-        """Returns this single OP25 system as a JSON dump."""
+        """Returns this single system member as a JSON dump."""
         return json.dumps(self._data, indent=4)
 
     @property
@@ -103,11 +110,10 @@ class OP25System:
         return self._trunkFilePath
 
 
-    def toTrunkTSV(self, _session: "session"):
+    def toTrunkTSV(self, _session: session.SessionMember):
         """
         Writes the trunk.tsv file for OP25 using the provided session object.
         """
-        from modules.sessionTypes import session
       
         headers = [
             "Sysname",
@@ -120,7 +126,10 @@ class OP25System:
             "Blacklist",
             "Center Frequency"
         ]
- 
+
+        if _session.activeTGIDList is None:
+            raise Exception("General Exception. activeTGIDList is None. This should never happen.")
+        
         values = [
             self.sysname or "",
             ",".join(map(str, self.control_channels)) if self.control_channels else "",
@@ -128,7 +137,7 @@ class OP25System:
             self.nac or "",
             self.modulation or "",
             _session.activeTGIDList.toTalkgroupsCSV() or "",
-            _session.activeChannel.toWhitelistTSV(),                                  # changed from files.whitelist
+            _session.activeChannel.toWhitelistTSV(),                    # changed from files.whitelist
             _session.activeChannel.toBlacklistTSV(),                    # changed from files.blacklist
             str(self.center_frequency or "")
         ]
@@ -140,17 +149,21 @@ class OP25System:
 
         return self.trunkFilePath
 
-
-class OP25JSONFileHandler:
+class systemsManager:
+    """Represents an entire group of systems."""
     def __init__(self, file_path):
         self.file_path = file_path
         self.data = self._read_file()
+        self.members = self._initialize_members()
 
     def _read_file(self):
         if not os.path.exists(self.file_path):
             return {}
         with open(self.file_path, 'r') as f:
             return json.load(f)
+
+    def _initialize_members(self):
+        return [systemsMember(self.data[key], parent=self, index=int(key)) for key in sorted(self.data.keys(), key=int)]
 
     def update(self, new_data):
         self.data = new_data
@@ -159,53 +172,44 @@ class OP25JSONFileHandler:
 
     @property
     def systems(self):
-        return [OP25System(self.data[key], index=int(key)) for key in sorted(self.data.keys(), key=int)]
+        return self.members
 
-    def toJSON(self):
-        return json.dumps(self.data, indent=4)
-
-class OP25SystemManager(OP25JSONFileHandler):
-    """Represents an entire group of OP25 systems. """
-    def __init__(self, file_path):
-        super().__init__(file_path)
-        self._trunkFilePath = None
-
-    def getSystemByIndex(self, index) -> OP25System:
+    def getSystemByIndex(self, index) -> systemsMember:
         try:
-            return OP25System(self.data[str(index)], index=index)
+            return systemsMember(self.data[str(index)], parent=self, index=index)
         except KeyError:
             return None
 
-    def getSystemByName(self, sysname) -> OP25System:
+    def getSystemByName(self, sysname) -> systemsMember:
         for key, entry in self.data.items():
             if entry.get("sysname") == sysname:
-                return OP25System(entry, index=int(key))
+                return systemsMember(entry, parent=self, index=int(key))
         return None
 
-    def getSystemByNAC(self, nac) -> OP25System:
+    def getSystemByNAC(self, nac) -> systemsMember:
         for key, entry in self.data.items():
             if entry.get("nac") == nac:
-                return OP25System(entry, index=int(key))
+                return systemsMember(entry, parent=self, index=int(key))
         return None
 
     def getAllSystemNames(self) -> list[str]:
         return [entry.get("sysname") for entry in self.data.values() if entry.get("sysname")]
 
-    def nextSystem(self, current_index) -> OP25System | None:
+    def nextSystem(self, current_index) -> systemsMember | None:
         keys = sorted(self.data.keys(), key=int)
         if not keys:
             return None
         current_pos = keys.index(str(current_index)) if str(current_index) in keys else -1
         next_index = (current_pos + 1) % len(keys)
-        return OP25System(self.data[keys[next_index]], next_index)
+        return systemsMember(self.data[keys[next_index]], parent=self, index=next_index)
 
-    def previousSystem(self, current_index) -> OP25System:
+    def previousSystem(self, current_index) -> systemsMember:
         keys = sorted(self.data.keys(), key=int)
         if not keys:
             return {}
         current_pos = keys.index(str(current_index)) if str(current_index) in keys else 0
         previous_index = (current_pos - 1) % len(keys)
-        return OP25System(self.data[keys[previous_index]], previous_index)
+        return systemsMember(self.data[keys[previous_index]], parent=self, index=previous_index)
     
 
     def toJSON(self) -> str:

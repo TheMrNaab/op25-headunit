@@ -1,5 +1,2760 @@
-2025-03-30 02:37:21,811 INFO werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on all addresses (0.0.0.0)
- * Running on http://127.0.0.1:5001
- * Running on http://192.168.1.46:5001
-2025-03-30 02:37:21,812 INFO werkzeug: [33mPress CTRL+C to quit[0m
+SessionMember initialized: system_index=0, zone_index=0, channel_index=0
+
+
+Getting Channel -> 0
+Zone Index -> 0
+Channel Number -> 0
+Zone -> <modules._zoneManager.zoneMember object at 0xffffa6649400>
+Channel -> <modules._zoneManager.channelMember object at 0xffffa66883e0>
+SessionMember initialized: system_index=0, zone_index=0, channel_index=0
+
+
+Getting Channel -> 0
+Zone Index -> 0
+Channel Number -> 0
+Zone -> <modules._zoneManager.zoneMember object at 0xffff90305580>
+Channel -> <modules._zoneManager.channelMember object at 0xffff903dfef0>
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+SessionMember initialized: system_index=0, zone_index=0, channel_index=0
+
+
+Getting Channel -> 0
+Zone Index -> 0
+Channel Number -> 0
+Zone -> <modules._zoneManager.zoneMember object at 0xffff96b58e60>
+Channel -> <modules._zoneManager.channelMember object at 0xffff96cdfec0>
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+SessionMember initialized: system_index=0, zone_index=0, channel_index=0
+
+
+Getting Channel -> 0
+Zone Index -> 0
+Channel Number -> 0
+Zone -> <modules._zoneManager.zoneMember object at 0xffff9f1487a0>
+Channel -> <modules._zoneManager.channelMember object at 0xffff9f622b40>
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+SessionMember initialized: system_index=0, zone_index=0, channel_index=0
+
+
+Getting Channel -> 0
+Zone Index -> 0
+Channel Number -> 0
+Zone -> <modules._zoneManager.zoneMember object at 0xffffadf083e0>
+Channel -> <modules._zoneManager.channelMember object at 0xffffadf68140>
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+SessionMember initialized: system_index=0, zone_index=0, channel_index=0
+
+
+Getting Channel -> 0
+Zone Index -> 0
+Channel Number -> 0
+Zone -> <modules._zoneManager.zoneMember object at 0xffffafb49040>
+Channel -> <modules._zoneManager.channelMember object at 0xffffafba88c0>
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+SessionMember initialized: system_index=0, zone_index=0, channel_index=0
+
+
+Getting Channel -> 0
+Zone Index -> 0
+Channel Number -> 0
+Zone -> <modules._zoneManager.zoneMember object at 0xffffa263d070>
+Channel -> <modules._zoneManager.channelMember object at 0xffffa2805b50>
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+zoneManager.get_next_channel()
+Getting Next Channel -> 0
+Zone Index -> 0
+===
+DEBUG: Updating session: Channel=1, Zone=0, System=0
+DEBUG: Did system change: True
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+DEBUG: Updating session: Channel=0, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+DEBUG: Updating session: Channel=4, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+DEBUG: Updating session: Channel=3, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+SessionMember initialized: system_index=0, zone_index=0, channel_index=0
+
+
+Getting Channel -> 0
+Zone Index -> 0
+Channel Number -> 0
+Zone -> <modules._zoneManager.zoneMember object at 0xffff99ae9520>
+Channel -> <modules._zoneManager.channelMember object at 0xffff9aad5d90>
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+zoneManager.get_next_channel()
+Getting Next Channel -> 0
+Zone Index -> 0
+===
+DEBUG: Updating session: Channel=1, Zone=0, System=0
+DEBUG: Did system change: True
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+DEBUG: Updating session: Channel=0, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+zoneManager.get_next_channel()
+Getting Next Channel -> 0
+Zone Index -> 0
+===
+DEBUG: Updating session: Channel=1, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+SessionMember initialized: system_index=0, zone_index=0, channel_index=0
+
+
+Getting Channel -> 0
+Zone Index -> 0
+Channel Number -> 0
+Zone -> <modules._zoneManager.zoneMember object at 0xffffb9d69520>
+Channel -> <modules._zoneManager.channelMember object at 0xffffbadf7c80>
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+DEBUG: Updating session: Channel=4, Zone=0, System=0
+DEBUG: Did system change: True
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+zoneManager.get_next_channel()
+Getting Next Channel -> 4
+Zone Index -> 0
+===
+DEBUG: Updating session: Channel=0, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+zoneManager.get_next_channel()
+Getting Next Channel -> 0
+Zone Index -> 0
+===
+DEBUG: Updating session: Channel=1, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+DEBUG: Updating session: Channel=0, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+zoneManager.get_next_channel()
+Getting Next Channel -> 0
+Zone Index -> 0
+===
+DEBUG: Updating session: Channel=1, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+DEBUG: Updating session: Channel=0, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+SessionMember initialized: system_index=0, zone_index=0, channel_index=0
+
+
+Getting Channel -> 0
+Zone Index -> 0
+Channel Number -> 0
+Zone -> <modules._zoneManager.zoneMember object at 0xffff82535fa0>
+Channel -> <modules._zoneManager.channelMember object at 0xffff825ac980>
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Found TalkgroupSet: 0
+DEBUG: Updating session: Channel=0, Zone=1, System=0
+DEBUG: Did system change: True
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+DEBUG: Updating session: Channel=0, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+DEBUG: Updating session: Channel=0, Zone=1, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+DEBUG: Updating session: Channel=0, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+DEBUG: Updating session: Channel=0, Zone=1, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+DEBUG: Updating session: Channel=0, Zone=0, System=0
+DEBUG: Did system change: False
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.
+Searching for TalkgroupSet with system index: 0
+ + Checking TalkgroupSet with sysIndex: 0
+ - Not a match: 0 != 0
+TalkgroupSet with system index 0 not found.

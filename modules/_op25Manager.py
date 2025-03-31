@@ -5,16 +5,19 @@ import time
 import socket
 import subprocess
 import json
-from typing import List
+from typing import List, TYPE_CHECKING
 
 from flask import jsonify
-from modules.sessionTypes import session
+# Removed to avoid circular import: from modules._session import session
+from modules._session import SessionMember
 from modules.myConfiguration import MyConfig
-from modules.systemsHandler import OP25FilesPackage
 #  echo '{"command": "whitelist", "arg1": 47021, "arg2": 0}' | nc -u 127.0.0.1 5000
 
-class OP25Controller:
-    def __init__(self, configMgr:MyConfig):
+if TYPE_CHECKING:
+    from modules._session import session  # Only imported for type checking
+
+class op25Manager:
+    def __init__(self, configMgr: MyConfig):
         
         # SET MANAGERS
         self.configManager = configMgr
@@ -32,15 +35,15 @@ class OP25Controller:
         # KILL EXISTING PROCESSES
         # subprocess.run(["pkill", "-f", "rx.py"])
 
-        self.session:session = None
+        self.session: 'session' = None  # Use forward reference for session type
         self._alreadyStarted = False
        
         
-    def set_session(self, session):
+    def set_session(self, session: 'session'):  # Use forward reference for session type
         self._activeSession = session
         self.session = session
 
-    def set_alreadyStarted(self, val:bool):
+    def set_alreadyStarted(self, val: bool):
         self._alreadyStarted = val
 
     @property
@@ -59,7 +62,7 @@ class OP25Controller:
     def stdout_file(self):
         return self._stdout_file
         
-    def start(self) -> bool | None:
+    def start(self, _session:SessionMember) -> bool | None:
         print("Starting...", self.alreadyStarted)
         if self.alreadyStarted == False:
             os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":" + self.configManager.get("paths", "pythonpath")
@@ -70,6 +73,8 @@ class OP25Controller:
             #     "-T", "/opt/op25-project/templates/_trunk.tsv",
             #     "-U", "-l", "5000"
             # ]
+
+            self._activeSession = _session
 
             self.op25_command = [
                 self.rx_script, "--nocrypt", "--args", "rtl",
@@ -139,28 +144,25 @@ class OP25Controller:
     @property
     def activeSession (self):
         return self._activeSession
-
-    def switchTalkgroup(self, thisSession:session):
+    def switchTalkgroup(self, thisSession: 'session'):  # Use forward reference for session type
         """Switches OP25 to a new talkgroup."""
         if not self.op25_process or self.op25_process.poll() is not None:
             print("[ERROR] OP25 is not running.")
             return
 
-        logEntry= {
+        logEntry = {
             "action" : "switchTalkgroup",
-            "channel_number" : f"{session.activeChannel.channel_number}",
-            "channel_name" : session.activeChannel.name,
-            "zone_name" : session.activeZone.name,
-            "system_name" : session.activeSystem.sysname
+            "channel_number" : f"{thisSession.activeChannel.channel_number}",
+            "channel_name" : thisSession.activeChannel.name,
+            "zone_name" : thisSession.activeZone.name,
+            "system_name" : thisSession.activeSystem.sysname
         }
         
         entry = json.dumps(logEntry)
-        self.session.sessionManager.apiManager.sendManualLogEntry([entry])
+        # self.session.sessionManager.apiManager.sendManualLogEntry([entry])
         
         # Command to reload OP25 configuration, assuming self.command is implemented
-        self.command("reload", 0)
-
-    def switchSystem(self, thisSession:session):
+    def switchSystem(self, thisSession: 'session'):  # Use forward reference for session type
         """Switches OP25 to a new P25 system with the first zone and channel set automatically."""
         #TODO: Implement multisystem
 

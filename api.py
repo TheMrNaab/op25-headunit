@@ -10,29 +10,24 @@ from flask_cors import CORS, cross_origin
 from modules.linuxSystem.sound import soundSys # Ensure this path matches your project
 from modules.linuxSystem.linuxUtils import LinuxUtilities
 from modules.logMonitor import LogFileWatcher, logMonitorOP25
-from modules.sessionTypes import session
-from modules.sessionHandler import sessionHandler 
-from modules.OP25_Controller import OP25Controller
+from modules._session import SessionMember
+from modules._sessionManager import SessionManager
+from modules._op25Manager import op25Manager
 import time
 import threading
 from queue import Queue
 import json
-import logging
 
-from modules.zoneHandler import ZoneData, Zone, Channel
+from modules._zoneManager import zoneMember, channelMember
 from modules.myConfiguration import MyConfig
-from modules.talkGroupsHandler import TalkgroupsHandler
+from modules._talkgroupSet import TalkgroupManager
   
 class API:
     def __init__(self):
 
         # FLASK SETUP
         self.app = Flask(__name__)
-        CORS(
-            self.app,
-            supports_credentials=True,
-            resources={r"/*": {"origins": "http://192.168.1.46:8000"}}
-        )
+        CORS(self.app, supports_credentials=True, resources={r"/*": {"origins": "http://192.168.1.46:8000"}})
      
         # INITIALIZE CONFIGURATION & ERROR HANDLER
         self._configManager = MyConfig()
@@ -43,22 +38,36 @@ class API:
 
         # STEP 1: INIT DUMMY SESSION (placeholder)
         self._session = None
+        
+         # STEP 2: INIT OP25 CONTROLLER WITH TEMP SESSION
+        self._op25Manager = op25Manager(configMgr=self.configManager)
 
-        # STEP 2: INIT OP25 CONTROLLER WITH TEMP SESSION
-        self._op25Manager = OP25Controller(configMgr=self.configManager)
 
         # STEP 3: INIT SESSION HANDLER NOW THAT CONTROLLER EXISTS
-        self._sessionManager = sessionHandler(self.op25Manager, 0, 0, 0, self)
+        self._sessionManager = SessionManager(self.op25Manager,
+                                             defaultSystemIndex=0,
+                                             defaultZoneIndex=0,
+                                             defaultChannelIndex=0,
+                                             api=self)
+        
+       
+
 
         # LOGGER STREAM FOR OP25
         self._monitor = None
         self.startLoggerStream()
 
         # STEP 4: SET SESSION ON CONTROLLER
-        self._session = self.sessionManager.thisSession
-        self.op25Manager.set_session(self._session)
-        self.op25Manager.start()
+        if self._sessionManager is None:
+            raise Exception("SessionManager is not initialized")
+        
+        if self.sessionManager.thisSession is None:
+            raise Exception("Session is not initialized")
 
+        self._session = self.sessionManager.thisSession # MUST BE GROUPED TOGETHER
+        self.op25Manager.set_session(self._session) # MUST BE GROUPED TOGETHER
+        self.op25Manager.start(self._session) # MUST BE ONE OF THE LAST CALLS IN INIT()
+        
         self.progress = 0
         self.lock = threading.Lock()
 
@@ -69,14 +78,15 @@ class API:
     def logMonitor(self) -> logMonitorOP25:
         return self._monitor
 
-    def set_session(self, session: session):
+    def set_session(self, session: SessionMember):
         self._activeSession = session
         self.session = session
 
     def init_from_session(self):
-        files = self.session.sessionManager.op25ConfigFiles()
-        self.session.activeSys.toTrunkTSV(files)
-
+        #files = self.session.sessionManager.op25ConfigFiles()
+        #self.session.activeSys.toTrunkTSV(files)
+        pass
+    
     def killAndFree(self):
         self.free_port(8000)
         self.free_port(5001)
@@ -98,19 +108,19 @@ class API:
         return self._configManager
 
     @property
-    def op25Manager(self) -> OP25Controller:
+    def op25Manager(self) -> op25Manager:
         return self._op25Manager
     
     @property
-    def sessionManager(self) -> sessionHandler:
+    def sessionManager(self) -> sessionManager:
         return self._sessionManager 
 
     @property
-    def activeSession(self) -> session:
+    def activeSession(self) -> SessionMember:
         return self.sessionManager.thisSession
     
     @property
-    def zoneManager(self) -> ZoneData:
+    def zoneManager(self) -> zoneMember:
         return self.sessionManager.zoneManager
 
     def register_routes(self):
@@ -222,6 +232,7 @@ class API:
 
         # 7: [GET] Get the full active channel object
         @self.app.route('/session/channel', methods=['GET'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
         def get_active_channel_object():
             if not self.activeSession.activeChannel:
                 return {"error": "No active channel in session"}, 400
@@ -229,6 +240,7 @@ class API:
 
         # 8: [GET] Get the full active zone object
         @self.app.route('/session/zone', methods=['GET'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
         def get_active_zone_object():
             if not self.activeSession.activeChannel:
                 return {"error": "No active zone in session"}, 400
@@ -236,9 +248,15 @@ class API:
 
         # 9: [GET] Get name of TGID from active system
         @self.app.route('/session/talkgroups/<tgid>/name/plaintext', methods=['GET'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
         def get_active_tgid_name(tgid):
             if not self.activeSession.activeTGIDList:
                 return jsonify({"error": "No active TGID list in session"}), 400
+            try:
+                tgid = int(tgid)
+            except ValueError:
+                return jsonify({"error": "Invalid TGID"}), 400
+
             tg = self.activeSession.activeTGIDList.getTalkgroup(tgid)
             if not tg:
                 return jsonify({"error": f"Talkgroup {tgid} not found"}), 404
@@ -255,31 +273,36 @@ class API:
 
         # 11: [PUT] Set active channel by ID
         @self.app.route('/session/channel/<int:id>', methods=['PUT'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
         def set_active_channel(id):
             zone_index = self.activeSession.activeZoneIndex
-            ch_data = self.sessionManager.zoneManager.getChannel(zone_index, id)
+            ch_data = self.sessionManager.zoneManager.getChannel(zone_index, id) # MODIFIED FOR ERROR CHECKING
             if not ch_data:
                 return {"error": f"Channel {id} not found in zone {zone_index}"}, 404
             zone = self.sessionManager.zoneManager.getZoneByIndex(zone_index)
-            channel = Channel(ch_data, zone_index)
+            channel = channelMember(ch_data, zone_index)
             sys = self.sessionManager.systemsManager.getSystemByIndex(channel.sysid)
             if not sys:
                 return {"error": f"System with sysid {channel.sysid} not found"}, 404
             self.activeSession.updateSession(channel, zone, sys)
-            return {"message": "Channel updated successfully"}
+            return {"message": {"Channel updated successfully", "SysIndex:", self.sessionManager.thisSession.activeSysIndex}}
 
         # 12: [PUT] Move to next channel
         @self.app.route('/session/channel/next', methods=['PUT'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
         def next_channel():
             return self.activeSession.nextChannel()
 
+
         # 13: [PUT] Move to previous channel
         @self.app.route('/session/channel/previous', methods=['PUT'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
         def previous_channel():
             return self.activeSession.previousChannel()
 
         # 14: [PUT] Set zone by index (loads first channel)
         @self.app.route('/session/zone/<int:id>', methods=['PUT'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
         def set_active_zone(id):
             zone = self.sessionManager.zoneManager.getZoneByIndex(id)
             if not zone:
@@ -321,11 +344,13 @@ class API:
 
         # 19: [GET] Previous zone
         @self.app.route('/zone/<int:zone_number>/previous', methods=['GET'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
         def zone_previous(zone_number):
             return jsonify(self.zoneManager.previousZone(zone_number)), 200
 
         # 20: [GET] Next zone
         @self.app.route('/zone/<int:zone_number>/next', methods=['GET'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
         def zone_next(zone_number):
             return jsonify(self.zoneManager.nextZone(zone_number)), 200
        
@@ -333,10 +358,11 @@ class API:
         
         # 21: TODO: WHITELIST TGIDS (SWITCH TGIDS)
         @self.app.route('/session/controller/whitelist', methods=['POST'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
         def whitelist():
             payload = request.get_json() or {}
             tgids = payload.get("tgid", [])
-            channel = Channel(payload)
+            channel = channelMember(payload)
 
             if not tgids:
                 return jsonify({"error": "No TGIDs provided", "payload": payload}), 400
@@ -475,4 +501,4 @@ if __name__ == '__main__':
     api_server = API()
     #api_server.run(debug=True, host="0.0.0.0", port=5001) # Debug mode - be sure to turn off
     #TODO: Delete temporary files on exit, but how?
-    api_server.run() 
+    api_server.run()

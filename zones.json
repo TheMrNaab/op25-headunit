@@ -51,7 +51,7 @@
                         46837,
                         46838
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 1,
@@ -61,7 +61,7 @@
                         46949,
                         47021
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 2,
@@ -70,7 +70,7 @@
                     "tgid": [
                         46949
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 3,
@@ -79,7 +79,7 @@
                     "tgid": [
                         47021
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 4,
@@ -88,7 +88,7 @@
                     "tgid": [
                         46940
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 }
             ]
         },
@@ -111,7 +111,7 @@
                         47054,
                         47055
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 1,
@@ -120,7 +120,7 @@
                     "tgid": [
                         47050
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 2,
@@ -129,7 +129,7 @@
                     "tgid": [
                         47051
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 3,
@@ -138,7 +138,7 @@
                     "tgid": [
                         47052
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 4,
@@ -147,7 +147,7 @@
                     "tgid": [
                         47053
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 5,
@@ -156,7 +156,7 @@
                     "tgid": [
                         47054
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 6,
@@ -165,7 +165,7 @@
                     "tgid": [
                         47055
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 7,
@@ -174,7 +174,7 @@
                     "tgid": [
                         46880
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 8,
@@ -182,7 +182,8 @@
                     "type": "Talkgroup",
                     "tgid": [
                         46881
-                    ]
+                    ],
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 9,
@@ -190,7 +191,8 @@
                     "type": "Talkgroup",
                     "tgid": [
                         46882
-                    ]
+                    ],
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 10,
@@ -199,7 +201,7 @@
                     "tgid": [
                         46883
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 11,
@@ -207,7 +209,8 @@
                     "type": "Talkgroup",
                     "tgid": [
                         46884
-                    ]
+                    ],
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 12,
@@ -215,7 +218,8 @@
                     "type": "Talkgroup",
                     "tgid": [
                         46885
-                    ]
+                    ],
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 13,
@@ -224,7 +228,7 @@
                     "tgid": [
                         46886
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 },
                 {
                     "channel_number": 14,
@@ -233,7 +237,7 @@
                     "tgid": [
                         46887
                     ],
-                    "sysid": "123"
+                    "sysid": "0"
                 }
             ]
         }
