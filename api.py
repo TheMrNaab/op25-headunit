@@ -178,9 +178,7 @@ class API:
                 timeout = LinuxUtilities.get_display_timeout(id)
                 return jsonify({"sleep_timeout_minutes": timeout})
             except Exception as e:
-                return jsonify({"error": str(e)}), 500
-
-        
+                return jsonify({"error": str(e)}), 500  
 
         # ====== DEVICE SLEEP SETTINGS ======
 
@@ -493,10 +491,27 @@ class API:
                 return jsonify({"status": "ok"}), 200
             except Exception as e:
                 return jsonify({"error": str(e)}), 500
+    
+        # 31: [GET] GET CONFIG FILE
+        @self.app.route('/admin/config/get', methods=['GET'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        def get_config_file():
+            config = self.configManager.toJson()
+            return jsonify(config), 200
+        
+        # 32: [GET] GET SPECIFIC DEVICE SETTING
+        @self.app.route('/admin/config/device/<property>', methods=['GET'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        def get_device_config(property):
+            config = {
+                "timeout": LinuxUtilities.get_display_timeout("0")
+            }
+            if property == "sleep":
+                return jsonify(config), 200
+        
+        
     def run(self):
 
-        # This is the reloader child — run normal startup
-        # self.op25Manager.start(self.activeSession)
 
         self.free_port(8000)
         self.free_port(5001)

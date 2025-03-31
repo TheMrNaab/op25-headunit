@@ -6,7 +6,7 @@ class MyConfig:
     def __init__(self, config_file="config.ini"):
         self.config = configparser.ConfigParser()
         self.config.read(config_file)
-
+        self.config_file = config_file = config_file
     @property
     def defaultZonesFile(self):
         """Retrieve the default value for zones.json configuration."""
@@ -53,3 +53,11 @@ class MyConfig:
         ]
 
         return command
+    
+    def toJson(self):
+        result = {}
+        for section in self.config.sections():
+            result[section] = {}
+            for key in self.config[section]:
+                result[section][key] = self.config[section][key]
+        return result

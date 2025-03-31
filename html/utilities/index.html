@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Systems Config Editor</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   
    <!-- Font Awesome Icons -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+   <link rel="stylesheet" href="../static/fa/css/all.min.css">
    <link href="backend.css?v=3" rel="stylesheet">
 </head>
 <body>
@@ -47,46 +47,71 @@
       This tool allows you to configure the overall system settings for the OP25 scanner platform. Only modify settings that you understand.
     </p>
     <form id="config-form">
+      <h4><i class="fa fa-laptop me-2"></i>Local Settings</h4>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label class="form-label">
+            Display Sleep
+            <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="Display Timeout" data-bs-content="Specifies the amount of minutes your default display is on before sleeping."></i>
+          </label>
+          <input type="text"  class="form-control form-control-sm" id="display_sleep" >
+        </div>
+      </div>
       <h4><i class="fa fa-code me-2"></i>Hosts</h4>
       <div class="row mb-3">
         <div class="col-md-4">
-          <label for="api_host" class="form-label">API Host</label>
-          <input type="text" class="form-control form-control-sm" id="api_host" >
+          <label class="form-label">
+            API Host
+            <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="API Host" data-bs-content="Specifies the address of the backend API server your frontend should communicate with."></i>
+          </label>
+          <input type="text" data-field="api_host" data-section="hosts" disabled class="form-control form-control-sm" id="api_host" >
         </div>
         <div class="col-md-4">
-          <label for="default_system_file" class="form-label">Default System File</label>
-          <input type="text" class="form-control-sm form-control" id="default_system_file" >
+          <label class="form-label">
+            Default System File
+            <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="Default System File" data-bs-content="Path to the system definition file to load at startup."></i>
+          </label>
+          <input type="text" class="form-control-sm form-control" disabled id="default_system_file" >
         </div>
         <div class="col-md-4">
-          <label for="op_25_directory" class="form-label">OP25 Directory</label>
-          <input type="text" class="form-control-sm form-control" id="rx_script" >
+          <label class="form-label">
+            OP25 Directory
+            <i class="fas fa-info-circle txt-white text-muted ms-1" disabled data-bs-toggle="popover" title="OP25 Directory" data-bs-content="Filesystem path to the OP25 application's root directory."></i>
+          </label>
+          <input type="text" class="form-control-sm form-control" disabled id="rx_script" >
         </div>
     </div>
 
     <!-- OP25 Settings -->
         <h4 class="mt-4 mb-4"><i class="fa fa-code me-2"></i>OP25 Settings</h4>
           <div class="row mb-3">
+            <label class="form-label mb-2">
+              Sample Rate
+              <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="Sample Rate" data-bs-content="The number of samples per second used by the SDR. Typical values are 2M or 2.4M."></i>
+              <input data-field="sample_rate" data-section="op25" type="text" id="sample_rate" class="form-control form-control-sm mt-2" >
+            </label>
             <div class="col-md-4">
-              <label class="form-label">SDR Args</label>
-              <input type="text" id="args" class="form-control form-control-sm" >
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Sample Rate</label>
-              <input type="number" id="sample_rate" class="form-control form-control-sm" >
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Frequency Correction</label>
-              <input type="number" id="frequency_correction" class="form-control form-control-sm" >
+              <label class="form-label">
+                Frequency Correction
+                <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Frequency Correction" data-bs-content="PPM offset to correct drift in your SDR hardware. Use if transmissions are slightly off-tune."></i>
+              </label>
+              <input type="number" data-field="frequency_correction" data-section="op25" id="frequency_correction" class="form-control form-control-sm" >
             </div>
           </div>
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="rx_script" class="form-label">RX Script</label>
-              <input type="text" class="form-control-sm form-control" id="rx_script" >
+              <label class="form-label">
+                RX Script
+                <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="RX Script" data-bs-content="Path to the Python script that launches OP25 receiver (rx.py)."></i>
+              </label>
+              <input type="text" data-field="rx_script" data-section="op25" class="form-control-sm form-control" id="rx_script" >
             </div>
               <div class="col-md-6">
-                <label for="pythonpath" class="form-label">Python Path</label>
-                <input type="text" class="form-control-sm form-control" id="pythonpath" >
+                <label class="form-label">
+                  Python Path
+                  <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Python Path" data-bs-content="Paths required for OP25 runtime, typically include tx and build directories."></i>
+                </label>
+                <input type="text" disabled class="form-control-sm form-control" id="pythonpath" >
               </div>
             </div>
         <!-- UDP SETTINGS -->
@@ -94,14 +119,20 @@
         <div class="row mb-3">
             <div class="col-md-6 ">
               <!-- MAKE AUTO ENABLE/DISABLE DATA-REL CONTROL -->
-              <input type="checkbox" data-rel="udp_output_port" id="udp_output" class="form-check-input" >
-              <label class="form-check-label mb-2" for="udp_output">UDP Output</label>
-              <input type="number" id="udp_output_port" class="form-control form-control-sm" >
+              <input data-field="udp_output" data-section="op25" type="checkbox" data-relative="udp_output_port" id="udp_output" class="form-check-input" >
+              <label class="form-label">
+                UDP Output
+                <i class="fas txt-white fa-info-circle text-muted ms-1" data-bs-toggle="popover" title="UDP Output" data-bs-content="Enable this to stream decoded audio over UDP. Useful for network-based audio piping."></i>
+              </label>
+              <input data-field="udp_output_port" data-section="op25"  type="number" id="udp_output_port" class="form-control form-control-sm" >
             </div>
             <div class="col-md-6">
-              <input type="checkbox" id="override_default_audio_device" class="form-check-input">
-              <label class="form-check-label mb-2" for="override_default_audio_device">Audio Output Device</label>
-              <input type="text" id="audio_output" class="form-control form-control-sm">
+              <input data-field="override_audio" data-section="op25" data-relative="audio_output" type="checkbox" id="device_override" class="form-check-input">
+              <label class="form-label">
+                Audio Output Device
+                <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Audio Output Device" data-bs-content="Specify the ALSA device string for audio output (e.g., hw:1,0)."></i>
+              </label>
+              <input data-field="audio_ouput" data-section="op25" type="text" id="audio_output"  class="form-control form-control-sm">
             </div>
         </div>
 
@@ -110,9 +141,9 @@
               <div class="col-md-6">
                 <label class="form-label">
                   Log Level
-                  <i class="fas fa-info-circle text-muted ms-1" data-bs-toggle="popover" title="Verbosity" data-bs-content="Controls how much log information is printed. 0 = silent, 3 = most verbose."></i>
+                  <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="Log Level" data-bs-content="Controls how much debug/log information is printed. 0 = silent, 3 = most verbose."></i>
                 </label>
-                <select id="verbosity" class="form-select form-select-sm" >
+                <select id="verbosity" data-field="verbosity" data-section="op25" class="form-select form-select-sm" >
                   <option value="0">0 - Silent</option>
                   <option value="1">1 - Info</option>
                   <option value="2">2 - Debug</option>
@@ -120,22 +151,34 @@
                 </select>
                 </div>
                 <div class="col-md-5"> 
-                  <label class="form-check-label mb-2" for="voice_logging">Voice Logging</label><br>
-                      <input type="checkbox" id="voice_logging" class="form-check-input">  
+                  <label class="form-label">
+                    Voice Logging
+                    <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Voice Logging" data-bs-content="Enable this to save decoded audio streams to disk for later review."></i>
+                  </label><br/>
+                      <input type="checkbox" data-field="voice_logging" data-section="op25" id="voice_logging" class="form-check-input">  
                 </div>
             </div>
             <div class="row mb-3">
               <div class="col-md-4">
-                <label for="stderr_file" class="form-label">Stderr Log File</label>
-                <input type="text" class="form-control-sm form-control" id="stderr_file" >
+                <label class="form-label">
+                  Stderr Log File
+                  <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="Stderr Log File" data-bs-content="Path where the stderr output of OP25 should be saved."></i>
+                </label>
+                <input type="text" data-field="stderr_file" data-section="paths" class="form-control-sm form-control" id="stderr_file" >
               </div>
               <div class="col-md-4">
-                <label for="stdout_file" class="form-label">Stdout Log File</label>
-                <input type="text" class="form-control-sm form-control" id="stdout_file" >
+                <label class="form-label">
+                  Stdout Log File
+                  <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Stdout Log File" data-bs-content="Path where the stdout output of OP25 should be saved."></i>
+                </label>
+                <input data-field="stdout_file" data-section="paths"  type="text" class="form-control-sm form-control" id="stdout_file" >
               </div>
               <div class="col-md-4">
-                <label for="app_log" class="form-label">App Log File</label>
-                <input type="text" class="form-control-sm form-control" id="app_log" >
+                <label class="form-label">
+                  App Log File
+                  <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="App Log File" data-bs-content="Path for saving log entries from the frontend/backend components."></i>
+                </label>
+                <input data-field="app_log" data-section="paths" type="text"  class="form-control-sm form-control" id="app_log" >
               </div>
             </div>
         
@@ -144,97 +187,183 @@
           <div class="col-md-4 ms-3 mt-1 form-check">
             <input type="checkbox" id="nocrypt" class="form-check-input" >
             <label class="form-check-label" for="nocrypt">
-              Mute Enrcruption
-              <i class="fas fa-info-circle text-muted ms-1" data-bs-toggle="popover" title="NoCrypt" data-bs-content="Skips encrypted talkgroups instead of printing gibberish or static. Should usually be enabled."></i>
+              Mute Encryption
             </label>
+              <i class="fas fa-info-circle txt-white ms-1" data-field="nocrypt" data-section="op25" 
+              data-bs-toggle="popover" title="NoCrypt" data-bs-content="Skips encrypted talkgroups instead of printing gibberish or static. Should usually be enabled."></i>
+          
           </div>
           <div class="col-md-4 ms-3 mt-1 form-check">
-            <input type="checkbox" id="two_tuner_mode" class="form-check-input" >
+            <input type="checkbox" data-field="two_tuner_mode" data-section="op25" id="two_tuner_mode" class="form-check-input" >
             <label class="form-check-label" for="two_tuner_mode">
               Two Tuner Mode
-              <i class="fas fa-info-circle text-muted ms-1" data-bs-toggle="popover" title="Two Tuner Mode" data-bs-content="Uses one tuner for control channel and another for voice traffic. Improves performance."></i>
             </label>
+            <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Two Tuner Mode" data-bs-content="Uses one tuner for control channel and another for voice traffic. Improves performance."></i>
           </div>
         </div>
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" disabled class="btn btn-primary">Save</button>
       </form>
-
-      <!-- <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-          [...popoverTriggerList].forEach(el => new bootstrap.Popover(el));
-        });
-      </script> -->
     
-    <script src="../js/api.js"></script>
+ 
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const configValues = await fetchConfigProperties();
-      applyConfig(configValues);
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+      popoverTriggerList.forEach(el => {
+        new bootstrap.Popover(el);
+      });
     });
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      await sendGetSleepSettings()
+      const relCheckboxes = document.querySelectorAll("[data-relative]");
     
+      relCheckboxes.forEach(checkbox => {
+        const targetId = checkbox.getAttribute("data-relative");
+        const targetInput = document.getElementById(targetId);
+    
+        function toggleRelatedInput() {
+          if (targetInput) {
+            targetInput.disabled = !checkbox.checked;
+          }
+        }
+    
+        // Do NOT toggle yet — wait for config to load
+        checkbox.addEventListener("change", toggleRelatedInput);
+      });
+    
+      sendGetConfig(); // make sure this sets checkbox.checked and triggers .dispatchEvent
+    });
+
+    function collectFormData() {
+      const config = {};
+      const inputs = document.querySelectorAll('[data-section][data-field]');
   
-    function applyConfig(response) {
-  if (!response.payload) return;
-
-  const flatten = (obj, prefix = '') =>
-    Object.entries(obj).reduce((acc, [k, v]) => {
-      const key = prefix ? `${prefix}.${k}` : k;
-      if (typeof v === 'object' && v !== null && !Array.isArray(v)) {
-        Object.assign(acc, flatten(v, key));
+      inputs.forEach(input => {
+          const section = input.getAttribute("data-section");
+          const field = input.getAttribute("data-field");
+  
+          if (!config[section]) config[section] = {};
+  
+          let value;
+          if (input.type === "checkbox") {
+              value = input.checked ? "true" : "false";
+          } else {
+              value = input.value;
+          }
+  
+          config[section][field] = value;
+      });
+  
+      return config;
+  }
+  
+  async function returnConfigByPost() {
+      const config = collectFormData();
+      const response = await fetch(`http://${localhost}:5001/admin/config/set`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(config)
+      });
+  
+      if (response.ok) {
+          alert("Configuration saved");
       } else {
-        acc[key] = v;
+          alert("Failed to save configuration");
       }
-      return acc;
-    }, {});
+  }
 
-  const flatConfig = flatten(response.payload);
+    const configData = {};  // Holds the config JSON in memory
 
-  const idMap = {
-    "hosts.api_host": "api_host",
-    "paths.rx_script": "rx_script_path",
-    "paths.trunk_file": "trunk_file",
-    "paths.stderr_file": "stderr_file",
-    "paths.stdout_file": "stdout_file",
-    "paths.app_log": "app_log",
-    "paths.tgroups_file": "tgroups_file",
-    "paths.defaultwhitelistfile": "defaultWhitelistFile",
-    "paths.defaultblacklistfile": "defaultBlacklistFile",
-    "paths.pythonpath": "pythonpath",
-    "paths.default_system_file": "default_system_file",
-    "op25.rx_script": "op25_rx_script",
-    "op25.args": "args",
-    "op25.sample_rate": "sample_rate",
-    "op25.frequency_correction": "frequency_correction",
-    "op25.audio_output": "audio_output",
-    "op25.override_default_audio_device": "override_default_audio_device",
-    "op25.verbosity": "verbosity",
-    "op25.udp_output_port": "udp_output_port",
-    "op25.nocrypt": "nocrypt",
-    "op25.two_tuner_mode": "two_tuner_mode",
-    "op25.voice_logging": "voice_logging",
-    "op25.udp_output": "udp_output"
-  };
+  // Fetch the config from the backend
+  const localhost = location.hostname;
 
-  Object.keys(flatConfig).forEach(key => {
-    const mappedId = idMap[key];
-    if (!mappedId) return;
-
-    const el = document.getElementById(mappedId);
-    if (!el) return;
-
-    const value = flatConfig[key];
-
-    if (el.type === 'checkbox') {
-      el.checked = value === true || value === 'true';
-    } else {
-      el.value = value;
+async function sendGetConfig() {
+    const response = await fetch(`http://${localhost}:5001/admin/config/get`);
+    if (!response.ok) {
+        console.error("Failed to fetch config");
+        return;
     }
-  });
+
+    const config = await response.json();
+    populateForm(config);
 }
+
+async function sendGetSleepSettings() {
+  const response = await fetch(`http://${localhost}:5001/admin/config/device/sleep`);
+  if (!response.ok) {
+      console.error("Failed to fetch config");
+      return;
+  }
+
+  const config = await response.json();
+  sleepField = document.getElementById("display_sleep");
+  sleepField.value = config["timeout"];
+}
+
+function populateForm(config) {
+    const inputs = document.querySelectorAll('[data-section][data-field]');
+    inputs.forEach(input => {
+        const section = input.getAttribute("data-section");
+        const field = input.getAttribute("data-field");
+
+        if (config[section] && field in config[section]) {
+            const value = config[section][field];
+
+            if (input.type === "checkbox") {
+                input.checked = value === "true" || value === true;
+            } else {
+                input.value = value;
+            }
+        }
+    });
+}
+
+  // Get a value from the config
+  function getConfig(section, key, fallback = null) {
+      if (configData[section] && key in configData[section]) {
+          return configData[section][key];
+      }
+      return fallback;
+  }
+
+  // Set a value in the config
+  function setConfig(section, key, value) {
+      if (!configData[section]) {
+          configData[section] = {};
+      }
+      configData[section][key] = value;
+  }
+
+  function collectFormData() {
+    const config = {};
+    const inputs = document.querySelectorAll('[data-section][data-field]');
+
+    inputs.forEach(input => {
+        const section = input.getAttribute("data-section");
+        const field = input.getAttribute("data-field");
+
+        if (!config[section]) config[section] = {};
+
+        let value;
+        if (input.type === "checkbox") {
+            value = input.checked ? "true" : "false";
+        } else {
+            value = input.value;
+        }
+
+        config[section][field] = value;
+    });
+
+    return config;
+}
+
 
   </script>
   
 
 </div>
 </div>
+<script src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>

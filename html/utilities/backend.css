@@ -5,6 +5,48 @@
     --fire-gray: #2c2c2c;
     --fire-white: #f8f9fa;
   }
+
+  .popover {
+    background-color: var(--fire-gray);
+    color: var(--fire-white);
+    border: 1px solid var(--fire-red-light);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  }
+  
+  .popover-header {
+    background-color: var(--fire-red);
+    color: var(--fire-white);
+    border-bottom: 1px solid var(--fire-black);
+    font-weight: bold;
+  }
+  
+  .popover-body {
+    background-color: var(--fire-gray);
+    color: var(--fire-white);
+  }
+  
+  .bs-popover-auto[data-popper-placement^="top"] > .popover-arrow::before,
+  .bs-popover-top > .popover-arrow::before {
+    border-top-color: var(--fire-red);
+  }
+  
+  .bs-popover-auto[data-popper-placement^="bottom"] > .popover-arrow::before,
+  .bs-popover-bottom > .popover-arrow::before {
+    border-bottom-color: var(--fire-red);
+  }
+  
+  .bs-popover-auto[data-popper-placement^="left"] > .popover-arrow::before,
+  .bs-popover-left > .popover-arrow::before {
+    border-left-color: var(--fire-red);
+  }
+  .txt-white {
+    color:white !important;
+  }
+  
+  .bs-popover-auto[data-popper-placement^="right"] > .popover-arrow::before,
+  .bs-popover-right > .popover-arrow::before {
+    border-right-color: var(--fire-red);
+  }
   
   /* Full-page body */
   html, body {
@@ -146,6 +188,6 @@
   }
 
   .form-control:disabled {
-    background-color:white !important;
-    color: darkgrey !important;
+    background-color:lightgray !important;
+    color: black !important;
   }
