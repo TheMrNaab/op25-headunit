@@ -10,161 +10,502 @@ supported sample rates 250000-2560000 step 24000
 demodulator: xlator if_rate=24000, input_rate=960000, decim=40, if taps=[193,49], resampled_rate=24000, sps=5
 op25_audio::open_socket(): enabled udp host(127.0.0.1), wireshark(23456), audio(23456)
 p25_frame_assembler_impl: do_imbe[1], do_output[0], do_audio_output[1], do_phase2_tdma[1], do_nocrypt[0]
-04/01/25 12:44:35.854486 Reading whitelist file
-04/01/25 12:44:35.854848 added talkgroup 46949 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.855237 added talkgroup 47021 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.855381 added talkgroup 46940 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.855458 added talkgroup 46800 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.855532 added talkgroup 46801 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.855601 added talkgroup 46802 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.855664 added talkgroup 46803 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.855729 added talkgroup 46804 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.855793 added talkgroup 46805 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.855857 added talkgroup 46806 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.855922 added talkgroup 46807 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856044 added talkgroup 46808 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856116 added talkgroup 46809 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856183 added talkgroup 46810 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856246 added talkgroup 46811 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856308 added talkgroup 46812 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856371 added talkgroup 46813 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856433 added talkgroup 46814 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856493 added talkgroup 46815 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856556 added talkgroup 46816 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856620 added talkgroup 46817 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856687 added talkgroup 46818 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856749 added talkgroup 46819 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856812 added talkgroup 46820 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856876 added talkgroup 46821 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.856963 added talkgroup 46822 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857047 added talkgroup 46823 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857112 added talkgroup 46824 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857175 added talkgroup 46825 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857240 added talkgroup 46826 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857302 added talkgroup 46827 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857364 added talkgroup 46828 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857427 added talkgroup 46829 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857499 added talkgroup 46830 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857571 added talkgroup 46831 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857634 added talkgroup 46832 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857697 added talkgroup 46833 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857760 added talkgroup 46834 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857823 added talkgroup 46835 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857883 added talkgroup 46836 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.857977 added talkgroup 46837 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.858124 added talkgroup 46838 from /tmp/_whitelist_Fire_Scan.tsv
-04/01/25 12:44:35.858305 Reading blacklist file
-04/01/25 12:44:35.858536 added talkgroup 1234 from /tmp/_blacklist_Fire_Scan.tsv
+04/01/25 13:28:03.640275 Reading whitelist file
+04/01/25 13:28:03.640728 added talkgroup 46949 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.640914 added talkgroup 47021 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.641019 added talkgroup 46940 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.641315 added talkgroup 46800 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.641408 added talkgroup 46801 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.641489 added talkgroup 46802 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.641565 added talkgroup 46803 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.641638 added talkgroup 46804 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.641716 added talkgroup 46805 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.641790 added talkgroup 46806 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.641920 added talkgroup 46807 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642020 added talkgroup 46808 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642157 added talkgroup 46809 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642233 added talkgroup 46810 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642305 added talkgroup 46811 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642382 added talkgroup 46812 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642453 added talkgroup 46813 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642523 added talkgroup 46814 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642595 added talkgroup 46815 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642664 added talkgroup 46816 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642738 added talkgroup 46817 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642838 added talkgroup 46818 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.642915 added talkgroup 46819 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.643207 added talkgroup 46820 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.643301 added talkgroup 46821 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.643375 added talkgroup 46822 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.643452 added talkgroup 46823 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.643527 added talkgroup 46824 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.643598 added talkgroup 46825 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.643667 added talkgroup 46826 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.643734 added talkgroup 46827 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.643801 added talkgroup 46828 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.643871 added talkgroup 46829 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.643942 added talkgroup 46830 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.644011 added talkgroup 46831 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.644143 added talkgroup 46832 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.644220 added talkgroup 46833 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.644293 added talkgroup 46834 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.644364 added talkgroup 46835 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.644437 added talkgroup 46836 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.644511 added talkgroup 46837 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.644653 added talkgroup 46838 from /tmp/_whitelist_Fire_Scan.tsv
+04/01/25 13:28:03.644851 Reading blacklist file
+04/01/25 13:28:03.645159 added talkgroup 1234 from /tmp/_blacklist_Fire_Scan.tsv
 metadata update not enabled
 using ALSA sound system
 audio device: default
 Listening on 127.0.0.1:23456
 python version detected: 3.12.7 (main, Feb  4 2025, 14:46:03) [GCC 14.2.0]
 Allocating 15 zero-copy buffers
-04/01/25 12:44:36.996516 control channel timeout
-04/01/25 12:44:38.086894 control channel timeout
-04/01/25 12:44:39.182030 control channel timeout
-04/01/25 12:44:40.268513 control channel timeout
-04/01/25 12:44:41.360979 control channel timeout
-04/01/25 12:44:42.458037 control channel timeout
-04/01/25 12:44:43.552455 control channel timeout
-04/01/25 12:44:44.639759 control channel timeout
-04/01/25 12:44:45.736111 control channel timeout
-04/01/25 12:44:46.830282 control channel timeout
-04/01/25 12:44:47.914383 control channel timeout
-04/01/25 12:44:49.008206 control channel timeout
-04/01/25 12:44:50.106015 control channel timeout
-04/01/25 12:44:50.933374 Reconfiguring NAC from 0x000 to 0x592
-04/01/25 12:45:34.214813 voice update:  tg(46815), freq(853262500), slot(-), prio(3)
-04/01/25 12:45:37.359292 duid15, tg(46815)
-04/01/25 12:45:37.890884 hold active tg(46815)
-04/01/25 12:45:37.891618 hold active tg(46815)
-04/01/25 12:45:37.902419 hold active tg(46815)
-04/01/25 12:45:37.902775 voice update:  tg(46815), freq(853262500), slot(-), prio(3)
-04/01/25 12:45:41.592237 duid15, tg(46815)
-04/01/25 12:45:41.716459 hold active tg(46815)
-04/01/25 12:45:42.564879 hold active tg(46815)
-04/01/25 12:45:43.623384 voice update:  tg(46949), freq(852650000), slot(-), prio(3)
-04/01/25 12:46:00.829866 voice timeout
-04/01/25 12:46:01.917508 voice update:  tg(47021), freq(851200000), slot(-), prio(3)
-04/01/25 12:46:09.991723 duid15, tg(47021)
-04/01/25 12:46:10.809876 hold active tg(47021)
-04/01/25 12:46:33.186429 voice update:  tg(46818), freq(851537500), slot(-), prio(3)
-04/01/25 12:46:36.323010 duid15, tg(46818)
-04/01/25 12:46:36.468082 hold active tg(46818)
-04/01/25 12:46:36.600383 hold active tg(46818)
-04/01/25 12:46:36.744377 hold active tg(46818)
-04/01/25 12:46:36.877824 hold active tg(46818)
-04/01/25 12:46:36.880223 hold active tg(46818)
-04/01/25 12:46:36.880532 voice update:  tg(46818), freq(851537500), slot(-), prio(3)
-04/01/25 12:46:37.292700 duid15, tg(46818)
-04/01/25 12:46:37.418575 hold active tg(46818)
-04/01/25 12:46:37.564845 hold active tg(46818)
-04/01/25 12:46:37.688908 hold active tg(46818)
-04/01/25 12:46:38.651139 hold active tg(46818)
-04/01/25 12:46:55.716263 voice update:  tg(46817), freq(853262500), slot(-), prio(3)
-04/01/25 12:46:59.140688 duid15, tg(46817)
-04/01/25 12:46:59.265840 hold active tg(46817)
-04/01/25 12:46:59.543870 hold active tg(46817)
-04/01/25 12:46:59.678040 hold active tg(46817)
-04/01/25 12:47:00.090506 hold active tg(46817)
-04/01/25 12:47:00.090923 voice update:  tg(46817), freq(853262500), slot(-), prio(3)
-04/01/25 12:47:00.507587 duid15, tg(46817)
-04/01/25 12:47:00.646172 hold active tg(46817)
-04/01/25 12:47:01.048720 hold active tg(46817)
-04/01/25 12:47:01.326402 hold active tg(46817)
-04/01/25 12:47:01.450010 hold active tg(46817)
-04/01/25 12:47:01.604719 hold active tg(46817)
-04/01/25 12:47:01.607097 hold active tg(46817)
-04/01/25 12:47:02.268061 hold active tg(46817)
-04/01/25 12:47:02.279125 hold active tg(46817)
-04/01/25 12:47:02.820220 voice update:  tg(46818), freq(851262500), slot(-), prio(3)
-04/01/25 12:47:05.273643 duid15, tg(46818)
-04/01/25 12:47:06.909202 hold active tg(46818)
-04/01/25 12:48:10.155604 voice update:  tg(46838), freq(852650000), slot(-), prio(3)
-04/01/25 12:48:13.548440 duid15, tg(46838)
-04/01/25 12:48:13.686305 hold active tg(46838)
-04/01/25 12:48:13.822196 hold active tg(46838)
-04/01/25 12:48:14.495349 hold active tg(46838)
-04/01/25 12:48:14.495780 voice update:  tg(46838), freq(852650000), slot(-), prio(3)
-04/01/25 12:48:14.916784 duid15, tg(46838)
-04/01/25 12:48:14.954221 hold active tg(46838)
-04/01/25 12:48:15.058832 hold active tg(46838)
-04/01/25 12:48:15.746665 hold active tg(46838)
-04/01/25 12:48:16.151188 hold active tg(46838)
-04/01/25 12:48:16.275014 hold active tg(46838)
-04/01/25 12:48:56.278452 voice update:  tg(46818), freq(851762500), slot(-), prio(3)
-04/01/25 12:48:57.775865 PCM underrun
-04/01/25 12:48:59.016840 duid15, tg(46818)
-04/01/25 12:48:59.141290 hold active tg(46818)
-04/01/25 12:48:59.153646 hold active tg(46818)
-04/01/25 12:48:59.418742 hold active tg(46818)
-04/01/25 12:49:20.584567 voice update:  tg(46818), freq(852962500), slot(-), prio(3)
-04/01/25 12:49:24.415158 duid15, tg(46818)
-04/01/25 12:49:25.094509 hold active tg(46818)
-04/01/25 12:49:25.228363 hold active tg(46818)
-04/01/25 12:49:25.228702 voice update:  tg(46818), freq(852962500), slot(-), prio(3)
-04/01/25 12:49:26.052078 duid15, tg(46818)
-04/01/25 12:49:26.596522 hold active tg(46818)
-04/01/25 12:49:26.597749 voice update:  tg(46818), freq(852962500), slot(-), prio(3)
-04/01/25 12:49:27.011822 duid15, tg(46818)
-04/01/25 12:49:27.685037 hold active tg(46818)
-04/01/25 12:49:27.820282 hold active tg(46818)
-04/01/25 12:49:27.958074 hold active tg(46818)
-04/01/25 12:49:28.105424 hold active tg(46818)
-04/01/25 12:49:32.055309 voice update:  tg(46818), freq(851200000), slot(-), prio(3)
-04/01/25 12:49:39.417325 duid15, tg(46818)
-04/01/25 12:49:41.598927 voice update:  tg(46818), freq(851200000), slot(-), prio(3)
-04/01/25 12:49:44.075241 duid15, tg(46818)
-04/01/25 12:49:44.882903 hold active tg(46818)
-04/01/25 12:49:44.883339 voice update:  tg(46818), freq(851200000), slot(-), prio(3)
-04/01/25 12:49:45.297438 duid15, tg(46818)
-04/01/25 12:49:46.523765 hold active tg(46818)
-04/01/25 12:49:47.881171 voice update:  tg(46818), freq(851200000), slot(-), prio(3)
-04/01/25 12:49:48.298396 duid15, tg(46818)
-04/01/25 12:49:48.851269 hold active tg(46818)
-04/01/25 12:49:48.851593 voice update:  tg(46818), freq(851200000), slot(-), prio(3)
-04/01/25 12:49:53.355289 duid15, tg(46818)
-04/01/25 12:49:54.184073 hold active tg(46818)
-04/01/25 12:49:54.450499 hold active tg(46818)
-04/01/25 12:49:54.573688 hold active tg(46818)
+04/01/25 13:28:04.784995 control channel timeout
+04/01/25 13:28:05.874229 control channel timeout
+04/01/25 13:28:06.968773 control channel timeout
+04/01/25 13:28:08.099229 control channel timeout
+04/01/25 13:28:09.155691 control channel timeout
+04/01/25 13:28:10.250816 control channel timeout
+04/01/25 13:28:11.248471 control channel timeout
+04/01/25 13:28:12.297404 control channel timeout
+04/01/25 13:28:13.389879 control channel timeout
+04/01/25 13:28:14.397584 control channel timeout
+04/01/25 13:28:15.457115 control channel timeout
+04/01/25 13:28:16.535468 control channel timeout
+04/01/25 13:28:17.624645 control channel timeout
+04/01/25 13:28:18.175252 Reconfiguring NAC from 0x000 to 0x592
+04/01/25 13:28:33.796784 voice update:  tg(46813), freq(851537500), slot(-), prio(3)
+04/01/25 13:28:37.174386 duid15, tg(46813)
+04/01/25 13:28:37.445256 hold active tg(46813)
+04/01/25 13:28:37.821951 hold active tg(46813)
+04/01/25 13:28:37.995906 hold active tg(46813)
+04/01/25 13:28:38.438696 hold active tg(46813)
+04/01/25 13:28:38.660870 hold active tg(46813)
+O04/01/25 13:28:49.844167 voice update:  tg(46813), freq(851200000), slot(-), prio(3)
+04/01/25 13:31:28.955653 voice timeout
+04/01/25 13:31:30.017285 voice update:  tg(46813), freq(851200000), slot(-), prio(3)
+04/01/25 13:31:31.362346 voice timeout
+04/01/25 13:31:33.627700 voice update:  tg(46814), freq(852150000), slot(-), prio(3)
+04/01/25 13:31:35.385589 duid15, tg(46814)
+OOOOOOOOOOOOOOOOOOOOOOOOOOO04/01/25 13:31:50.078297 control channel timeout
+OO04/01/25 13:31:54.299865 voice update:  tg(46838), freq(853262500), slot(-), prio(3)
+04/01/25 13:31:57.138061 duid15, tg(46838)
+04/01/25 13:31:57.304151 hold active tg(46838)
+04/01/25 13:31:57.326591 hold active tg(46838)
+04/01/25 13:31:57.485455 hold active tg(46838)
+04/01/25 13:31:57.520770 hold active tg(46838)
+04/01/25 13:31:57.733279 hold active tg(46838)
+04/01/25 13:31:57.883174 hold active tg(46838)
+04/01/25 13:31:58.016261 hold active tg(46838)
+04/01/25 13:31:58.017046 hold active tg(46838)
+04/01/25 13:31:58.104544 hold active tg(46838)
+04/01/25 13:31:58.111597 voice update:  tg(46838), freq(853262500), slot(-), prio(3)
+04/01/25 13:31:58.667608 duid15, tg(46838)
+04/01/25 13:31:58.721105 hold active tg(46838)
+04/01/25 13:31:59.235949 hold active tg(46838)
+04/01/25 13:32:00.770469 voice update:  tg(46838), freq(852150000), slot(-), prio(3)
+04/01/25 13:32:01.830597 duid15, tg(46838)
+04/01/25 13:32:01.967252 hold active tg(46838)
+04/01/25 13:32:02.066895 hold active tg(46838)
+04/01/25 13:32:02.068057 hold active tg(46838)
+04/01/25 13:32:02.208374 hold active tg(46838)
+04/01/25 13:32:02.227763 hold active tg(46838)
+04/01/25 13:32:02.355253 hold active tg(46838)
+04/01/25 13:32:26.649344 control channel timeout
+04/01/25 13:32:51.066890 control channel timeout
+04/01/25 13:33:50.091971 voice update:  tg(46813), freq(851200000), slot(-), prio(3)
+04/01/25 13:33:54.797813 duid15, tg(46813)
+04/01/25 13:33:55.351284 hold active tg(46813)
+04/01/25 13:33:56.002693 hold active tg(46813)
+04/01/25 13:33:56.003358 voice update:  tg(46813), freq(851262500), slot(-), prio(3)
+04/01/25 13:33:58.225385 duid15, tg(46813)
+04/01/25 13:33:58.337270 hold active tg(46813)
+04/01/25 13:33:58.446942 hold active tg(46813)
+04/01/25 13:33:58.569699 hold active tg(46813)
+04/01/25 13:33:58.950524 hold active tg(46813)
+04/01/25 13:33:59.297070 hold active tg(46813)
+04/01/25 13:33:59.624107 hold active tg(46813)
+04/01/25 13:33:59.629528 hold active tg(46813)
+04/01/25 13:33:59.630068 voice update:  tg(46813), freq(851262500), slot(-), prio(3)
+04/01/25 13:34:00.099522 duid15, tg(46813)
+04/01/25 13:34:00.825707 voice update:  tg(46813), freq(851262500), slot(-), prio(3)
+04/01/25 13:34:24.909610 duid15, tg(46813)
+04/01/25 13:34:26.413347 hold active tg(46813)
+04/01/25 13:34:26.414100 voice update:  tg(46813), freq(851262500), slot(-), prio(3)
+04/01/25 13:34:27.887234 voice timeout
+04/01/25 13:34:32.035662 voice update:  tg(46813), freq(851200000), slot(-), prio(3)
+04/01/25 13:34:34.330056 duid15, tg(46813)
+04/01/25 13:34:34.459938 hold active tg(46813)
+04/01/25 13:34:34.601123 hold active tg(46813)
+04/01/25 13:34:34.720681 hold active tg(46813)
+04/01/25 13:34:35.062241 hold active tg(46813)
+04/01/25 13:34:35.067186 voice update:  tg(46813), freq(851200000), slot(-), prio(3)
+04/01/25 13:34:35.639109 duid15, tg(46813)
+04/01/25 13:34:35.710237 hold active tg(46813)
+04/01/25 13:34:35.828602 hold active tg(46813)
+04/01/25 13:34:36.332219 hold active tg(46813)
+04/01/25 13:34:36.386083 hold active tg(46813)
+04/01/25 13:34:37.611169 hold active tg(46813)
+04/01/25 13:34:42.849652 voice update:  tg(46814), freq(852650000), slot(-), prio(3)
+04/01/25 13:34:43.494588 duid15, tg(46814)
+04/01/25 13:34:43.557024 hold active tg(46814)
+04/01/25 13:34:43.944756 hold active tg(46814)
+04/01/25 13:34:44.007979 hold active tg(46814)
+04/01/25 13:34:44.867748 hold active tg(46814)
+04/01/25 13:34:45.001922 hold active tg(46814)
+04/01/25 13:34:45.003074 hold active tg(46814)
+04/01/25 13:34:47.734110 voice update:  tg(46814), freq(851150000), slot(-), prio(3)
+04/01/25 13:34:50.154684 duid15, tg(46814)
+04/01/25 13:34:50.537975 hold active tg(46814)
+04/01/25 13:34:51.097321 hold active tg(46814)
+04/01/25 13:34:51.536448 hold active tg(46814)
+04/01/25 13:34:51.536865 voice update:  tg(46814), freq(851150000), slot(-), prio(3)
+04/01/25 13:34:53.697498 duid15, tg(46814)
+04/01/25 13:34:53.844574 hold active tg(46814)
+04/01/25 13:34:54.628921 hold active tg(46814)
+04/01/25 13:34:54.629966 hold active tg(46814)
+04/01/25 13:34:54.640837 hold active tg(46814)
+04/01/25 13:34:54.641275 voice update:  tg(46814), freq(851150000), slot(-), prio(3)
+04/01/25 13:35:09.917277 duid15, tg(46814)
+04/01/25 13:35:10.470530 hold active tg(46814)
+04/01/25 13:35:10.470796 voice update:  tg(46814), freq(851150000), slot(-), prio(3)
+04/01/25 13:35:11.012822 duid15, tg(46814)
+04/01/25 13:35:11.566144 hold active tg(46814)
+04/01/25 13:35:12.648601 control channel timeout
+04/01/25 13:35:12.806346 hold active tg(46814)
+04/01/25 13:35:16.064523 control channel timeout
+04/01/25 13:35:16.340899 voice update:  tg(46814), freq(851462500), slot(-), prio(3)
+04/01/25 13:35:22.347260 duid15, tg(46814)
+04/01/25 13:35:23.163622 hold active tg(46814)
+04/01/25 13:35:23.165434 voice update:  tg(46814), freq(851462500), slot(-), prio(3)
+04/01/25 13:35:23.574053 duid15, tg(46814)
+04/01/25 13:35:23.709576 hold active tg(46814)
+04/01/25 13:35:24.159739 voice update:  tg(46814), freq(851462500), slot(-), prio(3)
+04/01/25 13:35:25.349890 duid15, tg(46814)
+04/01/25 13:35:26.318101 hold active tg(46814)
+04/01/25 13:35:26.318458 voice update:  tg(46814), freq(851462500), slot(-), prio(3)
+04/01/25 13:35:26.722884 duid15, tg(46814)
+04/01/25 13:35:26.861311 hold active tg(46814)
+04/01/25 13:35:27.414430 hold active tg(46814)
+04/01/25 13:35:27.537991 hold active tg(46814)
+04/01/25 13:35:27.948563 hold active tg(46814)
+04/01/25 13:35:32.176514 voice update:  tg(46813), freq(852150000), slot(-), prio(3)
+04/01/25 13:35:34.632031 duid15, tg(46813)
+04/01/25 13:35:34.956674 hold active tg(46813)
+04/01/25 13:35:35.877057 hold active tg(46813)
+04/01/25 13:35:35.877581 voice update:  tg(46813), freq(852150000), slot(-), prio(3)
+04/01/25 13:35:36.284891 duid15, tg(46813)
+04/01/25 13:35:37.093556 hold active tg(46813)
+04/01/25 13:35:37.632072 hold active tg(46813)
+04/01/25 13:35:37.917260 hold active tg(46813)
+04/01/25 13:35:50.883801 voice update:  tg(46813), freq(855462500), slot(-), prio(3)
+04/01/25 13:35:54.704124 duid15, tg(46813)
+04/01/25 13:35:55.432160 hold active tg(46813)
+04/01/25 13:35:55.432616 voice update:  tg(46813), freq(855462500), slot(-), prio(3)
+04/01/25 13:35:55.955356 duid15, tg(46813)
+04/01/25 13:35:56.081563 hold active tg(46813)
+04/01/25 13:35:56.350780 hold active tg(46813)
+04/01/25 13:35:56.618014 hold active tg(46813)
+04/01/25 13:35:56.917534 hold active tg(46813)
+04/01/25 13:35:56.919259 voice update:  tg(46813), freq(855462500), slot(-), prio(3)
+04/01/25 13:35:58.304336 duid15, tg(46813)
+04/01/25 13:35:59.127199 hold active tg(46813)
+04/01/25 13:35:59.137953 voice update:  tg(46813), freq(855462500), slot(-), prio(3)
+04/01/25 13:36:19.546038 duid15, tg(46813)
+04/01/25 13:36:19.582297 hold active tg(46813)
+04/01/25 13:36:20.102122 hold active tg(46813)
+04/01/25 13:36:20.103194 voice update:  tg(46813), freq(855462500), slot(-), prio(3)
+04/01/25 13:36:21.361527 duid15, tg(46813)
+04/01/25 13:36:21.472049 hold active tg(46813)
+04/01/25 13:36:21.483074 hold active tg(46813)
+04/01/25 13:36:22.558661 hold active tg(46813)
+04/01/25 13:36:22.984313 hold active tg(46813)
+04/01/25 13:37:55.973522 voice update:  tg(46813), freq(851537500), slot(-), prio(3)
+04/01/25 13:37:57.613528 duid15, tg(46813)
+04/01/25 13:37:58.405128 hold active tg(46813)
+04/01/25 13:37:58.405545 voice update:  tg(46813), freq(851537500), slot(-), prio(3)
+04/01/25 13:37:58.821085 duid15, tg(46813)
+04/01/25 13:37:59.361607 hold active tg(46813)
+04/01/25 13:38:00.034838 hold active tg(46813)
+04/01/25 13:38:00.451853 hold active tg(46813)
+04/01/25 13:38:00.584925 hold active tg(46813)
+04/01/25 13:38:00.588151 hold active tg(46813)
+04/01/25 13:38:00.589326 hold active tg(46813)
+04/01/25 13:38:00.732174 hold active tg(46813)
+04/01/25 13:38:08.228187 control channel timeout
+04/01/25 13:38:15.603980 voice update:  tg(46813), freq(851762500), slot(-), prio(3)
+04/01/25 13:38:19.432259 duid15, tg(46813)
+04/01/25 13:38:19.698998 hold active tg(46813)
+04/01/25 13:38:20.023856 hold active tg(46813)
+04/01/25 13:38:20.385839 hold active tg(46813)
+04/01/25 13:38:20.386489 voice update:  tg(46813), freq(851762500), slot(-), prio(3)
+04/01/25 13:38:20.805133 duid15, tg(46813)
+04/01/25 13:38:20.931240 hold active tg(46813)
+04/01/25 13:38:21.628356 hold active tg(46813)
+04/01/25 13:38:21.751193 hold active tg(46813)
+04/01/25 13:38:22.299169 hold active tg(46813)
+04/01/25 13:38:22.431516 hold active tg(46813)
+04/01/25 13:38:22.443705 hold active tg(46813)
+04/01/25 13:38:22.444259 hold active tg(46813)
+04/01/25 13:38:44.957607 voice update:  tg(46813), freq(852787500), slot(-), prio(3)
+04/01/25 13:38:47.417498 duid15, tg(46813)
+04/01/25 13:38:47.556188 hold active tg(46813)
+04/01/25 13:38:47.568222 hold active tg(46813)
+04/01/25 13:38:47.824705 hold active tg(46813)
+04/01/25 13:38:48.243926 hold active tg(46813)
+04/01/25 13:38:48.378353 hold active tg(46813)
+04/01/25 13:38:48.513579 hold active tg(46813)
+04/01/25 13:38:48.514274 hold active tg(46813)
+04/01/25 13:38:48.517588 voice update:  tg(46813), freq(852787500), slot(-), prio(3)
+04/01/25 13:38:48.924767 duid15, tg(46813)
+04/01/25 13:38:49.073268 hold active tg(46813)
+04/01/25 13:38:49.198095 hold active tg(46813)
+04/01/25 13:38:49.470218 hold active tg(46813)
+04/01/25 13:38:49.470730 voice update:  tg(46813), freq(852787500), slot(-), prio(3)
+04/01/25 13:38:50.846652 duid15, tg(46813)
+04/01/25 13:38:50.977616 hold active tg(46813)
+04/01/25 13:38:50.978604 hold active tg(46813)
+04/01/25 13:38:50.989618 hold active tg(46813)
+04/01/25 13:38:51.134779 hold active tg(46813)
+04/01/25 13:38:51.141481 hold active tg(46813)
+04/01/25 13:38:51.545561 hold active tg(46813)
+04/01/25 13:38:52.106086 hold active tg(46813)
+04/01/25 13:38:52.106738 voice update:  tg(46813), freq(852787500), slot(-), prio(3)
+04/01/25 13:38:58.494736 duid15, tg(46813)
+04/01/25 13:38:58.746203 hold active tg(46813)
+04/01/25 13:38:59.298667 hold active tg(46813)
+04/01/25 13:38:59.978973 hold active tg(46813)
+04/01/25 13:39:00.003843 hold active tg(46813)
+04/01/25 13:39:00.004474 voice update:  tg(46813), freq(852787500), slot(-), prio(3)
+04/01/25 13:39:01.478764 PCM underrun
+04/01/25 13:39:14.308226 duid15, tg(46813)
+04/01/25 13:39:14.342210 hold active tg(46813)
+04/01/25 13:39:14.443945 hold active tg(46813)
+04/01/25 13:39:14.589436 hold active tg(46813)
+04/01/25 13:39:14.589968 hold active tg(46813)
+04/01/25 13:39:15.132365 hold active tg(46813)
+04/01/25 13:39:15.133235 hold active tg(46813)
+04/01/25 13:39:15.133638 voice update:  tg(46813), freq(852787500), slot(-), prio(3)
+04/01/25 13:39:15.563369 duid15, tg(46813)
+04/01/25 13:39:18.550735 voice update:  tg(46813), freq(852787500), slot(-), prio(3)
+04/01/25 13:39:18.960832 duid15, tg(46813)
+04/01/25 13:39:20.728312 hold active tg(46813)
+04/01/25 13:39:20.728902 hold active tg(46813)
+04/01/25 13:39:20.871092 hold active tg(46813)
+04/01/25 13:39:24.006762 voice update:  tg(46838), freq(852150000), slot(-), prio(3)
+04/01/25 13:39:30.283953 duid15, tg(46838)
+04/01/25 13:39:30.428790 hold active tg(46838)
+04/01/25 13:39:30.572838 hold active tg(46838)
+04/01/25 13:39:30.706652 hold active tg(46838)
+04/01/25 13:39:30.707034 voice update:  tg(46838), freq(852150000), slot(-), prio(3)
+04/01/25 13:39:31.115590 duid15, tg(46838)
+04/01/25 13:39:31.253621 hold active tg(46838)
+04/01/25 13:39:31.511698 hold active tg(46838)
+04/01/25 13:39:31.787488 hold active tg(46838)
+04/01/25 13:39:32.605846 hold active tg(46838)
+04/01/25 13:39:32.748886 hold active tg(46838)
+04/01/25 13:39:34.660007 voice update:  tg(46813), freq(851537500), slot(-), prio(3)
+04/01/25 13:39:35.067526 duid15, tg(46813)
+04/01/25 13:39:35.212788 hold active tg(46813)
+04/01/25 13:39:35.356544 hold active tg(46813)
+04/01/25 13:39:36.848909 hold active tg(46813)
+04/01/25 13:39:36.849178 voice update:  tg(46813), freq(851537500), slot(-), prio(3)
+04/01/25 13:39:38.220169 PCM underrun
+04/01/25 13:39:39.157828 duid15, tg(46813)
+04/01/25 13:39:39.191286 hold active tg(46813)
+04/01/25 13:39:39.987727 hold active tg(46813)
+04/01/25 13:39:39.988112 voice update:  tg(46813), freq(851537500), slot(-), prio(3)
+04/01/25 13:39:40.405115 duid15, tg(46813)
+04/01/25 13:39:40.541658 hold active tg(46813)
+04/01/25 13:39:40.675384 hold active tg(46813)
+04/01/25 13:39:42.169461 hold active tg(46813)
+04/01/25 13:39:44.904679 voice update:  tg(46949), freq(852787500), slot(-), prio(3)
+04/01/25 13:39:50.905261 PCM underrun
+04/01/25 13:39:54.049661 PCM underrun
+04/01/25 13:40:03.060981 PCM underrun
+04/01/25 13:40:09.749286 duid15, tg(46949)
+04/01/25 13:40:09.884976 hold active tg(46949)
+04/01/25 13:40:10.357882 hold active tg(46949)
+04/01/25 13:40:10.358348 hold active tg(46949)
+04/01/25 13:40:10.463974 hold active tg(46949)
+04/01/25 13:40:10.466063 hold active tg(46949)
+04/01/25 13:40:10.466568 hold active tg(46949)
+04/01/25 13:40:10.726021 hold active tg(46949)
+04/01/25 13:40:10.730094 hold active tg(46949)
+04/01/25 13:40:11.263868 hold active tg(46949)
+04/01/25 13:40:11.389309 hold active tg(46949)
+04/01/25 13:40:11.928159 voice update:  tg(47021), freq(853650000), slot(-), prio(3)
+04/01/25 13:40:23.736195 duid15, tg(47021)
+04/01/25 13:40:24.377898 hold active tg(47021)
+04/01/25 13:40:24.436272 hold active tg(47021)
+04/01/25 13:40:24.997648 hold active tg(47021)
+04/01/25 13:40:25.457958 hold active tg(47021)
+04/01/25 13:40:25.740081 voice update:  tg(46838), freq(851150000), slot(-), prio(3)
+04/01/25 13:40:26.292946 duid15, tg(46838)
+04/01/25 13:40:26.356698 hold active tg(46838)
+04/01/25 13:40:26.872824 hold active tg(46838)
+04/01/25 13:40:28.204812 hold active tg(46838)
+04/01/25 13:40:29.462632 voice update:  tg(46838), freq(851762500), slot(-), prio(3)
+04/01/25 13:40:48.795646 duid15, tg(46838)
+04/01/25 13:40:49.213698 voice update:  tg(46838), freq(851762500), slot(-), prio(3)
+04/01/25 13:40:52.211296 duid15, tg(46838)
+04/01/25 13:40:52.349781 hold active tg(46838)
+04/01/25 13:40:52.361236 hold active tg(46838)
+04/01/25 13:40:52.484450 hold active tg(46838)
+04/01/25 13:40:52.629893 hold active tg(46838)
+04/01/25 13:40:53.032763 hold active tg(46838)
+04/01/25 13:40:53.850921 hold active tg(46838)
+04/01/25 13:40:54.275789 voice update:  tg(46813), freq(852962500), slot(-), prio(3)
+04/01/25 13:40:59.720922 duid15, tg(46813)
+04/01/25 13:41:00.413175 hold active tg(46813)
+04/01/25 13:41:00.413492 voice update:  tg(46813), freq(852962500), slot(-), prio(3)
+04/01/25 13:41:00.836739 duid15, tg(46813)
+04/01/25 13:41:01.380210 hold active tg(46813)
+04/01/25 13:41:01.504160 hold active tg(46813)
+04/01/25 13:41:01.904812 hold active tg(46813)
+04/01/25 13:41:01.919364 hold active tg(46813)
+04/01/25 13:41:01.920100 hold active tg(46813)
+04/01/25 13:41:02.309950 hold active tg(46813)
+04/01/25 13:41:03.570687 voice update:  tg(46838), freq(851262500), slot(-), prio(3)
+04/01/25 13:41:04.434676 duid15, tg(46838)
+04/01/25 13:41:04.505297 hold active tg(46838)
+04/01/25 13:41:04.517894 hold active tg(46838)
+04/01/25 13:41:04.784735 hold active tg(46838)
+04/01/25 13:41:05.345018 hold active tg(46838)
+04/01/25 13:41:05.345515 voice update:  tg(46838), freq(851262500), slot(-), prio(3)
+04/01/25 13:41:05.874993 duid15, tg(46838)
+04/01/25 13:41:06.703442 hold active tg(46838)
+04/01/25 13:41:06.985929 hold active tg(46838)
+04/01/25 13:41:07.243629 hold active tg(46838)
+04/01/25 13:41:07.671713 hold active tg(46838)
+04/01/25 13:41:09.686740 voice update:  tg(46813), freq(851150000), slot(-), prio(3)
+04/01/25 13:41:10.552726 duid15, tg(46813)
+04/01/25 13:41:11.060490 hold active tg(46813)
+04/01/25 13:41:11.082014 hold active tg(46813)
+04/01/25 13:41:11.082546 voice update:  tg(46813), freq(851150000), slot(-), prio(3)
+04/01/25 13:41:11.511547 duid15, tg(46813)
+04/01/25 13:41:11.640001 hold active tg(46813)
+04/01/25 13:41:11.765096 hold active tg(46813)
+04/01/25 13:41:12.025743 hold active tg(46813)
+04/01/25 13:41:12.026554 voice update:  tg(46813), freq(851150000), slot(-), prio(3)
+04/01/25 13:41:13.265256 voice timeout
+04/01/25 13:41:13.942870 hold active tg(46813)
+04/01/25 13:41:17.734066 voice update:  tg(46813), freq(853262500), slot(-), prio(3)
+04/01/25 13:41:21.457521 duid15, tg(46813)
+04/01/25 13:41:22.112961 hold active tg(46813)
+04/01/25 13:41:22.124906 hold active tg(46813)
+04/01/25 13:41:22.125586 voice update:  tg(46813), freq(853262500), slot(-), prio(3)
+04/01/25 13:41:25.796459 duid15, tg(46813)
+04/01/25 13:41:25.832975 hold active tg(46813)
+04/01/25 13:41:25.833757 hold active tg(46813)
+04/01/25 13:41:25.948976 hold active tg(46813)
+04/01/25 13:41:26.912504 hold active tg(46813)
+04/01/25 13:41:27.578454 hold active tg(46813)
+04/01/25 13:41:27.578908 voice update:  tg(46813), freq(853262500), slot(-), prio(3)
+04/01/25 13:41:28.929030 duid15, tg(46813)
+04/01/25 13:41:28.964995 hold active tg(46813)
+04/01/25 13:41:28.965520 hold active tg(46813)
+04/01/25 13:41:29.629468 hold active tg(46813)
+04/01/25 13:41:29.630055 voice update:  tg(46813), freq(853262500), slot(-), prio(3)
+04/01/25 13:41:33.725523 duid15, tg(46813)
+04/01/25 13:41:34.126619 hold active tg(46813)
+04/01/25 13:41:34.958637 hold active tg(46813)
+04/01/25 13:41:34.959107 voice update:  tg(46813), freq(853262500), slot(-), prio(3)
+04/01/25 13:41:36.105113 duid15, tg(46813)
+04/01/25 13:41:36.195211 hold active tg(46813)
+04/01/25 13:41:36.326586 hold active tg(46813)
+04/01/25 13:41:36.603327 hold active tg(46813)
+04/01/25 13:41:36.604030 voice update:  tg(46813), freq(853262500), slot(-), prio(3)
+04/01/25 13:41:37.036756 duid15, tg(46813)
+04/01/25 13:41:37.155381 hold active tg(46813)
+04/01/25 13:41:37.269125 hold active tg(46813)
+04/01/25 13:41:37.553367 hold active tg(46813)
+04/01/25 13:41:37.970385 hold active tg(46813)
+04/01/25 13:41:37.973740 voice update:  tg(46813), freq(853262500), slot(-), prio(3)
+04/01/25 13:41:39.039562 duid15, tg(46813)
+04/01/25 13:41:39.325681 hold active tg(46813)
+04/01/25 13:41:39.327013 hold active tg(46813)
+04/01/25 13:41:39.584690 hold active tg(46813)
+04/01/25 13:41:39.585218 voice update:  tg(46813), freq(853262500), slot(-), prio(3)
+04/01/25 13:41:40.018627 duid15, tg(46813)
+04/01/25 13:41:40.154034 hold active tg(46813)
+04/01/25 13:41:40.308889 hold active tg(46813)
+04/01/25 13:41:41.576226 hold active tg(46813)
+04/01/25 13:41:49.410831 voice update:  tg(46949), freq(851200000), slot(-), prio(3)
+04/01/25 13:42:14.700690 duid15, tg(46949)
+04/01/25 13:42:15.631254 hold active tg(46949)
+04/01/25 13:42:15.642955 hold active tg(46949)
+04/01/25 13:42:16.447443 hold active tg(46949)
+04/01/25 13:42:16.458528 hold active tg(46949)
+04/01/25 13:42:47.040670 voice update:  tg(46801), freq(851262500), slot(-), prio(3)
+04/01/25 13:42:49.779517 duid15, tg(46801)
+04/01/25 13:42:49.907289 hold active tg(46801)
+04/01/25 13:42:50.051318 hold active tg(46801)
+04/01/25 13:42:50.322302 hold active tg(46801)
+04/01/25 13:42:50.322776 voice update:  tg(46801), freq(851262500), slot(-), prio(3)
+04/01/25 13:42:50.860376 duid15, tg(46801)
+04/01/25 13:42:50.940972 hold active tg(46801)
+04/01/25 13:42:51.083140 hold active tg(46801)
+04/01/25 13:42:51.178606 hold active tg(46801)
+04/01/25 13:42:51.984598 hold active tg(46801)
+04/01/25 13:42:52.641141 hold active tg(46801)
+04/01/25 13:43:31.405666 voice update:  tg(46801), freq(851537500), slot(-), prio(3)
+04/01/25 13:43:34.816101 duid15, tg(46801)
+04/01/25 13:43:34.962627 hold active tg(46801)
+04/01/25 13:43:35.096181 hold active tg(46801)
+04/01/25 13:43:35.516546 hold active tg(46801)
+04/01/25 13:43:36.194457 hold active tg(46801)
+04/01/25 13:43:36.194770 voice update:  tg(46801), freq(851537500), slot(-), prio(3)
+04/01/25 13:43:37.689755 PCM underrun
+04/01/25 13:43:38.240635 duid15, tg(46801)
+04/01/25 13:43:38.375448 hold active tg(46801)
+04/01/25 13:43:38.518191 hold active tg(46801)
+04/01/25 13:43:38.641865 hold active tg(46801)
+04/01/25 13:43:39.051514 hold active tg(46801)
+04/01/25 13:43:39.052900 voice update:  tg(46801), freq(851537500), slot(-), prio(3)
+04/01/25 13:43:39.468561 duid15, tg(46801)
+04/01/25 13:43:39.596153 hold active tg(46801)
+04/01/25 13:43:39.621279 hold active tg(46801)
+04/01/25 13:43:39.745054 hold active tg(46801)
+04/01/25 13:43:40.154539 hold active tg(46801)
+04/01/25 13:43:40.277355 hold active tg(46801)
+04/01/25 13:43:40.420245 hold active tg(46801)
+04/01/25 13:43:40.553042 hold active tg(46801)
+04/01/25 13:43:44.242904 voice update:  tg(46814), freq(851150000), slot(-), prio(3)
+04/01/25 13:43:44.652308 duid15, tg(46814)
+04/01/25 13:43:45.607104 hold active tg(46814)
+04/01/25 13:43:45.607368 voice update:  tg(46814), freq(855462500), slot(-), prio(3)
+04/01/25 13:43:47.660768 duid15, tg(46814)
+04/01/25 13:43:47.811808 hold active tg(46814)
+04/01/25 13:43:47.925260 hold active tg(46814)
+04/01/25 13:43:48.196211 hold active tg(46814)
+04/01/25 13:43:48.198205 voice update:  tg(46814), freq(855462500), slot(-), prio(3)
+04/01/25 13:43:48.621892 duid15, tg(46814)
+04/01/25 13:43:48.886330 hold active tg(46814)
+04/01/25 13:43:49.035287 hold active tg(46814)
+04/01/25 13:43:49.171898 hold active tg(46814)
+04/01/25 13:43:49.559602 hold active tg(46814)
+04/01/25 13:43:50.114905 hold active tg(46814)
+04/01/25 13:43:50.115302 voice update:  tg(46814), freq(855462500), slot(-), prio(3)
+04/01/25 13:43:50.936074 duid15, tg(46814)
+04/01/25 13:43:51.475571 hold active tg(46814)
+04/01/25 13:43:51.887217 hold active tg(46814)
+04/01/25 13:43:51.887842 voice update:  tg(46814), freq(855462500), slot(-), prio(3)
+04/01/25 13:43:52.306270 duid15, tg(46814)
+04/01/25 13:43:52.853847 hold active tg(46814)
+04/01/25 13:43:53.133090 hold active tg(46814)
+04/01/25 13:43:53.549757 hold active tg(46814)
+04/01/25 13:43:53.740017 hold active tg(46814)
+04/01/25 13:43:54.215854 hold active tg(46814)
+04/01/25 13:43:54.219805 voice update:  tg(46814), freq(851537500), slot(-), prio(3)
+04/01/25 13:43:56.592380 duid15, tg(46814)
+04/01/25 13:43:57.364326 hold active tg(46814)
+04/01/25 13:43:57.365052 voice update:  tg(46814), freq(851537500), slot(-), prio(3)
+04/01/25 13:43:58.650666 duid15, tg(46814)
+04/01/25 13:43:59.623249 hold active tg(46814)
+04/01/25 13:43:59.632308 voice update:  tg(46814), freq(851537500), slot(-), prio(3)
+04/01/25 13:44:00.169748 duid15, tg(46814)
+04/01/25 13:44:00.797688 hold active tg(46814)
+04/01/25 13:44:01.635104 hold active tg(46814)
+04/01/25 13:44:03.007182 voice update:  tg(46949), freq(851762500), slot(-), prio(3)

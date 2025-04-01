@@ -55,6 +55,294 @@
   </div>
 </div>
 
+<!-- Add Record Button -->
+<button type="button" class="btn btn-success" onclick="openAddModal()">Add Record</button>
+
+<!-- Example Edit Button (for a table row) -->
+<button type="button" class="btn btn-primary" onclick="editRecord(0)">Edit Record (Index 0)</button>
+
+<!-- Modal for Editing/Adding OP25 System -->
+<div class="modal fade" id="editSystem" tabindex="-1" aria-labelledby="editSystemLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editSystemLabel">Edit OP25 System</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editOp25SystemForm">
+          <!-- Hidden field to store record index (if editing) -->
+          <input type="hidden" id="recordIndex" value="">
+          
+          <fieldset>
+            <legend>System Identification</legend>
+            <div class="row mb-3">
+              <div class="col-3">
+                <label for="sysid" class="form-label">System ID</label>
+                <input type="text" class="form-control form-control-sm" id="sysid" disabled>
+              </div>
+              <div class="col-9">
+                <label for="sysname" class="form-label">System Name</label>
+                <input type="text" class="form-control form-control-sm" id="sysname" disabled>
+              </div>
+            </div>
+          </fieldset>
+          
+          <fieldset>
+            <legend>Channel Settings</legend>
+            <div class="mb-3">
+              <label for="controlChannelInput" class="form-label">Control Channel List</label>
+              <!-- Pills container -->
+              <div id="controlChannelPills" class="mb-2"></div>
+              <!-- Input for adding frequencies -->
+              <input type="text" class="form-control form-control-sm" id="controlChannelInput" placeholder="Enter frequency and press Enter or Space">
+              <!-- Hidden input to store comma-separated frequencies -->
+              <input type="hidden" id="controlChannelList" name="controlChannelList" value="">
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <label for="offset" class="form-label">Offset</label>
+                <input type="text" class="form-control form-control-sm" id="offset">
+              </div>
+              <div class="col">
+                <label for="nac" class="form-label">NAC</label>
+                <input type="text" class="form-control form-control-sm" id="nac">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <label for="centerFrequency" class="form-label">Center Frequency</label>
+                <input type="text" class="form-control form-control-sm" id="centerFrequency">
+              </div>
+              <div class="col">
+                <label for="modulation" class="form-label">Modulation</label>
+                <input type="text" class="form-control form-control-sm" id="modulation">
+              </div>
+            </div>
+          </fieldset>
+          
+          <fieldset>
+            <legend>Options</legend>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="delete">
+              <label for="delete" class="form-check-label">Delete System</label>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveButton">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript Section -->
+<script>
+  // Global records variable simulating an API response
+  var records = [
+    {
+      "sysid": "",
+      "blacklist": null,
+      "center_frequency": "",
+      "control_channels": [853.925, 853.9625, 853.4625, 853.15],
+      "index": 0,
+      "modulation": "cqpsk",
+      "nac": "0",
+      "offset": 0,
+      "sysname": "Wake County Simulcast",
+      "tgid_tags_file": null,
+      "whitelist": null
+    },
+    {
+      "sysid": "",
+      "blacklist": null,
+      "center_frequency": "",
+      "control_channels": [859.9875, 858.9875, 857.9875],
+      "index": 1,
+      "modulation": "",
+      "nac": "591",
+      "offset": "",
+      "sysname": "Cary Simulcast",
+      "tgid_tags_file": null,
+      "whitelist": null
+    }
+  ];
+  
+  // Array to store control channels for the current record
+  var controlChannels = [];
+  var input = document.getElementById("controlChannelInput");
+  var pillsContainer = document.getElementById("controlChannelPills");
+  var hiddenInput = document.getElementById("controlChannelList");
+  
+  // Function to update the hidden input field
+  function updateHiddenInput() {
+    hiddenInput.value = controlChannels.join(", ");
+  }
+  
+  // Function to add a pill with a delete icon using Font Awesome
+  function addPill(frequency) {
+    var pill = document.createElement("span");
+    pill.className = "badge bg-secondary me-1 mb-1";
+    
+    // Add frequency text
+    var textNode = document.createTextNode(frequency + " ");
+    pill.appendChild(textNode);
+    
+    // Add delete icon
+    var deleteIcon = document.createElement("i");
+    deleteIcon.className = "fas fa-times";
+    deleteIcon.style.cursor = "pointer";
+    deleteIcon.addEventListener("click", function() {
+      var index = controlChannels.indexOf(frequency);
+      if (index > -1) {
+        controlChannels.splice(index, 1);
+        updateHiddenInput();
+      }
+      pillsContainer.removeChild(pill);
+    });
+    
+    pill.appendChild(deleteIcon);
+    pillsContainer.appendChild(pill);
+  }
+  
+  // Listen for Enter or Space key on the input field
+  input.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      var frequency = input.value.trim();
+      if (frequency !== "") {
+        var num = parseFloat(frequency);
+        if (!isNaN(num)) {
+          // Format to 4 decimal places (append ending zeros if needed)
+          frequency = num.toFixed(4);
+        }
+        controlChannels.push(frequency);
+        addPill(frequency);
+        updateHiddenInput();
+        input.value = "";
+      }
+    }
+  });
+  
+  // Save button event handler
+  document.getElementById("saveButton").addEventListener("click", function() {
+    // Retrieve form values
+    var recordIndexField = document.getElementById("recordIndex").value;
+    var sysid = document.getElementById("sysid").value;
+    var sysname = document.getElementById("sysname").value;
+    var controlChannelsStr = document.getElementById("controlChannelList").value;
+    var controlChannelsArray = controlChannelsStr.split(",").map(function(item) { 
+      return parseFloat(item.trim()); 
+    }).filter(function(num) { return !isNaN(num); });
+    var offset = document.getElementById("offset").value;
+    var nac = document.getElementById("nac").value;
+    var centerFrequency = document.getElementById("centerFrequency").value;
+    var modulation = document.getElementById("modulation").value;
+    var deleteChecked = document.getElementById("delete").checked;
+    
+    if (recordIndexField !== "") {
+      // Editing an existing record
+      var idx = parseInt(recordIndexField, 10);
+      var record = records.find(function(r) { return r.index === idx; });
+      if (record) {
+        if (deleteChecked) {
+          // Remove the record if delete is checked
+          records = records.filter(function(r) { return r.index !== idx; });
+        } else {
+          record.control_channels = controlChannelsArray;
+          record.offset = offset;
+          record.nac = nac;
+          record.center_frequency = centerFrequency;
+          record.modulation = modulation;
+          // Optionally update sysid and sysname if needed
+        }
+      }
+    } else {
+      // Adding a new record
+      var newIndex = records.length > 0 ? Math.max.apply(null, records.map(function(r) { return r.index; })) + 1 : 0;
+      var newRecord = {
+        sysid: sysid,
+        sysname: sysname,
+        control_channels: controlChannelsArray,
+        offset: offset,
+        nac: nac,
+        center_frequency: centerFrequency,
+        modulation: modulation,
+        index: newIndex,
+        blacklist: null,
+        tgid_tags_file: null,
+        whitelist: null
+      };
+      records.push(newRecord);
+    }
+    
+    // Close the modal (Bootstrap 5)
+    var modalEl = document.getElementById("editSystem");
+    var modalInstance = bootstrap.Modal.getInstance(modalEl);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+    
+    // For demonstration: log the updated records array
+    console.log(records);
+  });
+  
+  // Function to launch the modal for editing an existing record
+  function editRecord(recordIndex) {
+    var record = records.find(function(r) { return r.index === recordIndex; });
+    if (!record) return;
+    
+    // Populate form fields with record data
+    document.getElementById("recordIndex").value = record.index;
+    document.getElementById("sysid").value = record.sysid;
+    document.getElementById("sysname").value = record.sysname;
+    document.getElementById("offset").value = record.offset;
+    document.getElementById("nac").value = record.nac;
+    document.getElementById("centerFrequency").value = record.center_frequency;
+    document.getElementById("modulation").value = record.modulation;
+    document.getElementById("delete").checked = false;
+    
+    // Populate control channels pills
+    controlChannels = [];
+    pillsContainer.innerHTML = "";
+    record.control_channels.forEach(function(freq) {
+      var formatted = parseFloat(freq).toFixed(4);
+      controlChannels.push(formatted);
+      addPill(formatted);
+    });
+    updateHiddenInput();
+    
+    // Show the modal
+    var modalEl = document.getElementById("editSystem");
+    var modal = new bootstrap.Modal(modalEl);
+    modal.show();
+  }
+  
+  // Function to open the modal for adding a new record
+  function openAddModal() {
+    document.getElementById("recordIndex").value = "";
+    document.getElementById("sysid").value = "";
+    document.getElementById("sysname").value = "";
+    document.getElementById("offset").value = "";
+    document.getElementById("nac").value = "";
+    document.getElementById("centerFrequency").value = "";
+    document.getElementById("modulation").value = "";
+    document.getElementById("delete").checked = false;
+    
+    controlChannels = [];
+    pillsContainer.innerHTML = "";
+    updateHiddenInput();
+    
+    var modalEl = document.getElementById("editSystem");
+    var modal = new bootstrap.Modal(modalEl);
+    modal.show();
+  }
+</script>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editSystem">Open Edit System</button>
+
   <h2 class="mt-4">System Configuration</h2>
   <p>
     This tool allows you to configure P25 trunked radio systems for use with the OP25 scanner platform.
@@ -80,12 +368,7 @@
       <tr>
         <th>Index</th>
         <th>Sysname</th>
-        <th>SysId</th>
-        <th>Control Channel List</th>
-        <th>Offset</th>
         <th>NAC</th>
-        <th>Modulation</th>
-        <th>Center Frequency</th>
         <th></th> <!-- Delete icon column -->
       </tr>
     </thead>
@@ -94,9 +377,6 @@
 
 </div>
 </div>
-<script>
-
-</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/backend.js"></script>
 </body>

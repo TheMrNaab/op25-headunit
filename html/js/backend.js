@@ -164,14 +164,16 @@ function parseRRCSV(text) {
 async function loadServerData() {
   const req = await fetch(`${API_BASE_URL}/admin/systems/`);
   const response = await req.json();
+  console.log(response);
   renderTable(response); // Pass the parsed data to renderTable
+ 
 }
 
 // Renders table rows using the provided data
 async function renderTable(data) {
   const tbody = document.querySelector('#dataTable tbody'); // Moved here
   tbody.innerHTML = ''; // Clear existing rows
-
+  console.log(data);
   // Store in global `records` and map in the sysid
   records = Object.entries(data).map(([sysid, obj]) => ({
     sysid,
@@ -182,15 +184,12 @@ async function renderTable(data) {
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>${index + 1}</td>
-      ${createTableInputField(index, "Sysname", rec["sysname"])}
-      ${createTableInputField(index, "Sysid", rec["sysid"])}
-      ${createTableInputField(index, "Control Channel List", (rec["control_channels"] || []).join(','))}
-      ${createTableInputField(index, "Offset", rec["offset"])}
-      ${createTableInputField(index, "NAC", rec["nac"])}
-      ${createTableInputField(index, "Modulation", rec["modulation"])}
-      ${createTableInputField(index, "Center Frequency", rec["center_frequency"])}
+      ${p(index, "Sysname", rec["sysname"])}
+      ${p(index, "NAC", rec["nac"])}
       <td class="text-center">
-        <i class="fas fa-trash-alt text-danger" role="button" onclick="deleteRow(${index})"></i>
+        <i class="fas fa-trash-alt text-danger mr-4" role="button" onclick="deleteRow(${index})"></i>
+        <i class="fa fa-pencil text-primary" role="button" onclick="editRecord(${index})"></i>
+        </i>
       </td>
     `;
     tbody.appendChild(row);
@@ -210,6 +209,9 @@ async function renderTable(data) {
     `;
   }
 
+  function p(index, id, text){
+    return `<td id="${id}" data-index="${index}" class="text-truncate">${text}</td>`;
+  }
   function createTableHiddenField(innerHTML, fieldName, fieldValue) {
     return `<td>
   ${innerHTML}<input type="hidden" name="${fieldName}" value="${value}">
