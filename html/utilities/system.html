@@ -37,7 +37,6 @@
   </nav>
 
   <div class="main-container">
-  <!-- Import Modal Trigger Button (kept in button group) -->
 <!-- Import Modal -->
 <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -55,11 +54,10 @@
   </div>
 </div>
 
-<!-- Add Record Button -->
-<button type="button" class="btn btn-success" onclick="openAddModal()">Add Record</button>
-
-<!-- Example Edit Button (for a table row) -->
+<!--
+<button type="button" class="btn btn-success" onclick="">Add Record</button>
 <button type="button" class="btn btn-primary" onclick="editRecord(0)">Edit Record (Index 0)</button>
+-->
 
 <!-- Modal for Editing/Adding OP25 System -->
 <div class="modal fade" id="editSystem" tabindex="-1" aria-labelledby="editSystemLabel" aria-hidden="true">
@@ -83,7 +81,7 @@
               </div>
               <div class="col-9">
                 <label for="sysname" class="form-label">System Name</label>
-                <input type="text" class="form-control form-control-sm" id="sysname" disabled>
+                <input type="text" class="form-control form-control-sm" id="sysname">
               </div>
             </div>
           </fieldset>
@@ -116,7 +114,7 @@
               </div>
               <div class="col">
                 <label for="modulation" class="form-label">Modulation</label>
-                <input type="text" class="form-control form-control-sm" id="modulation">
+                <input type="text" class="form-control form-control-sm" data-default="cqpsk" placeholder="cqpsk" id="modulation">
               </div>
             </div>
           </fieldset>
@@ -137,6 +135,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- JavaScript Section -->
 <script>
@@ -341,7 +340,6 @@
   }
 </script>
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editSystem">Open Edit System</button>
 
   <h2 class="mt-4">System Configuration</h2>
   <p>
@@ -353,13 +351,13 @@
     Once imported, you may review and edit the details of each system. When ready, click <strong>Save</strong> to upload the configuration
     to the server. This setup supports only one system at a time. Each row represents a radio system site with a list of its control channels.
   </p>
+
+  <!--TOOLBAR BUTTONS-->
   <div class="btn-group mb-3" role="group">
-    <button class="btn btn-outline-secondary" onclick="createNew()">New</button>
-    <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#importModal">Import</button>
-    <div class="vr mx-2"></div>
-    <button class="btn btn-outline-secondary" onclick="postJSON()">Save</button>
-    <!-- ADD SPACER? -->
-    <button class="btn btn-outline-secondary" onclick="addRow()">Add Row</button>
+    <button class="btn btn-success" onclick="openAddModal()"><i class="fas fa-plus me-2"></i>Add System</button>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importModal"><i class="fas fa-download me-2"></i>Import</button>
+    <button class="btn btn-success" onclick="postJSON()"><i class="fas fa-save me-2"></i>Save</button>
+    <!-- <button class="btn btn-secondary" onclick="addRow()">Add Row</button> -->
 
   </div>
 

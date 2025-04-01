@@ -101,6 +101,12 @@ class TalkgroupManager:
         self.file_path = file_path
         self._data = self._read_file()
         self._sets = self._initialize_sets()
+        
+    def reload(self):
+        """Reloads the talkgroup data from the file."""
+        self._data = self._read_file()
+        self._sets = self._initialize_sets()
+        self.logIT("Talkgroup data reloaded.")
 
     def _read_file(self) -> dict:
         if not os.path.exists(self.file_path):

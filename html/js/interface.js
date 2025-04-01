@@ -44,10 +44,20 @@ function listenLogStream() {
 }
 
 // UI
-function showDynamicModal(title = "Dynamic Modal", bodyContent = "") {
+function showDynamicModal(title = "Dynamic Modal", bodyContent = "", footerContent="") {
   // Remove any existing modal
+  var footerHTML = ""
   const existing = document.getElementById("dynamicModal");
   if (existing) existing.remove();
+
+  // Create footer if content is provided
+  if (footerContent!=""){
+      footerHTML = `<div class="modal-footer">
+      ${footerContent}
+      </div>`;
+  }
+
+
 
   // Create modal wrapper
   const modal = document.createElement("div");
@@ -62,6 +72,7 @@ function showDynamicModal(title = "Dynamic Modal", bodyContent = "") {
               <div class="modal-body text-start">
                   ${bodyContent}
               </div>
+            ${footerHTML}
           </div>
       </div>
   </div>
@@ -116,7 +127,11 @@ async function updateNetworkModal(data) {
   collection.forEach((row) => {
       bodyContent += row.outerHTML;
   });
-  showDynamicModal("Device Status", bodyContent);
+
+  // TODO: Implement Restart System
+  const footerContent = `<button class="btn btn-warning" onClick="reloadSystem()" disabled><i class="fas fa-refresh me-1"></i>Reload System</button>`;
+
+  showDynamicModal("Device Status", bodyContent, footerContent);
 }
 
 function createBootstrapRow(...elements) {

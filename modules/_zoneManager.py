@@ -17,7 +17,12 @@ class zoneManager:
         print("Init...")
         self.file_path = file_path
         self._zones = self._load_zones()
-
+        
+    def reload(self):
+        self.append_line_to_file("zoneManager.reload()")
+        self._zones = self._load_zones()
+        self.append_line_to_file("zoneManager.reload() -> Done")
+        
     def _load_zones(self) -> List["zoneMember"]:
         print("Load Zones...")
         if not os.path.exists(self.file_path):

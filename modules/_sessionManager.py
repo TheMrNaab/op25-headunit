@@ -29,6 +29,12 @@ class SessionManager(object):
         # Pass self into session to resolve the circular reference
         self._thisSession = SessionMember(self, defaultSystemIndex, defaultZoneIndex, defaultChannelIndex)
     
+    def reloadManagers(self) -> bool:
+        self._zoneManager._load_zones()
+        self._talkgroupsManager.reload() 
+        #TODO: RELOAD SYSTEMS MANAGER
+        pass
+    
     @property 
     def apiManager(self) -> "API":
         return self._apiManager
