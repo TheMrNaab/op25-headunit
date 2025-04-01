@@ -1,15 +1,16 @@
 {
     "0": {
         "sysid": "",
-        "sysname": "Wake County Simulcast 1",
+        "sysname": "Wake County Simulcast",
         "control_channels": [
+            853.9250,
             853.9625,
             853.4625,
-            853.15
+            853.1500
         ],
-        "offset": "",
-        "nac": "592",
-        "modulation": "",
+        "offset": 0,
+        "nac": "0",
+        "modulation": "cqpsk",
         "tgid_tags_file": null,
         "whitelist": null,
         "blacklist": null,

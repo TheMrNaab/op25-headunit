@@ -79,7 +79,7 @@ class op25Manager:
             self.op25_command = [
                 self.rx_script, "--nocrypt", "--args", "rtl",
                 "--gains", "lna:35", "-S", "960000", "-q", "0",
-                "-v", "1", "-2", "-V", "-U",
+                "-v", "2", "-2", "-V", "-U",
                 "-T", self.session.activeSystem.toTrunkTSV(self.session),
                 "-U", "-l", "5000"
             ]

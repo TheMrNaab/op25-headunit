@@ -142,21 +142,21 @@ class systemsMember:
         
         values = [
             self.sysname or "",
-            ",".join(map(str, self.control_channels)) if self.control_channels else "",
-            str(self.offset or ""),
-            self.nac or "",
+            '"' + ", ".join([f"{float(x):.4f}" for x in sorted(self.control_channels, key=lambda x: float(x))]) + '"',
+            "0",
+            self.nac or "0",
             self.modulation or "",
             _session.activeTGIDList.toTalkgroupsCSV() or "",
-            _session.activeChannel.toWhitelistTSV(),                    # changed from files.whitelist
-            _session.activeChannel.toBlacklistTSV(),                    # changed from files.blacklist
+            _session.activeChannel.toWhitelistTSV(),
+            _session.activeChannel.toBlacklistTSV(),
             str(self.center_frequency or "")
         ]
-
 
         with open(self.trunkFilePath, "w") as f:
             f.write("\t".join(headers) + "\n")
             f.write("\t".join(values) + "\n")
 
+        #return "/opt/op25-project/templates/_trunk.tsv"
         return self.trunkFilePath
 
 class systemsManager:
