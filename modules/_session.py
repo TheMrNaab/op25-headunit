@@ -10,6 +10,25 @@ if TYPE_CHECKING:
 
 class SessionMember:
     def __init__(self, session_mgr: "SessionManager", system_index: int, zone_index: int, channel_index: int):
+        """
+        Initializes a SessionMember instance.
+
+        Args:
+            session_mgr (SessionManager): The session manager instance managing this session.
+            system_index (int): The index of the system to associate with this session.
+            zone_index (int): The index of the zone to associate with this session.
+            channel_index (int): The index of the channel to associate with this session.
+
+        Attributes:
+            _session_manager (SessionManager): Reference to the session manager.
+            _activeTGIDList (list): List of active TGIDs for the specified system index.
+            _activeChannelNumber (int): The active channel number.
+            _activeZoneIndex (int): The active zone index.
+            _activeSysIndex (int): The active system index.
+            _activeSystem: The active system object retrieved based on the system index.
+            _activeZone: The active zone object retrieved based on the zone index.
+            _active_channel: The active channel object retrieved based on the zone and channel indices.
+        """
         self._session_manager = session_mgr  # must be first
 
         self._activeTGIDList = self._get_tgid_list(system_index)
@@ -47,6 +66,10 @@ class SessionMember:
         """Retrieve a talkgroup set by system index."""
         return self.sessionManager.talkgroupsManager.getTalkgroupSetBySysIndex(system_index)
 
+    def _get_active_zone_channel(self, channel_number: int) -> channelMember:
+        """Retrieve the active channel object."""
+        return self.sessionManager.zoneManager.getChannel(self._activeZoneIndex, channel_number)
+    
     @property
     def activeSysIndex(self) -> int:
         return self._activeSysIndex
@@ -80,6 +103,22 @@ class SessionMember:
         return self._activeTGIDList
 
     def update_session(self, channel: channelMember, zone: zoneMember, system: systemsMember):
+        """
+        Update the session state with the provided channel, zone, and system information,
+        and trigger necessary changes based on the updated state.
+
+        Args:
+            channel (channelMember): The channel object containing the channel number and related information.
+            zone (zoneMember): The zone object containing the zone index and related information.
+            system (systemsMember): The system object containing the system index and related information.
+
+        Behavior:
+            - Logs debug information about the update process.
+            - Updates the active session state with the provided channel, zone, and system.
+            - Determines if the system has changed by comparing the current system index with the previous one.
+            - Updates the active talkgroup ID list based on the new system index.
+            - Triggers a talkgroup or system change if necessary.
+        """
         """Update session state and trigger necessary changes."""
         did_system_change = system.index != self._activeSysIndex
 
@@ -100,6 +139,19 @@ class SessionMember:
         self._change_talkgroup(did_system_change)
 
     def _change_talkgroup(self, did_system_change: bool):
+        """
+        Handles the change of a talkgroup or system.
+
+        This method determines whether a system change or a talkgroup change
+        has occurred and invokes the appropriate method on the op25Manager
+        to handle the change.
+
+        Args:
+            did_system_change (bool): A flag indicating whether the system
+                                      has changed. If True, a system change
+                                      is handled; otherwise, a talkgroup
+                                      change is handled.
+        """
         """Handle talkgroup or system change."""
         if did_system_change:
             self.sessionManager.op25Manager.switchSystem(self)
@@ -107,6 +159,18 @@ class SessionMember:
             self.sessionManager.op25Manager.switchTalkgroup(self)
 
     def nextChannel(self):
+        """
+        Switch to the next channel in the current zone.
+
+        This method retrieves the next channel in the current zone using the session manager's
+        zone manager. If a next channel is found, it updates the session with the new channel,
+        zone, and system information, and returns a formatted session response. If no next
+        channel is found, it returns an error response.
+
+        Returns:
+            dict: A dictionary containing the session response or an error message.
+            int: HTTP status code (200 for success, 404 if no next channel is found).
+        """
         """Switch to the next channel in the current zone."""
         next_channel_data = self.sessionManager.zoneManager.getNextChannel(self._activeZoneIndex, self._activeChannelNumber)
         if not next_channel_data:
@@ -120,6 +184,19 @@ class SessionMember:
         return self._format_session_response(channel, zone, system)
 
     def previousChannel(self):
+        """
+        Switch to the previous channel in the current zone.
+
+        This method retrieves the previous channel data from the session manager's
+        zone manager based on the current active zone index and channel number.
+        If no previous channel is found, it returns an error response.
+
+        Returns:
+            dict: A dictionary containing the session response data if the previous
+                  channel is successfully retrieved and updated.
+            tuple: A tuple containing an error message and HTTP status code (404)
+                   if no previous channel is found.
+        """
         """Switch to the previous channel in the current zone."""
         prev_channel_data = self.sessionManager.zoneManager.getPreviousChannel(self._activeZoneIndex, self._activeChannelNumber)
         if not prev_channel_data:
@@ -133,6 +210,19 @@ class SessionMember:
         return self._format_session_response(channel, zone, system)
 
     def nextZone(self):
+        """
+        Switch to the next zone in the session.
+
+        This method retrieves the next zone data using the session manager's zone manager.
+        If no next zone is found, it returns an error response with a 404 status code.
+        Otherwise, it initializes a new zone member, retrieves the associated system,
+        updates the session with the new channel, zone, and system, and formats the session
+        response.
+
+        Returns:
+            dict: A dictionary containing the session response data or an error message.
+            int: HTTP status code (404 if no next zone is found).
+        """
         """Switch to the next zone."""
         next_zone_data = self.sessionManager.zoneManager.getNextZone(self._activeZoneIndex)
         if not next_zone_data:
@@ -140,12 +230,52 @@ class SessionMember:
 
         zone = zoneMember(next_zone_data, next_zone_data.get("zone_index"))
         channel = zone.channels[0]
-        system = self._get_system(channel.sysid)
+        system = self._get_system(channel.sysid) # Remember, sysid is the system index. 
 
         self.update_session(channel, zone, system)
         return self._format_session_response(channel, zone, system)
 
+    def goChannel(self, channel_number: int):
+        """
+        Switch to a specific channel in the current zone.
+
+        Args:
+            channel_number (int): The number of the channel to switch to.
+
+        Returns:
+            tuple: A dictionary containing an error message and an HTTP status code (404) 
+                   if the channel is not found, or the formatted session response if the 
+                   channel is successfully switched.
+
+        Raises:
+            None
+        """
+        """Switch to a specific channel in the current zone."""
+        channel_data = self.sessionManager.zoneManager.getChannel(self._activeZoneIndex, channel_number)
+        if not channel_data:
+            return {"error": "Channel not found"}, 404
+
+        zone = self._get_zone(self._activeZoneIndex)
+        channel = channelMember(channel_data, zone.index)
+        system = self._get_system(channel.sysid) # Remember, sysid is the system index. 
+        self.update_session(channel, zone, system)
+        return self._format_session_response(channel, zone, system)
+
     def previousZone(self):
+        """
+        Switch to the previous zone.
+
+        This method retrieves the data for the previous zone using the session manager's
+        zone manager. If no previous zone is found, it returns an error response with a
+        404 status code. Otherwise, it initializes the zone and its first channel, retrieves
+        the associated system, updates the session with the new zone, channel, and system,
+        and returns a formatted session response.
+
+        Returns:
+            dict: A dictionary containing the formatted session response if a previous zone
+                  is found, or an error message if no previous zone exists.
+            int: The HTTP status code (200 for success, 404 for no previous zone).
+        """
         """Switch to the previous zone."""
         prev_zone_data = self.sessionManager.zoneManager.getPreviousZone(self._activeZoneIndex)
         if not prev_zone_data:
@@ -159,7 +289,22 @@ class SessionMember:
         return self._format_session_response(channel, zone, system)
 
     def _format_session_response(self, channel: channelMember, zone: zoneMember, system: systemsMember) -> dict:
-        """Format the session response."""
+        """
+        Formats the session response for functions that set talkgroups.
+
+        Args:
+            channel (channelMember): The channel member object containing channel details.
+            zone (zoneMember): The zone member object containing zone details.
+            system (systemsMember): The system member object containing system details.
+
+        Returns:
+            dict: A dictionary containing the formatted session response with the following keys:
+                - "zone_index" (int): The index of the zone.
+                - "channel_number" (int): The number of the channel.
+                - "channel_name" (str): The name of the channel.
+                - "sysid" (int): The system ID associated with the channel.
+        """
+        """Format the session response that can be returned for functions that set talkgroups."""
         return {
             "zone_index": zone.index,
             "channel_number": channel.channel_number,
@@ -168,6 +313,16 @@ class SessionMember:
         }
 
     def _log_debug(self, message: str):
+        """
+        Logs a debug message to a file.
+
+        Args:
+            message (str): The debug message to be logged.
+
+        Writes the debug message to a file located at 
+        '/opt/op25-project/logs/app_log.txt' in append mode, 
+        prefixed with 'DEBUG:'.
+        """
         """Log debug messages to a file."""
         with open("/opt/op25-project/logs/app_log.txt", 'a') as file:
             file.write(f"DEBUG: {message}\n")

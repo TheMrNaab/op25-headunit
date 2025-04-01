@@ -252,6 +252,13 @@ class API:
             if not self.activeSession.activeChannel:
                 return {"error": "No active channel in session"}, 400
             return jsonify(self.activeSession.activeChannel.to_dict())
+        
+        # 7: [PUT] Go to the channel of the current zone
+        @self.app.route('/session/channel/go/<int:channel_number>', methods=['PUT'])
+        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        def go_session_channel(channel_number):
+            return jsonify(self.activeSession.goChannel(channel_number)), 200
+
 
         # 8: [GET] Get the full active zone object
         @self.app.route('/session/zone', methods=['GET'])

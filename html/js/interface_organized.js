@@ -3,6 +3,188 @@ import { API_BASE_URL, APIEndpoints, apiGet, apiPut, apiGetV2 } from "./api.js";
 
 const print_debug = true; // or false, depending on your use case
 
+// Utility Functions
+function updateElement(id, text) {
+  const element = document.getElementById(id);
+  if (!element) {
+    console.warn(`updateElement: No element found with ID "${id}"`);
+    return;
+  }
+  element.textContent = text ?? "";
+}
+
+function showAlert(message, type = "danger") {
+  const container = document.getElementById("alert-container");
+  if (!container) return;
+  container.innerHTML = "";
+  const alertDiv = document.createElement("div");
+  alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+  alertDiv.setAttribute("role", "alert");
+  alertDiv.textContent = message;
+  const closeBtn = document.createElement("button");
+  closeBtn.type = "button";
+  closeBtn.className = "btn-close";
+  closeBtn.setAttribute("data-bs-dismiss", "alert");
+  closeBtn.setAttribute("aria-label", "Close");
+  alertDiv.appendChild(closeBtn);
+  container.appendChild(alertDiv);
+  if (print_debug) console.log("ALERT:", message);
+}
+
+// Modal Management
+function showDynamicModal(title = "Dynamic Modal", bodyContent = "") {
+  const existing = document.getElementById("dynamicModal");
+  if (existing) existing.remove();
+
+  const modal = document.createElement("div");
+  modal.innerHTML = `
+  <div class="modal fade" id="dynamicModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">${title}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-start">
+                  ${bodyContent}
+              </div>
+          </div>
+      </div>
+  </div>`;
+  document.body.appendChild(modal);
+
+  const bsModal = new bootstrap.Modal(modal.querySelector("#dynamicModal"));
+  bsModal.show();
+}
+
+// Network and Volume Controls
+async function fetchNetworkStatus() {
+  try {
+    const data = await apiGet(APIEndpoints.NETWORK);
+    updateNetworkModal(data);
+  } catch (err) {
+    console.error("Failed to fetch network status:", err.message);
+  }
+}
+
+async function sendVolume(level) {
+  try {
+    const response = await fetch(`${API_BASE_URL}${APIEndpoints.VOLUME.SET(level)}`, {
+      method: "PUT",
+      credentials: "include"
+    });
+    if (!response.ok) throw new Error(`Volume API error: ${await response.text()}`);
+    console.log(await response.json());
+  } catch (err) {
+    console.error("Failed to set volume:", err.message);
+  }
+}
+
+async function fetchCurrentVolume() {
+  try {
+    const response = await fetch(`${API_BASE_URL}${APIEndpoints.VOLUME.GET_SIMPLE}`);
+    if (!response.ok) throw new Error(`Volume fetch error: ${await response.text()}`);
+    const data = await response.text();
+    document.getElementById("volumeRange").value = data;
+    updateSliderColor(data);
+  } catch (err) {
+    console.error("Error getting volume:", err.message);
+  }
+}
+
+function updateSliderColor(value) {
+  const slider = document.getElementById("volumeRange");
+  const volumeLabel = document.getElementById("volume_percent");
+  if (!slider || !volumeLabel) return;
+
+  let color = value < 33 ? "red" : value < 66 ? "orange" : "green";
+  volumeLabel.textContent = `${value}%`;
+  slider.style.setProperty('--thumb-color', color);
+}
+
+// Zone and Channel Management
+async function updateUI() {
+  try {
+    const zone = await apiGet(APIEndpoints.SESSION.ZONE_CURRENT);
+    const channel = await apiGet(APIEndpoints.SESSION.CHANNEL_CURRENT);
+    updateElement('zone', zone.name);
+    updateElement('channel-name', channel.name);
+    updateElement('channel-number', channel.channel_number);
+    updateElement('talkgroup', '');
+  } catch (err) {
+    console.warn("Could not fetch zone name for UI:", err);
+    updateElement('zone', "");
+  }
+}
+
+async function openZoneModal() {
+  const zoneModalEl = document.getElementById('zoneModal');
+  const zoneModal = new bootstrap.Modal(zoneModalEl, { backdrop: 'static', keyboard: false });
+
+  try {
+    const response = await apiGetV2(APIEndpoints.ZONES.LIST);
+    const data = await response.json();
+    const zones = Object.values(data.zones);
+
+    const selectElement = document.getElementById('zones');
+    selectElement.innerHTML = "";
+    zones.forEach((zone) => {
+      const option = document.createElement('option');
+      option.value = zone.zone_index;
+      option.textContent = `Zone ${zone.zone_index} - ${zone.name || "undefined"}`;
+      selectElement.appendChild(option);
+    });
+
+    zoneModal.show();
+    document.getElementById('zone-list-accept-btn').onclick = async function () {
+      try {
+        await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectElement.value));
+        updateUI();
+        zoneModal.hide();
+      } catch (error) {
+        console.error("Error applying zone:", error);
+        alert("Failed to apply selected zone.");
+      }
+    };
+  } catch (error) {
+    console.error("Error loading zones:", error);
+    alert("Failed to load zones.");
+    zoneModal.hide();
+  }
+}
+
+// Keypad Management
+function initializeKeypadListeners() {
+  const channelInput = document.getElementById("channel_text");
+  if (!channelInput) {
+    console.error("Element with id 'channel_text' not found.");
+    return;
+  }
+
+  const keypadButtons = document.querySelectorAll(".keypad-btn[data-value]");
+  const delButton = document.getElementById("del-btn");
+  delButton.addEventListener("click", () => {
+    channelInput.value = channelInput.value.slice(0, -1);
+  });
+
+  keypadButtons.forEach(button => {
+    button.addEventListener("click", async (event) => {
+      const digit = event.currentTarget.getAttribute("data-value");
+      channelInput.value += digit;
+    });
+  });
+}
+
+// Event Listeners
+document.addEventListener("DOMContentLoaded", async () => {
+  console.log("DOMContentLoaded", "interface.js");
+  document.getElementById('status-network-info').addEventListener("click", fetchNetworkStatus);
+  document.getElementById('status-github-info').addEventListener("click", gitHubDialog);
+  initializeKeypadListeners();
+  await updateUI();
+  fetchCurrentVolume();
+});
+
 async function fetchTalkgroupName(tgid) {
   const response = await fetch(`/session/talkgroups/${tgid}/name/plaintext`);
   if (response.ok) {
@@ -44,34 +226,6 @@ function listenLogStream() {
 }
 
 // UI
-function showDynamicModal(title = "Dynamic Modal", bodyContent = "") {
-  // Remove any existing modal
-  const existing = document.getElementById("dynamicModal");
-  if (existing) existing.remove();
-
-  // Create modal wrapper
-  const modal = document.createElement("div");
-  modal.innerHTML = `
-  <div class="modal fade" id="dynamicModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">${title}</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body text-start">
-                  ${bodyContent}
-              </div>
-          </div>
-      </div>
-  </div>
-  `;
-  document.body.appendChild(modal);
-
-  const bsModal = new bootstrap.Modal(modal.querySelector("#dynamicModal"));
-  bsModal.show();
-}
-
 async function gitHubDialog(){
   const qrcode = `http://${location.hostname}:5001/utilities/qrcode/https://github.com/TheMrNaab/op25-headunit`;
   const image = `<img src="${qrcode}" alt="QR Code" class="img-fluid" style="max-width: 200px; max-height: 200px;">`;
@@ -171,24 +325,6 @@ function badge(badgeText, outerText, badgeClass = "badge rectangle-pill bg-secon
   return p;
 }
 
-async function updateUI() {
-  try {
-    const zone = await apiGet(APIEndpoints.SESSION.ZONE_CURRENT);
-    const channel = await apiGet(APIEndpoints.SESSION.CHANNEL_CURRENT)
-    console.log("zone", zone);
-    console.log("channel", channel);
-    updateElement('zone', zone.name);
-    updateElement('channel-name', channel.name); 
-    updateElement('channel-number', channel.channel_number);
-    updateElement('talkgroup', ''); // NOTE: BLANK BECAUSE WE HAVE NO CALL YET
-
-  } catch (err) {
-    console.warn("Could not fetch zone name for UI:", err);
-    updateElement('zone', ""); // fallback if fetch fails
-  }
-
-}
-
 async function _btnChannelDown() {
   try {
     const prevChannel = await apiPut(APIEndpoints.SESSION.CHANNEL_PREVIOUS);
@@ -228,65 +364,6 @@ async function _btnZoneDown() {
   } catch (err) {
     console.error("Zone down error:", err);
     showAlert("Failed to go to previous zone.");
-  }
-}
-
-async function openZoneModal() {
-  const zoneModalEl = document.getElementById('zoneModal');
-  const zoneModal = new bootstrap.Modal(zoneModalEl, { backdrop: 'static', keyboard: false });
-
-  try {
-    // Fetch the list of zones
-    const response = await apiGetV2(APIEndpoints.ZONES.LIST);
-
-    // Parse the response as JSON
-    const data = await response.json();
-
-    // Debugging: Log the parsed zones
-    console.log("Parsed Zones:", data);
-
-    // Access the zones array
-    const zones = Object.values(data.zones);
-
-    // Populate the dropdown
-    const selectElement = document.getElementById('zones');
-    selectElement.innerHTML = ""; // Clear existing options
-
-    zones.forEach((zone) => {
-      const option = document.createElement('option');
-      option.value = zone.zone_index;
-      option.textContent = `Zone ${zone.zone_index} - ${zone.name || "undefined"}`;
-      selectElement.appendChild(option);
-    });
-
-    // Show the modal
-    zoneModal.show();
-
-    // Handle the accept button click
-    document.getElementById('zone-list-accept-btn').onclick = async function () {
-      try {
-        console.log("Select Field Element:",selectElement )
-        console.log("Selected zone index:", selectElement.value);
-        
-        const selectedZoneIndex = selectElement.value;
-
-        // Set the new zone
-        await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectedZoneIndex));
-
-        // Update the UI
-        updateUI();
-
-        // Hide the modal
-        zoneModal.hide();
-      } catch (error) {
-        console.error("Error applying zone:", error);
-        alert("Failed to apply selected zone.");
-      }
-    };
-  } catch (error) {
-    console.error("Error loading zones:", error);
-    alert("Failed to load zones.");
-    zoneModal.hide();
   }
 }
 
@@ -370,49 +447,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-async function fetchNetworkStatus() {
-  try {
-      const data = await apiGet(APIEndpoints.NETWORK);
-      updateNetworkModal(data);
-  } catch (err) {
-      console.error("Failed to fetch network status:", err.message);
-  }
-}
-
-async function sendVolume(level) {
-  try {
-    const response = await fetch(`${API_BASE_URL}${APIEndpoints.VOLUME.SET(level)}`, {
-      method: "PUT",
-      credentials: "include"
-    });
-
-      if (!response.ok) {
-          const error = await response.text();
-          throw new Error(`Volume API error: ${error}`);
-      }
-
-      const data = await response.json();
-      console.log(JSON.stringify(data, null, 2));
-  } catch (err) {
-      console.error("Failed to set volume:", err.message);
-  }
-}
-async function fetchCurrentVolume() {
-  try {
-    const response = await fetch(`${API_BASE_URL}${APIEndpoints.VOLUME.GET_SIMPLE}`);
-      if (!response.ok) {
-          const error = await response.text();
-          throw new Error(`Volume fetch error: ${error}`);
-      }
-
-      const data = await response.text(); 
-      document.getElementById("volumeRange").value = data;
-      updateSliderColor(data);
-  } catch (err) {
-      console.error("Error getting volume:", err.message);
-  }
-}
-
 async function populateZoneList() {
   try {
       const zones = await apiGet(APIEndpoints.ZONES.LIST);
@@ -439,24 +473,6 @@ async function populateZoneList() {
       console.error("Error fetching zones:", error);
       showAlert(error.message);
   }
-}
-
-function showAlert(message, type = "danger") {
-  const container = document.getElementById("alert-container");
-  if (!container) return;
-  container.innerHTML = "";
-  const alertDiv = document.createElement("div");
-  alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-  alertDiv.setAttribute("role", "alert");
-  alertDiv.textContent = message;
-  const closeBtn = document.createElement("button");
-  closeBtn.type = "button";
-  closeBtn.className = "btn-close";
-  closeBtn.setAttribute("data-bs-dismiss", "alert");
-  closeBtn.setAttribute("aria-label", "Close");
-  alertDiv.appendChild(closeBtn);
-  container.appendChild(alertDiv);
-  if (print_debug) console.log("ALERT:", message);
 }
 
 function scrollUp(containerId) {
@@ -541,39 +557,6 @@ async function _channelApplyBtn() {
       console.error("Error setting channel:", error);
       alert("Error setting channel: " + error.message);
   }
-}
-
-function updateSliderColor(value) {
-  console.log("Volume slider value:", value);
-
-  const slider = document.getElementById("volumeRange");
-  const volumeLabel = document.getElementById("volume_percent");
-
-  if (!slider || !volumeLabel) {
-      console.warn("Slider or volume label not found.");
-      return;
-  }
-
-  let color = "green";
-  if (value < 33) {
-      color = "red";
-  } else if (value < 66) {
-      color = "orange";
-  }
-
-  volumeLabel.textContent = `${value}%`;
-  slider.style.setProperty('--thumb-color', color);
-}
-
-function updateElement(id, text) {
-  const element = document.getElementById(id);
-
-  if (!element) {
-      console.warn(`updateElement: No element found with ID "${id}"`);
-      return;
-  }
-
-  element.textContent = text ?? "";
 }
 
 /** Initialize volume slider and input coloring */
