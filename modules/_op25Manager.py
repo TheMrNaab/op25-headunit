@@ -65,7 +65,7 @@ class op25Manager:
     def start(self, _session:SessionMember) -> bool | None:
         print("Starting...", self.alreadyStarted)
         if self.alreadyStarted == False:
-            os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":" + self.configManager.get("paths", "pythonpath")
+            os.environ["PYTHONPATH"] = (os.environ.get("PYTHONPATH") or "/usr/bin/python3") + ":/home/dnaab/op25/op25/gr-op25_repeater/apps/tx:/home/dnaab/op25/build"
             # self.op25_command = [
             #     self.rx_script , "--nocrypt", "--args", "rtl",
             #     "--gains", "lna:35", "-S", "960000", "-q", "0",

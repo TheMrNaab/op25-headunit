@@ -73,7 +73,7 @@ class logMonitorOP25:
     Monitors the OP25 log file for specific patterns and sends parsed entries to an API endpoint.
     """
     def __init__(self, API: "API", file="/opt/op25-project/logs/stderr_op25.log", endpoint=None):
-        self.source = file  # Path to the log file
+        self.source = "/opt/op25-project/logs/stderr_op25.log"  # Path to the log file
         self.endpoint = endpoint  # API endpoint to send parsed entries
         self.lines = []  # Stores all lines read from the log file
         self.entries = []  # Stores parsed log entries

@@ -4,7 +4,6 @@ from queue import Queue, Empty
 import subprocess
 import os
 import signal
-from configobj import ConfigObj
 from flask import Flask, Response, request, jsonify, send_file
 from flask_cors import CORS, cross_origin
 from modules.linuxSystem.sound import soundSys # Ensure this path matches your project
@@ -13,13 +12,12 @@ from modules.logMonitor import LogFileWatcher, logMonitorOP25
 from modules._session import SessionMember
 from modules._sessionManager import SessionManager
 from modules._op25Manager import op25Manager
+from modules.myConfiguration import MyConfig
 import time
 import threading
 from queue import Queue
 import json
-
 from modules._zoneManager import zoneMember, channelMember
-from modules.myConfiguration import MyConfig
 from modules._talkgroupSet import TalkgroupManager
   
 class API:
@@ -27,8 +25,17 @@ class API:
 
         # FLASK SETUP
         self.app = Flask(__name__)
-        CORS(self.app, supports_credentials=True, resources={r"/*": {"origins": "http://192.168.1.46:8000"}})
-     
+        CORS(
+            self.app,
+            supports_credentials=True,
+            resources={r"/*": {
+                "origins": [
+                    "http://192.168.1.46:8000",
+                    "http://localhost:8000"
+                ]
+            }}
+        )
+
         # INITIALIZE CONFIGURATION & ERROR HANDLER
         self._configManager = MyConfig()
         
@@ -93,7 +100,7 @@ class API:
         self.kill_named_scripts(["rx.py", "terminal.py"])
 
     def startLoggerStream(self):
-        self._end_point = f"{self.configManager.get('hosts', 'api_host')}/controller/logging/update"
+        self._end_point = f"http://127.0.0.0:5001/controller/logging/update"
         self._monitor = logMonitorOP25(self, file=self.configManager.get("paths", "stderr_file"), endpoint=self._end_point)
         self._watcher = LogFileWatcher(self._monitor)
         self._watcher.start_in_thread()
@@ -104,7 +111,7 @@ class API:
         return self._log_queue
 
     @property
-    def configManager(self) -> ConfigObj:
+    def configManager(self) -> MyConfig:
         return self._configManager
 
     @property
@@ -122,6 +129,13 @@ class API:
     @property
     def zoneManager(self) -> zoneMember:
         return self.sessionManager.zoneManager
+    
+    def dynamic_cross_origin(self):
+        allowed_origins = ALLOWED_ORIGINS = [
+            "http://192.168.1.46:8000",
+            "http://localhost:8000"
+        ]
+        return cross_origin(origins=allowed_origins, supports_credentials=True)
 
     def register_routes(self):
 
@@ -247,7 +261,7 @@ class API:
 
         # 7: [GET] Get the full active channel object
         @self.app.route('/session/channel', methods=['GET'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def get_active_channel_object():
             if not self.activeSession.activeChannel:
                 return {"error": "No active channel in session"}, 400
@@ -255,14 +269,14 @@ class API:
         
         # 7: [PUT] Go to the channel of the current zone
         @self.app.route('/session/channel/go/<int:channel_number>', methods=['PUT'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def go_session_channel(channel_number):
             return jsonify(self.activeSession.goChannel(channel_number)), 200
 
 
         # 8: [GET] Get the full active zone object
         @self.app.route('/session/zone', methods=['GET'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def get_active_zone_object():
             if not self.activeSession.activeChannel:
                 return {"error": "No active zone in session"}, 400
@@ -270,7 +284,7 @@ class API:
 
         # 9: [GET] Get name of TGID from active system
         @self.app.route('/session/talkgroups/<tgid>/name/plaintext', methods=['GET'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def get_active_tgid_name(tgid):
             if not self.activeSession.activeTGIDList:
                 return jsonify({"error": "No active TGID list in session"}), 400
@@ -295,7 +309,7 @@ class API:
 
         # 11: [PUT] Set active channel by ID
         @self.app.route('/session/channel/<int:id>', methods=['PUT'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def set_active_channel(id):
             zone_index = self.activeSession.activeZoneIndex
             ch_data = self.sessionManager.zoneManager.getChannel(zone_index, id) # MODIFIED FOR ERROR CHECKING
@@ -311,20 +325,20 @@ class API:
 
         # 12: [PUT] Move to next channel
         @self.app.route('/session/channel/next', methods=['PUT'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def next_channel():
             return self.activeSession.nextChannel()
 
 
         # 13: [PUT] Move to previous channel
         @self.app.route('/session/channel/previous', methods=['PUT'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def previous_channel():
             return self.activeSession.previousChannel()
 
         # 14: [PUT] Set zone by index (loads first channel)
         @self.app.route('/session/zone/<int:id>', methods=['PUT'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def set_active_zone(id):
             zone = self.sessionManager.zoneManager.getZoneByIndex(id)
             if not zone:
@@ -366,13 +380,13 @@ class API:
 
         # 19: [GET] Previous zone
         @self.app.route('/zone/<int:zone_number>/previous', methods=['GET'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def zone_previous(zone_number):
             return jsonify(self.zoneManager.previousZone(zone_number)), 200
 
         # 20: [GET] Next zone
         @self.app.route('/zone/<int:zone_number>/next', methods=['GET'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def zone_next(zone_number):
             return jsonify(self.zoneManager.nextZone(zone_number)), 200
        
@@ -380,7 +394,7 @@ class API:
         
         # 21: TODO: WHITELIST TGIDS (SWITCH TGIDS)
         @self.app.route('/session/controller/whitelist', methods=['POST'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def whitelist():
             payload = request.get_json() or {}
             tgids = payload.get("tgid", [])
@@ -469,7 +483,7 @@ class API:
         
         # 30:[POST] UPDATE THE ENTIRE SYSTEMS FILE
         @self.app.route('/admin/systems/update', methods=['POST'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def admin_systems_post():
             data = request.get_json()
             if not data:
@@ -488,7 +502,7 @@ class API:
 
         # 30:[POST] UPDATE THE ENTIRE ZONES FILE
         @self.app.route('/admin/zones/update', methods=['POST'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def admin_update_zones_post():
             data = request.get_json()
             if not data:
@@ -501,14 +515,14 @@ class API:
     
         # 31: [GET] GET CONFIG FILE
         @self.app.route('/admin/config/get', methods=['GET'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def get_config_file():
             config = self.configManager.toJson()
             return jsonify(config), 200
         
         # 32: [GET] GET SPECIFIC DEVICE SETTING
         @self.app.route('/admin/config/device/<property>', methods=['GET'])
-        @cross_origin(origins="http://192.168.1.46:8000", supports_credentials=True)
+        @self.dynamic_cross_origin()
         def get_device_config(property):
             config = {
                 "timeout": LinuxUtilities.get_display_timeout("0")
@@ -530,7 +544,7 @@ class API:
             "--directory", "/opt/op25-project/html"
         ])
         try:
-            self.app.run(host='0.0.0.0', port=5001, debug=True, use_reloader=False)
+            self.app.run(host='0.0.0.0', port=5001, debug=False, use_reloader=False)
         finally:
             http_proc.terminate()
             http_proc.wait()

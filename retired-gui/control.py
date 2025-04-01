@@ -25,11 +25,11 @@ class OP25Controller:
         self.blacklist_tgids = self.load_tgid_file(self.defaultBlacklistFile)
 
         # Define Logger
-        self.logFile = os.path.expanduser("/opt/op25-project/logs/app_log.txt")
-        self.logger = CustomLogger(self.logFile)
+        #self.logFile = os.path.expanduser("/opt/op25-project/logs/app_log.txt")
+        #self.logger = CustomLogger(self.logFile)
 
         # Set environment variables correctly
-        os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":/home/dnaab/op25/op25/gr-op25_repeater/apps/tx:/home/dnaab/op25/build"
+        os.environ["PYTHONPATH"] = "/usr/bin/python3" + ":/home/dnaab/op25/op25/gr-op25_repeater/apps/tx:/home/dnaab/op25/build"
 
         print(" - ","Killing Process")
         # Kill any existing OP25 processes before starting a new one
