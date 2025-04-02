@@ -23,6 +23,7 @@
           <li class="nav-item">
             <a class="nav-link active" href="index.html">Home</a>
           </li>
+          <li class="nav-item"><a class="nav-link" href="op25.html">OP25 Configuration</a></li>
           <li class="nav-item">
             <a class="nav-link" href="system.html">System</a>
           </li>
@@ -81,129 +82,7 @@
         </div>
     </div>
 
-    <!-- OP25 Settings -->
-        <h4 class="mt-4 mb-4"><i class="fa fa-code me-2"></i>OP25 Settings</h4>
-          <div class="row mb-3">
-            <label class="form-label mb-2">
-              Sample Rate
-              <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="Sample Rate" data-bs-content="The number of samples per second used by the SDR. Typical values are 2M or 2.4M."></i>
-              <input data-field="sample_rate" data-section="op25" type="text" id="sample_rate" class="form-control form-control-sm mt-2" >
-            </label>
-            <div class="col-md-4">
-              <label class="form-label">
-                Frequency Correction
-                <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Frequency Correction" data-bs-content="PPM offset to correct drift in your SDR hardware. Use if transmissions are slightly off-tune."></i>
-              </label>
-              <input type="number" data-field="frequency_correction" data-section="op25" id="frequency_correction" class="form-control form-control-sm" >
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label class="form-label">
-                RX Script
-                <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="RX Script" data-bs-content="Path to the Python script that launches OP25 receiver (rx.py)."></i>
-              </label>
-              <input type="text" data-field="rx_script" data-section="op25" class="form-control-sm form-control" id="rx_script" >
-            </div>
-              <div class="col-md-6">
-                <label class="form-label">
-                  Python Path
-                  <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Python Path" data-bs-content="Paths required for OP25 runtime, typically include tx and build directories."></i>
-                </label>
-                <input type="text" disabled class="form-control-sm form-control" id="pythonpath" >
-              </div>
-            </div>
-        <!-- UDP SETTINGS -->
-        <h4 class="mt-4 mb-4"><i class="fa fa-code me-2"></i>Audio</h4>
-        <div class="row mb-3">
-            <div class="col-md-6 ">
-              <!-- MAKE AUTO ENABLE/DISABLE DATA-REL CONTROL -->
-              <input data-field="udp_output" data-section="op25" type="checkbox" data-relative="udp_output_port" id="udp_output" class="form-check-input" >
-              <label class="form-label">
-                UDP Output
-                <i class="fas txt-white fa-info-circle text-muted ms-1" data-bs-toggle="popover" title="UDP Output" data-bs-content="Enable this to stream decoded audio over UDP. Useful for network-based audio piping."></i>
-              </label>
-              <input data-field="udp_output_port" data-section="op25"  type="number" id="udp_output_port" class="form-control form-control-sm" >
-            </div>
-            <div class="col-md-6">
-              <input data-field="override_audio" data-section="op25" data-relative="audio_output" type="checkbox" id="device_override" class="form-check-input">
-              <label class="form-label">
-                Audio Output Device
-                <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Audio Output Device" data-bs-content="Specify the ALSA device string for audio output (e.g., hw:1,0)."></i>
-              </label>
-              <input data-field="audio_ouput" data-section="op25" type="text" id="audio_output"  class="form-control form-control-sm">
-            </div>
-        </div>
-
-          <h4 class="mt-4 mb-4"><i class="fa fa-code me-2"></i>Logging</h4>
-          <div class="row mb-3">
-              <div class="col-md-6">
-                <label class="form-label">
-                  Log Level
-                  <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="Log Level" data-bs-content="Controls how much debug/log information is printed. 0 = silent, 3 = most verbose."></i>
-                </label>
-                <select id="verbosity" data-field="verbosity" data-section="op25" class="form-select form-select-sm" >
-                  <option value="0">0 - Silent</option>
-                  <option value="1">1 - Info</option>
-                  <option value="2">2 - Debug</option>
-                  <option value="3">3 - Trace</option>
-                </select>
-                </div>
-                <div class="col-md-5"> 
-                  <label class="form-label">
-                    Voice Logging
-                    <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Voice Logging" data-bs-content="Enable this to save decoded audio streams to disk for later review."></i>
-                  </label><br/>
-                      <input type="checkbox" data-field="voice_logging" data-section="op25" id="voice_logging" class="form-check-input">  
-                </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-md-4">
-                <label class="form-label">
-                  Stderr Log File
-                  <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="Stderr Log File" data-bs-content="Path where the stderr output of OP25 should be saved."></i>
-                </label>
-                <input type="text" data-field="stderr_file" data-section="paths" class="form-control-sm form-control" id="stderr_file" >
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">
-                  Stdout Log File
-                  <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Stdout Log File" data-bs-content="Path where the stdout output of OP25 should be saved."></i>
-                </label>
-                <input data-field="stdout_file" data-section="paths"  type="text" class="form-control-sm form-control" id="stdout_file" >
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">
-                  App Log File
-                  <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="App Log File" data-bs-content="Path for saving log entries from the frontend/backend components."></i>
-                </label>
-                <input data-field="app_log" data-section="paths" type="text"  class="form-control-sm form-control" id="app_log" >
-              </div>
-            </div>
-        
-        <h3 class="mt-4 mb-4"><i class="fa fa-code me-2"></i>Additional Settings</h3>
-        <div class="row mb-3">
-          <div class="col-md-4 ms-3 mt-1 form-check">
-            <input type="checkbox" id="nocrypt" class="form-check-input" >
-            <label class="form-check-label" for="nocrypt">
-              Mute Encryption
-            </label>
-              <i class="fas fa-info-circle txt-white ms-1" data-field="nocrypt" data-section="op25" 
-              data-bs-toggle="popover" title="NoCrypt" data-bs-content="Skips encrypted talkgroups instead of printing gibberish or static. Should usually be enabled."></i>
-          
-          </div>
-          <div class="col-md-4 ms-3 mt-1 form-check">
-            <input type="checkbox" data-field="two_tuner_mode" data-section="op25" id="two_tuner_mode" class="form-check-input" >
-            <label class="form-check-label" for="two_tuner_mode">
-              Two Tuner Mode
-            </label>
-            <i class="fas fa-info-circle txt-white ms-1" data-bs-toggle="popover" title="Two Tuner Mode" data-bs-content="Uses one tuner for control channel and another for voice traffic. Improves performance."></i>
-          </div>
-        </div>
-        <button type="button" disabled class="btn btn-primary">Save</button>
-      </form>
-    
- 
+   </form>
   <script>
 
     document.addEventListener("DOMContentLoaded", function () {

@@ -10,56 +10,66 @@ supported sample rates 250000-2560000 step 24000
 demodulator: xlator if_rate=24000, input_rate=960000, decim=40, if taps=[193,49], resampled_rate=24000, sps=5
 op25_audio::open_socket(): enabled udp host(127.0.0.1), wireshark(23456), audio(23456)
 p25_frame_assembler_impl: do_imbe[1], do_output[0], do_audio_output[1], do_phase2_tdma[1], do_nocrypt[0]
-04/02/25 09:26:28.078079 Reading whitelist file
-04/02/25 09:26:28.080141 added talkgroup 46949 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.081005 added talkgroup 47021 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.081872 added talkgroup 46940 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.082133 added talkgroup 46800 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.082296 added talkgroup 46801 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.082505 added talkgroup 46802 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.082668 added talkgroup 46803 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.082805 added talkgroup 46804 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.082936 added talkgroup 46805 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.083062 added talkgroup 46806 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.083190 added talkgroup 46807 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.083322 added talkgroup 46808 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.083511 added talkgroup 46809 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.083660 added talkgroup 46810 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.083790 added talkgroup 46811 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.083918 added talkgroup 46812 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.084051 added talkgroup 46813 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.084183 added talkgroup 46814 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.084313 added talkgroup 46815 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.085289 added talkgroup 46816 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.085948 added talkgroup 46817 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.086613 added talkgroup 46818 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.087241 added talkgroup 46819 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.087873 added talkgroup 46820 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.088523 added talkgroup 46821 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.088741 added talkgroup 46822 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.088889 added talkgroup 46823 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.089025 added talkgroup 46824 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.089158 added talkgroup 46825 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.089286 added talkgroup 46826 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.089896 added talkgroup 46827 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.090115 added talkgroup 46828 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.090259 added talkgroup 46829 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.090433 added talkgroup 46830 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.090589 added talkgroup 46831 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.090730 added talkgroup 46832 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.090872 added talkgroup 46833 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.091011 added talkgroup 46834 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.091146 added talkgroup 46835 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.091278 added talkgroup 46836 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.091459 added talkgroup 46837 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.091681 added talkgroup 46838 from /tmp/_whitelist_Fire_Scan.tsv
-04/02/25 09:26:28.091986 Reading blacklist file
-04/02/25 09:26:28.092951 added talkgroup 1234 from /tmp/_blacklist_Fire_Scan.tsv
-metadata update not enabled
-using ALSA sound system
-audio device: default
-Listening on 127.0.0.1:23456
-python version detected: 3.12.7 (main, Feb  4 2025, 14:46:03) [GCC 14.2.0]
-Allocating 15 zero-copy buffers
-04/02/25 09:26:34.194593 control channel timeout
-04/02/25 09:26:35.245076 control channel timeout
+04/02/25 12:41:58.085315 Reading whitelist file
+04/02/25 12:41:58.085800 added talkgroup 46949 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.085939 added talkgroup 47021 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086024 added talkgroup 46940 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086096 added talkgroup 46800 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086164 added talkgroup 46801 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086234 added talkgroup 46802 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086300 added talkgroup 46803 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086362 added talkgroup 46804 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086536 added talkgroup 46805 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086610 added talkgroup 46806 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086679 added talkgroup 46807 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086750 added talkgroup 46808 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086816 added talkgroup 46809 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086879 added talkgroup 46810 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.086943 added talkgroup 46811 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087007 added talkgroup 46812 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087138 added talkgroup 46813 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087214 added talkgroup 46814 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087282 added talkgroup 46815 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087349 added talkgroup 46816 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087444 added talkgroup 46817 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087535 added talkgroup 46818 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087603 added talkgroup 46819 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087667 added talkgroup 46820 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087731 added talkgroup 46821 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087796 added talkgroup 46822 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087863 added talkgroup 46823 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087926 added talkgroup 46824 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.087991 added talkgroup 46825 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088053 added talkgroup 46826 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088116 added talkgroup 46827 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088179 added talkgroup 46828 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088245 added talkgroup 46829 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088309 added talkgroup 46830 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088373 added talkgroup 46831 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088498 added talkgroup 46832 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088568 added talkgroup 46833 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088642 added talkgroup 46834 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088710 added talkgroup 46835 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088776 added talkgroup 46836 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088854 added talkgroup 46837 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.088974 added talkgroup 46838 from /tmp/_whitelist_Fire_Scan.tsv
+04/02/25 12:41:58.089157 Reading blacklist file
+04/02/25 12:41:58.089462 added talkgroup 1234 from /tmp/_blacklist_Fire_Scan.tsv
+Traceback (most recent call last):
+  File "/home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py", line 1102, in <module>
+    rx = rx_main()
+         ^^^^^^^^^
+  File "/home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py", line 1006, in __init__
+    self.tb = p25_rx_block(self.options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dnaab/op25/op25/gr-op25_repeater/apps/rx.py", line 254, in __init__
+    self.terminal = op25_terminal(self.input_q, self.output_q, self.options.terminal_type)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dnaab/op25/op25/gr-op25_repeater/apps/terminal.py", line 655, in op25_terminal
+    return udp_terminal(input_q, output_q, port)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dnaab/op25/op25/gr-op25_repeater/apps/terminal.py", line 612, in __init__
+    self.setup_socket(port)
+  File "/home/dnaab/op25/op25/gr-op25_repeater/apps/terminal.py", line 621, in setup_socket
+    self.sock.bind(('0.0.0.0', port))
+PermissionError: [Errno 13] Permission denied

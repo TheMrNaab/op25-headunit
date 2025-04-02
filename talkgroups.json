@@ -1,2059 +1,2059 @@
 {
     "0": {
-      "46501": {
-        "tgid": 46501,
-        "name": "PD 1 Dispatch",
-        "priority": 0
-      },
-      "46502": {
-        "tgid": 46502,
-        "name": "PD 2 Records",
-        "priority": 0
-      },
-      "46503": {
-        "tgid": 46503,
-        "name": "PD 3 Comm Cntr",
-        "priority": 0
-      },
-      "46504": {
-        "tgid": 46504,
-        "name": "PD 4 Car/Car",
-        "priority": 0
-      },
-      "46513": {
-        "tgid": 46513,
-        "name": "PD 5 Tac",
-        "priority": 0
-      },
-      "46517": {
-        "tgid": 46517,
-        "name": "PS TAC 49",
-        "priority": 0
-      },
-      "46518": {
-        "tgid": 46518,
-        "name": "PS TAC 50",
-        "priority": 0
-      },
-      "46519": {
-        "tgid": 46519,
-        "name": "PS TAC 51",
-        "priority": 0
-      },
-      "46520": {
-        "tgid": 46520,
-        "name": "PS TAC 52",
-        "priority": 0
-      },
-      "46521": {
-        "tgid": 46521,
-        "name": "PS TAC 53",
-        "priority": 0
-      },
-      "46522": {
-        "tgid": 46522,
-        "name": "PS TAC 54",
-        "priority": 0
-      },
-      "46523": {
-        "tgid": 46523,
-        "name": "PS TAC 55",
-        "priority": 0
-      },
-      "46524": {
-        "tgid": 46524,
-        "name": "PS TAC 56",
-        "priority": 0
-      },
-      "46525": {
-        "tgid": 46525,
-        "name": "PS TAC 57",
-        "priority": 0
-      },
-      "46526": {
-        "tgid": 46526,
-        "name": "PS TAC 58",
-        "priority": 0
-      },
-      "46527": {
-        "tgid": 46527,
-        "name": "PS TAC 59",
-        "priority": 0
-      },
-      "46528": {
-        "tgid": 46528,
-        "name": "PS TAC 60",
-        "priority": 0
-      },
-      "46533": {
-        "tgid": 46533,
-        "name": "FD Dispatch",
-        "priority": 0
-      },
-      "46534": {
-        "tgid": 46534,
-        "name": "PS TAC 40",
-        "priority": 0
-      },
-      "46535": {
-        "tgid": 46535,
-        "name": "PS TAC 41",
-        "priority": 0
-      },
-      "46536": {
-        "tgid": 46536,
-        "name": "PS TAC 42",
-        "priority": 0
-      },
-      "46537": {
-        "tgid": 46537,
-        "name": "PS TAC 43",
-        "priority": 0
-      },
-      "46538": {
-        "tgid": 46538,
-        "name": "FD Risk Manage 1",
-        "priority": 0
-      },
-      "46539": {
-        "tgid": 46539,
-        "name": "FD Risk Manage 2",
-        "priority": 0
-      },
-      "46540": {
-        "tgid": 46540,
-        "name": "FD Training 1",
-        "priority": 0
-      },
-      "46541": {
-        "tgid": 46541,
-        "name": "FD Training 2",
-        "priority": 0
-      },
-      "46542": {
-        "tgid": 46542,
-        "name": "FD Investigation",
-        "priority": 0
-      },
-      "46543": {
-        "tgid": 46543,
-        "name": "FD Special Event",
-        "priority": 0
-      },
-      "46544": {
-        "tgid": 46544,
-        "name": "FD Emergency",
-        "priority": 0
-      },
-      "46545": {
-        "tgid": 46545,
-        "name": "PS TAC 44",
-        "priority": 0
-      },
-      "46546": {
-        "tgid": 46546,
-        "name": "PS TAC 45",
-        "priority": 0
-      },
-      "46547": {
-        "tgid": 46547,
-        "name": "PS TAC 46",
-        "priority": 0
-      },
-      "46548": {
-        "tgid": 46548,
-        "name": "PS TAC 47",
-        "priority": 0
-      },
-      "46549": {
-        "tgid": 46549,
-        "name": "PS TAC 48",
-        "priority": 0
-      },
-      "46551": {
-        "tgid": 46551,
-        "name": "Morrisvl PD Disp",
-        "priority": 0
-      },
-      "46564": {
-        "tgid": 46564,
-        "name": "PW All Call",
-        "priority": 0
-      },
-      "46565": {
-        "tgid": 46565,
-        "name": "PW Dispatch",
-        "priority": 0
-      },
-      "46566": {
-        "tgid": 46566,
-        "name": "PW UT Plants",
-        "priority": 0
-      },
-      "46567": {
-        "tgid": 46567,
-        "name": "PW Ops Construct",
-        "priority": 0
-      },
-      "46568": {
-        "tgid": 46568,
-        "name": "PW Traffic Ops",
-        "priority": 0
-      },
-      "46569": {
-        "tgid": 46569,
-        "name": "PW Traffic Sig",
-        "priority": 0
-      },
-      "46570": {
-        "tgid": 46570,
-        "name": "PW UT Billing",
-        "priority": 0
-      },
-      "46571": {
-        "tgid": 46571,
-        "name": "PW Warehouse",
-        "priority": 0
-      },
-      "46573": {
-        "tgid": 46573,
-        "name": "PW USM Maintce",
-        "priority": 0
-      },
-      "46574": {
-        "tgid": 46574,
-        "name": "PW USM I/I",
-        "priority": 0
-      },
-      "46575": {
-        "tgid": 46575,
-        "name": "PW USM Electric",
-        "priority": 0
-      },
-      "46576": {
-        "tgid": 46576,
-        "name": "PW USM RCLMD",
-        "priority": 0
-      },
-      "46577": {
-        "tgid": 46577,
-        "name": "PW Solid Waste",
-        "priority": 0
-      },
-      "46578": {
-        "tgid": 46578,
-        "name": "PW Recycling",
-        "priority": 0
-      },
-      "46579": {
-        "tgid": 46579,
-        "name": "PW Fac West 1",
-        "priority": 0
-      },
-      "46580": {
-        "tgid": 46580,
-        "name": "PW Fac West 2",
-        "priority": 0
-      },
-      "46581": {
-        "tgid": 46581,
-        "name": "PW Fac West 3",
-        "priority": 0
-      },
-      "46582": {
-        "tgid": 46582,
-        "name": "PW Fac East 1",
-        "priority": 0
-      },
-      "46583": {
-        "tgid": 46583,
-        "name": "PW Fac East 2",
-        "priority": 0
-      },
-      "46584": {
-        "tgid": 46584,
-        "name": "PW Fac Control 1",
-        "priority": 0
-      },
-      "46585": {
-        "tgid": 46585,
-        "name": "PW Fac Control 2",
-        "priority": 0
-      },
-      "46586": {
-        "tgid": 46586,
-        "name": "PW Response Div1",
-        "priority": 0
-      },
-      "46587": {
-        "tgid": 46587,
-        "name": "PW Response Div2",
-        "priority": 0
-      },
-      "46588": {
-        "tgid": 46588,
-        "name": "PW Response Div3",
-        "priority": 0
-      },
-      "46589": {
-        "tgid": 46589,
-        "name": "PW Response Div4",
-        "priority": 0
-      },
-      "46590": {
-        "tgid": 46590,
-        "name": "PW Repair Group",
-        "priority": 0
-      },
-      "46591": {
-        "tgid": 46591,
-        "name": "PW Utilities Grp",
-        "priority": 0
-      },
-      "46592": {
-        "tgid": 46592,
-        "name": "PW Logistics Grp",
-        "priority": 0
-      },
-      "46612": {
-        "tgid": 46612,
-        "name": "P/R Dispatch",
-        "priority": 0
-      },
-      "46613": {
-        "tgid": 46613,
-        "name": "Cutltural Resour",
-        "priority": 0
-      },
-      "46614": {
-        "tgid": 46614,
-        "name": "Athletics",
-        "priority": 0
-      },
-      "46615": {
-        "tgid": 46615,
-        "name": "Soccer Park",
-        "priority": 0
-      },
-      "46616": {
-        "tgid": 46616,
-        "name": "Bond Park",
-        "priority": 0
-      },
-      "46617": {
-        "tgid": 46617,
-        "name": "Stevens Nature",
-        "priority": 0
-      },
-      "46644": {
-        "tgid": 46644,
-        "name": "APXF DISP",
-        "priority": 0
-      },
-      "46650": {
-        "tgid": 46650,
-        "name": "APEX STREET",
-        "priority": 0
-      },
-      "46660": {
-        "tgid": 46660,
-        "name": "SYSTEM MUT 1",
-        "priority": 0
-      },
-      "46661": {
-        "tgid": 46661,
-        "name": "SYSTEM MUT 2",
-        "priority": 0
-      },
-      "46662": {
-        "tgid": 46662,
-        "name": "SYSTEM MUT 3",
-        "priority": 0
-      },
-      "46663": {
-        "tgid": 46663,
-        "name": "SYSTEM MUT 4",
-        "priority": 0
-      },
-      "46664": {
-        "tgid": 46664,
-        "name": "SYSTEM MUT 5",
-        "priority": 0
-      },
-      "46665": {
-        "tgid": 46665,
-        "name": "SYSTEM MUT 6",
-        "priority": 0
-      },
-      "46666": {
-        "tgid": 46666,
-        "name": "SYSTEM MUT 7",
-        "priority": 0
-      },
-      "46667": {
-        "tgid": 46667,
-        "name": "SYSTEM MUT 8",
-        "priority": 0
-      },
-      "46668": {
-        "tgid": 46668,
-        "name": "SYSTEM MUT 9",
-        "priority": 0
-      },
-      "46669": {
-        "tgid": 46669,
-        "name": "SYSTEM MUT 10",
-        "priority": 0
-      },
-      "46670": {
-        "tgid": 46670,
-        "name": "SYSTEM MUT 11",
-        "priority": 0
-      },
-      "46671": {
-        "tgid": 46671,
-        "name": "SYSTEM MUT 12",
-        "priority": 0
-      },
-      "46672": {
-        "tgid": 46672,
-        "name": "SYSTEM MUT 13",
-        "priority": 0
-      },
-      "46673": {
-        "tgid": 46673,
-        "name": "SYSTEM MUT 14",
-        "priority": 0
-      },
-      "46674": {
-        "tgid": 46674,
-        "name": "SYSTEM MUT 15",
-        "priority": 0
-      },
-      "46675": {
-        "tgid": 46675,
-        "name": "SYSTEM MUT 16",
-        "priority": 0
-      },
-      "46679": {
-        "tgid": 46679,
-        "name": "APEX PD Disp",
-        "priority": 0
-      },
-      "46680": {
-        "tgid": 46680,
-        "name": "APEX PD Tac",
-        "priority": 0
-      },
-      "46692": {
-        "tgid": 46692,
-        "name": "MUT-AID 11C",
-        "priority": 0
-      },
-      "46693": {
-        "tgid": 46693,
-        "name": "MUT-AID 12C",
-        "priority": 0
-      },
-      "46694": {
-        "tgid": 46694,
-        "name": "MUT-AID 13C",
-        "priority": 0
-      },
-      "46695": {
-        "tgid": 46695,
-        "name": "MUT-AID 14C",
-        "priority": 0
-      },
-      "46696": {
-        "tgid": 46696,
-        "name": "MUT-AID 15C",
-        "priority": 0
-      },
-      "46698": {
-        "tgid": 46698,
-        "name": "MFD BKUP",
-        "priority": 0
-      },
-      "46800": {
-        "tgid": 46800,
-        "name": "FD OPS 1",
-        "priority": 0
-      },
-      "46801": {
-        "tgid": 46801,
-        "name": "FD OPS 2",
-        "priority": 0
-      },
-      "46802": {
-        "tgid": 46802,
-        "name": "FD OPS 3",
-        "priority": 0
-      },
-      "46803": {
-        "tgid": 46803,
-        "name": "FD OPS 4",
-        "priority": 0
-      },
-      "46804": {
-        "tgid": 46804,
-        "name": "FD OPS 5",
-        "priority": 0
-      },
-      "46805": {
-        "tgid": 46805,
-        "name": "FD OPS 6",
-        "priority": 0
-      },
-      "46806": {
-        "tgid": 46806,
-        "name": "FD OPS 7",
-        "priority": 0
-      },
-      "46807": {
-        "tgid": 46807,
-        "name": "FD OPS 8",
-        "priority": 0
-      },
-      "46808": {
-        "tgid": 46808,
-        "name": "FD OPS 9",
-        "priority": 0
-      },
-      "46809": {
-        "tgid": 46809,
-        "name": "FD OPS 10",
-        "priority": 0
-      },
-      "46810": {
-        "tgid": 46810,
-        "name": "FD OPS 11",
-        "priority": 0
-      },
-      "46811": {
-        "tgid": 46811,
-        "name": "FD OPS 12",
-        "priority": 0
-      },
-      "46812": {
-        "tgid": 46812,
-        "name": "PS TAC 13",
-        "priority": 0
-      },
-      "46813": {
-        "tgid": 46813,
-        "name": "PS TAC 14",
-        "priority": 0
-      },
-      "46814": {
-        "tgid": 46814,
-        "name": "PS TAC 15",
-        "priority": 0
-      },
-      "46815": {
-        "tgid": 46815,
-        "name": "PS TAC 16",
-        "priority": 0
-      },
-      "46816": {
-        "tgid": 46816,
-        "name": "PS TAC 17",
-        "priority": 0
-      },
-      "46817": {
-        "tgid": 46817,
-        "name": "PS TAC 18",
-        "priority": 0
-      },
-      "46818": {
-        "tgid": 46818,
-        "name": "PS TAC 19",
-        "priority": 0
-      },
-      "46819": {
-        "tgid": 46819,
-        "name": "PS TAC 20",
-        "priority": 0
-      },
-      "46820": {
-        "tgid": 46820,
-        "name": "PS TAC 21",
-        "priority": 0
-      },
-      "46821": {
-        "tgid": 46821,
-        "name": "PS TAC 22",
-        "priority": 0
-      },
-      "46822": {
-        "tgid": 46822,
-        "name": "PS TAC 23",
-        "priority": 0
-      },
-      "46823": {
-        "tgid": 46823,
-        "name": "PS TAC 24",
-        "priority": 0
-      },
-      "46824": {
-        "tgid": 46824,
-        "name": "PS TAC 25",
-        "priority": 0
-      },
-      "46825": {
-        "tgid": 46825,
-        "name": "PS TAC 26",
-        "priority": 0
-      },
-      "46826": {
-        "tgid": 46826,
-        "name": "PS TAC 27",
-        "priority": 0
-      },
-      "46827": {
-        "tgid": 46827,
-        "name": "PS TAC 28",
-        "priority": 0
-      },
-      "46828": {
-        "tgid": 46828,
-        "name": "PS TAC 29",
-        "priority": 0
-      },
-      "46829": {
-        "tgid": 46829,
-        "name": "PS TAC 30",
-        "priority": 0
-      },
-      "46830": {
-        "tgid": 46830,
-        "name": "PS TAC 31",
-        "priority": 0
-      },
-      "46831": {
-        "tgid": 46831,
-        "name": "PS TAC 32",
-        "priority": 0
-      },
-      "46832": {
-        "tgid": 46832,
-        "name": "PS TAC 33",
-        "priority": 0
-      },
-      "46833": {
-        "tgid": 46833,
-        "name": "PS TAC 34",
-        "priority": 0
-      },
-      "46834": {
-        "tgid": 46834,
-        "name": "PS TAC 35",
-        "priority": 0
-      },
-      "46835": {
-        "tgid": 46835,
-        "name": "PS TAC 36",
-        "priority": 0
-      },
-      "46836": {
-        "tgid": 46836,
-        "name": "PS TAC 37",
-        "priority": 0
-      },
-      "46837": {
-        "tgid": 46837,
-        "name": "PS TAC 38",
-        "priority": 0
-      },
-      "46838": {
-        "tgid": 46838,
-        "name": "PS TAC 39",
-        "priority": 0
-      },
-      "46839": {
-        "tgid": 46839,
-        "name": "PS EVT1",
-        "priority": 0
-      },
-      "46840": {
-        "tgid": 46840,
-        "name": "PS EVT2",
-        "priority": 0
-      },
-      "46841": {
-        "tgid": 46841,
-        "name": "PS EVT3",
-        "priority": 0
-      },
-      "46842": {
-        "tgid": 46842,
-        "name": "PS EVT4",
-        "priority": 0
-      },
-      "46843": {
-        "tgid": 46843,
-        "name": "PS EVT5",
-        "priority": 0
-      },
-      "46844": {
-        "tgid": 46844,
-        "name": "PS EVT6",
-        "priority": 0
-      },
-      "46845": {
-        "tgid": 46845,
-        "name": "PS EVT7",
-        "priority": 0
-      },
-      "46846": {
-        "tgid": 46846,
-        "name": "PS EVT8",
-        "priority": 0
-      },
-      "46847": {
-        "tgid": 46847,
-        "name": "PS EVT9",
-        "priority": 0
-      },
-      "46848": {
-        "tgid": 46848,
-        "name": "PS EVT10",
-        "priority": 0
-      },
-      "46849": {
-        "tgid": 46849,
-        "name": "WC GOV 1",
-        "priority": 0
-      },
-      "46850": {
-        "tgid": 46850,
-        "name": "WC GOV 2",
-        "priority": 0
-      },
-      "46851": {
-        "tgid": 46851,
-        "name": "WC GOV 3",
-        "priority": 0
-      },
-      "46852": {
-        "tgid": 46852,
-        "name": "WC GOV 4",
-        "priority": 0
-      },
-      "46853": {
-        "tgid": 46853,
-        "name": "MUT-AID 1W",
-        "priority": 0
-      },
-      "46854": {
-        "tgid": 46854,
-        "name": "MUT-AID 2W",
-        "priority": 0
-      },
-      "46855": {
-        "tgid": 46855,
-        "name": "MUT-AID 3W",
-        "priority": 0
-      },
-      "46856": {
-        "tgid": 46856,
-        "name": "MUT-AID 4W",
-        "priority": 0
-      },
-      "46857": {
-        "tgid": 46857,
-        "name": "MUT-AID 5W",
-        "priority": 0
-      },
-      "46858": {
-        "tgid": 46858,
-        "name": "TRI-COMM",
-        "priority": 0
-      },
-      "46859": {
-        "tgid": 46859,
-        "name": "WAKE-COMM",
-        "priority": 0
-      },
-      "46865": {
-        "tgid": 46865,
-        "name": "WC ANIML CTL OPS",
-        "priority": 0
-      },
-      "46866": {
-        "tgid": 46866,
-        "name": "WC ANIML CTL TAC",
-        "priority": 0
-      },
-      "46867": {
-        "tgid": 46867,
-        "name": "WC ANIML CTL DSP",
-        "priority": 0
-      },
-      "46870": {
-        "tgid": 46870,
-        "name": "WCGSA SECURITY",
-        "priority": 0
-      },
-      "46871": {
-        "tgid": 46871,
-        "name": "WCGSA PHYSICAL",
-        "priority": 0
-      },
-      "46872": {
-        "tgid": 46872,
-        "name": "WCGSA CENTRAL",
-        "priority": 0
-      },
-      "46873": {
-        "tgid": 46873,
-        "name": "WCGSA FIELD",
-        "priority": 0
-      },
-      "46874": {
-        "tgid": 46874,
-        "name": "WCGSA FLEET",
-        "priority": 0
-      },
-      "46876": {
-        "tgid": 46876,
-        "name": "WCGSA MUT-AID",
-        "priority": 0
-      },
-      "46880": {
-        "tgid": 46880,
-        "name": "WSO DISP 1",
-        "priority": 0
-      },
-      "46881": {
-        "tgid": 46881,
-        "name": "WSO DISP 2",
-        "priority": 0
-      },
-      "46882": {
-        "tgid": 46882,
-        "name": "WSO DISP 3",
-        "priority": 0
-      },
-      "46883": {
-        "tgid": 46883,
-        "name": "WSO DISP 4",
-        "priority": 0
-      },
-      "46884": {
-        "tgid": 46884,
-        "name": "WSO PAT 1",
-        "priority": 0
-      },
-      "46885": {
-        "tgid": 46885,
-        "name": "WSO PAT 2",
-        "priority": 0
-      },
-      "46886": {
-        "tgid": 46886,
-        "name": "WSO PAT 3",
-        "priority": 0
-      },
-      "46887": {
-        "tgid": 46887,
-        "name": "WSO PAT 4",
-        "priority": 0
-      },
-      "46888": {
-        "tgid": 46888,
-        "name": "WSO MOP1",
-        "priority": 0
-      },
-      "46889": {
-        "tgid": 46889,
-        "name": "WSO MOP2",
-        "priority": 0
-      },
-      "46890": {
-        "tgid": 46890,
-        "name": "WSO MOP3",
-        "priority": 0
-      },
-      "46891": {
-        "tgid": 46891,
-        "name": "WSO MOP4",
-        "priority": 0
-      },
-      "46895": {
-        "tgid": 46895,
-        "name": "WSO CID 1",
-        "priority": 0
-      },
-      "46896": {
-        "tgid": 46896,
-        "name": "WSO CID 2",
-        "priority": 0
-      },
-      "46897": {
-        "tgid": 46897,
-        "name": "WSO CID 6",
-        "priority": 0
-      },
-      "46898": {
-        "tgid": 46898,
-        "name": "WSO CID 7",
-        "priority": 0
-      },
-      "46899": {
-        "tgid": 46899,
-        "name": "WSO CID 8",
-        "priority": 0
-      },
-      "46900": {
-        "tgid": 46900,
-        "name": "WSO CID 9",
-        "priority": 0
-      },
-      "46902": {
-        "tgid": 46902,
-        "name": "WSO JUD 1",
-        "priority": 0
-      },
-      "46903": {
-        "tgid": 46903,
-        "name": "WSO TRANSP",
-        "priority": 0
-      },
-      "46904": {
-        "tgid": 46904,
-        "name": "WC COURT SEC",
-        "priority": 0
-      },
-      "46905": {
-        "tgid": 46905,
-        "name": "WSO JUD 2",
-        "priority": 0
-      },
-      "46906": {
-        "tgid": 46906,
-        "name": "WSO WARRANT",
-        "priority": 0
-      },
-      "46907": {
-        "tgid": 46907,
-        "name": "WSO CAR-CAR",
-        "priority": 0
-      },
-      "46911": {
-        "tgid": 46911,
-        "name": "WSO EMERG",
-        "priority": 0
-      },
-      "46915": {
-        "tgid": 46915,
-        "name": "WSO TRANSP2",
-        "priority": 0
-      },
-      "46916": {
-        "tgid": 46916,
-        "name": "WSO DET 1",
-        "priority": 0
-      },
-      "46917": {
-        "tgid": 46917,
-        "name": "WSO DET PSC",
-        "priority": 0
-      },
-      "46925": {
-        "tgid": 46925,
-        "name": "CCBI 1",
-        "priority": 0
-      },
-      "46926": {
-        "tgid": 46926,
-        "name": "CCBI 2",
-        "priority": 0
-      },
-      "46927": {
-        "tgid": 46927,
-        "name": "CCBI 3",
-        "priority": 0
-      },
-      "46935": {
-        "tgid": 46935,
-        "name": "WSOSRT OPS1",
-        "priority": 0
-      },
-      "46936": {
-        "tgid": 46936,
-        "name": "WSOSRT OPS2",
-        "priority": 0
-      },
-      "46937": {
-        "tgid": 46937,
-        "name": "WSOSRT OPS3",
-        "priority": 0
-      },
-      "46938": {
-        "tgid": 46938,
-        "name": "WSOSRT OPS4",
-        "priority": 0
-      },
-      "46939": {
-        "tgid": 46939,
-        "name": "WSOSRT OPS5",
-        "priority": 0
-      },
-      "46940": {
-        "tgid": 46940,
-        "name": "WC FD DISP",
-        "priority": 0
-      },
-      "46941": {
-        "tgid": 46941,
-        "name": "WC FIRE NORTH",
-        "priority": 0
-      },
-      "46943": {
-        "tgid": 46943,
-        "name": "WC FD OPS",
-        "priority": 0
-      },
-      "46947": {
-        "tgid": 46947,
-        "name": "WC FD FIRECOM",
-        "priority": 0
-      },
-      "46948": {
-        "tgid": 46948,
-        "name": "WC FD EMER",
-        "priority": 0
-      },
-      "46949": {
-        "tgid": 46949,
-        "name": "WC FD ALERT",
-        "priority": 0
-      },
-      "46951": {
-        "tgid": 46951,
-        "name": "RFD BATT 1",
-        "priority": 0
-      },
-      "46952": {
-        "tgid": 46952,
-        "name": "RFD BATT 2",
-        "priority": 0
-      },
-      "46953": {
-        "tgid": 46953,
-        "name": "RFD BATT 3",
-        "priority": 0
-      },
-      "46954": {
-        "tgid": 46954,
-        "name": "RFD BATT 4",
-        "priority": 0
-      },
-      "46955": {
-        "tgid": 46955,
-        "name": "RFD BATT 5",
-        "priority": 0
-      },
-      "46962": {
-        "tgid": 46962,
-        "name": "WC EM 1",
-        "priority": 0
-      },
-      "46963": {
-        "tgid": 46963,
-        "name": "WC EOC CALL",
-        "priority": 0
-      },
-      "46964": {
-        "tgid": 46964,
-        "name": "WC EOC 1",
-        "priority": 0
-      },
-      "46965": {
-        "tgid": 46965,
-        "name": "WC EOC 2",
-        "priority": 0
-      },
-      "46966": {
-        "tgid": 46966,
-        "name": "WC EOC 3",
-        "priority": 0
-      },
-      "46969": {
-        "tgid": 46969,
-        "name": "WC EMS DISP1",
-        "priority": 0
-      },
-      "46971": {
-        "tgid": 46971,
-        "name": "WC EMS SPEVNT1",
-        "priority": 0
-      },
-      "46972": {
-        "tgid": 46972,
-        "name": "WC EMS DISP2",
-        "priority": 0
-      },
-      "46975": {
-        "tgid": 46975,
-        "name": "WC EMS SPEVNT2",
-        "priority": 0
-      },
-      "46976": {
-        "tgid": 46976,
-        "name": "WC EMS SPEVNT3",
-        "priority": 0
-      },
-      "46977": {
-        "tgid": 46977,
-        "name": "WC EMS SPEVNT4",
-        "priority": 0
-      },
-      "46980": {
-        "tgid": 46980,
-        "name": "WC MASS CARE A",
-        "priority": 0
-      },
-      "46981": {
-        "tgid": 46981,
-        "name": "WC MASS CARE B",
-        "priority": 0
-      },
-      "46982": {
-        "tgid": 46982,
-        "name": "WC MASS CARE C",
-        "priority": 0
-      },
-      "46983": {
-        "tgid": 46983,
-        "name": "WC MASS CARE D",
-        "priority": 0
-      },
-      "46984": {
-        "tgid": 46984,
-        "name": "WC MASS CARE E",
-        "priority": 0
-      },
-      "46985": {
-        "tgid": 46985,
-        "name": "WC MASS CARE F",
-        "priority": 0
-      },
-      "46986": {
-        "tgid": 46986,
-        "name": "WC MASS CARE G",
-        "priority": 0
-      },
-      "46987": {
-        "tgid": 46987,
-        "name": "WC MASS CARE H",
-        "priority": 0
-      },
-      "46988": {
-        "tgid": 46988,
-        "name": "WC EMS ALERT",
-        "priority": 0
-      },
-      "46989": {
-        "tgid": 46989,
-        "name": "WC EMS EMER",
-        "priority": 0
-      },
-      "46990": {
-        "tgid": 46990,
-        "name": "GO-RALEIGH OPS 1",
-        "priority": 0
-      },
-      "46991": {
-        "tgid": 46991,
-        "name": "GO-RALEIGH OPS 2",
-        "priority": 0
-      },
-      "46992": {
-        "tgid": 46992,
-        "name": "GO-RALEIGH MAINT",
-        "priority": 0
-      },
-      "46993": {
-        "tgid": 46993,
-        "name": "GO-RALEIGH SUPV",
-        "priority": 0
-      },
-      "46994": {
-        "tgid": 46994,
-        "name": "NCSU WOLFLINE 1",
-        "priority": 0
-      },
-      "46995": {
-        "tgid": 46995,
-        "name": "NCSU WOLFLINE 2",
-        "priority": 0
-      },
-      "46996": {
-        "tgid": 46996,
-        "name": "NCSU WOLFLINE MX",
-        "priority": 0
-      },
-      "46997": {
-        "tgid": 46997,
-        "name": "NCSU WOLFLINE",
-        "priority": 0
-      },
-      "46998": {
-        "tgid": 46998,
-        "name": "GO-WAKE 1",
-        "priority": 0
-      },
-      "46999": {
-        "tgid": 46999,
-        "name": "GO-WAKE 2",
-        "priority": 0
-      },
-      "47000": {
-        "tgid": 47000,
-        "name": "GO-WAKE 3",
-        "priority": 0
-      },
-      "47001": {
-        "tgid": 47001,
-        "name": "GO-WAKE 4",
-        "priority": 0
-      },
-      "47002": {
-        "tgid": 47002,
-        "name": "GO-TRIANGLE 1",
-        "priority": 0
-      },
-      "47003": {
-        "tgid": 47003,
-        "name": "GO-TRIANGLE 2",
-        "priority": 0
-      },
-      "47004": {
-        "tgid": 47004,
-        "name": "GO-TRIANGLE MX",
-        "priority": 0
-      },
-      "47005": {
-        "tgid": 47005,
-        "name": "GO-TRIANGLE MX2",
-        "priority": 0
-      },
-      "47009": {
-        "tgid": 47009,
-        "name": "GO-WAKE MAINT",
-        "priority": 0
-      },
-      "47010": {
-        "tgid": 47010,
-        "name": "WC SCHOOLS 1",
-        "priority": 0
-      },
-      "47011": {
-        "tgid": 47011,
-        "name": "WC SCHOOLS 2",
-        "priority": 0
-      },
-      "47020": {
-        "tgid": 47020,
-        "name": "RFD HQ DISP",
-        "priority": 0
-      },
-      "47021": {
-        "tgid": 47021,
-        "name": "RFD ALERT",
-        "priority": 0
-      },
-      "47022": {
-        "tgid": 47022,
-        "name": "RFD TRAIN 1",
-        "priority": 0
-      },
-      "47023": {
-        "tgid": 47023,
-        "name": "RFD TRAIN 2",
-        "priority": 0
-      },
-      "47024": {
-        "tgid": 47024,
-        "name": "RFD TRAIN 3",
-        "priority": 0
-      },
-      "47025": {
-        "tgid": 47025,
-        "name": "RFD TRAIN 4",
-        "priority": 0
-      },
-      "47026": {
-        "tgid": 47026,
-        "name": "RFD TRAIN 5",
-        "priority": 0
-      },
-      "47027": {
-        "tgid": 47027,
-        "name": "RAL FD SPEVNT1",
-        "priority": 0
-      },
-      "47028": {
-        "tgid": 47028,
-        "name": "RAL FD SPEVNT2",
-        "priority": 0
-      },
-      "47029": {
-        "tgid": 47029,
-        "name": "RAL FD SPEVNT3",
-        "priority": 0
-      },
-      "47033": {
-        "tgid": 47033,
-        "name": "RFD INV",
-        "priority": 0
-      },
-      "47039": {
-        "tgid": 47039,
-        "name": "RFD STA 19",
-        "priority": 0
-      },
-      "47043": {
-        "tgid": 47043,
-        "name": "ECC ADMIN",
-        "priority": 0
-      },
-      "47050": {
-        "tgid": 47050,
-        "name": "RPD NWD DISP",
-        "priority": 0
-      },
-      "47051": {
-        "tgid": 47051,
-        "name": "RPD NOD DISP",
-        "priority": 0
-      },
-      "47052": {
-        "tgid": 47052,
-        "name": "RPD NED DISP",
-        "priority": 0
-      },
-      "47053": {
-        "tgid": 47053,
-        "name": "RPD SED DISP",
-        "priority": 0
-      },
-      "47054": {
-        "tgid": 47054,
-        "name": "RPD DTD DISP",
-        "priority": 0
-      },
-      "47055": {
-        "tgid": 47055,
-        "name": "RPD SWD DISP",
-        "priority": 0
-      },
-      "47056": {
-        "tgid": 47056,
-        "name": "RPD TARU TAC",
-        "priority": 0
-      },
-      "47058": {
-        "tgid": 47058,
-        "name": "RPD CEU",
-        "priority": 0
-      },
-      "47060": {
-        "tgid": 47060,
-        "name": "RPD NWD TAC1",
-        "priority": 0
-      },
-      "47061": {
-        "tgid": 47061,
-        "name": "RPD NOD TAC1",
-        "priority": 0
-      },
-      "47062": {
-        "tgid": 47062,
-        "name": "RPD NED TAC1",
-        "priority": 0
-      },
-      "47063": {
-        "tgid": 47063,
-        "name": "RPD SED TAC1",
-        "priority": 0
-      },
-      "47064": {
-        "tgid": 47064,
-        "name": "RPD DTD TAC1",
-        "priority": 0
-      },
-      "47065": {
-        "tgid": 47065,
-        "name": "RPD SWD TAC1",
-        "priority": 0
-      },
-      "47066": {
-        "tgid": 47066,
-        "name": "RPD NWD TAC2",
-        "priority": 0
-      },
-      "47067": {
-        "tgid": 47067,
-        "name": "RPD NOD TAC2",
-        "priority": 0
-      },
-      "47068": {
-        "tgid": 47068,
-        "name": "RPD NED TAC2",
-        "priority": 0
-      },
-      "47069": {
-        "tgid": 47069,
-        "name": "RPD SED TAC2",
-        "priority": 0
-      },
-      "47070": {
-        "tgid": 47070,
-        "name": "RPD DTD TAC2",
-        "priority": 0
-      },
-      "47071": {
-        "tgid": 47071,
-        "name": "RPD SWD TAC2",
-        "priority": 0
-      },
-      "47074": {
-        "tgid": 47074,
-        "name": "RPD LE OPS 5",
-        "priority": 0
-      },
-      "47075": {
-        "tgid": 47075,
-        "name": "RPD LE OPS 6",
-        "priority": 0
-      },
-      "47076": {
-        "tgid": 47076,
-        "name": "RPD LE OPS 7",
-        "priority": 0
-      },
-      "47077": {
-        "tgid": 47077,
-        "name": "RPD LE OPS 8",
-        "priority": 0
-      },
-      "47078": {
-        "tgid": 47078,
-        "name": "RPD LE OPS 9",
-        "priority": 0
-      },
-      "47079": {
-        "tgid": 47079,
-        "name": "RPD CITY 1",
-        "priority": 0
-      },
-      "47080": {
-        "tgid": 47080,
-        "name": "RPD CITY 2",
-        "priority": 0
-      },
-      "47081": {
-        "tgid": 47081,
-        "name": "RPD SO TAC 1",
-        "priority": 0
-      },
-      "47082": {
-        "tgid": 47082,
-        "name": "RPD SO TAC 2",
-        "priority": 0
-      },
-      "47083": {
-        "tgid": 47083,
-        "name": "RPD SO TAC 3",
-        "priority": 0
-      },
-      "47084": {
-        "tgid": 47084,
-        "name": "RPD SO TAC 4",
-        "priority": 0
-      },
-      "47085": {
-        "tgid": 47085,
-        "name": "RPD SO TAC 5",
-        "priority": 0
-      },
-      "47086": {
-        "tgid": 47086,
-        "name": "RPD SO TAC 6",
-        "priority": 0
-      },
-      "47087": {
-        "tgid": 47087,
-        "name": "RPD SO TAC 7",
-        "priority": 0
-      },
-      "47088": {
-        "tgid": 47088,
-        "name": "RPD SO TAC 8",
-        "priority": 0
-      },
-      "47089": {
-        "tgid": 47089,
-        "name": "RPD SO TAC 9",
-        "priority": 0
-      },
-      "47090": {
-        "tgid": 47090,
-        "name": "RPD SO TAC 10",
-        "priority": 0
-      },
-      "47091": {
-        "tgid": 47091,
-        "name": "RPD SO TAC 11",
-        "priority": 0
-      },
-      "47092": {
-        "tgid": 47092,
-        "name": "RPD ACADEMY 1",
-        "priority": 0
-      },
-      "47093": {
-        "tgid": 47093,
-        "name": "RPD ACADEMY 2",
-        "priority": 0
-      },
-      "47094": {
-        "tgid": 47094,
-        "name": "RPD SO TAC 14",
-        "priority": 0
-      },
-      "47095": {
-        "tgid": 47095,
-        "name": "RPD SO TAC 15",
-        "priority": 0
-      },
-      "47096": {
-        "tgid": 47096,
-        "name": "RPD SO TAC 16",
-        "priority": 0
-      },
-      "47097": {
-        "tgid": 47097,
-        "name": "RPD SEU",
-        "priority": 0
-      },
-      "47110": {
-        "tgid": 47110,
-        "name": "NCSU PD 1",
-        "priority": 0
-      },
-      "47111": {
-        "tgid": 47111,
-        "name": "NCSU PD 2",
-        "priority": 0
-      },
-      "47112": {
-        "tgid": 47112,
-        "name": "NCSU OPS",
-        "priority": 0
-      },
-      "47113": {
-        "tgid": 47113,
-        "name": "NCSU FD DISP",
-        "priority": 0
-      },
-      "47114": {
-        "tgid": 47114,
-        "name": "NCSU EMS DISP",
-        "priority": 0
-      },
-      "47115": {
-        "tgid": 47115,
-        "name": "NCSU PS OPS 1",
-        "priority": 0
-      },
-      "47116": {
-        "tgid": 47116,
-        "name": "NCSU PS OPS 2",
-        "priority": 0
-      },
-      "47117": {
-        "tgid": 47117,
-        "name": "NCSU PS OPS 3",
-        "priority": 0
-      },
-      "47118": {
-        "tgid": 47118,
-        "name": "NCSU ADMIN 1",
-        "priority": 0
-      },
-      "47119": {
-        "tgid": 47119,
-        "name": "NCFS ADMIN 2",
-        "priority": 0
-      },
-      "47125": {
-        "tgid": 47125,
-        "name": "WTCC PD DISP",
-        "priority": 0
-      },
-      "47126": {
-        "tgid": 47126,
-        "name": "WTCC PD 2",
-        "priority": 0
-      },
-      "47127": {
-        "tgid": 47127,
-        "name": "WTCC PD 3",
-        "priority": 0
-      },
-      "47128": {
-        "tgid": 47128,
-        "name": "WTCC PD 4",
-        "priority": 0
-      },
-      "47129": {
-        "tgid": 47129,
-        "name": "WTCC PD 5",
-        "priority": 0
-      },
-      "47133": {
-        "tgid": 47133,
-        "name": "WTCC Admin",
-        "priority": 0
-      },
-      "47141": {
-        "tgid": 47141,
-        "name": "FV FIRE COMM",
-        "priority": 0
-      },
-      "47144": {
-        "tgid": 47144,
-        "name": "FVPD DISP",
-        "priority": 0
-      },
-      "47145": {
-        "tgid": 47145,
-        "name": "HSPD EMERG",
-        "priority": 0
-      },
-      "47146": {
-        "tgid": 47146,
-        "name": "FVPD INV 1",
-        "priority": 0
-      },
-      "47147": {
-        "tgid": 47147,
-        "name": "FVPD INV 2",
-        "priority": 0
-      },
-      "47148": {
-        "tgid": 47148,
-        "name": "FVPD INV 3",
-        "priority": 0
-      },
-      "47161": {
-        "tgid": 47161,
-        "name": "FV PD OPS",
-        "priority": 0
-      },
-      "47172": {
-        "tgid": 47172,
-        "name": "GAR COMMON",
-        "priority": 0
-      },
-      "47174": {
-        "tgid": 47174,
-        "name": "GPD DCI",
-        "priority": 0
-      },
-      "47175": {
-        "tgid": 47175,
-        "name": "GPD DISP",
-        "priority": 0
-      },
-      "47176": {
-        "tgid": 47176,
-        "name": "GPD EMERG",
-        "priority": 0
-      },
-      "47178": {
-        "tgid": 47178,
-        "name": "GPD PD 2",
-        "priority": 0
-      },
-      "47179": {
-        "tgid": 47179,
-        "name": "GAR PD 3",
-        "priority": 0
-      },
-      "47181": {
-        "tgid": 47181,
-        "name": "GAR PD INV1",
-        "priority": 0
-      },
-      "47182": {
-        "tgid": 47182,
-        "name": "GAR PD INV2",
-        "priority": 0
-      },
-      "47183": {
-        "tgid": 47183,
-        "name": "GAR PD INV3",
-        "priority": 0
-      },
-      "47184": {
-        "tgid": 47184,
-        "name": "GPD INV",
-        "priority": 0
-      },
-      "47185": {
-        "tgid": 47185,
-        "name": "GVFD 1",
-        "priority": 0
-      },
-      "47196": {
-        "tgid": 47196,
-        "name": "HSFD DISP",
-        "priority": 0
-      },
-      "47197": {
-        "tgid": 47197,
-        "name": "HSPD DISP",
-        "priority": 0
-      },
-      "47198": {
-        "tgid": 47198,
-        "name": "HSPD TAC 1",
-        "priority": 0
-      },
-      "47199": {
-        "tgid": 47199,
-        "name": "HS OPS 1",
-        "priority": 0
-      },
-      "47200": {
-        "tgid": 47200,
-        "name": "HSPD TRAIN",
-        "priority": 0
-      },
-      "47210": {
-        "tgid": 47210,
-        "name": "KFD OPS",
-        "priority": 0
-      },
-      "47211": {
-        "tgid": 47211,
-        "name": "KFD Common",
-        "priority": 0
-      },
-      "47215": {
-        "tgid": 47215,
-        "name": "KPD OPS 1",
-        "priority": 0
-      },
-      "47216": {
-        "tgid": 47216,
-        "name": "KPD OPS 2",
-        "priority": 0
-      },
-      "47217": {
-        "tgid": 47217,
-        "name": "KD CITY SVC 1",
-        "priority": 0
-      },
-      "47218": {
-        "tgid": 47218,
-        "name": "KD CITY SVC 2",
-        "priority": 0
-      },
-      "47220": {
-        "tgid": 47220,
-        "name": "WAKE LE EAST",
-        "priority": 0
-      },
-      "47221": {
-        "tgid": 47221,
-        "name": "WAKE LE EAST TAC",
-        "priority": 0
-      },
-      "47225": {
-        "tgid": 47225,
-        "name": "RVPD 1",
-        "priority": 0
-      },
-      "47226": {
-        "tgid": 47226,
-        "name": "RVPD 2",
-        "priority": 0
-      },
-      "47229": {
-        "tgid": 47229,
-        "name": "RV EMER",
-        "priority": 0
-      },
-      "47235": {
-        "tgid": 47235,
-        "name": "WPD OPS 1",
-        "priority": 0
-      },
-      "47236": {
-        "tgid": 47236,
-        "name": "WPD OPS 2",
-        "priority": 0
-      },
-      "47237": {
-        "tgid": 47237,
-        "name": "WPD ADMIN",
-        "priority": 0
-      },
-      "47239": {
-        "tgid": 47239,
-        "name": "WENDELL COMMON",
-        "priority": 0
-      },
-      "47241": {
-        "tgid": 47241,
-        "name": "WEND COMM",
-        "priority": 0
-      },
-      "47245": {
-        "tgid": 47245,
-        "name": "WFFD SPARE",
-        "priority": 0
-      },
-      "47246": {
-        "tgid": 47246,
-        "name": "WFFD COMN",
-        "priority": 0
-      },
-      "47248": {
-        "tgid": 47248,
-        "name": "WFPD DISP",
-        "priority": 0
-      },
-      "47249": {
-        "tgid": 47249,
-        "name": "WFPD TAC 1",
-        "priority": 0
-      },
-      "47250": {
-        "tgid": 47250,
-        "name": "WFPD TSU",
-        "priority": 0
-      },
-      "47251": {
-        "tgid": 47251,
-        "name": "WF PD INV1",
-        "priority": 0
-      },
-      "47252": {
-        "tgid": 47252,
-        "name": "WFPD DV",
-        "priority": 0
-      },
-      "47253": {
-        "tgid": 47253,
-        "name": "WF TAC 1",
-        "priority": 0
-      },
-      "47254": {
-        "tgid": 47254,
-        "name": "WF TAC 2",
-        "priority": 0
-      },
-      "47255": {
-        "tgid": 47255,
-        "name": "WF TAC 3",
-        "priority": 0
-      },
-      "47257": {
-        "tgid": 47257,
-        "name": "WF COMMON",
-        "priority": 0
-      },
-      "47263": {
-        "tgid": 47263,
-        "name": "WF PUBSVC",
-        "priority": 0
-      },
-      "47273": {
-        "tgid": 47273,
-        "name": "ZEB-WEN FD COMM",
-        "priority": 0
-      },
-      "47274": {
-        "tgid": 47274,
-        "name": "ZPD OPS 1",
-        "priority": 0
-      },
-      "47275": {
-        "tgid": 47275,
-        "name": "ZPD OPS 2",
-        "priority": 0
-      },
-      "47278": {
-        "tgid": 47278,
-        "name": "ZPD ADMIN",
-        "priority": 0
-      },
-      "47300": {
-        "tgid": 47300,
-        "name": "WSO MutAid 1",
-        "priority": 0
-      },
-      "47301": {
-        "tgid": 47301,
-        "name": "WSO MutAid 2",
-        "priority": 0
-      },
-      "47302": {
-        "tgid": 47302,
-        "name": "WSO MutAid 3",
-        "priority": 0
-      },
-      "47303": {
-        "tgid": 47303,
-        "name": "WSO MutAid 4",
-        "priority": 0
-      },
-      "47304": {
-        "tgid": 47304,
-        "name": "WSO MutAid 5",
-        "priority": 0
-      },
-      "47305": {
-        "tgid": 47305,
-        "name": "CAM BU 1",
-        "priority": 0
-      },
-      "47306": {
-        "tgid": 47306,
-        "name": "CAM BU 2",
-        "priority": 0
-      },
-      "47307": {
-        "tgid": 47307,
-        "name": "CAM BU 3",
-        "priority": 0
-      },
-      "47308": {
-        "tgid": 47308,
-        "name": "CAM BU 4",
-        "priority": 0
-      },
-      "47309": {
-        "tgid": 47309,
-        "name": "CAM BU 5",
-        "priority": 0
-      },
-      "47310": {
-        "tgid": 47310,
-        "name": "CAM BU 6",
-        "priority": 0
-      },
-      "47311": {
-        "tgid": 47311,
-        "name": "CAM BU 7",
-        "priority": 0
-      },
-      "47312": {
-        "tgid": 47312,
-        "name": "CAM BU 8",
-        "priority": 0
-      },
-      "47313": {
-        "tgid": 47313,
-        "name": "CAM BU 9",
-        "priority": 0
-      },
-      "47314": {
-        "tgid": 47314,
-        "name": "CAM BU 10",
-        "priority": 0
-      },
-      "47315": {
-        "tgid": 47315,
-        "name": "CAM BU 11",
-        "priority": 0
-      },
-      "47316": {
-        "tgid": 47316,
-        "name": "CAM BU 12",
-        "priority": 0
-      },
-      "47381": {
-        "tgid": 47381,
-        "name": "RDU A",
-        "priority": 0
-      },
-      "47382": {
-        "tgid": 47382,
-        "name": "RDU B",
-        "priority": 0
-      },
-      "47383": {
-        "tgid": 47383,
-        "name": "RDU C",
-        "priority": 0
-      },
-      "47384": {
-        "tgid": 47384,
-        "name": "RDU D",
-        "priority": 0
-      },
-      "47385": {
-        "tgid": 47385,
-        "name": "RDU E",
-        "priority": 0
-      },
-      "47386": {
-        "tgid": 47386,
-        "name": "RDU F",
-        "priority": 0
-      },
-      "47387": {
-        "tgid": 47387,
-        "name": "RDU ES DISP",
-        "priority": 0
-      },
-      "47388": {
-        "tgid": 47388,
-        "name": "RDU ES 1",
-        "priority": 0
-      },
-      "47389": {
-        "tgid": 47389,
-        "name": "RDU ES 2",
-        "priority": 0
-      },
-      "47390": {
-        "tgid": 47390,
-        "name": "RDU CENTRAL",
-        "priority": 0
-      },
-      "47391": {
-        "tgid": 47391,
-        "name": "RDU LE 2",
-        "priority": 0
-      },
-      "47392": {
-        "tgid": 47392,
-        "name": "RDU LE 3",
-        "priority": 0
-      },
-      "47393": {
-        "tgid": 47393,
-        "name": "RDU LE 4",
-        "priority": 0
-      },
-      "47394": {
-        "tgid": 47394,
-        "name": "RDU OPS DISP",
-        "priority": 0
-      },
-      "47395": {
-        "tgid": 47395,
-        "name": "RDU OPS 2",
-        "priority": 0
-      }
+        "46501": {
+            "name": "PD 1 Dispatch",
+            "tgid": 46501,
+            "priority": 3
+        },
+        "46502": {
+            "name": "PD 2 Records",
+            "tgid": 46502,
+            "priority": 3
+        },
+        "46503": {
+            "name": "PD 3 Comm Cntr",
+            "tgid": 46503,
+            "priority": 3
+        },
+        "46504": {
+            "name": "PD 4 Car/Car",
+            "tgid": 46504,
+            "priority": 3
+        },
+        "46513": {
+            "name": "PD 5 Tac",
+            "tgid": 46513,
+            "priority": 3
+        },
+        "46517": {
+            "name": "PS TAC 49",
+            "tgid": 46517,
+            "priority": 3
+        },
+        "46518": {
+            "name": "PS TAC 50",
+            "tgid": 46518,
+            "priority": 3
+        },
+        "46519": {
+            "name": "PS TAC 51",
+            "tgid": 46519,
+            "priority": 3
+        },
+        "46520": {
+            "name": "PS TAC 52",
+            "tgid": 46520,
+            "priority": 3
+        },
+        "46521": {
+            "name": "PS TAC 53",
+            "tgid": 46521,
+            "priority": 3
+        },
+        "46522": {
+            "name": "PS TAC 54",
+            "tgid": 46522,
+            "priority": 3
+        },
+        "46523": {
+            "name": "PS TAC 55",
+            "tgid": 46523,
+            "priority": 3
+        },
+        "46524": {
+            "name": "PS TAC 56",
+            "tgid": 46524,
+            "priority": 3
+        },
+        "46525": {
+            "name": "PS TAC 57",
+            "tgid": 46525,
+            "priority": 3
+        },
+        "46526": {
+            "name": "PS TAC 58",
+            "tgid": 46526,
+            "priority": 3
+        },
+        "46527": {
+            "name": "PS TAC 59",
+            "tgid": 46527,
+            "priority": 3
+        },
+        "46528": {
+            "name": "PS TAC 60",
+            "tgid": 46528,
+            "priority": 3
+        },
+        "46533": {
+            "name": "FD Dispatch",
+            "tgid": 46533,
+            "priority": 3
+        },
+        "46534": {
+            "name": "PS TAC 40",
+            "tgid": 46534,
+            "priority": 3
+        },
+        "46535": {
+            "name": "PS TAC 41",
+            "tgid": 46535,
+            "priority": 3
+        },
+        "46536": {
+            "name": "PS TAC 42",
+            "tgid": 46536,
+            "priority": 3
+        },
+        "46537": {
+            "name": "PS TAC 43",
+            "tgid": 46537,
+            "priority": 3
+        },
+        "46538": {
+            "name": "FD Risk Manage 1",
+            "tgid": 46538,
+            "priority": 3
+        },
+        "46539": {
+            "name": "FD Risk Manage 2",
+            "tgid": 46539,
+            "priority": 3
+        },
+        "46540": {
+            "name": "FD Training 1",
+            "tgid": 46540,
+            "priority": 3
+        },
+        "46541": {
+            "name": "FD Training 2",
+            "tgid": 46541,
+            "priority": 3
+        },
+        "46542": {
+            "name": "FD Investigation",
+            "tgid": 46542,
+            "priority": 3
+        },
+        "46543": {
+            "name": "FD Special Event",
+            "tgid": 46543,
+            "priority": 3
+        },
+        "46544": {
+            "name": "FD Emergency",
+            "tgid": 46544,
+            "priority": 3
+        },
+        "46545": {
+            "name": "PS TAC 44",
+            "tgid": 46545,
+            "priority": 3
+        },
+        "46546": {
+            "name": "PS TAC 45",
+            "tgid": 46546,
+            "priority": 3
+        },
+        "46547": {
+            "name": "PS TAC 46",
+            "tgid": 46547,
+            "priority": 3
+        },
+        "46548": {
+            "name": "PS TAC 47",
+            "tgid": 46548,
+            "priority": 3
+        },
+        "46549": {
+            "name": "PS TAC 48",
+            "tgid": 46549,
+            "priority": 3
+        },
+        "46551": {
+            "name": "Morrisvl PD Disp",
+            "tgid": 46551,
+            "priority": 3
+        },
+        "46564": {
+            "name": "PW All Call",
+            "tgid": 46564,
+            "priority": 3
+        },
+        "46565": {
+            "name": "PW Dispatch",
+            "tgid": 46565,
+            "priority": 3
+        },
+        "46566": {
+            "name": "PW UT Plants",
+            "tgid": 46566,
+            "priority": 3
+        },
+        "46567": {
+            "name": "PW Ops Construct",
+            "tgid": 46567,
+            "priority": 3
+        },
+        "46568": {
+            "name": "PW Traffic Ops",
+            "tgid": 46568,
+            "priority": 3
+        },
+        "46569": {
+            "name": "PW Traffic Sig",
+            "tgid": 46569,
+            "priority": 3
+        },
+        "46570": {
+            "name": "PW UT Billing",
+            "tgid": 46570,
+            "priority": 3
+        },
+        "46571": {
+            "name": "PW Warehouse",
+            "tgid": 46571,
+            "priority": 3
+        },
+        "46573": {
+            "name": "PW USM Maintce",
+            "tgid": 46573,
+            "priority": 3
+        },
+        "46574": {
+            "name": "PW USM I/I",
+            "tgid": 46574,
+            "priority": 3
+        },
+        "46575": {
+            "name": "PW USM Electric",
+            "tgid": 46575,
+            "priority": 3
+        },
+        "46576": {
+            "name": "PW USM RCLMD",
+            "tgid": 46576,
+            "priority": 3
+        },
+        "46577": {
+            "name": "PW Solid Waste",
+            "tgid": 46577,
+            "priority": 3
+        },
+        "46578": {
+            "name": "PW Recycling",
+            "tgid": 46578,
+            "priority": 3
+        },
+        "46579": {
+            "name": "PW Fac West 1",
+            "tgid": 46579,
+            "priority": 3
+        },
+        "46580": {
+            "name": "PW Fac West 2",
+            "tgid": 46580,
+            "priority": 3
+        },
+        "46581": {
+            "name": "PW Fac West 3",
+            "tgid": 46581,
+            "priority": 3
+        },
+        "46582": {
+            "name": "PW Fac East 1",
+            "tgid": 46582,
+            "priority": 3
+        },
+        "46583": {
+            "name": "PW Fac East 2",
+            "tgid": 46583,
+            "priority": 3
+        },
+        "46584": {
+            "name": "PW Fac Control 1",
+            "tgid": 46584,
+            "priority": 3
+        },
+        "46585": {
+            "name": "PW Fac Control 2",
+            "tgid": 46585,
+            "priority": 3
+        },
+        "46586": {
+            "name": "PW Response Div1",
+            "tgid": 46586,
+            "priority": 3
+        },
+        "46587": {
+            "name": "PW Response Div2",
+            "tgid": 46587,
+            "priority": 3
+        },
+        "46588": {
+            "name": "PW Response Div3",
+            "tgid": 46588,
+            "priority": 3
+        },
+        "46589": {
+            "name": "PW Response Div4",
+            "tgid": 46589,
+            "priority": 3
+        },
+        "46590": {
+            "name": "PW Repair Group",
+            "tgid": 46590,
+            "priority": 3
+        },
+        "46591": {
+            "name": "PW Utilities Grp",
+            "tgid": 46591,
+            "priority": 3
+        },
+        "46592": {
+            "name": "PW Logistics Grp",
+            "tgid": 46592,
+            "priority": 3
+        },
+        "46612": {
+            "name": "P/R Dispatch",
+            "tgid": 46612,
+            "priority": 3
+        },
+        "46613": {
+            "name": "Cutltural Resour",
+            "tgid": 46613,
+            "priority": 3
+        },
+        "46614": {
+            "name": "Athletics",
+            "tgid": 46614,
+            "priority": 3
+        },
+        "46615": {
+            "name": "Soccer Park",
+            "tgid": 46615,
+            "priority": 3
+        },
+        "46616": {
+            "name": "Bond Park",
+            "tgid": 46616,
+            "priority": 3
+        },
+        "46617": {
+            "name": "Stevens Nature",
+            "tgid": 46617,
+            "priority": 3
+        },
+        "46644": {
+            "name": "APXF DISP",
+            "tgid": 46644,
+            "priority": 3
+        },
+        "46650": {
+            "name": "APEX STREET",
+            "tgid": 46650,
+            "priority": 3
+        },
+        "46660": {
+            "name": "SYSTEM MUT 1",
+            "tgid": 46660,
+            "priority": 3
+        },
+        "46661": {
+            "name": "SYSTEM MUT 2",
+            "tgid": 46661,
+            "priority": 3
+        },
+        "46662": {
+            "name": "SYSTEM MUT 3",
+            "tgid": 46662,
+            "priority": 3
+        },
+        "46663": {
+            "name": "SYSTEM MUT 4",
+            "tgid": 46663,
+            "priority": 3
+        },
+        "46664": {
+            "name": "SYSTEM MUT 5",
+            "tgid": 46664,
+            "priority": 3
+        },
+        "46665": {
+            "name": "SYSTEM MUT 6",
+            "tgid": 46665,
+            "priority": 3
+        },
+        "46666": {
+            "name": "SYSTEM MUT 7",
+            "tgid": 46666,
+            "priority": 3
+        },
+        "46667": {
+            "name": "SYSTEM MUT 8",
+            "tgid": 46667,
+            "priority": 3
+        },
+        "46668": {
+            "name": "SYSTEM MUT 9",
+            "tgid": 46668,
+            "priority": 3
+        },
+        "46669": {
+            "name": "SYSTEM MUT 10",
+            "tgid": 46669,
+            "priority": 3
+        },
+        "46670": {
+            "name": "SYSTEM MUT 11",
+            "tgid": 46670,
+            "priority": 3
+        },
+        "46671": {
+            "name": "SYSTEM MUT 12",
+            "tgid": 46671,
+            "priority": 3
+        },
+        "46672": {
+            "name": "SYSTEM MUT 13",
+            "tgid": 46672,
+            "priority": 3
+        },
+        "46673": {
+            "name": "SYSTEM MUT 14",
+            "tgid": 46673,
+            "priority": 3
+        },
+        "46674": {
+            "name": "SYSTEM MUT 15",
+            "tgid": 46674,
+            "priority": 3
+        },
+        "46675": {
+            "name": "SYSTEM MUT 16",
+            "tgid": 46675,
+            "priority": 3
+        },
+        "46679": {
+            "name": "APEX PD Disp",
+            "tgid": 46679,
+            "priority": 3
+        },
+        "46680": {
+            "name": "APEX PD Tac",
+            "tgid": 46680,
+            "priority": 3
+        },
+        "46692": {
+            "name": "MUT-AID 11C",
+            "tgid": 46692,
+            "priority": 3
+        },
+        "46693": {
+            "name": "MUT-AID 12C",
+            "tgid": 46693,
+            "priority": 3
+        },
+        "46694": {
+            "name": "MUT-AID 13C",
+            "tgid": 46694,
+            "priority": 3
+        },
+        "46695": {
+            "name": "MUT-AID 14C",
+            "tgid": 46695,
+            "priority": 3
+        },
+        "46696": {
+            "name": "MUT-AID 15C",
+            "tgid": 46696,
+            "priority": 3
+        },
+        "46698": {
+            "name": "MFD BKUP",
+            "tgid": 46698,
+            "priority": 3
+        },
+        "46800": {
+            "name": "FD OPS 1",
+            "tgid": 46800,
+            "priority": 3
+        },
+        "46801": {
+            "name": "FD OPS 2",
+            "tgid": 46801,
+            "priority": 3
+        },
+        "46802": {
+            "name": "FD OPS 3",
+            "tgid": 46802,
+            "priority": 3
+        },
+        "46803": {
+            "name": "FD OPS 4",
+            "tgid": 46803,
+            "priority": 3
+        },
+        "46804": {
+            "name": "FD OPS 5",
+            "tgid": 46804,
+            "priority": 3
+        },
+        "46805": {
+            "name": "FD OPS 6",
+            "tgid": 46805,
+            "priority": 3
+        },
+        "46806": {
+            "name": "FD OPS 7",
+            "tgid": 46806,
+            "priority": 3
+        },
+        "46807": {
+            "name": "FD OPS 8",
+            "tgid": 46807,
+            "priority": 3
+        },
+        "46808": {
+            "name": "FD OPS 9",
+            "tgid": 46808,
+            "priority": 3
+        },
+        "46809": {
+            "name": "FD OPS 10",
+            "tgid": 46809,
+            "priority": 3
+        },
+        "46810": {
+            "name": "FD OPS 11",
+            "tgid": 46810,
+            "priority": 3
+        },
+        "46811": {
+            "name": "FD OPS 12",
+            "tgid": 46811,
+            "priority": 3
+        },
+        "46812": {
+            "name": "PS TAC 13",
+            "tgid": 46812,
+            "priority": 3
+        },
+        "46813": {
+            "name": "PS TAC 14",
+            "tgid": 46813,
+            "priority": 3
+        },
+        "46814": {
+            "name": "PS TAC 15",
+            "tgid": 46814,
+            "priority": 3
+        },
+        "46815": {
+            "name": "PS TAC 16",
+            "tgid": 46815,
+            "priority": 3
+        },
+        "46816": {
+            "name": "PS TAC 17",
+            "tgid": 46816,
+            "priority": 3
+        },
+        "46817": {
+            "name": "PS TAC 18",
+            "tgid": 46817,
+            "priority": 3
+        },
+        "46818": {
+            "name": "PS TAC 19",
+            "tgid": 46818,
+            "priority": 3
+        },
+        "46819": {
+            "name": "PS TAC 20",
+            "tgid": 46819,
+            "priority": 3
+        },
+        "46820": {
+            "name": "PS TAC 21",
+            "tgid": 46820,
+            "priority": 3
+        },
+        "46821": {
+            "name": "PS TAC 22",
+            "tgid": 46821,
+            "priority": 3
+        },
+        "46822": {
+            "name": "PS TAC 23",
+            "tgid": 46822,
+            "priority": 3
+        },
+        "46823": {
+            "name": "PS TAC 24",
+            "tgid": 46823,
+            "priority": 3
+        },
+        "46824": {
+            "name": "PS TAC 25",
+            "tgid": 46824,
+            "priority": 3
+        },
+        "46825": {
+            "name": "PS TAC 26",
+            "tgid": 46825,
+            "priority": 3
+        },
+        "46826": {
+            "name": "PS TAC 27",
+            "tgid": 46826,
+            "priority": 3
+        },
+        "46827": {
+            "name": "PS TAC 28",
+            "tgid": 46827,
+            "priority": 3
+        },
+        "46828": {
+            "name": "PS TAC 29",
+            "tgid": 46828,
+            "priority": 3
+        },
+        "46829": {
+            "name": "PS TAC 30",
+            "tgid": 46829,
+            "priority": 3
+        },
+        "46830": {
+            "name": "PS TAC 31",
+            "tgid": 46830,
+            "priority": 3
+        },
+        "46831": {
+            "name": "PS TAC 32",
+            "tgid": 46831,
+            "priority": 3
+        },
+        "46832": {
+            "name": "PS TAC 33",
+            "tgid": 46832,
+            "priority": 3
+        },
+        "46833": {
+            "name": "PS TAC 34",
+            "tgid": 46833,
+            "priority": 3
+        },
+        "46834": {
+            "name": "PS TAC 35",
+            "tgid": 46834,
+            "priority": 3
+        },
+        "46835": {
+            "name": "PS TAC 36",
+            "tgid": 46835,
+            "priority": 3
+        },
+        "46836": {
+            "name": "PS TAC 37",
+            "tgid": 46836,
+            "priority": 3
+        },
+        "46837": {
+            "name": "PS TAC 38",
+            "tgid": 46837,
+            "priority": 3
+        },
+        "46838": {
+            "name": "PS TAC 39",
+            "tgid": 46838,
+            "priority": 3
+        },
+        "46839": {
+            "name": "PS EVT1",
+            "tgid": 46839,
+            "priority": 3
+        },
+        "46840": {
+            "name": "PS EVT2",
+            "tgid": 46840,
+            "priority": 3
+        },
+        "46841": {
+            "name": "PS EVT3",
+            "tgid": 46841,
+            "priority": 3
+        },
+        "46842": {
+            "name": "PS EVT4",
+            "tgid": 46842,
+            "priority": 3
+        },
+        "46843": {
+            "name": "PS EVT5",
+            "tgid": 46843,
+            "priority": 3
+        },
+        "46844": {
+            "name": "PS EVT6",
+            "tgid": 46844,
+            "priority": 3
+        },
+        "46845": {
+            "name": "PS EVT7",
+            "tgid": 46845,
+            "priority": 3
+        },
+        "46846": {
+            "name": "PS EVT8",
+            "tgid": 46846,
+            "priority": 3
+        },
+        "46847": {
+            "name": "PS EVT9",
+            "tgid": 46847,
+            "priority": 3
+        },
+        "46848": {
+            "name": "PS EVT10",
+            "tgid": 46848,
+            "priority": 3
+        },
+        "46849": {
+            "name": "WC GOV 1",
+            "tgid": 46849,
+            "priority": 3
+        },
+        "46850": {
+            "name": "WC GOV 2",
+            "tgid": 46850,
+            "priority": 3
+        },
+        "46851": {
+            "name": "WC GOV 3",
+            "tgid": 46851,
+            "priority": 3
+        },
+        "46852": {
+            "name": "WC GOV 4",
+            "tgid": 46852,
+            "priority": 3
+        },
+        "46853": {
+            "name": "MUT-AID 1W",
+            "tgid": 46853,
+            "priority": 3
+        },
+        "46854": {
+            "name": "MUT-AID 2W",
+            "tgid": 46854,
+            "priority": 3
+        },
+        "46855": {
+            "name": "MUT-AID 3W",
+            "tgid": 46855,
+            "priority": 3
+        },
+        "46856": {
+            "name": "MUT-AID 4W",
+            "tgid": 46856,
+            "priority": 3
+        },
+        "46857": {
+            "name": "MUT-AID 5W",
+            "tgid": 46857,
+            "priority": 3
+        },
+        "46858": {
+            "name": "TRI-COMM",
+            "tgid": 46858,
+            "priority": 3
+        },
+        "46859": {
+            "name": "WAKE-COMM",
+            "tgid": 46859,
+            "priority": 3
+        },
+        "46865": {
+            "name": "WC ANIML CTL OPS",
+            "tgid": 46865,
+            "priority": 3
+        },
+        "46866": {
+            "name": "WC ANIML CTL TAC",
+            "tgid": 46866,
+            "priority": 3
+        },
+        "46867": {
+            "name": "WC ANIML CTL DSP",
+            "tgid": 46867,
+            "priority": 3
+        },
+        "46870": {
+            "name": "WCGSA SECURITY",
+            "tgid": 46870,
+            "priority": 3
+        },
+        "46871": {
+            "name": "WCGSA PHYSICAL",
+            "tgid": 46871,
+            "priority": 3
+        },
+        "46872": {
+            "name": "WCGSA CENTRAL",
+            "tgid": 46872,
+            "priority": 3
+        },
+        "46873": {
+            "name": "WCGSA FIELD",
+            "tgid": 46873,
+            "priority": 3
+        },
+        "46874": {
+            "name": "WCGSA FLEET",
+            "tgid": 46874,
+            "priority": 3
+        },
+        "46876": {
+            "name": "WCGSA MUT-AID",
+            "tgid": 46876,
+            "priority": 3
+        },
+        "46880": {
+            "name": "WSO DISP 1",
+            "tgid": 46880,
+            "priority": 3
+        },
+        "46881": {
+            "name": "WSO DISP 2",
+            "tgid": 46881,
+            "priority": 3
+        },
+        "46882": {
+            "name": "WSO DISP 3",
+            "tgid": 46882,
+            "priority": 3
+        },
+        "46883": {
+            "name": "WSO DISP 4",
+            "tgid": 46883,
+            "priority": 3
+        },
+        "46884": {
+            "name": "WSO PAT 1",
+            "tgid": 46884,
+            "priority": 3
+        },
+        "46885": {
+            "name": "WSO PAT 2",
+            "tgid": 46885,
+            "priority": 3
+        },
+        "46886": {
+            "name": "WSO PAT 3",
+            "tgid": 46886,
+            "priority": 3
+        },
+        "46887": {
+            "name": "WSO PAT 4",
+            "tgid": 46887,
+            "priority": 3
+        },
+        "46888": {
+            "name": "WSO MOP1",
+            "tgid": 46888,
+            "priority": 3
+        },
+        "46889": {
+            "name": "WSO MOP2",
+            "tgid": 46889,
+            "priority": 3
+        },
+        "46890": {
+            "name": "WSO MOP3",
+            "tgid": 46890,
+            "priority": 3
+        },
+        "46891": {
+            "name": "WSO MOP4",
+            "tgid": 46891,
+            "priority": 3
+        },
+        "46895": {
+            "name": "WSO CID 1",
+            "tgid": 46895,
+            "priority": 3
+        },
+        "46896": {
+            "name": "WSO CID 2",
+            "tgid": 46896,
+            "priority": 3
+        },
+        "46897": {
+            "name": "WSO CID 6",
+            "tgid": 46897,
+            "priority": 3
+        },
+        "46898": {
+            "name": "WSO CID 7",
+            "tgid": 46898,
+            "priority": 3
+        },
+        "46899": {
+            "name": "WSO CID 8",
+            "tgid": 46899,
+            "priority": 3
+        },
+        "46900": {
+            "name": "WSO CID 9",
+            "tgid": 46900,
+            "priority": 3
+        },
+        "46902": {
+            "name": "WSO JUD 1",
+            "tgid": 46902,
+            "priority": 3
+        },
+        "46903": {
+            "name": "WSO TRANSP",
+            "tgid": 46903,
+            "priority": 3
+        },
+        "46904": {
+            "name": "WC COURT SEC",
+            "tgid": 46904,
+            "priority": 3
+        },
+        "46905": {
+            "name": "WSO JUD 2",
+            "tgid": 46905,
+            "priority": 3
+        },
+        "46906": {
+            "name": "WSO WARRANT",
+            "tgid": 46906,
+            "priority": 3
+        },
+        "46907": {
+            "name": "WSO CAR-CAR",
+            "tgid": 46907,
+            "priority": 3
+        },
+        "46911": {
+            "name": "WSO EMERG",
+            "tgid": 46911,
+            "priority": 3
+        },
+        "46915": {
+            "name": "WSO TRANSP2",
+            "tgid": 46915,
+            "priority": 3
+        },
+        "46916": {
+            "name": "WSO DET 1",
+            "tgid": 46916,
+            "priority": 3
+        },
+        "46917": {
+            "name": "WSO DET PSC",
+            "tgid": 46917,
+            "priority": 3
+        },
+        "46925": {
+            "name": "CCBI 1",
+            "tgid": 46925,
+            "priority": 3
+        },
+        "46926": {
+            "name": "CCBI 2",
+            "tgid": 46926,
+            "priority": 3
+        },
+        "46927": {
+            "name": "CCBI 3",
+            "tgid": 46927,
+            "priority": 3
+        },
+        "46935": {
+            "name": "WSOSRT OPS1",
+            "tgid": 46935,
+            "priority": 3
+        },
+        "46936": {
+            "name": "WSOSRT OPS2",
+            "tgid": 46936,
+            "priority": 3
+        },
+        "46937": {
+            "name": "WSOSRT OPS3",
+            "tgid": 46937,
+            "priority": 3
+        },
+        "46938": {
+            "name": "WSOSRT OPS4",
+            "tgid": 46938,
+            "priority": 3
+        },
+        "46939": {
+            "name": "WSOSRT OPS5",
+            "tgid": 46939,
+            "priority": 3
+        },
+        "46940": {
+            "name": "WC FD DISP",
+            "tgid": 46940,
+            "priority": 3
+        },
+        "46941": {
+            "name": "WC FIRE NORTH",
+            "tgid": 46941,
+            "priority": 3
+        },
+        "46943": {
+            "name": "WC FD OPS",
+            "tgid": 46943,
+            "priority": 3
+        },
+        "46947": {
+            "name": "WC FD FIRECOM",
+            "tgid": 46947,
+            "priority": 3
+        },
+        "46948": {
+            "name": "WC FD EMER",
+            "tgid": 46948,
+            "priority": 3
+        },
+        "46949": {
+            "name": "WC FD ALERT",
+            "tgid": 46949,
+            "priority": 3
+        },
+        "46951": {
+            "name": "RFD BATT 1",
+            "tgid": 46951,
+            "priority": 3
+        },
+        "46952": {
+            "name": "RFD BATT 2",
+            "tgid": 46952,
+            "priority": 3
+        },
+        "46953": {
+            "name": "RFD BATT 3",
+            "tgid": 46953,
+            "priority": 3
+        },
+        "46954": {
+            "name": "RFD BATT 4",
+            "tgid": 46954,
+            "priority": 3
+        },
+        "46955": {
+            "name": "RFD BATT 5",
+            "tgid": 46955,
+            "priority": 3
+        },
+        "46962": {
+            "name": "WC EM 1",
+            "tgid": 46962,
+            "priority": 3
+        },
+        "46963": {
+            "name": "WC EOC CALL",
+            "tgid": 46963,
+            "priority": 3
+        },
+        "46964": {
+            "name": "WC EOC 1",
+            "tgid": 46964,
+            "priority": 3
+        },
+        "46965": {
+            "name": "WC EOC 2",
+            "tgid": 46965,
+            "priority": 3
+        },
+        "46966": {
+            "name": "WC EOC 3",
+            "tgid": 46966,
+            "priority": 3
+        },
+        "46969": {
+            "name": "WC EMS DISP1",
+            "tgid": 46969,
+            "priority": 3
+        },
+        "46971": {
+            "name": "WC EMS SPEVNT1",
+            "tgid": 46971,
+            "priority": 3
+        },
+        "46972": {
+            "name": "WC EMS DISP2",
+            "tgid": 46972,
+            "priority": 3
+        },
+        "46975": {
+            "name": "WC EMS SPEVNT2",
+            "tgid": 46975,
+            "priority": 3
+        },
+        "46976": {
+            "name": "WC EMS SPEVNT3",
+            "tgid": 46976,
+            "priority": 3
+        },
+        "46977": {
+            "name": "WC EMS SPEVNT4",
+            "tgid": 46977,
+            "priority": 3
+        },
+        "46980": {
+            "name": "WC MASS CARE A",
+            "tgid": 46980,
+            "priority": 3
+        },
+        "46981": {
+            "name": "WC MASS CARE B",
+            "tgid": 46981,
+            "priority": 3
+        },
+        "46982": {
+            "name": "WC MASS CARE C",
+            "tgid": 46982,
+            "priority": 3
+        },
+        "46983": {
+            "name": "WC MASS CARE D",
+            "tgid": 46983,
+            "priority": 3
+        },
+        "46984": {
+            "name": "WC MASS CARE E",
+            "tgid": 46984,
+            "priority": 3
+        },
+        "46985": {
+            "name": "WC MASS CARE F",
+            "tgid": 46985,
+            "priority": 3
+        },
+        "46986": {
+            "name": "WC MASS CARE G",
+            "tgid": 46986,
+            "priority": 3
+        },
+        "46987": {
+            "name": "WC MASS CARE H",
+            "tgid": 46987,
+            "priority": 3
+        },
+        "46988": {
+            "name": "WC EMS ALERT",
+            "tgid": 46988,
+            "priority": 3
+        },
+        "46989": {
+            "name": "WC EMS EMER",
+            "tgid": 46989,
+            "priority": 3
+        },
+        "46990": {
+            "name": "GO-RALEIGH OPS 1",
+            "tgid": 46990,
+            "priority": 3
+        },
+        "46991": {
+            "name": "GO-RALEIGH OPS 2",
+            "tgid": 46991,
+            "priority": 3
+        },
+        "46992": {
+            "name": "GO-RALEIGH MAINT",
+            "tgid": 46992,
+            "priority": 3
+        },
+        "46993": {
+            "name": "GO-RALEIGH SUPV",
+            "tgid": 46993,
+            "priority": 3
+        },
+        "46994": {
+            "name": "NCSU WOLFLINE 1",
+            "tgid": 46994,
+            "priority": 3
+        },
+        "46995": {
+            "name": "NCSU WOLFLINE 2",
+            "tgid": 46995,
+            "priority": 3
+        },
+        "46996": {
+            "name": "NCSU WOLFLINE MX",
+            "tgid": 46996,
+            "priority": 3
+        },
+        "46997": {
+            "name": "NCSU WOLFLINE",
+            "tgid": 46997,
+            "priority": 3
+        },
+        "46998": {
+            "name": "GO-WAKE 1",
+            "tgid": 46998,
+            "priority": 3
+        },
+        "46999": {
+            "name": "GO-WAKE 2",
+            "tgid": 46999,
+            "priority": 3
+        },
+        "47000": {
+            "name": "GO-WAKE 3",
+            "tgid": 47000,
+            "priority": 3
+        },
+        "47001": {
+            "name": "GO-WAKE 4",
+            "tgid": 47001,
+            "priority": 3
+        },
+        "47002": {
+            "name": "GO-TRIANGLE 1",
+            "tgid": 47002,
+            "priority": 3
+        },
+        "47003": {
+            "name": "GO-TRIANGLE 2",
+            "tgid": 47003,
+            "priority": 3
+        },
+        "47004": {
+            "name": "GO-TRIANGLE MX",
+            "tgid": 47004,
+            "priority": 3
+        },
+        "47005": {
+            "name": "GO-TRIANGLE MX2",
+            "tgid": 47005,
+            "priority": 3
+        },
+        "47009": {
+            "name": "GO-WAKE MAINT",
+            "tgid": 47009,
+            "priority": 3
+        },
+        "47010": {
+            "name": "WC SCHOOLS 1",
+            "tgid": 47010,
+            "priority": 3
+        },
+        "47011": {
+            "name": "WC SCHOOLS 2",
+            "tgid": 47011,
+            "priority": 3
+        },
+        "47020": {
+            "name": "RFD HQ DISP",
+            "tgid": 47020,
+            "priority": 3
+        },
+        "47021": {
+            "name": "RFD ALERT",
+            "tgid": 47021,
+            "priority": 3
+        },
+        "47022": {
+            "name": "RFD TRAIN 1",
+            "tgid": 47022,
+            "priority": 3
+        },
+        "47023": {
+            "name": "RFD TRAIN 2",
+            "tgid": 47023,
+            "priority": 3
+        },
+        "47024": {
+            "name": "RFD TRAIN 3",
+            "tgid": 47024,
+            "priority": 3
+        },
+        "47025": {
+            "name": "RFD TRAIN 4",
+            "tgid": 47025,
+            "priority": 3
+        },
+        "47026": {
+            "name": "RFD TRAIN 5",
+            "tgid": 47026,
+            "priority": 3
+        },
+        "47027": {
+            "name": "RAL FD SPEVNT1",
+            "tgid": 47027,
+            "priority": 3
+        },
+        "47028": {
+            "name": "RAL FD SPEVNT2",
+            "tgid": 47028,
+            "priority": 3
+        },
+        "47029": {
+            "name": "RAL FD SPEVNT3",
+            "tgid": 47029,
+            "priority": 3
+        },
+        "47033": {
+            "name": "RFD INV",
+            "tgid": 47033,
+            "priority": 3
+        },
+        "47039": {
+            "name": "RFD STA 19",
+            "tgid": 47039,
+            "priority": 3
+        },
+        "47043": {
+            "name": "ECC ADMIN",
+            "tgid": 47043,
+            "priority": 3
+        },
+        "47050": {
+            "name": "RPD NWD DISP",
+            "tgid": 47050,
+            "priority": 3
+        },
+        "47051": {
+            "name": "RPD NOD DISP",
+            "tgid": 47051,
+            "priority": 3
+        },
+        "47052": {
+            "name": "RPD NED DISP",
+            "tgid": 47052,
+            "priority": 3
+        },
+        "47053": {
+            "name": "RPD SED DISP",
+            "tgid": 47053,
+            "priority": 3
+        },
+        "47054": {
+            "name": "RPD DTD DISP",
+            "tgid": 47054,
+            "priority": 3
+        },
+        "47055": {
+            "name": "RPD SWD DISP",
+            "tgid": 47055,
+            "priority": 3
+        },
+        "47056": {
+            "name": "RPD TARU TAC",
+            "tgid": 47056,
+            "priority": 3
+        },
+        "47058": {
+            "name": "RPD CEU",
+            "tgid": 47058,
+            "priority": 3
+        },
+        "47060": {
+            "name": "RPD NWD TAC1",
+            "tgid": 47060,
+            "priority": 3
+        },
+        "47061": {
+            "name": "RPD NOD TAC1",
+            "tgid": 47061,
+            "priority": 3
+        },
+        "47062": {
+            "name": "RPD NED TAC1",
+            "tgid": 47062,
+            "priority": 3
+        },
+        "47063": {
+            "name": "RPD SED TAC1",
+            "tgid": 47063,
+            "priority": 3
+        },
+        "47064": {
+            "name": "RPD DTD TAC1",
+            "tgid": 47064,
+            "priority": 3
+        },
+        "47065": {
+            "name": "RPD SWD TAC1",
+            "tgid": 47065,
+            "priority": 3
+        },
+        "47066": {
+            "name": "RPD NWD TAC2",
+            "tgid": 47066,
+            "priority": 3
+        },
+        "47067": {
+            "name": "RPD NOD TAC2",
+            "tgid": 47067,
+            "priority": 3
+        },
+        "47068": {
+            "name": "RPD NED TAC2",
+            "tgid": 47068,
+            "priority": 3
+        },
+        "47069": {
+            "name": "RPD SED TAC2",
+            "tgid": 47069,
+            "priority": 3
+        },
+        "47070": {
+            "name": "RPD DTD TAC2",
+            "tgid": 47070,
+            "priority": 3
+        },
+        "47071": {
+            "name": "RPD SWD TAC2",
+            "tgid": 47071,
+            "priority": 3
+        },
+        "47074": {
+            "name": "RPD LE OPS 5",
+            "tgid": 47074,
+            "priority": 3
+        },
+        "47075": {
+            "name": "RPD LE OPS 6",
+            "tgid": 47075,
+            "priority": 3
+        },
+        "47076": {
+            "name": "RPD LE OPS 7",
+            "tgid": 47076,
+            "priority": 3
+        },
+        "47077": {
+            "name": "RPD LE OPS 8",
+            "tgid": 47077,
+            "priority": 3
+        },
+        "47078": {
+            "name": "RPD LE OPS 9",
+            "tgid": 47078,
+            "priority": 3
+        },
+        "47079": {
+            "name": "RPD CITY 1",
+            "tgid": 47079,
+            "priority": 3
+        },
+        "47080": {
+            "name": "RPD CITY 2",
+            "tgid": 47080,
+            "priority": 3
+        },
+        "47081": {
+            "name": "RPD SO TAC 1",
+            "tgid": 47081,
+            "priority": 3
+        },
+        "47082": {
+            "name": "RPD SO TAC 2",
+            "tgid": 47082,
+            "priority": 3
+        },
+        "47083": {
+            "name": "RPD SO TAC 3",
+            "tgid": 47083,
+            "priority": 3
+        },
+        "47084": {
+            "name": "RPD SO TAC 4",
+            "tgid": 47084,
+            "priority": 3
+        },
+        "47085": {
+            "name": "RPD SO TAC 5",
+            "tgid": 47085,
+            "priority": 3
+        },
+        "47086": {
+            "name": "RPD SO TAC 6",
+            "tgid": 47086,
+            "priority": 3
+        },
+        "47087": {
+            "name": "RPD SO TAC 7",
+            "tgid": 47087,
+            "priority": 3
+        },
+        "47088": {
+            "name": "RPD SO TAC 8",
+            "tgid": 47088,
+            "priority": 3
+        },
+        "47089": {
+            "name": "RPD SO TAC 9",
+            "tgid": 47089,
+            "priority": 3
+        },
+        "47090": {
+            "name": "RPD SO TAC 10",
+            "tgid": 47090,
+            "priority": 3
+        },
+        "47091": {
+            "name": "RPD SO TAC 11",
+            "tgid": 47091,
+            "priority": 3
+        },
+        "47092": {
+            "name": "RPD ACADEMY 1",
+            "tgid": 47092,
+            "priority": 3
+        },
+        "47093": {
+            "name": "RPD ACADEMY 2",
+            "tgid": 47093,
+            "priority": 3
+        },
+        "47094": {
+            "name": "RPD SO TAC 14",
+            "tgid": 47094,
+            "priority": 3
+        },
+        "47095": {
+            "name": "RPD SO TAC 15",
+            "tgid": 47095,
+            "priority": 3
+        },
+        "47096": {
+            "name": "RPD SO TAC 16",
+            "tgid": 47096,
+            "priority": 3
+        },
+        "47097": {
+            "name": "RPD SEU",
+            "tgid": 47097,
+            "priority": 3
+        },
+        "47110": {
+            "name": "NCSU PD 1",
+            "tgid": 47110,
+            "priority": 3
+        },
+        "47111": {
+            "name": "NCSU PD 2",
+            "tgid": 47111,
+            "priority": 3
+        },
+        "47112": {
+            "name": "NCSU OPS",
+            "tgid": 47112,
+            "priority": 3
+        },
+        "47113": {
+            "name": "NCSU FD DISP",
+            "tgid": 47113,
+            "priority": 3
+        },
+        "47114": {
+            "name": "NCSU EMS DISP",
+            "tgid": 47114,
+            "priority": 3
+        },
+        "47115": {
+            "name": "NCSU PS OPS 1",
+            "tgid": 47115,
+            "priority": 3
+        },
+        "47116": {
+            "name": "NCSU PS OPS 2",
+            "tgid": 47116,
+            "priority": 3
+        },
+        "47117": {
+            "name": "NCSU PS OPS 3",
+            "tgid": 47117,
+            "priority": 3
+        },
+        "47118": {
+            "name": "NCSU ADMIN 1",
+            "tgid": 47118,
+            "priority": 3
+        },
+        "47119": {
+            "name": "NCFS ADMIN 2",
+            "tgid": 47119,
+            "priority": 3
+        },
+        "47125": {
+            "name": "WTCC PD DISP",
+            "tgid": 47125,
+            "priority": 3
+        },
+        "47126": {
+            "name": "WTCC PD 2",
+            "tgid": 47126,
+            "priority": 3
+        },
+        "47127": {
+            "name": "WTCC PD 3",
+            "tgid": 47127,
+            "priority": 3
+        },
+        "47128": {
+            "name": "WTCC PD 4",
+            "tgid": 47128,
+            "priority": 3
+        },
+        "47129": {
+            "name": "WTCC PD 5",
+            "tgid": 47129,
+            "priority": 3
+        },
+        "47133": {
+            "name": "WTCC Admin",
+            "tgid": 47133,
+            "priority": 3
+        },
+        "47141": {
+            "name": "FV FIRE COMM",
+            "tgid": 47141,
+            "priority": 3
+        },
+        "47144": {
+            "name": "FVPD DISP",
+            "tgid": 47144,
+            "priority": 3
+        },
+        "47145": {
+            "name": "HSPD EMERG",
+            "tgid": 47145,
+            "priority": 3
+        },
+        "47146": {
+            "name": "FVPD INV 1",
+            "tgid": 47146,
+            "priority": 3
+        },
+        "47147": {
+            "name": "FVPD INV 2",
+            "tgid": 47147,
+            "priority": 3
+        },
+        "47148": {
+            "name": "FVPD INV 3",
+            "tgid": 47148,
+            "priority": 3
+        },
+        "47161": {
+            "name": "FV PD OPS",
+            "tgid": 47161,
+            "priority": 3
+        },
+        "47172": {
+            "name": "GAR COMMON",
+            "tgid": 47172,
+            "priority": 3
+        },
+        "47174": {
+            "name": "GPD DCI",
+            "tgid": 47174,
+            "priority": 3
+        },
+        "47175": {
+            "name": "GPD DISP",
+            "tgid": 47175,
+            "priority": 3
+        },
+        "47176": {
+            "name": "GPD EMERG",
+            "tgid": 47176,
+            "priority": 3
+        },
+        "47178": {
+            "name": "GPD PD 2",
+            "tgid": 47178,
+            "priority": 3
+        },
+        "47179": {
+            "name": "GAR PD 3",
+            "tgid": 47179,
+            "priority": 3
+        },
+        "47181": {
+            "name": "GAR PD INV1",
+            "tgid": 47181,
+            "priority": 3
+        },
+        "47182": {
+            "name": "GAR PD INV2",
+            "tgid": 47182,
+            "priority": 3
+        },
+        "47183": {
+            "name": "GAR PD INV3",
+            "tgid": 47183,
+            "priority": 3
+        },
+        "47184": {
+            "name": "GPD INV",
+            "tgid": 47184,
+            "priority": 3
+        },
+        "47185": {
+            "name": "GVFD 1",
+            "tgid": 47185,
+            "priority": 3
+        },
+        "47196": {
+            "name": "HSFD DISP",
+            "tgid": 47196,
+            "priority": 3
+        },
+        "47197": {
+            "name": "HSPD DISP",
+            "tgid": 47197,
+            "priority": 3
+        },
+        "47198": {
+            "name": "HSPD TAC 1",
+            "tgid": 47198,
+            "priority": 3
+        },
+        "47199": {
+            "name": "HS OPS 1",
+            "tgid": 47199,
+            "priority": 3
+        },
+        "47200": {
+            "name": "HSPD TRAIN",
+            "tgid": 47200,
+            "priority": 3
+        },
+        "47210": {
+            "name": "KFD OPS",
+            "tgid": 47210,
+            "priority": 3
+        },
+        "47211": {
+            "name": "KFD Common",
+            "tgid": 47211,
+            "priority": 3
+        },
+        "47215": {
+            "name": "KPD OPS 1",
+            "tgid": 47215,
+            "priority": 3
+        },
+        "47216": {
+            "name": "KPD OPS 2",
+            "tgid": 47216,
+            "priority": 3
+        },
+        "47217": {
+            "name": "KD CITY SVC 1",
+            "tgid": 47217,
+            "priority": 3
+        },
+        "47218": {
+            "name": "KD CITY SVC 2",
+            "tgid": 47218,
+            "priority": 3
+        },
+        "47220": {
+            "name": "WAKE LE EAST",
+            "tgid": 47220,
+            "priority": 3
+        },
+        "47221": {
+            "name": "WAKE LE EAST TAC",
+            "tgid": 47221,
+            "priority": 3
+        },
+        "47225": {
+            "name": "RVPD 1",
+            "tgid": 47225,
+            "priority": 3
+        },
+        "47226": {
+            "name": "RVPD 2",
+            "tgid": 47226,
+            "priority": 3
+        },
+        "47229": {
+            "name": "RV EMER",
+            "tgid": 47229,
+            "priority": 3
+        },
+        "47235": {
+            "name": "WPD OPS 1",
+            "tgid": 47235,
+            "priority": 3
+        },
+        "47236": {
+            "name": "WPD OPS 2",
+            "tgid": 47236,
+            "priority": 3
+        },
+        "47237": {
+            "name": "WPD ADMIN",
+            "tgid": 47237,
+            "priority": 3
+        },
+        "47239": {
+            "name": "WENDELL COMMON",
+            "tgid": 47239,
+            "priority": 3
+        },
+        "47241": {
+            "name": "WEND COMM",
+            "tgid": 47241,
+            "priority": 3
+        },
+        "47245": {
+            "name": "WFFD SPARE",
+            "tgid": 47245,
+            "priority": 3
+        },
+        "47246": {
+            "name": "WFFD COMN",
+            "tgid": 47246,
+            "priority": 3
+        },
+        "47248": {
+            "name": "WFPD DISP",
+            "tgid": 47248,
+            "priority": 3
+        },
+        "47249": {
+            "name": "WFPD TAC 1",
+            "tgid": 47249,
+            "priority": 3
+        },
+        "47250": {
+            "name": "WFPD TSU",
+            "tgid": 47250,
+            "priority": 3
+        },
+        "47251": {
+            "name": "WF PD INV1",
+            "tgid": 47251,
+            "priority": 3
+        },
+        "47252": {
+            "name": "WFPD DV",
+            "tgid": 47252,
+            "priority": 3
+        },
+        "47253": {
+            "name": "WF TAC 1",
+            "tgid": 47253,
+            "priority": 3
+        },
+        "47254": {
+            "name": "WF TAC 2",
+            "tgid": 47254,
+            "priority": 3
+        },
+        "47255": {
+            "name": "WF TAC 3",
+            "tgid": 47255,
+            "priority": 3
+        },
+        "47257": {
+            "name": "WF COMMON",
+            "tgid": 47257,
+            "priority": 3
+        },
+        "47263": {
+            "name": "WF PUBSVC",
+            "tgid": 47263,
+            "priority": 3
+        },
+        "47273": {
+            "name": "ZEB-WEN FD COMM",
+            "tgid": 47273,
+            "priority": 3
+        },
+        "47274": {
+            "name": "ZPD OPS 1",
+            "tgid": 47274,
+            "priority": 3
+        },
+        "47275": {
+            "name": "ZPD OPS 2",
+            "tgid": 47275,
+            "priority": 3
+        },
+        "47278": {
+            "name": "ZPD ADMIN",
+            "tgid": 47278,
+            "priority": 3
+        },
+        "47300": {
+            "name": "WSO MutAid 1",
+            "tgid": 47300,
+            "priority": 3
+        },
+        "47301": {
+            "name": "WSO MutAid 2",
+            "tgid": 47301,
+            "priority": 3
+        },
+        "47302": {
+            "name": "WSO MutAid 3",
+            "tgid": 47302,
+            "priority": 3
+        },
+        "47303": {
+            "name": "WSO MutAid 4",
+            "tgid": 47303,
+            "priority": 3
+        },
+        "47304": {
+            "name": "WSO MutAid 5",
+            "tgid": 47304,
+            "priority": 3
+        },
+        "47305": {
+            "name": "CAM BU 1",
+            "tgid": 47305,
+            "priority": 3
+        },
+        "47306": {
+            "name": "CAM BU 2",
+            "tgid": 47306,
+            "priority": 3
+        },
+        "47307": {
+            "name": "CAM BU 3",
+            "tgid": 47307,
+            "priority": 3
+        },
+        "47308": {
+            "name": "CAM BU 4",
+            "tgid": 47308,
+            "priority": 3
+        },
+        "47309": {
+            "name": "CAM BU 5",
+            "tgid": 47309,
+            "priority": 3
+        },
+        "47310": {
+            "name": "CAM BU 6",
+            "tgid": 47310,
+            "priority": 3
+        },
+        "47311": {
+            "name": "CAM BU 7",
+            "tgid": 47311,
+            "priority": 3
+        },
+        "47312": {
+            "name": "CAM BU 8",
+            "tgid": 47312,
+            "priority": 3
+        },
+        "47313": {
+            "name": "CAM BU 9",
+            "tgid": 47313,
+            "priority": 3
+        },
+        "47314": {
+            "name": "CAM BU 10",
+            "tgid": 47314,
+            "priority": 3
+        },
+        "47315": {
+            "name": "CAM BU 11",
+            "tgid": 47315,
+            "priority": 3
+        },
+        "47316": {
+            "name": "CAM BU 12",
+            "tgid": 47316,
+            "priority": 3
+        },
+        "47381": {
+            "name": "RDU A",
+            "tgid": 47381,
+            "priority": 3
+        },
+        "47382": {
+            "name": "RDU B",
+            "tgid": 47382,
+            "priority": 3
+        },
+        "47383": {
+            "name": "RDU C",
+            "tgid": 47383,
+            "priority": 3
+        },
+        "47384": {
+            "name": "RDU D",
+            "tgid": 47384,
+            "priority": 3
+        },
+        "47385": {
+            "name": "RDU E",
+            "tgid": 47385,
+            "priority": 3
+        },
+        "47386": {
+            "name": "RDU F",
+            "tgid": 47386,
+            "priority": 3
+        },
+        "47387": {
+            "name": "RDU ES DISP",
+            "tgid": 47387,
+            "priority": 3
+        },
+        "47388": {
+            "name": "RDU ES 1",
+            "tgid": 47388,
+            "priority": 3
+        },
+        "47389": {
+            "name": "RDU ES 2",
+            "tgid": 47389,
+            "priority": 3
+        },
+        "47390": {
+            "name": "RDU CENTRAL",
+            "tgid": 47390,
+            "priority": 3
+        },
+        "47391": {
+            "name": "RDU LE 2",
+            "tgid": 47391,
+            "priority": 3
+        },
+        "47392": {
+            "name": "RDU LE 3",
+            "tgid": 47392,
+            "priority": 3
+        },
+        "47393": {
+            "name": "RDU LE 4",
+            "tgid": 47393,
+            "priority": 3
+        },
+        "47394": {
+            "name": "RDU OPS DISP",
+            "tgid": 47394,
+            "priority": 3
+        },
+        "47395": {
+            "name": "RDU OPS 2",
+            "tgid": 47395,
+            "priority": 3
+        }
     }
-  }
+}

@@ -2,6 +2,7 @@ import json
 import os
 import csv
 import tempfile
+import shutil
 from typing import TYPE_CHECKING, Union  # Add TYPE_CHECKING for conditional imports
 
 if TYPE_CHECKING:
@@ -113,7 +114,7 @@ class TalkgroupManager:
             return {}
         with open(self.file_path, 'r') as f:
             return json.load(f)
-
+        
     def _initialize_sets(self) -> list[TalkgroupSet]:
         return [
             TalkgroupSet(
@@ -171,10 +172,33 @@ class TalkgroupManager:
         return member.name if member else f"Undefined ({tgid})"
 
     def update(self, new_data: dict):
+        """
+        Updates the internal data and associated sets with new data, creates a backup of the current file, 
+        and saves the updated data to the file.
+
+        Args:
+            new_data (dict): A dictionary containing the new data to update.
+
+        Raises:
+            IOError: If there is an issue creating the backup or saving the new data to the file.
+
+        Side Effects:
+            - Updates the internal `_data` attribute with `new_data`.
+            - Reinitializes `_sets` using the `_initialize_sets` method.
+            - Creates a backup of the current file by copying it to a new file with a `.bk` extension.
+            - Writes the updated data to the file specified by `self.file_path`.
+        """
         self._data = new_data
         self._sets = self._initialize_sets()
+
+        # Create backup
+        backup_path = f"{self.file_path}.bk"
+        shutil.copy2(self.file_path, backup_path)
+
+        # Save new data
         with open(self.file_path, 'w') as f:
             json.dump(self._data, f, indent=4)
+
 
     def to_json(self) -> str:
         return json.dumps(self._data, indent=4)

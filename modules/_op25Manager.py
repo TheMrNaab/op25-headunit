@@ -76,7 +76,7 @@ class op25Manager:
                 "--gains", "lna:35", "-S", "960000", "-q", "0",
                 "-v", "2", "-2", "-V", "-U",
                 "-T", self.session.activeSystem.toTrunkTSV(self.session),
-                "-U", "-l", "5000"
+                "-U", "-l", "50"
             ]
             
             

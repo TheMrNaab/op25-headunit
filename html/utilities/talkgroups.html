@@ -91,16 +91,23 @@
   
   document.addEventListener('DOMContentLoaded', () => {
     fetchSystems().then(() => {
-      populateSystemDropdown(document.getElementById('default-system'));
+      populateSystemDropdown(document.getElementById('default-system'), systems);
       loadTalkgroupData();
     });
   });
   
   function fetchSystems() {
-    return fetch(`${API_BASE_URL}/systems/list`)
+    console.log(`${API_BASE_URL}/admin/systems`);
+    return fetch(`${API_BASE_URL}/admin/systems`)
       .then(res => res.json())
+
       .then(json => {
-        systems = json.map((sys, idx) => ({ ...sys, index: sys.index ?? idx }));
+        
+       systems = Object.values(json).map((sys, idx) => ({
+          ...sys,
+          index: sys.index ?? idx
+        }));
+        console.log("Fetched systems:", systems);
         populateSystemDropdown(document.getElementById('default-system'));
         populateSystemFilterDropdown();
       })
@@ -108,6 +115,8 @@
         console.error("Failed to fetch systems:", err);
         systems = [];
       });
+
+      
   }
   
   function parseFile(text, filename) {
@@ -157,20 +166,22 @@
       const sysObj = systems.find(s => parseInt(s.index) === parseInt(r.system));
       console.log(` → Matched system:`, sysObj);
 
-      const sysid = sysObj?.sysid;
-      if (!sysid) return;
-
-      if (!output[sysid]) output[sysid] = {};
-      output[sysid][r.decimal] = {
+      const sysIndex = sysObj?.index;
+      if (sysIndex === undefined || sysIndex === null) return;
+      
+      if (!output[sysIndex]) output[sysIndex] = {};
+      output[sysIndex][r.decimal] = {
         name: r.alpha || '',
         tgid: parseInt(r.decimal),
         priority: parseInt(r.priority) || 3
       };
+      console.log(` → Added to output:`, output[sysIndex][r.decimal]);      
     });
   
     payload = JSON.stringify(output, null, 2)
+    console.log("Posting JSON Data", payload);
     console.log("Posting", payload)  
-    fetch(`${API_BASE_URL}/v2/systems/tgid_tags/all/update`, {
+    fetch(`${API_BASE_URL}/config/talkgroups/post`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: payload
@@ -188,15 +199,26 @@
       });
   }
   
-  function populateSystemDropdown(selectElement) {
+  function populateSystemDropdown(selectElement, systems) {
+    console.log("Populating system dropdown with systems:", systems);
+    
+    if (!Array.isArray(systems) || systems.length === 0) {
+      console.warn("No systems available to populate the dropdown.");
+      return;
+    }
+  
     selectElement.innerHTML = '';
-    systems.forEach((sys, idx) => {
+  
+    systems.forEach((sys) => {
       const opt = document.createElement('option');
       opt.value = sys.index;
       opt.textContent = sys.sysname || `System ${sys.index}`;
       selectElement.appendChild(opt);
     });
-    selectElement.value = systems[0]?.index ?? 0;
+  
+    selectElement.value = systems[0].index;
+    defaultSystemIndex = parseInt(selectElement.value);
+  
     selectElement.addEventListener('change', () => {
       defaultSystemIndex = parseInt(selectElement.value);
     });
@@ -246,10 +268,11 @@
       .then(res => res.json())
       .then(json => {
         records = [];
+        console.log("Fetched talkgroup data:", json);
         Object.entries(json).forEach(([sysid, tgMap]) => {
           const matchingSystem = systems.find(s => s.sysid == sysid);
           const sysIndex = matchingSystem?.index ?? 0;
-  
+          console.log(`System ID: ${sysid}, Index: ${sysIndex}`);
           Object.entries(tgMap).forEach(([tgid, tag]) => {
             records.push({
               decimal: tgid,

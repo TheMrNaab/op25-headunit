@@ -18,15 +18,19 @@
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="system.html">System</a></li>
-                <li class="nav-item"><a class="nav-link active" href="talkgroups.html">Talkgroups</a></li>
+                <li class="nav-item"><a class="nav-link active" href="op25.html">OP25 Configuration</a></li>
+                <li class="nav-item"><a class="nav-link" href="system.html">System</a></li>                
+                <li class="nav-item"><a class="nav-link" href="talkgroups.html">Talkgroups</a></li>
                 <li class="nav-item"><a class="nav-link" href="channels.html">Channels</a></li>
               </ul>
             </div>
           </div>
         </nav>
-  
+ <div class="main-container">
     <h2 class="mb-4">System Settings</h2>
+    <p>This page lets you fine-tune your OP25 setup. Enable only the options you need, select your SDR and audio devices, and adjust technical settings with clear explanations. A real-time command preview is shown as you make changes. You can also paste an existing OP25 command to auto-fill the form.</p>
+
+      <p><strong>Note</strong>: After saving your changes, the device must be restarted for OP25 to relaunch with the new command. Some toggle boxes are disabled because those settings are required for your head unit to operate correctly.</p>
     <form id="settingsForm">
       <div class="card mb-4">
   <div class="card-body">
@@ -47,7 +51,7 @@ python3 rx.py
       <small class="text-muted">Flag: <code>--args</code></small>
     </div>
     <label for="deviceArgs" class="form-label">Device Arguments</label>
-    <input type="text" class="form-control" id="deviceArgs" value="rtl=0" disabled>
+    <input type="text" class="form-control" id="device_args" value="rtl=0" disabled>
     <div class="form-text">Specifies the SDR input device (e.g., rtl=0, hackrf=0).</div>
   </div>
 </div>
@@ -62,8 +66,8 @@ python3 rx.py
       </div>
       <small class="text-muted">Flag: <code>-S</code></small>
     </div>
-    <label for="sampleRate" class="form-label">Sample Rate (Hz)</label>
-    <input type="number" class="form-control" id="sampleRate" min="100000" max="3000000" disabled>
+    <label for="sample_rate" class="form-label">Sample Rate (Hz)</label>
+    <input type="number" class="form-control" id="sample_rate" min="100000" max="3000000" disabled>
     <div class="form-text">Sets the SDR sample rate (2.4M–2.56M recommended for RTL-SDR).</div>
   </div>
 </div>
@@ -105,7 +109,7 @@ python3 rx.py
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="form-check form-switch m-0">
-        <input class="form-check-input setting-toggle" type="checkbox" id="enableVerbosity">
+        <input disabled class="form-check-input setting-toggle" type="checkbox" id="enableVerbosity">
         <label class="form-check-label" for="enableVerbosity">Enable Debug Verbosity</label>
       </div>
       <small class="text-muted">Flag: <code>-v</code></small>
@@ -126,8 +130,8 @@ python3 rx.py
       </div>
       <small class="text-muted">Flags: <code>-2</code>, <code>-U</code></small>
     </div>
-    <label for="audioOutput" class="form-label">Output Mode</label>
-    <select class="form-select" id="audioOutput" disabled>
+    <label for="audio_output" class="form-label">Output Mode</label>
+    <select class="form-select" id="audio_output" disabled>
       <option value="alsa">ALSA (Default)</option>
       <option value="udp">UDP Streaming</option>
     </select>
@@ -145,8 +149,9 @@ python3 rx.py
       </div>
       <small class="text-muted">Flag: <code>--audio-dev</code></small>
     </div>
-    <label for="audioDevice" class="form-label">ALSA Audio Device</label>
-    <input type="text" class="form-control" id="audioDevice" placeholder="default" disabled>
+    <label for="audio_device" class="form-label">ALSA Audio Device</label>
+    <select class="form-control" id="audio_device" placeholder="default" disabled>
+    </select>
     <div class="form-text">Specify ALSA device (e.g., default, hw:1,0, plughw:1,0).</div>
   </div>
 </div>
@@ -156,13 +161,13 @@ python3 rx.py
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="form-check form-switch m-0">
-        <input class="form-check-input setting-toggle" type="checkbox" id="enableLogLimit">
+        <input disabled class="form-check-input setting-toggle" type="checkbox" id="enableLogLimit">
         <label class="form-check-label" for="enableLogLimit">Enable Log Line Limit</label>
       </div>
       <small class="text-muted">Flag: <code>-l</code></small>
     </div>
-    <label for="logLimit" class="form-label">Log Line Limit</label>
-    <input type="number" class="form-control" id="logLimit" min="100" max="100000" step="100" disabled>
+    <label for="log_limit" class="form-label">Log Line Limit</label>
+    <input type="number" class="form-control" id="log_limit" min="100" max="100000" step="100" disabled>
     <div class="form-text">Max log lines before file is truncated. Helps prevent bloat.</div>
   </div>
 </div>
@@ -177,11 +182,10 @@ python3 rx.py
       </div>
       <small class="text-muted">Flag: <code>--nocrypt</code></small>
     </div>
-    <label for="noCrypt" class="form-label">Action</label>
-    <select class="form-select" id="noCrypt" disabled>
-      <option value="skip">Skip Encrypted</option>
-      <option value="log">Log and Skip</option>
-      <option value="none">Ignore</option>
+    <label for="nocrypt" class="form-label">Action</label>
+    <select class="form-select" id="nocrypt" disabled>
+      <option value="true">Skip Encrypted</option>
+      <option value="false">Hear Encrypted (Garbbled)</option>
     </select>
     <div class="form-text">Skips or logs encrypted voice frames (instead of playing static).</div>
   </div>
@@ -192,14 +196,14 @@ python3 rx.py
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="form-check form-switch m-0">
-        <input class="form-check-input setting-toggle" type="checkbox" id="enableTrunkTsv">
+        <input disabled class="form-check-input setting-toggle" type="checkbox" id="enableTrunkTsv">
         <label class="form-check-label" for="enableTrunkTsv">Enable Trunking File</label>
       </div>
       <small class="text-muted">Flag: <code>-T</code></small>
     </div>
-    <label for="trunkTsv" class="form-label">Trunk.tsv Path</label>
-    <input type="text" class="form-control" id="trunkTsv" placeholder="/home/pi/op25/trunk.tsv" disabled>
-    <div class="form-text">Path to trunking system configuration TSV file.</div>
+    <label for="trunk_tsv" class="form-label">Trunk.tsv Path</label>
+    <input type="text" class="form-control" id="trunk_tsv" placeholder="/home/pi/op25/trunk.tsv" disabled>
+    <div class="form-text">Path to default trunking system configuration TSV file.</div>
   </div>
 </div>
 <!-- STDOUT File -->
@@ -207,13 +211,13 @@ python3 rx.py
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="form-check form-switch m-0">
-        <input class="form-check-input setting-toggle" type="checkbox" id="enableStdoutFile">
+        <input disabled class="form-check-input setting-toggle" type="checkbox" id="enableStdoutFile">
         <label class="form-check-label" for="enableStdoutFile">Enable STDOUT Redirect</label>
       </div>
       <small class="text-muted">Python: <code>stdout=</code></small>
     </div>
-    <label for="stdoutFile" class="form-label">STDOUT Log File Path</label>
-    <input type="text" class="form-control" id="stdoutFile" placeholder="/opt/op25-project/logs/stdout.log" disabled>
+    <label for="stdout_file" class="form-label">STDOUT Log File Path</label>
+    <input type="text" class="form-control" id="stdout_file" placeholder="/opt/op25-project/logs/stdout.log" disabled>
     <div class="form-text">Redirects standard output (print statements) to this log file.</div>
   </div>
 </div>
@@ -223,13 +227,13 @@ python3 rx.py
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="form-check form-switch m-0">
-        <input class="form-check-input setting-toggle" type="checkbox" id="enableStderrFile">
+        <input class="form-check-input setting-toggle" disabled type="checkbox" id="enableStderrFile">
         <label class="form-check-label" for="enableStderrFile">Enable STDERR Redirect</label>
       </div>
       <small class="text-muted">Python: <code>stderr=</code></small>
     </div>
-    <label for="stderrFile" class="form-label">STDERR Log File Path</label>
-    <input type="text" class="form-control" id="stderrFile" placeholder="/opt/op25-project/logs/stderr_op25.log" disabled>
+    <label for="stderr_file" class="form-label">STDERR Log File Path</label>
+    <input type="text" class="form-control" id="stderr_file" placeholder="/opt/op25-project/logs/stderr_op25.log" disabled>
     <div class="form-text">Redirects error output (warnings, tracebacks) to this log file.</div>
   </div>
 </div>
@@ -246,42 +250,90 @@ python3 rx.py
   </div>
 
   <script>
-  function parseCommand() {
-    const input = document.getElementById("pasteInput").value;
-    const tokens = input.split(/\s+/);
-    const enabledFlags = new Set();
-
-    tokens.forEach((token, i) => {
-      switch (token) {
-        case "--args":
-          enableSetting("enableDeviceArgs", "deviceArgs", tokens[i + 1]); break;
-        case "--gains":
-          if (tokens[i + 1].startsWith("lna:")) {
-            enableSetting("enableGain", "gain", tokens[i + 1].replace("lna:", ""));
-          }
-          break;
-        case "-S":
-          enableSetting("enableSampleRate", "sampleRate", tokens[i + 1]); break;
-        case "-q":
-          enableSetting("enablePpm", "ppm", tokens[i + 1]); break;
-        case "-v":
-          enableSetting("enableVerbosity", "verbosity", tokens[i + 1]); break;
-        case "-l":
-          enableSetting("enableLogLimit", "logLimit", tokens[i + 1]); break;
-        case "-T":
-          enableSetting("enableTrunkTsv", "trunkTsv", tokens[i + 1]); break;
-        case "--audio-dev":
-          enableSetting("enableAudioDevice", "audioDevice", tokens[i + 1]); break;
-        case "--nocrypt":
-          enableSetting("enableNoCrypt", "noCrypt", "skip"); break;
-        case "-2":
-          enableSetting("enableAudioOutput", "audioOutput", "alsa"); break;
-        case "-U":
-          enableSetting("enableAudioOutput", "audioOutput", "udp"); break;
-      }
+    document.addEventListener("DOMContentLoaded", () => {
+      loadOP25Config();
+      populateAlsaDevices();
+      activateSliders();
     });
+    
+    function activateSliders() {
+      document.querySelectorAll('.setting-toggle').forEach(toggle => {
+        toggle.addEventListener('change', function () {
+          const inputId = settingsMap[this.id]?.id;
+          const input = document.getElementById(inputId);
+          if (input) input.disabled = !this.checked;
+          updatePreview();
+        });
+      });
+    }
+    
 
-    updatePreview(); // Refresh preview box
+    async function populateAlsaDevices() {
+      try {
+        const res = await fetch(`${API_BASE_URL}/config/audio-devices`);
+        const devices = await res.json(); // expects [{ label: "...", value: "..." }, ...]
+    
+        const select = document.getElementById("audio_device");
+        const saved = select.getAttribute("data-selected");
+    
+        // Clear existing options
+        select.innerHTML = "";
+    
+        // Add <option> elements
+        devices.forEach(device => {
+          const option = document.createElement("option");
+          option.value = device.value;
+          option.textContent = device.label;
+          select.appendChild(option);
+        });
+    
+        // Restore selected value if present and valid
+        if (saved && devices.some(d => d.value === saved)) {
+          select.value = saved;
+        }
+    
+      } catch (err) {
+        console.error("Failed to load ALSA devices:", err);
+      }
+    }
+    
+    function parseCommand() {
+      const input = document.getElementById("pasteInput").value;
+      const tokens = input.split(/\s+/);
+    
+      tokens.forEach((token, i) => {
+        switch (token) {
+          case "--args":
+            enableSetting("enableDeviceArgs", "device_args", tokens[i + 1]); break;
+          case "--gains":
+            if (tokens[i + 1]?.startsWith("lna:")) {
+              enableSetting("enableGain", "gain", tokens[i + 1].replace("lna:", ""));
+            }
+            break;
+          case "-S":
+            enableSetting("enableSampleRate", "sample_rate", tokens[i + 1]); break;
+          case "-q":
+            enableSetting("enablePpm", "ppm", tokens[i + 1]); break;
+          case "-v":
+            enableSetting("enableVerbosity", "verbosity", tokens[i + 1]); break;
+          case "-l":
+            enableSetting("enableLogLimit", "log_limit", tokens[i + 1]); break;
+          case "-T":
+            enableSetting("enableTrunkTsv", "trunk_tsv", tokens[i + 1]); break;
+          case "--audio-dev":
+            enableSetting("enableAudioDevice", "audio_device", tokens[i + 1]); break;
+          case "--nocrypt":
+            enableSetting("enableNoCrypt", "nocrypt", "true"); break;
+          case "-2":
+            enableSetting("enableAudioOutput", "audio_output", "alsa"); break;
+          case "-U":
+            enableSetting("enableAudioOutput", "audio_output", "udp"); break;
+        }
+      });
+    
+      updatePreview();
+    }
+    
 
     function handleSaveButtonClick() {
         saveOP25Config().then(() => {
@@ -291,9 +343,6 @@ python3 rx.py
           alert("Error saving settings.");
         });
       }
-
-
-  }
 
   function enableSetting(toggleId, inputId, value) {
     const toggle = document.getElementById(toggleId);
@@ -310,35 +359,84 @@ const API_BASE_URL = `http://${location.hostname}:5001`;
 const endpointGet = `${API_BASE_URL}/config/op25/get`;
 const endpointPost = `${API_BASE_URL}/config/op25/post`;
 
-async function loadOP25Config() {
-    try {
-      const res = await fetch(endpointGet);
-      const data = await res.json();
-      console.log(data);
-      if (!data.OP25 || !data.ENABLED) return;
-  
-      for (const [toggleId, setting] of Object.entries(settingsMap)) {
-        const toggle = document.getElementById(toggleId);
-        const input = document.getElementById(setting.id);
-  
-        if (!toggle || !input) continue;
-  
-        const isEnabled = data.ENABLED[setting.id] === "true" || data.ENABLED[setting.id] === true;
-        const value = data.OP25[setting.id];
-  
-        toggle.checked = isEnabled;
-        input.disabled = !isEnabled;
-        input.value = value || "";
-  
-        // Trigger change to update command preview
-        toggle.dispatchEvent(new Event("change"));
-      }
-  
-      updatePreview();
-    } catch (err) {
-      console.error("Failed to load OP25 config:", err);
-    }
+function validateConfigKeys(data) {
+  const missingOp25 = [];
+  const missingEnabled = [];
+
+  for (const [toggleId, setting] of Object.entries(settingsMap)) {
+    const key = setting.id;
+    const op25HasKey = key in data.OP25;
+    const enabledHasKey = key in data.ENABLED;
+
+    if (!op25HasKey) missingOp25.push(key);
+    if (!enabledHasKey) missingEnabled.push(key);
+
+
   }
+
+  if (missingOp25.length || missingEnabled.length) {
+    console.warn("⚠️ Missing keys in config:");
+
+    if (missingOp25.length) {
+      console.warn("Missing from OP25:");
+      missingOp25.forEach(k => console.warn(`  - ${k}`));
+    }
+
+    if (missingEnabled.length) {
+      console.warn("Missing from ENABLED:");
+      missingEnabled.forEach(k => console.warn(`  - ${k}`));
+    }
+  } else {
+    console.log("✅ Config is complete.");
+  }
+}
+
+
+async function loadOP25Config() {
+  try {
+    const res = await fetch(endpointGet);
+    const data = await res.json();
+    if (!data.OP25 || !data.ENABLED) return;
+
+    validateConfigKeys(data);  // Check for missing keys
+
+    for (const [toggleId, setting] of Object.entries(settingsMap)) {
+      const toggle = document.getElementById(toggleId);
+      const input = document.getElementById(setting.id);
+
+      if (!input) {
+        console.warn(`Element not found for input ${setting.id}`);
+        continue;
+      }
+      if(!toggle) {
+        console.warn(`Element not found for toggle ${toggleId}`);
+        continue;
+      }
+
+      if (!toggle || !input) continue;
+
+      const isEnabled = data.ENABLED[setting.id] === "true" || data.ENABLED[setting.id] === true;
+      const settingValue = data.OP25[setting.id] ?? "";
+
+      if (setting.id === "audio_device") {
+        input.setAttribute("data-selected", settingValue);
+      }
+
+    
+      input.value = settingValue;            // Set value first
+      toggle.checked = isEnabled;            // Set checkbox state
+      input.disabled = !isEnabled;           // Then disable/enable field
+
+      console.log("Setting:", setting.id, "Value:", settingValue, "Enabled:", isEnabled);
+
+      
+    }
+    activateSliders();
+    updatePreview();
+  } catch (err) {
+    console.error("Failed to load OP25 config:", err);
+  }
+}
 
 
 // Post updated settings from form to backend
@@ -347,12 +445,14 @@ async function saveOP25Config() {
   const ENABLED = {};
 
   for (const [toggleId, setting] of Object.entries(settingsMap)) {
+
     const input = document.getElementById(setting.id);
     const toggle = document.getElementById(toggleId);
+
     if (!input || !toggle) continue;
 
     OP25[setting.id] = input.value;
-    ENABLED[setting.id] = toggle.checked;
+    ENABLED[setting.id] = String(toggle.checked).toLowerCase();
   }
 
   try {
@@ -373,26 +473,22 @@ async function saveOP25Config() {
 function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
-
-document.addEventListener("DOMContentLoaded", loadOP25Config);
-
   const previewBox = document.getElementById("commandPreview");
 
   // Map setting IDs to command-line arguments and types
   const settingsMap = {
-    enableDeviceArgs: { id: "deviceArgs", flag: "--args", type: "text" },
-    enableGain: { id: "gain", flag: "--gains", prefix: "lna:", type: "number" },
-    enableSampleRate: { id: "sampleRate", flag: "-S", type: "number" },
-    enablePpm: { id: "ppm", flag: "-q", type: "number" },
-    enableVerbosity: { id: "verbosity", flag: "-v", type: "number" },
-    enableAudioOutput: { id: "audioOutput", flag: null, type: "select" },
-    enableLogLimit: { id: "logLimit", flag: "-l", type: "number" },
-    enableNoCrypt: { id: "noCrypt", flag: "--nocrypt", type: "select" },
-    enableTrunkTsv: { id: "trunkTsv", flag: "-T", type: "text" },
-    enableAudioDevice: { id: "audioDevice", flag: "--audio-dev", type: "text" },
-    enableStdoutFile: { id: "stdoutFile", flag: null, type: "text" },
-    enableStderrFile: { id: "stderrFile", flag: null, type: "text" }
-    
+    enableDeviceArgs:   { id: "device_args", flag: "--args", type: "text" },
+    enableGain:         { id: "gain", flag: "--gains", prefix: "lna:", type: "number" },
+    enableSampleRate:   { id: "sample_rate", flag: "-S", type: "number" },
+    enablePpm:          { id: "ppm", flag: "-q", type: "number" },
+    enableVerbosity:    { id: "verbosity", flag: "-v", type: "number" },
+    enableAudioOutput:  { id: "audio_output", flag: null, type: "select" },
+    enableLogLimit:     { id: "log_limit", flag: "-l", type: "number" },
+    enableNoCrypt:      { id: "nocrypt", flag: "--nocrypt", type: "select" },
+    enableTrunkTsv:     { id: "trunk_tsv", flag: "-T", type: "text" },
+    enableAudioDevice:  { id: "audio_device", flag: "--audio-dev", type: "select" },
+    enableStdoutFile:   { id: "stdout_file", flag: null, type: "text" },
+    enableStderrFile:   { id: "stderr_file", flag: null, type: "text" }
   };
 
   function updatePreview() {
@@ -424,7 +520,6 @@ document.addEventListener("DOMContentLoaded", loadOP25Config);
     previewBox.textContent = parts.join(" ");
   }
 
-  document.querySelectorAll('.setting-toggle')
 
   // Update preview on input change
   document.querySelectorAll('input, select').forEach(el => {
@@ -434,5 +529,7 @@ document.addEventListener("DOMContentLoaded", loadOP25Config);
   // Initial update
   updatePreview();
 </script>
+<script src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
+</div>
 </body>
 </html>

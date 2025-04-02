@@ -8,9 +8,19 @@ import os
 
 class MyConfig:
     def __init__(self, config_file="config.ini"):
+        self._configFile = config_file
         self.config = configparser.ConfigParser()
+        self.config.optionxform = str  # ← Preserve case
         self.config.read(config_file)
-        self.config_file = config_file
+        
+    def reload(self):
+        self.config = configparser.ConfigParser()
+        self.config.optionxform = str  # ← Preserve case
+        self.config.read(self.config_file)
+
+    @property
+    def config_file(self):
+        return self._configFile
 
     def get(self, section, key, fallback=None):
         return self.config.get(section, key, fallback=fallback)

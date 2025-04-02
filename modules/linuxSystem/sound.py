@@ -66,6 +66,54 @@ class soundSys:
                 break
 
         return jsonify(parsed)
+
+
+    def parse_hw_devices():
+        try:
+            # Step 1: Map card names to indexes from aplay -l
+            result_l = subprocess.run(["aplay", "-l"], capture_output=True, text=True, check=True)
+            card_map = {}  # { "vc4hdmi1": "2", "Headphones": "0" }
+
+            for line in result_l.stdout.splitlines():
+                match = re.search(r'card (\d+): (\S+) \[([^\]]+)\]', line)
+                if match:
+                    card_index = match.group(1)
+                    card_id = match.group(2)  # machine-readable
+                    card_map[card_id] = card_index
+
+            # Step 2: Filter hw/plughw devices from aplay -L
+            result_L = subprocess.run(["aplay", "-L"], capture_output=True, text=True, check=True)
+            device_lines = result_L.stdout.splitlines()
+
+            output = [{"label": "Default Device", "value": "default"}]
+
+            for line in device_lines:
+                line = line.strip()
+                match = re.match(r'^(hw|plughw):CARD=(\w+),DEV=(\d+)', line)
+                if match:
+                    prefix, card_name, dev_index = match.groups()
+                    if card_name in card_map:
+                        card_index = card_map[card_name]
+                        short_val = f"{prefix}:{card_index},{dev_index}"
+                        label = f"{card_name} ({short_val})"
+                        output.append({"label": label, "value": short_val})
+
+            return output
+
+        except Exception as e:
+            print("Error parsing ALSA devices:", e)
+            return [{"label": "default", "value": "default"}]
+
+    @staticmethod
+    def list_alsa_devices():
+        try:
+            result = subprocess.run(["aplay", "-L"], capture_output=True, text=True, check=True)
+            lines = result.stdout.splitlines()
+            devices = [line.strip() for line in lines if line and not line.startswith(" ")]
+            return devices
+        except Exception as e:
+            print("Error listing ALSA devices:", e)
+            return []
     
 class sound:
     @staticmethod

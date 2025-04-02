@@ -550,6 +550,32 @@ class API:
             except Exception as e:
                 return {"error": str(e)}, 500
             
+        @self.app.route("/config/reload", methods=["GET"])
+        @self.dynamic_cross_origin()     
+        def reload_config_file():
+            try:
+                self.configManager.reload()
+                return {"success": "reload command sent."}, 200
+            except Exception as e:
+                return {"error": str(e)}, 500
+            
+        @self.app.route("/config/talkgroups/post", methods=["POST"])
+        @self.dynamic_cross_origin()     
+        def post_talkgroups_file():
+            try:
+                tgupdate = request.get_json(force=True)
+                self.sessionManager.talkgroupsManager.update(tgupdate)
+                return {"success": "reload command sent."}, 200
+            except Exception as e:
+                return {"error": str(e)}, 500
+            
+        @self.app.route("/config/audio-devices", methods=["GET"])
+        @self.dynamic_cross_origin()  
+        def list_audio_devices():
+            devices = soundSys.parse_hw_devices()
+            return jsonify(devices)
+
+        
     def run(self):
         self.free_port(8000)
         self.free_port(5001)
