@@ -72,6 +72,7 @@ DUID_REGEX = re.compile(
     r'(?P<Action>duid\d+),\s+tg\((?P<Talkgroup>\d+)\)'
 )
  
+ 
 class LogFileHandler(FileSystemEventHandler):
     """
     Handles file system events for the log file.
@@ -153,6 +154,10 @@ class logMonitorOP25:
         """
         with open(self.source) as f:
             self.lines = f.readlines()
+
+    def _timestamp_now(self):
+        now = datetime.now()
+        return now.strftime("%m/%d/%y"), now.strftime("%H:%M:%S.%f")[:-3]
 
     def append_new_entries(self, new_lines):
         """

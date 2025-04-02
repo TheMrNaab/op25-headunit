@@ -246,14 +246,6 @@ python3 rx.py
   </div>
 
   <script>
-    document.querySelectorAll('.setting-toggle').forEach(toggle => {
-      toggle.addEventListener('change', function () {
-        const input = this.closest('.card-body').querySelectorAll('input:not([type=checkbox]), select');
-        input.forEach(el => el.disabled = !this.checked);
-      });
-    });
-  </script>
-  <script>
   function parseCommand() {
     const input = document.getElementById("pasteInput").value;
     const tokens = input.split(/\s+/);
@@ -432,16 +424,7 @@ document.addEventListener("DOMContentLoaded", loadOP25Config);
     previewBox.textContent = parts.join(" ");
   }
 
-document.querySelectorAll('.setting-toggle').forEach(toggle => {
-  toggle.addEventListener('change', function () {
-    const input = settingsMap[this.id]?.id;
-    if (input) {
-      const field = document.getElementById(input);
-      if (field) field.disabled = !this.checked;
-    }
-    updatePreview();
-  });
-});
+  document.querySelectorAll('.setting-toggle')
 
   // Update preview on input change
   document.querySelectorAll('input, select').forEach(el => {
