@@ -11,3 +11,4 @@ modules/linuxSystem/__pycache__/linuxUtils.cpython-312.pyc
 logs/app_log.txt
 .DS_Store
 *.bk
+*.DS_Store
