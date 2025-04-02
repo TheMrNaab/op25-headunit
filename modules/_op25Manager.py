@@ -29,11 +29,6 @@ class op25Manager:
         self._stderr_file = os.path.expanduser("/opt/op25-project/logs/stderr_op25.log")
         self._stdout_file = os.path.expanduser("/opt/op25-project/logs/stdout_op25.log")
 
-        # SET PERSISTENT ENVOIRNMENTAL VARIABLES CORRECTLY
-        
-
-        # KILL EXISTING PROCESSES
-        # subprocess.run(["pkill", "-f", "rx.py"])
 
         self.session: 'session' = None  # Use forward reference for session type
         self._alreadyStarted = False
@@ -83,6 +78,8 @@ class op25Manager:
                 "-T", self.session.activeSystem.toTrunkTSV(self.session),
                 "-U", "-l", "5000"
             ]
+            
+            
             # print(self.op25_command, flush=True)
             # Start subprocess
             self.op25_process = subprocess.Popen(

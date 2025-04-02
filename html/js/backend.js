@@ -220,7 +220,6 @@ async function renderTable(data) {
 
   }
   
-
 function deleteRow(index) {
   if (confirm("Are you sure you want to delete this row?")) {
     records.splice(index, 1);

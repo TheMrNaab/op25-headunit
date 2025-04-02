@@ -3,57 +3,87 @@ import configparser
 import sys
 
 class MyConfig:
+  import configparser
+import os
+
+class MyConfig:
     def __init__(self, config_file="config.ini"):
         self.config = configparser.ConfigParser()
         self.config.read(config_file)
-        self.config_file = config_file = config_file
-    @property
-    def defaultZonesFile(self):
-        """Retrieve the default value for zones.json configuration."""
-        return self.get("paths", "default_zones_file")
+        self.config_file = config_file
 
     def get(self, section, key, fallback=None):
-        """Retrieve a value from the config file."""
-        if self.config.has_section(section) and self.config.has_option(section, key):
-            return self.config.get(section, key)
-        return fallback  # Return fallback if section or key doesn't exist
-    
-    def get_path(self, section, key, expanded=True, fallback=None):
-        return os.path.dirname(self.config.get(section, key, fallback=fallback)) if expanded else self.config.get(section, key, fallback=fallback)
-
-    def get(self, section, key, fallback=None):
-        """Retrieve a string value from the config file."""
         return self.config.get(section, key, fallback=fallback)
 
     def getint(self, section, key, fallback=0):
-        """Retrieve an integer value from the config file."""
         return self.config.getint(section, key, fallback=fallback)
 
     def getboolean(self, section, key, fallback=False):
-        """Retrieve a boolean value from the config file."""
         return self.config.getboolean(section, key, fallback=fallback)
-    
-    def build_command(self):
-        """Construct the OP25 command based on the config.ini settings."""
-        rx_script = self.get("paths", "rx_script")
-        command = [
-            rx_script,
-            "--nocrypt" if self.getboolean("op25", "nocrypt") else "",
-            "--args", self.get("op25", "args", "rtl"),
-            "--gains", self.get("op25", "gains", "lna:40"),
-            "-S", str(self.getint("op25", "sample_rate", 960000)),
-            "-q", str(self.getint("op25", "frequency_correction", 0)),
-            "-v", str(self.getint("op25", "verbosity", 1)),
-            "-2" if self.getboolean("op25", "two_tuner_mode") else "",
-            "-V" if self.getboolean("op25", "voice_logging") else "",
-            "-U" if self.getboolean("op25", "udp_output") else "",
-            "-T", f"{self.get("paths","rx_script")}",
-            "-U",
-            "-l", str(self.config.getint("op25", "udp_output_port", 5000))
-        ]
 
-        return command
-    
+    def set(self, section, key, value):
+        if not self.config.has_section(section):
+            self.config.add_section(section)
+        self.config.set(section, key, str(value))
+
+    def save(self):
+        with open(self.config_file, "w") as configfile:
+            self.config.write(configfile)
+
+    def fetchOP25Settings(self):
+        result = {
+            "OP25": dict(self.config.items("OP25")) if self.config.has_section("OP25") else {},
+            "ENABLED": dict(self.config.items("ENABLED")) if self.config.has_section("ENABLED") else {}
+        }
+        return result
+
+    def updateOP25Settings(self, new_settings):
+        for section in ["OP25", "ENABLED"]:
+            if section in new_settings:
+                for key, value in new_settings[section].items():
+                    self.set(section, key, value)
+        self.save()
+
+    def build_command(self):
+        c = self.config
+        if not c.has_section("ENABLED"):
+            return []
+
+        enabled = lambda k: c.getboolean("ENABLED", k, fallback=False)
+        value = lambda k: c.get("OP25", k, fallback=None)
+
+        cmd = ["python3", "rx.py"]
+
+        if enabled("nocrypt"):
+            cmd.append("--nocrypt")
+        if enabled("device_args") and value("device_args"):
+            cmd += ["--args", value("device_args")]
+        if enabled("gain") and value("gain"):
+            cmd += ["--gains", f"lna:{value('gain')}"]
+        if enabled("sample_rate") and value("sample_rate"):
+            cmd += ["-S", value("sample_rate")]
+        if enabled("ppm") and value("ppm"):
+            cmd += ["-q", value("ppm")]
+        if enabled("verbosity") and value("verbosity"):
+            cmd += ["-v", value("verbosity")]
+        if enabled("audio_output") and value("audio_output") == "alsa":
+            cmd.append("-2")
+        if enabled("audio_output") and value("audio_output") == "udp":
+            cmd.append("-U")
+        if enabled("audio_device") and value("audio_device"):
+            cmd += ["--audio-dev", value("audio_device")]
+        if enabled("log_limit") and value("log_limit"):
+            cmd += ["-l", value("log_limit")]
+        if enabled("trunk_tsv") and value("trunk_tsv"):
+            cmd += ["-T", value("trunk_tsv")]
+
+        return cmd
+
+    def get_log_files(self):
+        stdout_file = self.get("OP25", "stdout_file", fallback="stdout.log")
+        stderr_file = self.get("OP25", "stderr_file", fallback="stderr.log")
+        return stdout_file, stderr_file
+
     def toJson(self):
         result = {}
         for section in self.config.sections():

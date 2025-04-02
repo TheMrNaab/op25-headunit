@@ -5,7 +5,7 @@ import psutil
 import re
 import json
 from flask import jsonify
-
+import socket
 
 class LinuxUtilities:
 
@@ -116,7 +116,10 @@ class LinuxUtilities:
             "status": "Disconnected",
             "mem_available": "N/A",
             "cpu_temp": "N/A",
-            "audio_output": "N/A"
+            "audio_output": "N/A",
+            "host_name": "N/A",
+            "host_ip": "N/A",
+            "host_port": "N/A"
         }
         try:
             for iface, stats in psutil.net_if_stats().items():
@@ -124,6 +127,9 @@ class LinuxUtilities:
                     status["connection_type"] = "Wired" if "eth" in iface else "Wifi"
                     status["wifi_name"] = iface
                     status["status"] = "Connected"
+                    status["host_name"] = socket.gethostname()
+                    status["host_ip"] = socket.gethostbyname(status["host_name"])
+                    status["host_port"] = "8000"
                     break
         except: pass
         try:

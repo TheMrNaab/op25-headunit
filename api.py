@@ -530,10 +530,27 @@ class API:
             if property == "sleep":
                 return jsonify(config), 200
         
-        
+        @self.app.route("/config/op25/get", methods=["GET"])
+        @self.dynamic_cross_origin()
+        def get_op25_config():
+            settings = self._configManager.fetchOP25Settings()
+            return settings, 200
+
+        @self.app.route("/config/op25/post", methods=["POST"])
+        @self.dynamic_cross_origin()
+        def post_op25_config():
+            try:
+                settings_update = request.get_json(force=True)
+                if not isinstance(settings_update, dict):
+                    return {"error": "Invalid JSON format"}, 400
+
+                self._configManager.updateOP25Settings(settings_update)
+                return {"status": "success"}, 200
+
+            except Exception as e:
+                return {"error": str(e)}, 500
+            
     def run(self):
-
-
         self.free_port(8000)
         self.free_port(5001)
         #self.kill_named_scripts(["rx.py", "terminal.py"])

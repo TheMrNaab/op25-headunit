@@ -51,7 +51,7 @@
   /* Full-page body */
   html, body {
     height: 100%;
-    background-color: var(--fire-black);
+    background-color: var(--bg-light);
     color: var(--fire-white);
     margin: 0;
     padding: 0;

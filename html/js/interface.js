@@ -110,24 +110,29 @@ async function updateNetworkModal(data) {
       'Network Device': data.wifi_name,
       'CPU Temp': data.cpu_temp, 
       'Memory': data.mem_available,
-      'Status': data.status
+      'Status': data.status,
+      'Host Name': data.host_name,
+      'Host IP': data.host_ip,
+      'HTTP Port': data.host_port
   };
 
   let bodyContent = "";
 
   let collection = [];
-
+  bodyContent=`<p><textarea style="width:100%; height: 300px; background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 0.25rem; padding: 10px; font-family: monospace; font-size: 14px;" readonly>`;
   for (const [label, value] of Object.entries(fieldMap)) {
-      
-      let col1 = createBootstrapCol(4, badge(label, ""));
-      let col2 = createBootstrapCol(4, createP(value));
-      let row = createBootstrapRow(col1, col2);
-      collection.push(row);
-  }
-  collection.forEach((row) => {
-      bodyContent += row.outerHTML;
-  });
 
+      bodyContent += `${label}: ${value}\n`
+      // let col1 = createBootstrapCol(4, badge(label, ""));
+      // let col2 = createBootstrapCol(4, createP(value));
+      // let row = createBootstrapRow(col1, col2);
+  }
+
+  // collection.forEach((row) => {
+  //     bodyContent += row.outerHTML;
+  // });
+
+  bodyContent += `</textarea></p>`
   // TODO: Implement Restart System
   const footerContent = `<button class="btn btn-warning" onClick="reloadSystem()" disabled><i class="fas fa-refresh me-1"></i>Reload System</button>`;
 

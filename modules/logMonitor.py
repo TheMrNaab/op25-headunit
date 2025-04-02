@@ -11,6 +11,40 @@ import queue
 from watchdog.observers import Observer  # type: ignore
 from watchdog.events import FileSystemEventHandler  # type: ignore
 import os
+from datetime import datetime
+
+DEMOD_REGEX = re.compile(
+    r'(?P<Action>demodulator):\s+xlator\s+if_rate=(?P<if_rate>\d+),\s+input_rate=(?P<input_rate>\d+),\s+decim=(?P<decim>\d+),\s+if taps=\[(?P<taps>[\d,]+)\],\s+resampled_rate=(?P<resampled_rate>\d+),\s+sps=(?P<sps>\d+)'
+)
+
+RECONFIG_REGEX = re.compile(
+    r'(?P<Date>\d{2}/\d{2}/\d{2})\s+'
+    r'(?P<Time>\d{2}:\d{2}:\d{2}\.\d+)\s+'
+    r'(?P<Action>Reconfiguring NAC)\s+from\s+0x(?P<NACFrom>[0-9A-Fa-f]{3})\s+to\s+0x(?P<NACTo>[0-9A-Fa-f]{3})'
+)
+AUDIO_SOCKET_REGEX = re.compile(
+    r'(?P<Action>op25_audio::open_socket\(\)):\s+enabled udp host\((?P<host>[^)]+)\),\s+wireshark\((?P<wireshark>\d+)\),\s+audio\((?P<audio>\d+)\)'
+)
+
+FRAME_ASSEMBLER_REGEX = re.compile(
+    r'(?P<Action>p25_frame_assembler_impl):\s+do_imbe\[(?P<do_imbe>\d+)\],\s+do_output\[(?P<do_output>\d+)\],\s+do_audio_output\[(?P<do_audio_output>\d+)\],\s+do_phase2_tdma\[(?P<do_phase2_tdma>\d+)\],\s+do_nocrypt\[(?P<do_nocrypt>\d+)\]'
+)
+
+
+GAIN_REGEX = re.compile(
+    r'(?P<Action>gain):\s+name:\s+(?P<name>\S+)\s+range:\s+start\s+(?P<start>\d+)\s+stop\s+(?P<stop>\d+)\s+step\s+(?P<step>\d+)'
+)
+
+
+DEVICE_REGEX = re.compile(
+    r'(?P<Action>Using device)\s+#(?P<index>\d+)\s+(?P<model>.+?)\s+SN:\s+(?P<serial>\d+)'
+)
+
+HOLD_REGEX = re.compile(
+    r'(?P<Date>\d{2}/\d{2}/\d{2})\s+'
+    r'(?P<Time>\d{2}:\d{2}:\d{2}\.\d+)\s+'
+    r'(?P<Action>hold active)\s+tg\((?P<Talkgroup>\d+)\)'
+)
 
 # Regex to parse "voice update" log entries
 VOICE_REGEX = re.compile(
@@ -32,6 +66,12 @@ TG_REGEX = re.compile(
     # ADD HERE
 )
 
+DUID_REGEX = re.compile(
+    r'(?P<Date>\d{2}/\d{2}/\d{2})\s+'
+    r'(?P<Time>\d{2}:\d{2}:\d{2}\.\d+)\s+'
+    r'(?P<Action>duid\d+),\s+tg\((?P<Talkgroup>\d+)\)'
+)
+ 
 class LogFileHandler(FileSystemEventHandler):
     """
     Handles file system events for the log file.
@@ -144,6 +184,52 @@ class logMonitorOP25:
             finally:
                 self.queue.task_done()
 
+    def _match_config_patterns(self, line):
+        """
+        Matches config-related log lines and returns structured data.
+        """
+        date, time = self._timestamp_now()
+
+        config_patterns = [
+            {
+                "regex": GAIN_REGEX,
+                "action": "gain",
+                "fields": ["name", "start", "stop", "step"]
+            },
+            {
+                "regex": DEVICE_REGEX,
+                "action": "Using device",
+                "fields": ["index", "model", "serial"]
+            },
+            {
+                "regex": DEMOD_REGEX,
+                "action": "demodulator",
+                "fields": ["if_rate", "input_rate", "decim", "taps", "resampled_rate", "sps"]
+            },
+            {
+                "regex": AUDIO_SOCKET_REGEX,
+                "action": "op25_audio::open_socket()",
+                "fields": ["host", "wireshark", "audio"]
+            },
+            {
+                "regex": FRAME_ASSEMBLER_REGEX,
+                "action": "p25_frame_assembler_impl",
+                "fields": ["do_imbe", "do_output", "do_audio_output", "do_phase2_tdma", "do_nocrypt"]
+            }
+        ]
+
+        for pattern in config_patterns:
+            m = pattern["regex"].match(line)
+            if m:
+                return {
+                    "Date": date,
+                    "Time": time,
+                    "Action": m.group("Action"),
+                    "Config": {key: m.group(key) for key in pattern["fields"]}
+                }
+
+        return None
+
     def interpretLine(self, line):
         """
         Interprets a single line from the log file.
@@ -153,7 +239,6 @@ class logMonitorOP25:
         m = VOICE_REGEX.match(line)
         if m:
             entry = m.groupdict()
-            # Add talkgroup name using the API
             entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(
                 self.api.sessionManager.thisSession.activeSystem.index, m
             )
@@ -163,11 +248,44 @@ class logMonitorOP25:
         m = TG_REGEX.match(line)
         if m:
             entry = m.groupdict()
-            # Add talkgroup name using the API
             entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(
                 self.api.sessionManager.thisSession.activeChannelNumber, m
             )
             return entry
 
-        # Step 3: Return None if no patterns match
-        return None
+        # Step 3: Check RECONFIG_REGEX
+        m = RECONFIG_REGEX.match(line)
+        if m:
+            return m.groupdict()
+
+        # Step 4: Check HOLD_REGEX
+        m = HOLD_REGEX.match(line)
+        if m:
+            entry = m.groupdict()
+            entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(
+                self.api.sessionManager.thisSession.activeSystem.index, m
+            )
+            return entry
+
+        # Step 5: Check DUID_REGEX
+        m = DUID_REGEX.match(line)
+        if m:
+            entry = m.groupdict()
+            entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(
+                self.api.sessionManager.thisSession.activeSystem.index, m
+            )
+            return entry
+
+        # Step 6: Check config-related patterns
+        entry = self._match_config_patterns(line)
+        if entry:
+            return entry
+
+        # Step 7: Fallback for uncategorized lines
+        date, time = self._timestamp_now()
+        return {
+            "Date": date,
+            "Time": time,
+            "Action": "Misc",
+            "Data": line.strip()
+        }
