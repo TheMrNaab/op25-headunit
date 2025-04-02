@@ -9,3 +9,4 @@ logs/stderr_op25.log
 *.pyc
 modules/linuxSystem/__pycache__/linuxUtils.cpython-312.pyc
 logs/app_log.txt
+.DS_Store
