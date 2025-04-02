@@ -109,6 +109,17 @@ class LinuxUtilities:
         return displays
 
     @staticmethod
+    def get_local_ip():
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))  # Dummy external IP, no traffic sent
+            ip = s.getsockname()[0]
+            s.close()
+            return ip
+        except:
+            return "N/A"
+
+    @staticmethod
     def get_network_status():
         status = {
             "connection_type": "Disconnected",
@@ -128,7 +139,7 @@ class LinuxUtilities:
                     status["wifi_name"] = iface
                     status["status"] = "Connected"
                     status["host_name"] = socket.gethostname()
-                    status["host_ip"] = socket.gethostbyname(status["host_name"])
+                    status["host_ip"] = LinuxUtilities.get_local_ip()
                     status["host_port"] = "8000"
                     break
         except: pass
