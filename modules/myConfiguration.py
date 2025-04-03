@@ -53,6 +53,16 @@ class MyConfig:
                 for key, value in new_settings[section].items():
                     self.set(section, key, value)
         self.save()
+        self.reload()
+        
+    def update(self, data):
+        for section, values in data.items():
+            if not self.config.has_section(section):
+                self.config.add_section(section)
+            for key, value in values.items():
+                self.config.set(section, key, str(value))
+        self.save()
+        self.reload()
 
     def build_command(self):
         c = self.config

@@ -140,7 +140,6 @@ class API:
     def register_routes(self):
 
         # ====== SYSTEM CONTROL ======
-
         # 1: [GET] Get system volume level (0–100)
         @self.app.route('/volume/simple', methods=['GET'])
         def get_volume():
@@ -169,7 +168,6 @@ class API:
                 return jsonify({"error": f"Property '{property}' not found"}), 404
         
         # ====== SYSTEM UTILITIES & CONTROL ======
-
         @self.app.route('/utilities/qrcode/<path:content>', methods=['GET'])
         def generate_qr(content):
             img_io = LinuxUtilities.generate_qrcode_image(content)
@@ -177,8 +175,8 @@ class API:
 
 
         # ====== DISPLAY SLEEP SETTINGS ======
-
-        @self.app.route('/config/openbox/display/<int:id>/sleep/set/<int:timeout>', methods=['POST'])
+        @self.app.route('/config/openbox/display/<int:id>/sleep/set/<int:timeout>', methods=['PUT'])
+        @self.dynamic_cross_origin()
         def set_display_timeout(id, timeout):
             try:
                 LinuxUtilities.set_display_timeout(id, timeout)
@@ -187,6 +185,7 @@ class API:
                 return jsonify({"error": "Failed to set display timeout"}), 500
 
         @self.app.route('/config/openbox/display/<int:id>/sleep', methods=['GET'])
+        @self.dynamic_cross_origin()
         def get_display_timeout(id):
             try:
                 timeout = LinuxUtilities.get_display_timeout(id)
@@ -312,16 +311,36 @@ class API:
         @self.dynamic_cross_origin()
         def set_active_channel(id):
             zone_index = self.activeSession.activeZoneIndex
-            ch_data = self.sessionManager.zoneManager.getChannel(zone_index, id) # MODIFIED FOR ERROR CHECKING
-            if not ch_data:
+            channel = self.sessionManager.zoneManager.getChannel(zone_index, id) # MODIFIED FOR ERROR CHECKING
+            if not channel:
                 return {"error": f"Channel {id} not found in zone {zone_index}"}, 404
             zone = self.sessionManager.zoneManager.getZoneByIndex(zone_index)
-            channel = channelMember(ch_data, zone_index)
+             
+            sys = self.sessionManager.systemsManager.getSystemByIndex(channel.sysid)
+            if not sys:
+                return {"error": f"System with sysid {channel.sysid} not found"}, 404
+            self.activeSession.update_session(channel, zone, sys)
+            return {
+                "message": "Channel updated successfully",
+                "SysIndex": self.sessionManager.thisSession.activeSysIndex
+            }
+        
+        @self.app.route('/session/zone/<int:zn>/channel/<int:ch>', methods=['PUT'])
+        @self.dynamic_cross_origin()
+        def set_active_zone_channel(zn,ch):
+            ch_data = self.sessionManager.zoneManager.getChannel(zn, ch) # MODIFIED FOR ERROR CHECKING
+            if not ch_data:
+                return {"error": f"Channel {ch} not found in zone {zn}"}, 404
+            zone = self.sessionManager.zoneManager.getZoneByIndex(zn)
+            channel = channelMember(ch_data, zn)
             sys = self.sessionManager.systemsManager.getSystemByIndex(channel.sysid)
             if not sys:
                 return {"error": f"System with sysid {channel.sysid} not found"}, 404
             self.activeSession.updateSession(channel, zone, sys)
             return {"message": {"Channel updated successfully", "SysIndex:", self.sessionManager.thisSession.activeSysIndex}}
+
+
+
 
         # 12: [PUT] Move to next channel
         @self.app.route('/session/channel/next', methods=['PUT'])
@@ -518,6 +537,13 @@ class API:
         @self.dynamic_cross_origin()
         def get_config_file():
             config = self.configManager.toJson()
+            return jsonify(config), 200
+        
+        # 31: [GET] GET CONFIG FILE
+        @self.app.route('/admin/config/set', methods=['POST'])
+        @self.dynamic_cross_origin()
+        def update_config_file():
+            config = self.configManager.update(request.get_json())
             return jsonify(config), 200
         
         # 32: [GET] GET SPECIFIC DEVICE SETTING

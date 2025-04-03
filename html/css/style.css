@@ -96,10 +96,10 @@
     width: 80px;
     height: 80px;
     font-size: 1.5rem;
-    color: white;
+    color: #444;
     border: none;
     border-radius: 10px;
-    background-color: #444;
+    background-color: var(--bs-gray-200); /*#444; */
     display: flex;
     flex-direction: column; /* Stack icon and text */
     align-items: center;

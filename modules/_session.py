@@ -153,10 +153,8 @@ class SessionMember:
                                       change is handled.
         """
         """Handle talkgroup or system change."""
-        if did_system_change:
-            self.sessionManager.op25Manager.switchSystem(self)
-        else:
-            self.sessionManager.op25Manager.switchTalkgroup(self)
+        
+        self.sessionManager.op25Manager.switchSystem(self)
 
     def nextChannel(self):
         """

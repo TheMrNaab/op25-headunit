@@ -1,247 +1,355 @@
 <!--utilities/inde.html-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Systems Config Editor</title>
   <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-   <!-- Font Awesome Icons -->
-   <link rel="stylesheet" href="../static/fa/css/all.min.css">
-   <link href="backend.css?v=3" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="../static/fa/css/all.min.css">
+  <link href="backend.css?v=3" rel="stylesheet">
 </head>
+
 <body>
-<div class="container my-4">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">RadioApp</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active" href="index.html">Home</a>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="op25.html">OP25 Configuration</a></li>
-          <li class="nav-item">
-            <a class="nav-link" href="system.html">System</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="talkgroups.html">Talkgroups</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="channels.html">Channels</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <!-- Import Modal Trigger Button (kept in button group) -->
-  <div class="main-container">
-    <div class="alert alert-warning custom-alert" role="alert">
-      <strong>Note:</strong> These settings are not yet editable. This webpage will be available in the future.
-    </div>
-    <h2 class="mt-4">System Configuration</h2>
-    <p>
-      This tool allows you to configure the overall system settings for the OP25 scanner platform. Only modify settings that you understand.
-    </p>
-    <form id="config-form">
-      <h4><i class="fa fa-laptop me-2"></i>Local Settings</h4>
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <label class="form-label">
-            Display Sleep
-            <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="Display Timeout" data-bs-content="Specifies the amount of minutes your default display is on before sleeping."></i>
-          </label>
-          <input type="text"  class="form-control form-control-sm" id="display_sleep" >
+  <div class="container my-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">RadioApp</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.html">Home</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="op25.html">OP25 Configuration</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="system.html">System</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="talkgroups.html">Talkgroups</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="channels.html">Channels</a>
+            </li>
+          </ul>
         </div>
       </div>
-      <h4><i class="fa fa-code me-2"></i>Hosts</h4>
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <label class="form-label">
-            API Host
-            <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="API Host" data-bs-content="Specifies the address of the backend API server your frontend should communicate with."></i>
-          </label>
-          <input type="text" data-field="api_host" data-section="hosts" disabled class="form-control form-control-sm" id="api_host" >
+    </nav>
+    <!-- Import Modal Trigger Button (kept in button group) -->
+    <div class="main-container">
+      <div class="alert alert-warning custom-alert" role="alert">
+        <strong>Note:</strong> Settings that are disabled cannot be set. There are plans for them to be implemented in the future.
+      </div>
+      <h2 class="mt-4">System Configuration</h2>
+      <p>
+        This tool allows you to configure the overall system settings for the OP25 scanner platform. Only modify
+        settings that you understand.
+      </p>
+      <h4><i class="fa fa-laptop mb-3 me-2"></i>Local Settings</h4>
+      <form id="config-form">
+        <div class="card mb-3 card-red">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <label class="form-label">
+                  Primary Display
+                  <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover"
+                    title="Display Selection"
+                    data-bs-content="The display number that corrosponds to the sleep setting being adjusted."></i>
+                </label>
+                <input type="text" class="form-control form-control-sm" value="0" disabled id="primary_display_sleep">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">
+                  Display Sleep
+                  <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover"
+                    title="Display Timeout"
+                    data-bs-content="Specifies the amount of minutes your default display is on before sleeping."></i>
+                </label>
+                <input type="text" class="form-control form-control-sm" id="display_sleep">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">
+                  API Host
+                  <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover"
+                    title="API Host"
+                    data-bs-content="Specifies the address of the backend API server your frontend should communicate with."></i>
+                </label>
+                <input type="text" data-field="api_host" data-section="hosts" disabled
+                  class="form-control form-control-sm" id="api_host">
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-md-4">
-          <label class="form-label">
-            Default System File
-            <i class="fas fa-info-circle txt-white text-muted ms-1" data-bs-toggle="popover" title="Default System File" data-bs-content="Path to the system definition file to load at startup."></i>
-          </label>
-          <input type="text" class="form-control-sm form-control" disabled id="default_system_file" >
+        <button role="button" type="button" class="btn btn-primary mb-3" id="saveLocalSettings">Save Local Settings</button>
+        <h4 class="mb-3"><i class="fa fa-keyboard me-2"></i>Keypad Function Buttons</h4>
+        <!-- Function Button 1 -->
+        <div class="card mb-3 card-red">
+          <div class="card-body">
+            <h4>Function Button 1</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label">Zone for Button 1</label>
+                <select data-section="FN" data-field="btn1_zone" class="form-select form-select-sm" id="btn1_zone">
+                  <option value="-1">Select a Zone</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Label for Button 1</label>
+                <input type="text" data-section="FN" data-field="btn1_name" class="form-control form-control-sm"
+                  id="label_btn_1" placeholder="e.g., Fire Dispatch">
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-md-4">
-          <label class="form-label">
-            OP25 Directory
-            <i class="fas fa-info-circle txt-white text-muted ms-1" disabled data-bs-toggle="popover" title="OP25 Directory" data-bs-content="Filesystem path to the OP25 application's root directory."></i>
-          </label>
-          <input type="text" class="form-control-sm form-control" disabled id="rx_script" >
+      
+        <!-- Function Button 2 -->
+        <div class="card mb-3 card-red">
+          <div class="card-body">
+            <h4>Function Button 2</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label">Zone for Button 2</label>
+                <select data-section="FN" data-field="btn2_zone" class="form-select form-select-sm" id="btn2_zone">
+                  <option value="-1">Select a Zone</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Label for Button 2</label>
+                <input type="text" data-section="FN" data-field="btn2_name" class="form-control form-control-sm"
+                  id="label_btn_2" placeholder="e.g., EMS Ops">
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
+      
+        <!-- Function Button 3 -->
+        <div class="card mb-3 card-red">
+          <div class="card-body">
+            <h4>Function Button 3</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label">Zone for Button 3</label>
+                <select data-section="FN" data-field="btn3_zone" class="form-select form-select-sm" id="btn3_zone">
+                  <option value="-1">Select a Zone</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Label for Button 3</label>
+                <input type="text" data-section="FN" data-field="btn3_name" class="form-control form-control-sm"
+                  id="label_btn_3" placeholder="e.g., Local PD">
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <button role="button" type="button" class="btn btn-primary" id="save-config">Save Configuration</button>
+      </form>
 
-   </form>
-  <script>
+      <script>
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-      popoverTriggerList.forEach(el => {
-        new bootstrap.Popover(el);
-      });
-    });
 
-    document.addEventListener("DOMContentLoaded", async () => {
-      await sendGetSleepSettings()
-      const relCheckboxes = document.querySelectorAll("[data-relative]");
-    
-      relCheckboxes.forEach(checkbox => {
-        const targetId = checkbox.getAttribute("data-relative");
-        const targetInput = document.getElementById(targetId);
-    
-        function toggleRelatedInput() {
-          if (targetInput) {
-            targetInput.disabled = !checkbox.checked;
-          }
-        }
-    
-        // Do NOT toggle yet — wait for config to load
-        checkbox.addEventListener("change", toggleRelatedInput);
-      });
-    
-      sendGetConfig(); // make sure this sets checkbox.checked and triggers .dispatchEvent
-    });
+        // Global Variables
+        const configData = {};                 // Holds the config JSON in memory
+        const localhost = location.hostname;  // Get the localhost address
+        let zones = {};                       // Holds the zones in memory
 
-    function collectFormData() {
-      const config = {};
-      const inputs = document.querySelectorAll('[data-section][data-field]');
-  
-      inputs.forEach(input => {
-          const section = input.getAttribute("data-section");
-          const field = input.getAttribute("data-field");
-  
-          if (!config[section]) config[section] = {};
-  
-          let value;
-          if (input.type === "checkbox") {
-              value = input.checked ? "true" : "false";
+        document.addEventListener("DOMContentLoaded", function () {
+          const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+          popoverTriggerList.forEach(el => {
+            new bootstrap.Popover(el);
+          });
+        });
+
+        document.addEventListener("DOMContentLoaded", async () => {
+          sendGetConfig(); // make sure this sets checkbox.checked and triggers .dispatchEvent
+          // await getsleepSettings();
+          const form = document.getElementById("config-form");
+          await populateZones();
+          await sendGetConfig();
+          await sendGetSleepSettings();
+
+
+
+
+        });
+
+        document.getElementById("save-config").addEventListener("click", async () => {
+          await Save();
+        });
+
+        document.getElementById("saveLocalSettings").addEventListener("click", async () => {
+          await SaveLocalSettings();
+        });
+
+        async function SaveLocalSettings() {
+          const display = document.getElementById('primary_display_sleep').value;
+          const timeout = document.getElementById('display_sleep').value
+          const response = await fetch(`http://${localhost}:5001/config/openbox/display/${display}/sleep/set/${timeout}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "timeout" : timeout })
+          });
+          if (response.ok) {
+            alert("Configuration saved");
           } else {
-              value = input.value;
+            alert("Failed to save configuration");
           }
-  
-          config[section][field] = value;
-      });
-  
-      return config;
-  }
-  
-  async function returnConfigByPost() {
-      const config = collectFormData();
-      const response = await fetch(`http://${localhost}:5001/admin/config/set`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(config)
-      });
-  
-      if (response.ok) {
-          alert("Configuration saved");
-      } else {
-          alert("Failed to save configuration");
-      }
-  }
+        }
 
-    const configData = {};  // Holds the config JSON in memory
+        async function Save() {
+          const response = await fetch(`http://${localhost}:5001/admin/config/set`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(configData)
+          });
 
-  // Fetch the config from the backend
-  const localhost = location.hostname;
+          if (response.ok) {
+            alert("Configuration saved");
+          } else {
+            alert("Failed to save configuration");
+          }
+        }
 
-async function sendGetConfig() {
-    const response = await fetch(`http://${localhost}:5001/admin/config/get`);
-    if (!response.ok) {
-        console.error("Failed to fetch config");
-        return;
-    }
+        async function sendGetConfig() {
+          const response = await fetch(`http://${localhost}:5001/admin/config/get`);
+          if (!response.ok) {
+            console.error("Failed to fetch config");
+            return;
+          }
 
-    const config = await response.json();
-    populateForm(config);
-}
+          const config = await response.json();
+          populateForm(config);
+        }
 
-async function sendGetSleepSettings() {
-  const response = await fetch(`http://${localhost}:5001/admin/config/device/sleep`);
-  if (!response.ok) {
-      console.error("Failed to fetch config");
-      return;
-  }
+        async function sendGetSleepSettings() {
+          const response = await fetch(`http://${localhost}:5001/admin/config/device/sleep`);
+          if (!response.ok) {
+            console.error("Failed to fetch config");
+            return;
+          }
 
-  const config = await response.json();
-  sleepField = document.getElementById("display_sleep");
-  sleepField.value = config["timeout"];
-}
+          const config = await response.json();
+          sleepField = document.getElementById("display_sleep");
+          sleepField.value = config["timeout"];
+        }
 
-function populateForm(config) {
-    const inputs = document.querySelectorAll('[data-section][data-field]');
-    inputs.forEach(input => {
-        const section = input.getAttribute("data-section");
-        const field = input.getAttribute("data-field");
-
-        if (config[section] && field in config[section]) {
-            const value = config[section][field];
-
-            if (input.type === "checkbox") {
-                input.checked = value === "true" || value === true;
-            } else {
-                input.value = value;
+        /*
+          Function: populateZones
+          Description:
+            This asynchronous function fetches a list of zones from a server endpoint and populates 
+            dropdown menus with the retrieved data. It dynamically creates <option> elements for 
+            each zone and appends them to specific <select> elements in the HTML.
+        
+          Parameters: None
+        
+          Behavior:
+            - Sends a GET request to the `/zones` endpoint on port 5001 of the current hostname.
+            - If the response is successful, it parses the JSON response to extract the 'zones' object.
+            - Iterates over the zones and logs their `zone_index` and `name` to the console.
+            - Updates the dropdown menus with IDs "btn1_zone", "btn2_zone", and "btn3_zone" by 
+              appending <option> elements for each zone.
+        
+          Error Handling:
+            - Logs an error message to the console if the fetch request fails or the response is not OK.
+            - Catches and logs any other errors that occur during the execution of the function.
+        
+          Usage:
+            Call this function to dynamically populate zone-related dropdown menus in the admin interface.
+           */
+        async function populateZones() {
+          try {
+            const response = await fetch(`http://${location.hostname}:5001/zones`);
+            if (!response.ok) {
+              console.error("Failed to fetch zones");
+              return;
             }
-        }
-    });
-}
 
-  // Get a value from the config
-  function getConfig(section, key, fallback = null) {
-      if (configData[section] && key in configData[section]) {
-          return configData[section][key];
-      }
-      return fallback;
-  }
+            const json = await response.json();
+            zones = json.zones;  // access the nested 'zones' object
 
-  // Set a value in the config
-  function setConfig(section, key, value) {
-      if (!configData[section]) {
-          configData[section] = {};
-      }
-      configData[section][key] = value;
-  }
+            for (const [key, zone] of Object.entries(zones)) {
+              console.log(zone.zone_index); // or key
+              console.log(zone.name);
 
-  function collectFormData() {
-    const config = {};
-    const inputs = document.querySelectorAll('[data-section][data-field]');
+              const fields = ["btn1_zone", "btn2_zone", "btn3_zone"];
+              fields.forEach(field => {
+                const select = document.getElementById(`${field}`);
+                if (select) {
+                  const option = document.createElement("option");
+                  option.value = zone.zone_index;
+                  option.textContent = zone.name;
+                  select.appendChild(option);
+                }
+              });
+            }
 
-    inputs.forEach(input => {
-        const section = input.getAttribute("data-section");
-        const field = input.getAttribute("data-field");
-
-        if (!config[section]) config[section] = {};
-
-        let value;
-        if (input.type === "checkbox") {
-            value = input.checked ? "true" : "false";
-        } else {
-            value = input.value;
+          } catch (err) {
+            console.error("Error loading zones:", err);
+          }
         }
 
-        config[section][field] = value;
-    });
+        /*
+          Function: populateForm
+          Description: Populates form input fields with values from a given configuration object.
+          Parameters:
+            - config (Object): A configuration object containing sections and fields with their respective values.
+          Behavior:
+            - Selects all input elements with the attributes `data-section` and `data-field`.
+            - Iterates through each input element and retrieves the `data-section` and `data-field` attributes.
+            - Checks if the section exists in the configuration object and if the field exists within that section.
+            - If both exist, sets the input field's value to the corresponding value from the configuration object.
+          Example Usage:
+            Given a configuration object:
+            {
+              "userSettings": {
+                "username": "JohnDoe",
+                "email": "john.doe@example.com"
+              }
+            }
+            And an input element:
+            <input data-section="userSettings" data-field="username">
+            The input field's value will be set to "JohnDoe".
+        */
+        function populateForm(config) {
+          const inputs = document.querySelectorAll('[data-section][data-field]');
+          inputs.forEach(input => {
+            const section = input.getAttribute("data-section");
+            const field = input.getAttribute("data-field");
+            if (config[section] && field in config[section]) {
+              const value = config[section][field];
+              input.value = value;
+              console.log(`Setting ${section}.${field} to ${value}`);
+              input.addEventListener("change", () => {
+                setConfig(section, field, input.value);
+              });
+            }
+          });
+        }
 
-    return config;
-}
+        // Get a value from the config
+        function getConfig(section, key, fallback = null) {
+          if (configData[section] && key in configData[section]) {
+            return configData[section][key];
+          }
+          return fallback;
+        }
 
+        // Set a value in the config
+        function setConfig(section, key, value) {
+          if (!configData[section]) {
+            configData[section] = {};
+          }
+          configData[section][key] = value;
+        }
+      </script>
 
-  </script>
-  
-
-</div>
-</div>
-<script src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
+    </div>
+  </div>
+  <script src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>

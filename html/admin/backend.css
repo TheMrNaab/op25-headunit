@@ -191,3 +191,52 @@
     background-color:lightgray !important;
     color: black !important;
   }
+
+  .card-red {
+    background-color: var(--fire-red-light);
+    color: var(--fire-white);
+  }
+
+  /* Primary Button */
+.btn.btn-primary {
+  background-color: var(--fire-red-light);
+  border-color: var(--fire-red);
+  color: var(--fire-white);
+}
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus {
+  background-color: var(--fire-red);
+  border-color: var(--fire-red-light);
+  color: var(--fire-white);
+}
+
+.btn.btn-primary:active,
+.btn.btn-primary:focus:active {
+  background-color: #660000;
+  border-color: #660000;
+  color: var(--fire-white);
+  box-shadow: none;
+}
+
+/* Secondary Button */
+.btn.btn-secondary {
+  background-color: var(--fire-gray);
+  border-color: var(--fire-gray);
+  color: var(--fire-white);
+}
+
+.btn.btn-secondary:hover,
+.btn.btn-secondary:focus {
+  background-color: #3d3d3d;
+  border-color: #3d3d3d;
+  color: var(--fire-white);
+}
+
+.btn.btn-secondary:active,
+.btn.btn-secondary:focus:active {
+  background-color: #1e1e1e;
+  border-color: #1e1e1e;
+  color: var(--fire-white);
+  box-shadow: none;
+}

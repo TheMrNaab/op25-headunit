@@ -12,3 +12,29 @@ logs/app_log.txt
 .DS_Store
 *.bk
 *.DS_Store
+html/audio/._0.m4a
+html/audio/._1.m4a
+html/audio/._2.m4a
+html/audio/._3.m4a
+html/audio/._4.m4a
+html/audio/._5.m4a
+html/audio/._6.m4a
+html/audio/._8.m4a
+html/audio/._9.m4a
+html/audio/._Channel Down.m4a
+html/audio/._Channel Up.m4a
+html/audio/._Delete.m4a
+html/audio/._Zone Down.m4a
+html/audio/._Zone Up.m4a
+modules/__pycache__/__init__.cpython-312.pyc
+modules/__pycache__/_op25Manager.cpython-312.pyc
+modules/__pycache__/_session.cpython-312.pyc
+modules/__pycache__/_sessionManager.cpython-312.pyc
+modules/__pycache__/_systemsManager.cpython-312.pyc
+modules/__pycache__/_talkgroupSet.cpython-312.pyc
+modules/__pycache__/_zoneManager.cpython-312.pyc
+modules/__pycache__/logMonitor.cpython-312.pyc
+modules/__pycache__/myConfiguration.cpython-312.pyc
+modules/linuxSystem/__pycache__/__init__.cpython-312.pyc
+modules/linuxSystem/__pycache__/linuxUtils.cpython-312.pyc
+modules/linuxSystem/__pycache__/sound.cpython-312.pyc

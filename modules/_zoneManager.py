@@ -176,12 +176,17 @@ class channelMember:
     """
     def __init__(self, channel_data: dict, zone_index: Optional[int] = None):
         self._data = channel_data
+        if not isinstance(channel_data, dict):
+            raise TypeError("channel_data must be a dict")
         self._whitelistFilePath = ""
         self._blacklistTGIDs = []
         self._blacklistFilePath = ""
         if zone_index is not None:
             self._data["zone_index"] = zone_index
-
+            
+    def append_line_to_file(self, line: str):
+        with open("/opt/op25-project/logs/app_log.txt", 'a') as file:
+            file.write(line + '\n')
     @property
     def channel_number(self) -> int:
         """Returns the channel number."""

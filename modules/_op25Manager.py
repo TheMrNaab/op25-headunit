@@ -76,7 +76,7 @@ class op25Manager:
                 "--gains", "lna:35", "-S", "960000", "-q", "0",
                 "-v", "2", "-2", "-V", "-U",
                 "-T", self.session.activeSystem.toTrunkTSV(self.session),
-                "-U", "-l", "50"
+                "-U", "-l", "5000"
             ]
             
             
@@ -158,15 +158,15 @@ class op25Manager:
         entry = json.dumps(logEntry)
         # self.session.sessionManager.apiManager.sendManualLogEntry([entry])
         
-        # Command to reload OP25 configuration, assuming self.command is implemented
+        # Command to reload OP25    configuration, assuming self.command is implemented
+
     def switchSystem(self, thisSession: 'session'):  # Use forward reference for session type
         """Switches OP25 to a new P25 system with the first zone and channel set automatically."""
         #TODO: Implement multisystem
 
         # Command to reload OP25 configuration, assuming self.command is implemented
+        self.command("reload", 0)
         
-        #self.command("reload", 0)
-        pass
 
     def command(self, cmd, data):
         """Sends a command to OP25. Ensures proper handling for hold, whitelist, and reload."""
