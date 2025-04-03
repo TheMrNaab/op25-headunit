@@ -1,5 +1,6 @@
 *.log
 *.bak
+*.pyc
 logs/stderr_op25.log
 modules/
 __pycache__
