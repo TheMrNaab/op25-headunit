@@ -146,7 +146,7 @@ class API:
             return soundSys.get_volume_percent()
 
         # 2: [POST] Set system volume level
-        @self.app.route('/volume/<int:level>', methods=['POST'])
+        @self.app.route('/volume/<int:level>', methods=['PUT'])
         def set_volume(level):
             return soundSys.set_volume(level)
         
