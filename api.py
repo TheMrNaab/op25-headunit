@@ -285,17 +285,10 @@ class API:
         @self.app.route('/session/talkgroups/<tgid>/name/plaintext', methods=['GET'])
         @self.dynamic_cross_origin()
         def get_active_tgid_name(tgid):
-            if not self.activeSession.activeTGIDList:
-                return jsonify({"error": "No active TGID list in session"}), 400
-            try:
-                tgid = int(tgid)
-            except ValueError:
-                return jsonify({"error": "Invalid TGID"}), 400
-
-            tg = self.activeSession.activeTGIDList.getTalkgroup(tgid)
+            tg = self.sessionManager.talkgroupsManager.getTalkgroupName(self.activeSession.activeSysIndex, tgid);
             if not tg:
-                return jsonify({"error": f"Talkgroup {tgid} not found"}), 404
-            return jsonify({"name": f"{tg.name}"}), 200
+                return jsonify({"error": f"Talkgroup {tgid} not found in system {self.activeSession.activeSysIndex}."}), 404
+            return jsonify({"name": f"{tg}"}), 200
 
         # 10: [GET] Get all TGIDs from active system
         @self.app.route('/session/talkgroups', methods=['GET'])
@@ -328,19 +321,18 @@ class API:
         @self.app.route('/session/zone/<int:zn>/channel/<int:ch>', methods=['PUT'])
         @self.dynamic_cross_origin()
         def set_active_zone_channel(zn,ch):
-            ch_data = self.sessionManager.zoneManager.getChannel(zn, ch) # MODIFIED FOR ERROR CHECKING
-            if not ch_data:
+            channel = self.sessionManager.zoneManager.getChannel(zn, ch) # MODIFIED FOR ERROR CHECKING
+            if not channel:
                 return {"error": f"Channel {ch} not found in zone {zn}"}, 404
             zone = self.sessionManager.zoneManager.getZoneByIndex(zn)
-            channel = channelMember(ch_data, zn)
             sys = self.sessionManager.systemsManager.getSystemByIndex(channel.sysid)
             if not sys:
                 return {"error": f"System with sysid {channel.sysid} not found"}, 404
-            self.activeSession.updateSession(channel, zone, sys)
-            return {"message": {"Channel updated successfully", "SysIndex:", self.sessionManager.thisSession.activeSysIndex}}
-
-
-
+            self.activeSession.update_session(channel, zone, sys)
+            return {
+                "message": "Channel updated successfully",
+                "SysIndex": self.sessionManager.thisSession.activeSysIndex
+            }
 
         # 12: [PUT] Move to next channel
         @self.app.route('/session/channel/next', methods=['PUT'])

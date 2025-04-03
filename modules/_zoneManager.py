@@ -176,8 +176,6 @@ class channelMember:
     """
     def __init__(self, channel_data: dict, zone_index: Optional[int] = None):
         self._data = channel_data
-        if not isinstance(channel_data, dict):
-            raise TypeError("channel_data must be a dict")
         self._whitelistFilePath = ""
         self._blacklistTGIDs = []
         self._blacklistFilePath = ""

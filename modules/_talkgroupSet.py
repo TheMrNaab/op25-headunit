@@ -66,9 +66,14 @@ class TalkgroupSet:
         return self._sysid
 
     def getTalkgroup(self, tgid: int) -> Union["TalkgroupMember", None]:
+        self.append_line_to_file(f"Searching for talkgroup {tgid}");
         for tg in self._talkgroups:
+            self.append_line_to_file(f" -> Looking in for {tgid} inside self._talkgroups.");
             if tg.tgid == tgid:
+                self.append_line_to_file(f"Found{tg.name}");
                 return tg
+            else:
+                self.append_line_to_file(f"Not Found in {tg.name}");
         return None
 
     def toTalkgroupsCSV(self) -> Union[str, None]:
@@ -95,6 +100,10 @@ class TalkgroupSet:
             filename = f"{str(self.sysid)}_talkgroups.csv"
             self._talkgroup_csv_file_path = os.path.join(tempfile.gettempdir(), filename)
         return self._talkgroup_csv_file_path
+    
+    def append_line_to_file(self, line: str):
+        with open("/opt/op25-project/logs/app_log.txt", 'a') as file:
+            file.write(line + '\n')
 
 class TalkgroupManager:
     def __init__(self, file_path: str):
@@ -131,25 +140,37 @@ class TalkgroupManager:
 
     def getTalkgroupSetBySysIndex(self, system_index: str) -> Union["TalkgroupSet", None]:
         """Finds a TalkgroupSet by its system index."""
-        self.logIT(f"Searching for TalkgroupSet with system index: {system_index}")
+        
         for tg_set in self._sets:
             self.logIT(f" + Checking TalkgroupSet with sysIndex: {tg_set.sysIndex}")
             if tg_set.sysIndex == system_index:
-                self.logIT(f" - Found TalkgroupSet: {tg_set.sysIndex}")
                 return tg_set
-            else:
-                self.logIT(f" - Not a match: {tg_set.sysIndex} != {system_index}")
         self.logIT(f"TalkgroupSet with system index {system_index} not found.")
         return None
     
-    def getTalkgroupName(self, sysIndex: str, tgid: int) -> str:
-        """Finds the talkgroup by system index and tgid, and returns its name."""
-        tg_set = self.getTalkgroupSetBySysIndex(sysIndex)
-        if tg_set:
-            tg_member = tg_set.getTalkgroup(tgid)
-            if tg_member:
-                return tg_member.name
-        return f"Undefined ({tgid})"
+    # def getTalkgroupName(self, sysIndex: str, tgid: int) -> str:
+    #     """Finds the talkgroup by system index and tgid, and returns its name."""
+    #     tg_set = self.getTalkgroupSetBySysIndex(sysIndex)
+    #     if tg_set:
+    #         tg_member = tg_set.getTalkgroup(tgid)
+    #         if tg_member:
+    #             return tg_member.name
+    #         return f"Undefined in {sysIndex} ({tgid})"
+    #     return f"Undefined ({tgid})"
+    
+    def getTalkgroupName(self, sys_id: int, tgid: int) -> str | None:
+        try:
+            with open(self.file_path, "r") as f:
+                data = json.load(f)
+            system = data.get(str(sys_id))
+            if not system:
+                return None
+            talkgroup = system.get(str(tgid))
+            if not talkgroup:
+                return None
+            return talkgroup.get("name")
+        except (FileNotFoundError, json.JSONDecodeError):
+            return None
 
     @property
     def sets(self) -> list[TalkgroupSet]:

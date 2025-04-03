@@ -22,11 +22,11 @@ function listenLogStream() {
   source.onmessage = async (event) => {
     try {
       const data = JSON.parse(event.data);
-      console.log("Log update:", data);
 
       const updateType = data.Action || data.Update;
       const tgid = data["Talkgroup"] || -1;
       if (updateType === "voice update" && tgid !== -1) {
+        console.log("voice update", data);
         try {
           const response = await fetch(API_BASE_URL + APIEndpoints.SESSION.TALKGROUP_NAME(tgid));
           const jsonData = await response.json();
@@ -786,9 +786,27 @@ async function btnGo_click(event){
   let channel_text = document.getElementById("channel_text").value;
   let zn = parseInt(keypadZone.zone_index, 10);
   console.log("zn: ", keypadZone.zone_index);
-  let ch = parseInt(channel_text, 10) - 1; // Correct for offset
-  let url = `/session/zone/${zn}/channel/${ch}`;
-  console.log("btnGo_click()", url);
+  let ch = parseInt(channel_text, 10); // Correct for offset
+  let url = `${API_BASE_URL}/session/zone/${zn}/channel/${ch}`;
+
+  let put_response = fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      key1: 'value1',
+      key2: 'value2'
+    })
+  })
+
+  if(!(await put_response).ok)
+  {alert("Did not change channel.");}
+  else {
+    console.log("Channel changed successfully");
+    updateUI();
+  }
+  
 }
 
 function getActualChannelNumber(ch) {

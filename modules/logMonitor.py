@@ -241,7 +241,7 @@ class logMonitorOP25:
         Tries to match the line against predefined regex patterns.
         """
         # Step 1: Check VOICE_REGEX
-        m = VOICE_REGEX.match(line)
+        m = VOICE_REGEX.search(line)
         if m:
             entry = m.groupdict()
             entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(
@@ -287,10 +287,10 @@ class logMonitorOP25:
             return entry
 
         # Step 7: Fallback for uncategorized lines
-        date, time = self._timestamp_now()
-        return {
-            "Date": date,
-            "Time": time,
-            "Action": "Misc",
-            "Data": line.strip()
-        }
+        # date, time = self._timestamp_now()
+        # return {
+        #     "Date": date,
+        #     "Time": time,
+        #     "Action": "Misc",
+        #     "Data": line.strip()
+        # }
