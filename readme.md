@@ -43,25 +43,23 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
   - `flask` for serving API and webpages  
   - `openbox` for graphical session management (GUI-based systems only)
 
-### Notes
-- Ubuntu Server does not include a graphical interface by default. Install a GUI if running the interface directly on the host system.
-- This is covered in the installation wizard.
 
-## Installation
-Follow the installation wizard at [/html/utilities/wizard.md](https://github.com/TheMrNaab/op25-headunit/blob/main/html/utilities/wizard.md). 
+## Installation Steps
 
-**Be sure to follow all configuration steps including the replacement of `terminal.py` in the OP25 installation.**
+1. Clone and install Boatbod's OP25 software
+2. Clone this repository to `/opt/op25-project`
+3. Install missing dependencies using `requirements.txt`
 
 ## Running the Interface
 
-Run `api.py` in a terminal window, then open `http://localhost:8000` in your web browser.  
-To launch this automatically at startup and open in kiosk mode, install `firefox-esr` and use a startup script like the one below:
+1. Run `api.py` in a terminal window, then open `http://localhost:8000` in your web browser.  
+2. To launch this automatically at startup and open in kiosk mode, install `firefox-esr` and use a startup script like the one below:
 
 ```bash
 #!/bin/bash
 
 # Start API server
-cd /path/to/api
+cd /opt/op25-project
 python3 api.py &
 
 # Wait briefly to ensure the server starts
