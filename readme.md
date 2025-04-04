@@ -2,59 +2,77 @@
 
 <p><img src="help/screenshot-updated.png" width="300"/> <img src="help/screenshot-animated.gif" width="300"/></p>
 
+## Table of Contents
+- [Overview](#overview)
+- [User Interface](#user-interface)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Running the Interface](#running-the-interface)
+
 ## Overview
-This project adds a touchscreen-friendly graphical interface to OP25, a software-defined radio (SDR) scanner for the Raspberry Pi. Designed for public safety personnel and radio enthusiasts, it offers a low-cost alternative to expensive commercial scanners like the Bearcat. The interface simplifies talkgroup scanning and monitoring in a vehicle without the high price tag.
+This project adds a touchscreen-friendly graphical interface to OP25, a software-defined radio (SDR) scanner. Designed for public safety personnel and radio enthusiasts, it offers a low-cost alternative to expensive commercial scanners like the Bearcat. The interface simplifies talkgroup scanning and monitoring in a vehicle without the high price tag.
 
 ## User Interface
 The project serves the `/html` folder for the UI and uses `api.py` to handle interaction between the webpage and OP25. This setup uses fewer resources and allows layout flexibility based on screen size.
 
 ## Features
-- **Graphical Interface**: HTML-based UI for controlling OP25
-- **Talkgroup Management**: Supports whitelist, blacklist, and dynamic selection
-- **Scan Mode**: Reloads OP25’s whitelist dynamically
-- **System Integration**: Currently supports one system; future updates will address multi-system support
-- **Active Voice Calls**: View the active talkgroup name or number (if not defined).
-- **Volume Adjustment** Allows you to control the output volume on the home screen. 
-- **Direct Programming**: Web-based utilities now handles software configuration directly, eliminating the need to manually copy configuration files. When the software is loaded, press the Info button. This will display the device's configuration panel that you can navigate to.
-
-### Features Coming Soon
-- **Advanced Keypad Entry**: Enter a known TAC or OPS channel directly using the corresponding button.
-- **Multiple P25 System Support**: A future release will allow use of channels from multiple P25 systems simultaneously.
-- **Default Configuration at Launch**: Audio defaults to your system’s primary output (AUX on a Pi 4; HDMI on a Pi 5). An option to select a different audio device will be added later.
-- **Auto Screen Off**: The display powers off after 5 minutes of inactivity. An option to change this is in the works.
-- **OP25 Parameter Adjustments**: Values set in config.ini will be passed to the software. Currently, parameters are hardcoded in the Python script.
+- **Touch-Friendly Interface**: HTML-based UI designed for in-vehicle use with touchscreen or mouse.
+- **Talkgroup Management**: Supports whitelist, blacklist, and direct channel entry.
+- **Scan Mode**: Dynamically reloads active talkgroups without restarting OP25.
+- **Audio & Display**: Volume control and auto screen-off after inactivity (adjustable soon).
+- **System Support**: Current version supports one P25 system; multi-system functionality is in development.
+- **Direct Configuration**: Web-based setup replaces manual file edits; Info button opens settings panel.
+- **Default Audio Routing**: Defaults to system's primary output; device selection coming in a future update.
+- **Configurable Parameters**: Future versions will pull from `config.ini`; current version uses hardcoded values.
 
 ## Requirements
 
 ### Hardware
-- Raspberry Pi 4 
-- RTL-SDR USB dongle 
-- Touchscreen display (or any monitor with a mouse)
-- **MicroSD Card**: Use a new card to avoid data loss. Install Ubuntu Server on its own MicroSD card. This script is in beta and may not be fully stable.
+- SDR-compatible Linux-based device (x86 or ARM)  
+- RTL-SDR USB dongle  
+- Touchscreen display (or any monitor with mouse input)  
+- **Dedicated Storage**: Use a dedicated SSD or SD card to avoid data loss.  
 
-### Pi 5 Compatibility
-- The Raspberry Pi 5 ran more reliably with increased memory. However, OP25 had trouble outputting audio through an AUX-to-USB adapter. A future update will allow selection of the default playback device. The OP25 back-end is still temperamental, and since it is not my script, solutions to common issues are limited and poorly documented online.
+### Software
+- **Operating System**: Lightweight Linux OS recommended (e.g., Ubuntu Server).
+- **Dependencies**:  
+  - `OP25` (installed at `/home/(user)/op25`)    
+  - `pyttsx3` for text-to-speech (upcoming feature)  
+  - `firefox-esr` for interface display in kiosk mode  
+  - `flask` for serving API and webpages  
+  - `openbox` for graphical session management (GUI-based systems only)
+
+### Notes
+- Ubuntu Server does not include a graphical interface by default. Install a GUI if running the interface directly on the host system.
+- This is covered in the installation wizard.
 
 ## Installation
 Follow the installation wizard at [/html/utilities/wizard.md](https://github.com/TheMrNaab/op25-headunit/blob/main/html/utilities/wizard.md). 
 
-**Be sure to follow all configuration steps including the replacement of terminal.py in the OP25 installation.**
+**Be sure to follow all configuration steps including the replacement of `terminal.py` in the OP25 installation.**
 
-### Software
-- **Operating System**: Ubuntu Server (recommended for OP25 compatibility).
-- **PI OS** The OP25 struggles with Pi OS and is not reccomdended.
-- **Tested On** ### Raspberry Pi 4 with Ubuntu Server installed, Freenove 5" Touchscreen Monitor (800x480) and RTL-SDR Blog V4 RTL2832U SDR
-- **Dependencies**:  
-  - `OP25` (installed at `/home/(user)/op25`)    
-  - `pyttsx3` for text-to-speech (upcoming feature)  
-  - `firefox-esr` for interface display
-  - `flash` for serving API and webpages
-  - `openbox` for Firefox's GUI
+## Running the Interface
 
-### Notes for Ubuntu Server Users
-- Ubuntu Server lacks a graphical interface by default and you must a GUI app to run this app.
-- This is covered in the installation wizard.
+Run `api.py` in a terminal window, then open `http://localhost:8000` in your web browser.  
+To launch this automatically at startup and open in kiosk mode, install `firefox-esr` and use a startup script like the one below:
 
+```bash
+#!/bin/bash
 
+# Start API server
+cd /path/to/api
+python3 api.py &
 
+# Wait briefly to ensure the server starts
+sleep 5
 
+# Launch Firefox in kiosk mode
+firefox-esr --kiosk http://localhost:8000
+’’’
+
+## Contributing
+Pull requests are welcome. For major changes, open an issue first to discuss what you would like to change.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
