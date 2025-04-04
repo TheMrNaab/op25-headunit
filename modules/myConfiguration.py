@@ -101,6 +101,7 @@ class MyConfig:
         return stdout_file, stderr_file
 
     def toJson(self):
+        self.reload() # TEMPORARILY FIXES BUG WHERE self.configManager.toJson() returns nothing
         result = {}
         for section in self.config.sections():
             result[section] = {}
