@@ -32,7 +32,6 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 - SDR-compatible Linux-based device (x86 or ARM)  
 - RTL-SDR USB dongle  
 - Touchscreen display (or any monitor with mouse input)  
-- **Dedicated Storage**: Use a dedicated SSD or SD card to avoid data loss.  
 
 ### Software
 - **Operating System**: Lightweight Linux OS recommended (e.g., Ubuntu Server).
@@ -41,18 +40,57 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
   - `pyttsx3` for text-to-speech (upcoming feature)  
   - `firefox-esr` for interface display in kiosk mode  
   - `flask` for serving API and webpages  
-  - `openbox` for graphical session management (GUI-based systems only)
-
+  - `openbox` for graphical session management (if no GUI installed)
 
 ## Installation Steps
 
+### Unmanaged Systems (e.g., Raspberry Pi OS, bare Debian installs)
+
 1. Clone and install Boatbod's OP25 software
+   ```bash
+   cd ~
+   git clone https://github.com/boatbod/op25.git
+   cd op25
+   ./install.sh
+   ```
+
 2. Clone this repository to `/opt/op25-project`
-3. Install missing dependencies using `requirements.txt`
+   ```bash
+   sudo mkdir -p /opt/op25-project
+   sudo chown $USER:$USER /opt/op25-project
+   git clone https://github.com/TheMrNaab/op25-headunit.git /opt/op25-project
+   ```
+
+3. Install dependencies
+   ```bash
+   pip install -r /opt/op25-project/requirements.txt
+   ```
+
+### Managed Systems (e.g., Ubuntu Server)
+
+1. Ensure Python tools are installed:
+   ```bash
+   sudo apt update
+   sudo apt install python3-pip python3-venv -y
+   ```
+
+2. Use a virtual environment to isolate dependencies:
+   ```bash
+   cd /opt/op25-project
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+3. After reboot or logout, reactivate the environment:
+   ```bash
+   source /opt/op25-project/venv/bin/activate
+   ```
 
 ## Running the Interface
 
-1. Run `api.py` in a terminal window, then open `http://localhost:8000` in your web browser.  
+### Unmanaged Systems
+1. Run `api.py` in a terminal window, then open `http://localhost:8000` in your web browser.
 2. To launch this automatically at startup and open in kiosk mode, install `firefox-esr` and use a startup script like the one below:
 
 ```bash
@@ -67,10 +105,37 @@ sleep 5
 
 # Launch Firefox in kiosk mode
 firefox-esr --kiosk http://localhost:8000
-’’’
+```
+
+### Managed Systems
+
+1. Activate the virtual environment:
+   ```bash
+   source /opt/op25-project/venv/bin/activate
+   ```
+
+2. Run the API server:
+   ```bash
+   python api.py
+   ```
+
+3. Launch Firefox in kiosk mode:
+   ```bash
+   firefox-esr --kiosk http://localhost:8000
+   ```
+
+## Configuration
+
+1. After launching `api.py`, open a web browser on the Linux system and navigate to:  
+   `http://localhost:8000/admin/index.html`
+
+2. In the Admin Portal, adjust OP25 settings to match your hardware and system preferences.
+
+3. Configure the radio system, save your changes, and restart the device to apply the configuration. 
 
 ## Contributing
 Pull requests are welcome. For major changes, open an issue first to discuss what you would like to change.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
+
