@@ -3,10 +3,6 @@ import configparser
 import sys
 
 class MyConfig:
-  import configparser
-import os
-
-class MyConfig:
     def __init__(self, config_file="config.ini"):
         self._configFile = config_file
         self.config = configparser.ConfigParser()

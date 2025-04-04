@@ -71,14 +71,24 @@ class op25Manager:
 
             self._activeSession = _session
 
+            # self.op25_command = [
+            #     self.rx_script, "--nocrypt", "--args", "rtl",
+            #     "--gains", "lna:40", "-S", "960000", "-q", "0",
+            #     "-v", "2", "-2", "-V", "-U",
+            #     "-T", self.session.activeSystem.toTrunkTSV(self.session),
+            #     "-U", "-l", "5000"
+            # ]
+            
             self.op25_command = [
                 self.rx_script, "--nocrypt", "--args", "rtl",
-                "--gains", "lna:35", "-S", "960000", "-q", "0",
-                "-v", "2", "-2", "-V", "-U",
+                "--gains", "lna:40", 
+                "-S", "960000", 
+                "-q", "0",
+                "-v", "2", "-2", 
+                "-V", "-U",
                 "-T", self.session.activeSystem.toTrunkTSV(self.session),
-                "-U", "-l", "5000"
+                "-l", "5000"
             ]
-            
             
             # print(self.op25_command, flush=True)
             # Start subprocess

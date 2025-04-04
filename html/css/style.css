@@ -5,7 +5,7 @@
     --thumb-color: red; /* Default thumb color */
     -webkit-appearance: none;
     width: 70%;
-    height: 25px;
+    height: 40px;
     background: #e9ecef;
     outline: none;
     opacity: 1;
@@ -16,13 +16,11 @@
     opacity: 1;
   }
   
-
-  
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 25px;
-    height: 25px;
+    height: 40px;
     background: var(--thumb-color);  /* use the CSS variable */
     cursor: pointer;
     border-radius: 10px;
@@ -160,6 +158,11 @@ body {
 #main-display, #OnScreenDisplay {
     background:var(--bs-gray-200);
 
+}
+
+#channel-name, #channel-number, 
+#zone, #talkgroup {
+    font-size:24px !important;
 }
 
 .display {
