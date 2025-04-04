@@ -19,9 +19,16 @@ from queue import Queue
 import json
 from modules._zoneManager import zoneMember, channelMember
 from modules._talkgroupSet import TalkgroupManager
+
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)  # or logging.CRITICAL to suppress even more
   
 class API:
     def __init__(self):
+        # SET THE CROSS-ORIIGINS IP ADDRESS TO THE ROUTER-ASSIGNED IP
+        # THIS PROCESS IS REDUNDANT TO THE DYNAMIC CROSS-ORIGIN FUNCTION
+        # BUT IT IS HERE FOR LEGACY REASONS
 
         # FLASK SETUP
         self.app = Flask(__name__)
@@ -30,7 +37,7 @@ class API:
             supports_credentials=True,
             resources={r"/*": {
                 "origins": [
-                    "http://192.168.1.46:8000",
+                    f"http://{LinuxUtilities.get_local_ip()}:8000",
                     "http://localhost:8000"
                 ]
             }}
@@ -95,11 +102,16 @@ class API:
         pass
     
     def killAndFree(self):
+        """Kill any processes running on the specified ports and free them."""
         self.free_port(8000)
         self.free_port(5001)
         self.kill_named_scripts(["rx.py", "terminal.py"])
 
     def startLoggerStream(self):
+        """Starts the logger stream for OP25. This process is responsible for reading the 
+        OP25 log file and sending updates to the API server. Without it running, the UI
+        cannot receive updates.
+        """
         self._end_point = f"http://127.0.0.0:5001/controller/logging/update"
         self._monitor = logMonitorOP25(self, file=self.configManager.get("paths", "stderr_file"), endpoint=self._end_point)
         self._watcher = LogFileWatcher(self._monitor)
@@ -108,31 +120,40 @@ class API:
         
     @property
     def logQueue(self) -> Queue:
+        """Returns the log queue."""
         return self._log_queue
 
     @property
     def configManager(self) -> MyConfig:
+        """Returns the configuration manager."""
         return self._configManager
 
     @property
     def op25Manager(self) -> op25Manager:
+        """Returns the OP25 manager."""
         return self._op25Manager
     
     @property
     def sessionManager(self) -> sessionManager:
+        """Returns the session manager."""
         return self._sessionManager 
 
     @property
     def activeSession(self) -> SessionMember:
+        """Returns the active session from the session manager."""
         return self.sessionManager.thisSession
     
     @property
     def zoneManager(self) -> zoneMember:
+        """Returns the zone manager from the session manager."""
         return self.sessionManager.zoneManager
     
     def dynamic_cross_origin(self):
+        """Dynamically set CORS headers based on the request origin."""
+        
+        ip = f"http://{LinuxUtilities.get_local_ip()}:8000"
         allowed_origins = ALLOWED_ORIGINS = [
-            "http://192.168.1.46:8000",
+            ip,
             "http://localhost:8000"
         ]
         return cross_origin(origins=allowed_origins, supports_credentials=True)
@@ -622,10 +643,10 @@ class API:
             pids = result.stdout.strip().split("\n")
             for pid in pids:
                 if pid:
-                    print(f"Killing process on port {port}, PID: {pid}")
+                    print(f"[INFO] Killing process on port {port}, PID: {pid}")
                     os.kill(int(pid), signal.SIGKILL)
         except Exception as e:
-            print(f"Error freeing port {port}: {e}")
+            print(f"[ERROR] freeing port {port}: {e}")
     
     @staticmethod
     def kill_named_scripts(scripts):
@@ -641,16 +662,16 @@ class API:
                 pids = result.stdout.strip().split("\n")
                 for pid in pids:
                     if pid:
-                        print(f"Killing process {name}, PID: {pid}")
+                        print(f"[INFO] Killing process {name}, PID: {pid}")
                         os.kill(int(pid), signal.SIGKILL)
             except Exception as e:
-                print(f"Error killing {name}: {e}")
+                print(f"[INFO] Error killing {name}: {e}")
 
 
 
 # ======== Launch from here ========
 if __name__ == '__main__':
+    # Initialize the API server
     api_server = API()
-    #api_server.run(debug=True, host="0.0.0.0", port=5001) # Debug mode - be sure to turn off
     #TODO: Delete temporary files on exit, but how?
     api_server.run()

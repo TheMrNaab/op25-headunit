@@ -14,7 +14,6 @@ class zoneManager:
     Provides methods to access, update, and navigate zones and channels.
     """
     def __init__(self, file_path: str):
-        print("Init...")
         self.file_path = file_path
         self._zones = self._load_zones()
         
@@ -24,13 +23,11 @@ class zoneManager:
         self.append_line_to_file("zoneManager.reload() -> Done")
         
     def _load_zones(self) -> List["zoneMember"]:
-        print("Load Zones...")
         if not os.path.exists(self.file_path):
             raise FileNotFoundError(f"Zone file not found: {self.file_path}")
             return []
         with open(self.file_path, 'r') as f:
             self._data = json.load(f)
-            print(self._data)
         return [zoneMember(zone_data, idx) for idx, zone_data in enumerate(self._data.get("zones", {}).values())]
 
     def save(self):

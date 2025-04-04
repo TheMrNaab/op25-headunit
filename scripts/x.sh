@@ -1,1 +1,0 @@
-exec startxfce4 # START GUI

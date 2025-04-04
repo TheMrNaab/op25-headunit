@@ -30,13 +30,10 @@ class FileObject:
 
     def load_file(self):
         """Loads the JSON file."""
-        print(f"Loading JSON from: {self.file_path}")
         try:
             with open(self.file_path, "r") as file:
                 data = json.load(file)
             
-            print(self.file_path)
-
             # Convert JSON into zone-based structure
             zones = {}
             for entry in data:
@@ -137,7 +134,6 @@ class FileObject:
     
     def get_next_zone(self, current_zone_index):
         """Finds the next zone, looping back if at the last one."""
-        print(f"Current_Zone_Index: {current_zone_index}")
         if not self.zone_names:
             return None  # No zones exist
         return self.zone_names[(current_zone_index + 1) % len(self.zone_names)]

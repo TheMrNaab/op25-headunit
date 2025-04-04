@@ -176,6 +176,7 @@ class logMonitorOP25:
         """
         while True:
             entry = self.queue.get()
+            
             if not self.endpoint:
                 self.queue.task_done()
                 continue

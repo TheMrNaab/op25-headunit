@@ -11,7 +11,7 @@ from flask import jsonify
 # Removed to avoid circular import: from modules._session import session
 from modules._session import SessionMember
 from modules.myConfiguration import MyConfig
-#  echo '{"command": "whitelist", "arg1": 47021, "arg2": 0}' | nc -u 127.0.0.1 5000
+
 
 if TYPE_CHECKING:
     from modules._session import session  # Only imported for type checking
@@ -58,27 +58,17 @@ class op25Manager:
         return self._stdout_file
         
     def start(self, _session:SessionMember) -> bool | None:
-        print("Starting...", self.alreadyStarted)
+        
+        print("Starting op25Manager ...")
+        
         if self.alreadyStarted == False:
-            os.environ["PYTHONPATH"] = (os.environ.get("PYTHONPATH") or "/usr/bin/python3") + ":/home/dnaab/op25/op25/gr-op25_repeater/apps/tx:/home/dnaab/op25/build"
-            # self.op25_command = [
-            #     self.rx_script , "--nocrypt", "--args", "rtl",
-            #     "--gains", "lna:35", "-S", "960000", "-q", "0",
-            #     "-v", "1", "-2", "-V", "-U",
-            #     "-T", "/opt/op25-project/templates/_trunk.tsv",
-            #     "-U", "-l", "5000"
-            # ]
-
-            self._activeSession = _session
-
-            # self.op25_command = [
-            #     self.rx_script, "--nocrypt", "--args", "rtl",
-            #     "--gains", "lna:40", "-S", "960000", "-q", "0",
-            #     "-v", "2", "-2", "-V", "-U",
-            #     "-T", self.session.activeSystem.toTrunkTSV(self.session),
-            #     "-U", "-l", "5000"
-            # ]
             
+            os.environ["PYTHONPATH"] = (os.environ.get("PYTHONPATH") or "/usr/bin/python3") + ":/home/dnaab/op25/op25/gr-op25_repeater/apps/tx:/home/dnaab/op25/build"
+            
+            print(f"... Configured PYTHONPATH to {os.environ["PYTHONPATH"]}")
+            
+            self._activeSession = _session
+ 
             self.op25_command = [
                 self.rx_script, "--nocrypt", "--args", "rtl",
                 "--gains", "lna:40", 
@@ -89,18 +79,32 @@ class op25Manager:
                 "-T", self.session.activeSystem.toTrunkTSV(self.session),
                 "-l", "5000"
             ]
+            print(f"... Generated OP25 start command to {self.op25_command}")
             
-            # print(self.op25_command, flush=True)
-            # Start subprocess
+            print(f"... Attempting to start self.op25_process.")
+            
+            # Attempt to start subprocess
             self.op25_process = subprocess.Popen(
                 self.op25_command,
                 stdout=open(self.stdout_file, "w"),
                 stderr=open(self.stderr_file, "w"),
                 text=True
             )
+            
+            # Wait to see result of process
+            print(f"... Awaiting self.op25_process start confirmation.")
             time.sleep(3)  # Wait for startup
-            self.set_alreadyStarted(True) # Ensure we do not accidentally start the process again
-            print("Process Ignition Complete")
+            
+            
+            if self.op25_process.poll() is not None:
+                print("[ERROR] OP25 process failed to start.")
+                self.set_alreadyStarted(False)  # Reset the alreadyStarted flag
+            else:
+                print("[SUCCESS] OP25 process started.")
+                self.set_alreadyStarted(True) # Ensure we do not accidentally start the process again
+            
+            print("... Ignition Complete")
+            
             return True
         
         elif(not self.session):
@@ -264,3 +268,22 @@ class op25Manager:
         print("[INFO] Restarting OP25...")
         self.stop()
         self.start()
+        
+
+# CODE I DO NOT WANT TO LOSE
+#  echo '{"command": "whitelist", "arg1": 47021, "arg2": 0}' | nc -u 127.0.0.1 5000
+
+# self.op25_command = [
+#     self.rx_script, "--nocrypt", "--args", "rtl",
+#     "--gains", "lna:40", "-S", "960000", "-q", "0",
+#     "-v", "2", "-2", "-V", "-U",
+#     "-T", self.session.activeSystem.toTrunkTSV(self.session),
+#     "-U", "-l", "5000"
+# ]
+# self.op25_command = [
+#     self.rx_script , "--nocrypt", "--args", "rtl",
+#     "--gains", "lna:35", "-S", "960000", "-q", "0",
+#     "-v", "1", "-2", "-V", "-U",
+#     "-T", "/opt/op25-project/templates/_trunk.tsv",
+#     "-U", "-l", "5000"
+# ]
