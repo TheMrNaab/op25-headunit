@@ -398,6 +398,7 @@ class API:
         # 17: [GET] All zones from zones.json
         @self.app.route('/zones', methods=['GET'])
         def getAllZones():
+            self.zoneManager.reloadZones()
             return jsonify(self.zoneManager._data)
 
         # 18: [GET] Zone by index
@@ -591,6 +592,7 @@ class API:
         @self.dynamic_cross_origin()     
         def reload_config_file():
             try:
+                self.zoneManager.reloadZones()
                 self.configManager.reload()
                 return {"success": "reload command sent."}, 200
             except Exception as e:

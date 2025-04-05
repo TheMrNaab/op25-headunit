@@ -6,7 +6,7 @@
                     "channel_number": 0,
                     "name": "Fire Scan",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46949,
                         47021,
@@ -58,7 +58,7 @@
                     "channel_number": 1,
                     "name": "ALERT SCAN",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46949,
                         47021
@@ -70,7 +70,7 @@
                     "channel_number": 2,
                     "name": "WC FD ALERT",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46949
                     ],
@@ -81,7 +81,7 @@
                     "channel_number": 3,
                     "name": "RFD ALERT",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         47021
                     ],
@@ -92,7 +92,7 @@
                     "channel_number": 4,
                     "name": "WC FD DISP",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46940
                     ],
@@ -109,7 +109,7 @@
                     "channel_number": 0,
                     "name": "Law Scan",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46880,
                         46881,
@@ -128,7 +128,7 @@
                     "channel_number": 1,
                     "name": "RPD NWD DISP",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         47050
                     ],
@@ -138,7 +138,7 @@
                     "channel_number": 2,
                     "name": "RPD NOD DISP",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         47051
                     ],
@@ -148,7 +148,7 @@
                     "channel_number": 3,
                     "name": "RPD NED DISP",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         47052
                     ],
@@ -158,7 +158,7 @@
                     "channel_number": 4,
                     "name": "RPD SED DISP",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         47053
                     ],
@@ -168,7 +168,7 @@
                     "channel_number": 5,
                     "name": "RPD DTD DISP",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         47054
                     ],
@@ -178,7 +178,7 @@
                     "channel_number": 6,
                     "name": "RPD SWD DISP",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         47055
                     ],
@@ -188,7 +188,7 @@
                     "channel_number": 7,
                     "name": "WSO DISP 1",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46880
                     ],
@@ -198,7 +198,7 @@
                     "channel_number": 8,
                     "name": "WSO DISP 2",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46881
                     ],
@@ -208,7 +208,7 @@
                     "channel_number": 9,
                     "name": "WSO DISP 3",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46882
                     ],
@@ -218,7 +218,7 @@
                     "channel_number": 10,
                     "name": "WSO DISP 4",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46883
                     ],
@@ -228,7 +228,7 @@
                     "channel_number": 11,
                     "name": "WSO PAT 1",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46884
                     ],
@@ -238,7 +238,7 @@
                     "channel_number": 12,
                     "name": "WSO PAT 2",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46885
                     ],
@@ -248,7 +248,7 @@
                     "channel_number": 13,
                     "name": "WSO PAT 3",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46886
                     ],
@@ -258,7 +258,7 @@
                     "channel_number": 14,
                     "name": "WSO PAT 4",
                     "sysid": "0",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46887
                     ],
@@ -273,7 +273,7 @@
                 "0": {
                     "channel_number": 0,
                     "name": "FD OPS 1",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46800
                     ],
@@ -282,7 +282,7 @@
                 "1": {
                     "channel_number": 1,
                     "name": "FD OPS 2",
-                    "system": "Default",
+                    "system": "0",
                     "tgid": [
                         46801
                     ],
@@ -291,83 +291,164 @@
                 "2": {
                     "channel_number": 2,
                     "name": "FD OPS 3",
-                    "type": "Talkgroup",
+                    "system": "0",
                     "tgid": [
                         46802
                     ],
-                    "system": "Default"
+                    "type": "Talkgroup"
                 },
                 "3": {
                     "channel_number": 3,
                     "name": "FD OPS 4",
-                    "type": "Talkgroup",
+                    "system": "0",
                     "tgid": [
                         46803
                     ],
-                    "system": "Default"
+                    "type": "Talkgroup"
                 },
                 "4": {
                     "channel_number": 4,
                     "name": "FD OPS 5",
-                    "type": "Talkgroup",
+                    "system": "0",
                     "tgid": [
                         46804
                     ],
-                    "system": "Default"
+                    "type": "Talkgroup"
                 },
                 "5": {
                     "channel_number": 5,
                     "name": "FD OPS 6",
-                    "type": "Talkgroup",
+                    "system": "0",
                     "tgid": [
                         46805
                     ],
-                    "system": "Default"
+                    "type": "Talkgroup"
                 },
                 "6": {
                     "channel_number": 6,
                     "name": "FD OPS 7",
-                    "type": "Talkgroup",
+                    "system": "0",
                     "tgid": [
                         46806
                     ],
-                    "system": "Default"
+                    "type": "Talkgroup"
                 },
                 "7": {
                     "channel_number": 7,
                     "name": "FD OPS 8",
-                    "type": "Talkgroup",
+                    "system": "0",
                     "tgid": [
                         46807
                     ],
-                    "system": "Default"
+                    "type": "Talkgroup"
                 },
                 "8": {
                     "channel_number": 8,
                     "name": "FD OPS 9",
-                    "type": "Scan",
+                    "system": "0",
                     "tgid": [
                         46808
                     ],
-                    "system": "Default"
+                    "type": "Scan"
                 },
                 "9": {
                     "channel_number": 9,
                     "name": "FD OPS 10",
-                    "type": "Talkgroup",
+                    "system": "0",
                     "tgid": [
                         46809
                     ],
-                    "system": "Default"
+                    "type": "Talkgroup"
                 },
                 "10": {
                     "channel_number": 10,
-                    "name": "TAC 13",
-                    "type": "Scan",
+                    "name": "WC FIRE ALERT",
+                    "system": "0",
+                    "tgid": [
+                        46949
+                    ],
+                    "type": "Talkgroup"
+                },
+                "11": {
+                    "channel_number": 11,
+                    "name": "WC FD DISP",
+                    "system": "0",
+                    "tgid": [
+                        46940
+                    ],
+                    "type": "Talkgroup"
+                },
+                "12": {
+                    "channel_number": 12,
+                    "name": "PS TAC 13",
+                    "system": "0",
                     "tgid": [
                         46812
                     ],
-                    "system": "Default"
+                    "type": "Scan"
+                },
+                "13": {
+                    "channel_number": 13,
+                    "name": "PS TAC 14",
+                    "system": "0",
+                    "tgid": [
+                        46813
+                    ],
+                    "type": "Scan"
+                },
+                "14": {
+                    "channel_number": 14,
+                    "name": "PS TAC 15",
+                    "system": "0",
+                    "tgid": [
+                        46814
+                    ],
+                    "type": "Scan"
+                },
+                "15": {
+                    "channel_number": 15,
+                    "name": "PS TAC 16",
+                    "system": "0",
+                    "tgid": [
+                        46815
+                    ],
+                    "type": "Scan"
+                },
+                "16": {
+                    "channel_number": 16,
+                    "name": "PS TAC 17",
+                    "system": "0",
+                    "tgid": [
+                        46816
+                    ],
+                    "type": "Scan"
+                },
+                "17": {
+                    "channel_number": 17,
+                    "name": "PS TAC 18",
+                    "system": "0",
+                    "tgid": [
+                        46817
+                    ],
+                    "type": "Scan"
+                },
+                "18": {
+                    "channel_number": 18,
+                    "name": "PS TAC 19",
+                    "system": "0",
+                    "tgid": [
+                        46818
+                    ],
+                    "type": "Scan"
+                },
+                "19": {
+                    "channel_number": 19,
+                    "name": "PS TAC 20",
+                    "system": "0",
+                    "tgid": [
+                        46819
+                    ],
+                    "type": "Talkgroup"
                 }
             },
             "name": "OPS-TAC",

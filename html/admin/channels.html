@@ -273,6 +273,7 @@
   let tgids = [];
   let talkgroupMap = [];
   let channelModal = null;
+  let systemMap = {}; // ← Fixes the ReferenceError
 
   const tgidInput = document.getElementById('tgidInput');
   const suggestionsDiv = document.getElementById('autocompleteSuggestions');
@@ -311,15 +312,37 @@
       .then(r => r.json())
       .then(json => {
         talkgroupMap = [];
-        Object.values(json).forEach(sys => {
+        Object.entries(json).forEach(([sysid, sys]) => {
           Object.values(sys).forEach(tg => {
-            talkgroupMap.push({ id: tg.tgid, name: tg.name });
+            talkgroupMap.push({ 
+              id: Number(tg.tgid), 
+              name: tg.name, 
+              sysid: Number(sysid)
+            });
           });
         });
       })
       .catch(console.error);
   }
   
+  function lookupTGIDName(tgid, sysid) {
+    var found = false;
+    console.log("TGID Map", talkgroupMap);
+    const tg = talkgroupMap.find(entry => 
+      entry.id === Number(tgid) && entry.sysid === Number(sysid)
+    );
+    if (!tg) {console.log("TGID Lookup", "; TGID: " + tgid, "; Sys ID: " + sysid, "; Found: " + found);}
+    return tg ? pill(tg.name) : pill_error(`Unknown (${tgid})`);
+  }
+
+  function pill(innerText){
+    return `<span class="badge bg-primary tgid-pill">${innerText}</span><br/>`;
+  }
+
+  function pill_error(innerText){
+    return `<span class="badge bg-primary tgid-pill" style="background-color: red;">${innerText}</span><br/>`;
+  }
+
   function showSuggestions(query) {
     suggestionsDiv.innerHTML = '';
     talkgroupMap.filter(t =>
@@ -382,12 +405,13 @@
     fetch(`http://${location.hostname}:5001/admin/systems/`)
       .then(r => r.json())
       .then(systems => {
+        systemMap = systems; // ← Save for later use
         const sel = document.getElementById('system-id');
         sel.innerHTML = '';
   
         Object.entries(systems).forEach(([index, s]) => {
           const o = document.createElement('option');
-          o.value = index; // Use index as the value
+          o.value = index;
           o.textContent = s.sysname || `System ${index}`;
           sel.appendChild(o);
         });
@@ -399,6 +423,7 @@
     return fetch(`http://${location.hostname}:5001/zones`)
       .then(r => r.ok ? r.json() : Promise.reject(r.status))
       .then(json => {
+        console.log("JSON RESPOSNE", json);
         const zones = Object.values(json.zones || {}).map((z, zIdx) => {
           // Ensure channels is an object
           let normalizedChannels = {};
@@ -429,6 +454,7 @@
         });
   
         data = { zones };
+        console.log("Loaded data", data);
         selectedZoneIndex = zones.length ? 0 : -1;
         renderZones();
         renderChannels();
@@ -497,14 +523,16 @@ function renderChannels() {
 
   const channels = Object.values(data.zones[selectedZoneIndex].channels || {});
   channels.forEach((ch, idx) => {
-    if (!ch.system) ch.system = "Default";
+    console.log("Rendering Channel", ch.system);
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${ch.channel_number}</td>
-      <td>${ch.name}</td>
-      <td>${data.zones[selectedZoneIndex].name}</td>
-      <td>${ch.type}<br><i>(${ch.system})</i></td>
-      <td>${(ch.tgid || []).join(", ")}</td>
+      <td class="fs-13px">${ch.channel_number}</td>
+      <td class="fs-13px">${ch.name}</td>
+      <td class="fs-13px">${data.zones[selectedZoneIndex].name}</td>
+      <td class="fs-13px">${ch.type}<p class="mt-2 fs-7 text-muted">${systemLookup(ch.system)}</p></td>
+      <td class="fs-7">
+          ${(ch.tgid || []).map(tg => lookupTGIDName(tg, ch.system))}
+</td>
       <td>
         <button class="btn btn-link btn-sm" onclick="moveChannelUp(${selectedZoneIndex}, ${idx})"><i class="fas fa-arrow-up"></i></button>
         <button class="btn btn-link btn-sm" onclick="moveChannelDown(${selectedZoneIndex}, ${idx})"><i class="fas fa-arrow-down"></i></button>
@@ -558,15 +586,23 @@ function editChannel(zIdx, cIdx) {
   document.getElementById("channel-name").value = channel.name;
   setZoneField(data.zones[zIdx].name, true);
   document.getElementById("channel-type").value = channel.type;
-  document.getElementById("system-id").value = channel.sysid; // FIX HERE, NEED THE INDEX
-  console.log(channel)
-  console.log(channel.index)
+
+  const systemSelect = document.getElementById("system-id");
+  systemSelect.value = channel.system;
+
+
   tgids = (channel.tgid || []).map(String);
   renderTGIDPills();
+
   channelModal = new bootstrap.Modal(document.getElementById("channelModal"));
   channelModal.show();
 }
 
+function systemLookup(systemVal) {
+  console.log("System Lookup", systemVal);
+  const sys = systemMap[systemVal];
+  return sys ? sys.sysname : "??";
+}
 
 function removeChannel(zIdx, cIdx) {
   const channelKeys = Object.keys(data.zones[zIdx].channels);
@@ -644,8 +680,10 @@ function loadJson() {
 
 
 function ensureSystemField() {
+  console.log("Ensuring system field");
   data.zones.forEach(z => {
     Object.values(z.channels || {}).forEach(ch => {
+      console.log("Ensuring system field for channel", ch);
       if (!ch.system) ch.system = "Default";
     });
   });
@@ -668,16 +706,19 @@ function postChannelData() {
 }
 
 document.getElementById("channel-form").addEventListener("submit", event => {
+  console.log("***Saving Channel***");
   event.preventDefault();
   const zoneName = document.getElementById("channel-zone").value.trim();
   const zIdx = +document.getElementById("edit-zone-index").value;
   const cIdx = +document.getElementById("edit-channel-index").value;
+  console.log("Commiting System", document.getElementById("system-id").value);
   const channel = {
     channel_number: +document.getElementById("channel-number").value,
     name: document.getElementById("channel-name").value,
     type: document.getElementById("channel-type").value,
     tgid: tgids.map(Number),
-    system: +document.getElementById("system-id").value
+    system: document.getElementById("system-id").value,
+    sysid: document.getElementById("system-id").value
   };
 
   console.log("Saving channel Data: ", channel);
@@ -688,6 +729,7 @@ document.getElementById("channel-form").addEventListener("submit", event => {
     if (!zone.channels) zone.channels = {};
     const key = String(channel.channel_number);
     zone.channels[key] = channel;
+    console.log("***End Saving Channel***");
   }
 
   renderZones();

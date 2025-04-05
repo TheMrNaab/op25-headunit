@@ -240,3 +240,11 @@
   color: var(--fire-white);
   box-shadow: none;
 }
+
+.fs-7 {
+  font-size: 0.75rem !important; /* smaller than fs-6 (0.875rem) */
+}
+
+.fs-13px{
+  font-size: 13px !important;
+}

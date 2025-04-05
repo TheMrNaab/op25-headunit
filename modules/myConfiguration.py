@@ -3,7 +3,7 @@ import configparser
 import sys
 
 class MyConfig:
-    def __init__(self, config_file="config.ini"):
+    def __init__(self, config_file="/opt/op25-project/config.ini"):
         self._configFile = config_file
         self.config = configparser.ConfigParser()
         self.config.optionxform = str  # ← Preserve case
@@ -12,11 +12,7 @@ class MyConfig:
     def reload(self):
         self.config = configparser.ConfigParser()
         self.config.optionxform = str  # ← Preserve case
-        self.config.read(self.config_file)
-
-    @property
-    def config_file(self):
-        return self._configFile
+        self.config.read(self._configFile)
 
     def get(self, section, key, fallback=None):
         return self.config.get(section, key, fallback=fallback)
@@ -48,7 +44,7 @@ class MyConfig:
         self.config.set(section, key, str(value))
 
     def save(self):
-        with open(self.config_file, "w") as configfile:
+        with open(self._configFile, "w") as configfile:
             self.config.write(configfile)
 
     def fetchOP25Settings(self):
@@ -123,17 +119,16 @@ class MyConfig:
         return stdout_file, stderr_file
 
     def toJson(self):
-         # Ensure the configuration is loaded
-        if not self.config.sections():  # Check if config is empty
-            self.reload()  # Reload only if necessary
+        print("[DEBUG] Reading config from:", self._configFile)
+        if not self.config.sections():
+            print("[DEBUG] No sections found, attempting reload...")
+            self.reload()
+        print("[DEBUG] Sections after reload:", self.config.sections())
         result = {}
-        
         for section in self.config.sections():
             result[section] = {}
             for key in self.config[section]:
                 result[section][key] = self.config[section][key]
-        
-        
         return result
     
 class op25CommandBuilder():

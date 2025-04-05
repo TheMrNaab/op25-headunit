@@ -166,16 +166,10 @@
         });
 
         document.addEventListener("DOMContentLoaded", async () => {
-          sendGetConfig(); // make sure this sets checkbox.checked and triggers .dispatchEvent
-          // await getsleepSettings();
-          const form = document.getElementById("config-form");
-          await populateZones();
-          await sendGetConfig();
-          await sendGetSleepSettings();
-
-
-
-
+          await populateZones();        // Make sure dropdowns are ready
+          const config = await sendGetConfig();        // Now safe to set values
+          populateForm(config);
+          await sendGetSleepSettings(); // Load sleep setting
         });
 
         document.getElementById("save-config").addEventListener("click", async () => {
@@ -216,14 +210,16 @@
         }
 
         async function sendGetConfig() {
-          const response = await fetch(`http://${localhost}:5001/admin/config/get`);
+          const url = `http://${localhost}:5001/admin/config/get`;
+          const response = await fetch(url);
+          console.log("Fetching config from server", url, response);
           if (!response.ok) {
             console.error("Failed to fetch config");
             return;
           }
 
           const config = await response.json();
-          populateForm(config);
+          return config;
         }
 
         async function sendGetSleepSettings() {
@@ -316,6 +312,7 @@
             The input field's value will be set to "JohnDoe".
         */
         function populateForm(config) {
+          console.log("Populating form with config:", config);
           const inputs = document.querySelectorAll('[data-section][data-field]');
           inputs.forEach(input => {
             const section = input.getAttribute("data-section");

@@ -46,6 +46,11 @@ class zoneManager:
 
         self._data["zones"] = raw_zones
         return [zoneMember(zone_data, idx) for idx, zone_data in enumerate(raw_zones.values())]
+    
+    def reloadZones(self):
+        self._zones = self._load_zones()
+        self.append_line_to_file("zoneManager.reloadZones() -> Done")
+    
     def save(self):
         with open(self.file_path, 'w') as f:
             json.dump({"zones": [zone.to_dict() for zone in self._zones]}, f, indent=4)
