@@ -40,6 +40,7 @@ python3 rx.py
     </pre>
   </div>
 </div>
+
 <!-- Device Arguments -->
 <div class="card mb-3">
   <div class="card-body">
@@ -50,8 +51,8 @@ python3 rx.py
       </div>
       <small class="text-muted">Flag: <code>--args</code></small>
     </div>
-    <label for="deviceArgs" class="form-label">Device Arguments</label>
-    <input type="text" class="form-control" id="device_args" value="rtl=0" disabled>
+    <label for="device_args" class="form-label">Device Arguments</label>
+    <input type="text" class="form-control" id="args" value="rtl=0" disabled>
     <div class="form-text">Specifies the SDR input device (e.g., rtl=0, hackrf=0).</div>
   </div>
 </div>
@@ -72,19 +73,35 @@ python3 rx.py
   </div>
 </div>
 
-<!-- Gain -->
+<!-- Gains -->
 <div class="card mb-3">
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="form-check form-switch m-0">
-        <input class="form-check-input setting-toggle" type="checkbox" id="enableGain">
-        <label class="form-check-label" for="enableGain">Enable LNA Gain</label>
+        <input class="form-check-input setting-toggle" type="checkbox" id="enableGains">
+        <label class="form-check-label" for="enableGains">Enable LNA Gain</label>
       </div>
       <small class="text-muted">Flag: <code>--gains</code></small>
     </div>
     <label for="gain" class="form-label">LNA Gain (dB)</label>
-    <input type="number" class="form-control" id="gain" min="0" max="49.6" step="0.1" disabled>
+    <input type="number" class="form-control" id="gains" min="0" max="49.6" step="0.1" disabled>
     <div class="form-text">Controls the Low Noise Amplifier gain. Use with care to avoid distortion.</div>
+  </div>
+</div>
+
+<!-- Terminal UDP Port -->
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="form-check form-switch m-0">
+        <input class="form-check-input setting-toggle" type="checkbox" id="enableTerminalPort">
+        <label class="form-check-label" for="enableTerminalPort">Enable Terminal UDP Port</label>
+      </div>
+      <small class="text-muted">Flag: <code>-l</code></small>
+    </div>
+    <label for="terminal_port" class="form-label">Terminal UDP Port</label>
+    <input type="number" class="form-control" id="terminal_port" min="1000" max="65535" step="1" disabled>
+    <div class="form-text">Specifies the UDP port where the OP25 terminal interface is exposed (e.g. 5000).</div>
   </div>
 </div>
 
@@ -120,6 +137,23 @@ python3 rx.py
   </div>
 </div>
 
+<!-- TDMA Mode -->
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="form-check form-switch m-0">
+        <input class="form-check-input setting-toggle" type="checkbox" id="enableTdma">
+        <label class="form-check-label" for="enableTdma">Enable TDMA Mode</label>
+      </div>
+      <small class="text-muted">Flag: <code>-2</code></small>
+    </div>
+    <div class="input-group">
+      <span class="input-group-text">Flag</span>
+      <input type="text" class="form-control" id="tdma" value="-2" disabled>
+    </div>
+    <div class="form-text">Enables support for Phase II TDMA systems (dual-slot decoding).</div>
+  </div>
+</div>
 <!-- Audio Output -->
 <div class="card mb-3">
   <div class="card-body">
@@ -128,13 +162,14 @@ python3 rx.py
         <input class="form-check-input setting-toggle" type="checkbox" id="enableAudioOutput">
         <label class="form-check-label" for="enableAudioOutput">Enable Audio Output</label>
       </div>
-      <small class="text-muted">Flags: <code>-2</code>, <code>-U</code></small>
+      <small class="text-muted">Flags: <code>-U</code></small>
     </div>
     <label for="audio_output" class="form-label">Output Mode</label>
     <select class="form-select" id="audio_output" disabled>
       <option value="alsa">ALSA (Default)</option>
       <option value="udp">UDP Streaming</option>
     </select>
+    <input type="hidden" id="audio_output_hidden" value="">
     <div class="form-text">Choose how audio is routed: ALSA to speaker, or UDP to stream.</div>
   </div>
 </div>
@@ -153,22 +188,6 @@ python3 rx.py
     <select class="form-control" id="audio_device" placeholder="default" disabled>
     </select>
     <div class="form-text">Specify ALSA device (e.g., default, hw:1,0, plughw:1,0).</div>
-  </div>
-</div>
-
-<!-- Log Limit -->
-<div class="card mb-3">
-  <div class="card-body">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <div class="form-check form-switch m-0">
-        <input disabled class="form-check-input setting-toggle" type="checkbox" id="enableLogLimit">
-        <label class="form-check-label" for="enableLogLimit">Enable Log Line Limit</label>
-      </div>
-      <small class="text-muted">Flag: <code>-l</code></small>
-    </div>
-    <label for="log_limit" class="form-label">Log Line Limit</label>
-    <input type="number" class="form-control" id="log_limit" min="100" max="100000" step="100" disabled>
-    <div class="form-text">Max log lines before file is truncated. Helps prevent bloat.</div>
   </div>
 </div>
 
@@ -206,12 +225,28 @@ python3 rx.py
     <div class="form-text">Path to default trunking system configuration TSV file.</div>
   </div>
 </div>
+
+<!-- Vocoder -->
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="form-check form-switch m-0">
+        <input class="form-check-input setting-toggle" type="checkbox" id="enableVocoder">
+        <label class="form-check-label" for="enableVocoder">Enable Vocoder</label>
+      </div>
+      <small class="text-muted">Flag: <code>-V</code></small>
+    </div>
+    <input type="hidden" id="vocoder" value="-V" disabled>
+    <div class="form-text">For systems using voice decoding via vocoder. Required for audio output.</div>
+  </div>
+</div>
+
 <!-- STDOUT File -->
 <div class="card mb-3">
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="form-check form-switch m-0">
-        <input disabled class="form-check-input setting-toggle" type="checkbox" id="enableStdoutFile">
+        <input class="form-check-input setting-toggle" type="checkbox" id="enableStdoutFile">
         <label class="form-check-label" for="enableStdoutFile">Enable STDOUT Redirect</label>
       </div>
       <small class="text-muted">Python: <code>stdout=</code></small>
@@ -227,7 +262,7 @@ python3 rx.py
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="form-check form-switch m-0">
-        <input class="form-check-input setting-toggle" disabled type="checkbox" id="enableStderrFile">
+        <input class="form-check-input setting-toggle" type="checkbox" id="enableStderrFile">
         <label class="form-check-label" for="enableStderrFile">Enable STDERR Redirect</label>
       </div>
       <small class="text-muted">Python: <code>stderr=</code></small>
@@ -237,6 +272,7 @@ python3 rx.py
     <div class="form-text">Redirects error output (warnings, tracebacks) to this log file.</div>
   </div>
 </div>
+
 <div class="card mb-4">
   <div class="card-body">
     <label for="pasteInput" class="form-label">Paste Existing Command</label>
@@ -307,7 +343,7 @@ python3 rx.py
             enableSetting("enableDeviceArgs", "device_args", tokens[i + 1]); break;
           case "--gains":
             if (tokens[i + 1]?.startsWith("lna:")) {
-              enableSetting("enableGain", "gain", tokens[i + 1].replace("lna:", ""));
+              enableSetting("enableGains", "gains", tokens[i + 1].replace("lna:", ""));
             }
             break;
           case "-S":
@@ -317,7 +353,7 @@ python3 rx.py
           case "-v":
             enableSetting("enableVerbosity", "verbosity", tokens[i + 1]); break;
           case "-l":
-            enableSetting("enableLogLimit", "log_limit", tokens[i + 1]); break;
+            enableSetting("enableHTTPPort", "http_port", tokens[i + 1]); break;
           case "-T":
             enableSetting("enableTrunkTsv", "trunk_tsv", tokens[i + 1]); break;
           case "--audio-dev":
@@ -477,18 +513,20 @@ function capitalize(s) {
 
   // Map setting IDs to command-line arguments and types
   const settingsMap = {
-    enableDeviceArgs:   { id: "device_args", flag: "--args", type: "text" },
-    enableGain:         { id: "gain", flag: "--gains", prefix: "lna:", type: "number" },
+    enableDeviceArgs:   { id: "args", flag: "--args", type: "text" },
+    enableGains:        { id: "gains", flag: "--gains", prefix: "lna:", type: "number" },
     enableSampleRate:   { id: "sample_rate", flag: "-S", type: "number" },
     enablePpm:          { id: "ppm", flag: "-q", type: "number" },
     enableVerbosity:    { id: "verbosity", flag: "-v", type: "number" },
     enableAudioOutput:  { id: "audio_output", flag: null, type: "select" },
-    enableLogLimit:     { id: "log_limit", flag: "-l", type: "number" },
     enableNoCrypt:      { id: "nocrypt", flag: "--nocrypt", type: "select" },
     enableTrunkTsv:     { id: "trunk_tsv", flag: "-T", type: "text" },
     enableAudioDevice:  { id: "audio_device", flag: "--audio-dev", type: "select" },
     enableStdoutFile:   { id: "stdout_file", flag: null, type: "text" },
-    enableStderrFile:   { id: "stderr_file", flag: null, type: "text" }
+    enableStderrFile:   { id: "stderr_file", flag: null, type: "text" },
+    enableVocoder:      { id: "vocoder", flag: "-V", type: "flag" }, // NEW
+    enableTerminalPort: { id: "terminal_port", flag: "-l", type: "number" },
+    enableTdma: { id: "tdma", flag: "-2", type: "display" }
   };
 
   function updatePreview() {
@@ -511,14 +549,17 @@ function capitalize(s) {
           } else if (input.value === "udp") {
             parts.push("-U");
           }
+        } 
+         else if (setting.type === "flag") {
+          parts.push(`${setting.flag}`);
         } else {
           parts.push(`${setting.flag} ${input.value}`);
         }
+        }
       }
+      previewBox.textContent = parts.join(" ");
     }
 
-    previewBox.textContent = parts.join(" ");
-  }
 
 
   // Update preview on input change

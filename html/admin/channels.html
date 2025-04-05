@@ -21,7 +21,7 @@
   </style>
   <style>
     .autocomplete-suggestions {
-      border: 1px solid #ccc;
+      border: 0px solid #ccc;
       max-height: 150px;
       overflow-y: auto;
       position: absolute;
@@ -92,7 +92,7 @@
   </div>
 
   <!-- Channel Modal Dialog -->
-  <div class="modal fade" id="channelModal" tabindex="-1" aria-labelledby="channelModalLabel" aria-hidden="true">
+  <div class="modal fade" style="" id="channelModal" tabindex="-1" aria-labelledby="channelModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -103,35 +103,50 @@
           <form id="channel-form">
             <input type="hidden" id="edit-zone-index">
             <input type="hidden" id="edit-channel-index">
+        
+            <!-- Channel number and name -->
+            <div class="row mb-3">
+              <div class="col-md-2">
+                <label class="form-label">Ch. #</label>
+                <input type="number" id="channel-number" class="form-control" disabled>
+              </div>
+                          <!-- System -->
 
-            <div class="input-group mb-3">
-              <span class="input-group-text">Ch. #</span>
-              <input type="number" id="channel-number" class="form-control" style="max-width: 6ch;" disabled>
-              <span class="input-group-text">Channel Name</span>
-              <input type="text" id="channel-name" class="form-control fw-bold" placeholder="Channel Name" required>
+              <div class="col-md-6">
+                <label class="form-label">System</label>
+                <select id="system-id" class="form-select" required>
+                  <option value="Default">Default</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Channel Name</label>
+                <input type="text" id="channel-name" class="form-control fw-bold" placeholder="Channel Name" required>
+              </div>
             </div>
-
-            <div class="input-group mb-3">
-              <span class="input-group-text">Zone</span>
-              <select id="channel-zone" class="form-select" required></select>
-              <span class="input-group-text">Channel Type</span>
-              <select id="channel-type" class="form-select" required>
-                <option value="Scan">Scan</option>
-                <option value="Talkgroup">Talkgroup</option>
-              </select>
-              <span class="input-group-text">System</span>
-              <select id="system-id" class="form-select">
-                <option value="Default">Default</option>
-              </select>
+        
+            <!-- Zone and type -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Zone</label>
+                <select id="channel-zone" class="form-select" required></select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Channel Type</label>
+                <select id="channel-type" class="form-select" required>
+                  <option value="Scan">Scan</option>
+                  <option value="Talkgroup">Talkgroup</option>
+                </select>
+              </div>
             </div>
+        
 
-            <div class="mb-3">
+        
+            <!-- TGIDs -->
+            <div class=""mb-2"">
               <label class="form-label">TGIDs</label>
               <div id="tgidContainer" class="mb-2"></div>
               <input type="text" id="tgidInput" class="form-control" placeholder="Type a TGID and press space or paste comma list">
-              <!-- INSIDE MODAL, AFTER #tgidInput -->
               <div id="autocompleteSuggestions" class="autocomplete-suggestions"></div>
-
             </div>
           </form>
         </div>
@@ -380,18 +395,47 @@
       .catch(console.error);
   }
   
-function loadChannelData() {
-  return fetch(`http://${location.hostname}:5001/zones`)
-    .then(r => r.ok ? r.json() : Promise.reject(r.status))
-    .then(json => {
-      data = { zones: Object.values(json.zones || {}) };
-      selectedZoneIndex = data.zones.length ? 0 : -1;
-      renderZones();
-      renderChannels();
-      populateZoneSelect();
-    })
-    .catch(console.error);
-}
+  function loadChannelData() {
+    return fetch(`http://${location.hostname}:5001/zones`)
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(json => {
+        const zones = Object.values(json.zones || {}).map((z, zIdx) => {
+          // Ensure channels is an object
+          let normalizedChannels = {};
+          if (Array.isArray(z.channels)) {
+            z.channels
+              .filter(Boolean) // Remove nulls
+              .forEach((ch, i) => {
+                ch.channel_number = i;
+                normalizedChannels[i] = ch;
+              });
+          } else if (typeof z.channels === 'object') {
+            // Clean any null values
+            Object.entries(z.channels).forEach(([k, ch], i) => {
+              if (ch) {
+                ch.channel_number = +k;
+                normalizedChannels[k] = ch;
+              }
+            });
+          } else {
+            normalizedChannels = {};
+          }
+  
+          return {
+            ...z,
+            channels: normalizedChannels,
+            zone_index: zIdx
+          };
+        });
+  
+        data = { zones };
+        selectedZoneIndex = zones.length ? 0 : -1;
+        renderZones();
+        renderChannels();
+        populateZoneSelect();
+      })
+      .catch(console.error);
+  }
   
   function populateZoneSelect() {
     const sel = document.getElementById('channel-zone');
@@ -412,21 +456,23 @@ function loadChannelData() {
     renderTGIDPills();
   }
   
-function newChannel() {
-  clearChannelForm();
-  populateZoneSelect();
-  if (selectedZoneIndex > -1) {
-    document.getElementById("channel-zone").value = data.zones[selectedZoneIndex].name;
-    const zoneChannels = data.zones[selectedZoneIndex].channels || {};
-    const nextNumber = Math.max(0, ...Object.keys(zoneChannels).map(Number)) + 1;
-    document.getElementById("channel-number").value = nextNumber;
+  function newChannel() {
+    clearChannelForm();
+    populateZoneSelect();
+    if (selectedZoneIndex > -1) {
+      document.getElementById("channel-zone").value = data.zones[selectedZoneIndex].name;
+      document.getElementById("edit-zone-index").value = selectedZoneIndex; // <-- FIX
+      const zoneChannels = data.zones[selectedZoneIndex].channels || {};
+      const nextNumber = Math.max(0, ...Object.keys(zoneChannels).map(Number)) + 1;
+      document.getElementById("channel-number").value = nextNumber;
+    }
+  
+    channelModal = new bootstrap.Modal(document.getElementById("channelModal"));
+    channelModal.show();
   }
-
-  channelModal = new bootstrap.Modal(document.getElementById("channelModal"));
-  channelModal.show();
-}
   // RENDER ZONES
 function renderZones() {
+  console.log("***Rendering Zones***")
   const zoneList = document.getElementById("zone-list");
   const newZoneButton = document.getElementById("newZoneButton");
   zoneList.innerHTML = "";
@@ -437,6 +483,8 @@ function renderZones() {
     btn.type = "button";
     btn.className = `list-group-item list-group-item-action${selectedZoneIndex === i ? " active" : ""}`;
     btn.innerHTML = `${zone.name} <i class="fas fa-edit float-end" onclick="event.stopPropagation(); openZoneModal(${i});"></i>`;
+    console.log("Zone Button", zone.name, i);
+    btn.setAttribute("data-index", i);
     btn.onclick = () => selectZone(i);
     zoneList.appendChild(btn);
   });
@@ -477,7 +525,7 @@ function moveChannelUp(zIdx, cIdx) {
   // Rebuild dictionary with updated order and corrected "number"
   const reordered = {};
   channelEntries.forEach(([key, ch], i) => {
-    ch.number = i + 1;
+    ch.channel_number = i + 1;
     reordered[(i + 1).toString()] = ch;
   });
 
@@ -494,7 +542,7 @@ function moveChannelDown(zIdx, cIdx) {
   // Rebuild dictionary with updated order and corrected "number"
   const reordered = {};
   channelEntries.forEach(([key, ch], i) => {
-    ch.number = i + 1;
+    ch.channel_number = i + 1;
     reordered[(i + 1).toString()] = ch;
   });
 
@@ -529,23 +577,28 @@ function removeChannel(zIdx, cIdx) {
   }
 }
 
+zoneModal = null;
 function openZoneModal(index = -1) {
   document.getElementById("zone-modal-index").value = index;
   document.getElementById("zone-name").value = index === -1 ? "" : data.zones[index].name;
-  new bootstrap.Modal(document.getElementById("zoneModal")).show();
+
+  zoneModal = new bootstrap.Modal(document.getElementById("zoneModal"));
+  zoneModal.show();
+
+  console.log("Zone modal opened as", zoneModal);
 }
 
 function saveZone(event) {
   event.preventDefault();
   const idx = +document.getElementById("zone-modal-index").value;
   const name = document.getElementById("zone-name").value.trim();
-  if (!name) return;
+  if (!name) return alert("Zone name cannot be empty");
   if (idx === -1) data.zones.push({ name, channels: [] });
   else data.zones[idx].name = name;
   renderZones();
   renderChannels();
-  new bootstrap.Modal(document.getElementById("zoneModal")).hide();
-}
+  if (zoneModal) {zoneModal.hide();}
+} 
 
 function saveZoneEdits() {
   const newName = document.getElementById("edit-zone-name").value.trim();
@@ -554,7 +607,7 @@ function saveZoneEdits() {
   setZoneField(newName, true);
   renderZones();
   renderChannels();
-  new bootstrap.Modal(document.getElementById("editZoneModal")).hide();
+  if (zoneModal) {zoneModal.hide();}
 }
 
 function deleteZone() {
@@ -570,16 +623,10 @@ function deleteZone() {
 function selectZone(index) {
   selectedZoneIndex = index;
   setZoneField(data.zones[index].name, true);
+  console.log("Selecting Zone", index);
+  console.log("Selected Zone", data.zones[index]);
   renderZones();
   renderChannels();
-}
-
-function saveNewZone() {
-  const name = document.getElementById("new-zone-name").value.trim();
-  if (!name) return alert("Zone name cannot be empty");
-  data.zones.push({ name, channels: [] });
-  selectZone(data.zones.length - 1);
-  new bootstrap.Modal(document.getElementById("newZoneModal")).hide();
 }
 
 function setZoneField(val, readOnly) {
@@ -626,17 +673,20 @@ document.getElementById("channel-form").addEventListener("submit", event => {
   const zIdx = +document.getElementById("edit-zone-index").value;
   const cIdx = +document.getElementById("edit-channel-index").value;
   const channel = {
-    number: +document.getElementById("channel-number").value,
+    channel_number: +document.getElementById("channel-number").value,
     name: document.getElementById("channel-name").value,
     type: document.getElementById("channel-type").value,
     tgid: tgids.map(Number),
     system: +document.getElementById("system-id").value
   };
 
+  console.log("Saving channel Data: ", channel);
+  console.log("Zone Index: ", zIdx);
+  console.log("Channel Index: ", cIdx);
   if (zIdx >= 0) {
     let zone = data.zones[zIdx];
     if (!zone.channels) zone.channels = {};
-    const key = String(channel.number);
+    const key = String(channel.channel_number);
     zone.channels[key] = channel;
   }
 

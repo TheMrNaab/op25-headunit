@@ -7,7 +7,9 @@ import subprocess
 import json
 from typing import List, TYPE_CHECKING
 
-from flask import jsonify
+from flask import config, jsonify
+from numpy import bool_
+from sympy import I
 # Removed to avoid circular import: from modules._session import session
 from modules._session import SessionMember
 from modules.myConfiguration import MyConfig
@@ -68,10 +70,10 @@ class op25Manager:
             print(f"... Configured PYTHONPATH to {os.environ["PYTHONPATH"]}")
             
             self._activeSession = _session
- 
+            
             self.op25_command = [
                 self.rx_script, "--nocrypt", "--args", "rtl",
-                "--gains", "lna:40", 
+                "--gains", "lna:45", 
                 "-S", "960000", 
                 "-q", "0",
                 "-v", "2", "-2", 
@@ -79,7 +81,8 @@ class op25Manager:
                 "-T", self.session.activeSystem.toTrunkTSV(self.session),
                 "-l", "5000"
             ]
-            print(f"... Generated OP25 start command to {self.op25_command}")
+            
+            print(f"\n\n... Generated OP25 start command to {self.op25_command}")
             
             print(f"... Attempting to start self.op25_process.")
             
@@ -90,6 +93,8 @@ class op25Manager:
                 stderr=open(self.stderr_file, "w"),
                 text=True
             )
+            
+            
             
             # Wait to see result of process
             print(f"... Awaiting self.op25_process start confirmation.")
@@ -268,22 +273,4 @@ class op25Manager:
         print("[INFO] Restarting OP25...")
         self.stop()
         self.start()
-        
 
-# CODE I DO NOT WANT TO LOSE
-#  echo '{"command": "whitelist", "arg1": 47021, "arg2": 0}' | nc -u 127.0.0.1 5000
-
-# self.op25_command = [
-#     self.rx_script, "--nocrypt", "--args", "rtl",
-#     "--gains", "lna:40", "-S", "960000", "-q", "0",
-#     "-v", "2", "-2", "-V", "-U",
-#     "-T", self.session.activeSystem.toTrunkTSV(self.session),
-#     "-U", "-l", "5000"
-# ]
-# self.op25_command = [
-#     self.rx_script , "--nocrypt", "--args", "rtl",
-#     "--gains", "lna:35", "-S", "960000", "-q", "0",
-#     "-v", "1", "-2", "-V", "-U",
-#     "-T", "/opt/op25-project/templates/_trunk.tsv",
-#     "-U", "-l", "5000"
-# ]

@@ -65,8 +65,6 @@ class API:
                                              api=self)
         
        
-
-
         # LOGGER STREAM FOR OP25
         self._monitor = None
         self.startLoggerStream()
@@ -618,6 +616,7 @@ class API:
     def run(self):
         self.free_port(8000)
         self.free_port(5001)
+        # REMOVED FOR NOW
         #self.kill_named_scripts(["rx.py", "terminal.py"])
 
         # Launch static frontend server

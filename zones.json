@@ -1,8 +1,8 @@
 {
     "zones": {
         "1": {
-            "channels": [
-                {
+            "channels": {
+                "0": {
                     "channel_number": 0,
                     "name": "Fire Scan",
                     "sysid": "0",
@@ -54,7 +54,7 @@
                     "type": "Scan",
                     "zone_index": 0
                 },
-                {
+                "1": {
                     "channel_number": 1,
                     "name": "ALERT SCAN",
                     "sysid": "0",
@@ -66,7 +66,7 @@
                     "type": "Scan",
                     "zone_index": 0
                 },
-                {
+                "2": {
                     "channel_number": 2,
                     "name": "WC FD ALERT",
                     "sysid": "0",
@@ -77,7 +77,7 @@
                     "type": "Talkgroup",
                     "zone_index": 0
                 },
-                {
+                "3": {
                     "channel_number": 3,
                     "name": "RFD ALERT",
                     "sysid": "0",
@@ -88,7 +88,7 @@
                     "type": "Talkgroup",
                     "zone_index": 0
                 },
-                {
+                "4": {
                     "channel_number": 4,
                     "name": "WC FD DISP",
                     "sysid": "0",
@@ -99,13 +99,13 @@
                     "type": "Talkgroup",
                     "zone_index": 0
                 }
-            ],
+            },
             "name": "Fire",
             "zone_index": 0
         },
         "2": {
-            "channels": [
-                {
+            "channels": {
+                "0": {
                     "channel_number": 0,
                     "name": "Law Scan",
                     "sysid": "0",
@@ -124,7 +124,7 @@
                     ],
                     "type": "Scan"
                 },
-                {
+                "1": {
                     "channel_number": 1,
                     "name": "RPD NWD DISP",
                     "sysid": "0",
@@ -134,7 +134,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "2": {
                     "channel_number": 2,
                     "name": "RPD NOD DISP",
                     "sysid": "0",
@@ -144,7 +144,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "3": {
                     "channel_number": 3,
                     "name": "RPD NED DISP",
                     "sysid": "0",
@@ -154,7 +154,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "4": {
                     "channel_number": 4,
                     "name": "RPD SED DISP",
                     "sysid": "0",
@@ -164,7 +164,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "5": {
                     "channel_number": 5,
                     "name": "RPD DTD DISP",
                     "sysid": "0",
@@ -174,7 +174,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "6": {
                     "channel_number": 6,
                     "name": "RPD SWD DISP",
                     "sysid": "0",
@@ -184,7 +184,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "7": {
                     "channel_number": 7,
                     "name": "WSO DISP 1",
                     "sysid": "0",
@@ -194,7 +194,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "8": {
                     "channel_number": 8,
                     "name": "WSO DISP 2",
                     "sysid": "0",
@@ -204,7 +204,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "9": {
                     "channel_number": 9,
                     "name": "WSO DISP 3",
                     "sysid": "0",
@@ -214,7 +214,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "10": {
                     "channel_number": 10,
                     "name": "WSO DISP 4",
                     "sysid": "0",
@@ -224,7 +224,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "11": {
                     "channel_number": 11,
                     "name": "WSO PAT 1",
                     "sysid": "0",
@@ -234,7 +234,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "12": {
                     "channel_number": 12,
                     "name": "WSO PAT 2",
                     "sysid": "0",
@@ -244,7 +244,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "13": {
                     "channel_number": 13,
                     "name": "WSO PAT 3",
                     "sysid": "0",
@@ -254,7 +254,7 @@
                     ],
                     "type": "Talkgroup"
                 },
-                {
+                "14": {
                     "channel_number": 14,
                     "name": "WSO PAT 4",
                     "sysid": "0",
@@ -264,9 +264,114 @@
                     ],
                     "type": "Talkgroup"
                 }
-            ],
+            },
             "name": "Law",
             "zone_index": 1
+        },
+        "3": {
+            "channels": {
+                "0": {
+                    "channel_number": 0,
+                    "name": "FD OPS 1",
+                    "system": "Default",
+                    "tgid": [
+                        46800
+                    ],
+                    "type": "Talkgroup"
+                },
+                "1": {
+                    "channel_number": 1,
+                    "name": "FD OPS 2",
+                    "system": "Default",
+                    "tgid": [
+                        46801
+                    ],
+                    "type": "Talkgroup"
+                },
+                "2": {
+                    "channel_number": 2,
+                    "name": "FD OPS 3",
+                    "type": "Talkgroup",
+                    "tgid": [
+                        46802
+                    ],
+                    "system": "Default"
+                },
+                "3": {
+                    "channel_number": 3,
+                    "name": "FD OPS 4",
+                    "type": "Talkgroup",
+                    "tgid": [
+                        46803
+                    ],
+                    "system": "Default"
+                },
+                "4": {
+                    "channel_number": 4,
+                    "name": "FD OPS 5",
+                    "type": "Talkgroup",
+                    "tgid": [
+                        46804
+                    ],
+                    "system": "Default"
+                },
+                "5": {
+                    "channel_number": 5,
+                    "name": "FD OPS 6",
+                    "type": "Talkgroup",
+                    "tgid": [
+                        46805
+                    ],
+                    "system": "Default"
+                },
+                "6": {
+                    "channel_number": 6,
+                    "name": "FD OPS 7",
+                    "type": "Talkgroup",
+                    "tgid": [
+                        46806
+                    ],
+                    "system": "Default"
+                },
+                "7": {
+                    "channel_number": 7,
+                    "name": "FD OPS 8",
+                    "type": "Talkgroup",
+                    "tgid": [
+                        46807
+                    ],
+                    "system": "Default"
+                },
+                "8": {
+                    "channel_number": 8,
+                    "name": "FD OPS 9",
+                    "type": "Scan",
+                    "tgid": [
+                        46808
+                    ],
+                    "system": "Default"
+                },
+                "9": {
+                    "channel_number": 9,
+                    "name": "FD OPS 10",
+                    "type": "Talkgroup",
+                    "tgid": [
+                        46809
+                    ],
+                    "system": "Default"
+                },
+                "10": {
+                    "channel_number": 10,
+                    "name": "TAC 13",
+                    "type": "Scan",
+                    "tgid": [
+                        46812
+                    ],
+                    "system": "Default"
+                }
+            },
+            "name": "OPS-TAC",
+            "zone_index": 2
         }
     }
 }

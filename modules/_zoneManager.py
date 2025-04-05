@@ -25,11 +25,27 @@ class zoneManager:
     def _load_zones(self) -> List["zoneMember"]:
         if not os.path.exists(self.file_path):
             raise FileNotFoundError(f"Zone file not found: {self.file_path}")
-            return []
+
         with open(self.file_path, 'r') as f:
             self._data = json.load(f)
-        return [zoneMember(zone_data, idx) for idx, zone_data in enumerate(self._data.get("zones", {}).values())]
 
+        raw_zones = self._data.get("zones", {})
+
+        # If zones are stored as a list, convert to dict with numeric keys
+        if isinstance(raw_zones, list):
+            raw_zones = {str(i + 1): z for i, z in enumerate(raw_zones)}
+
+        # Clean null entries in channels and normalize to dict format
+        for zone in raw_zones.values():
+            channels = zone.get("channels")
+            if isinstance(channels, list):
+                # Filter out nulls and reindex as dict
+                zone["channels"] = {
+                    str(i): ch for i, ch in enumerate(channels) if ch is not None
+                }
+
+        self._data["zones"] = raw_zones
+        return [zoneMember(zone_data, idx) for idx, zone_data in enumerate(raw_zones.values())]
     def save(self):
         with open(self.file_path, 'w') as f:
             json.dump({"zones": [zone.to_dict() for zone in self._zones]}, f, indent=4)
@@ -136,11 +152,27 @@ class zoneMember:
         """Returns the name of the zone."""
         return self._data.get("name")
 
+
     @property
     def channels(self) -> List["channelMember"]:
         """Returns the list of channels in the zone."""
-        return [channelMember(ch, self.index) for ch in self._data.get("channels", [])]
+        channels = self._data.get("channels", {})
+        # Convert from list to dict if needed
+        if isinstance(channels, list):
+            # Filter out nulls and assign keys by channel_number or index fallback
+            channels = {
+                str(ch.get("channel_number", idx)): ch
+                for idx, ch in enumerate(channels)
+                if ch is not None
+            }
+            self._data["channels"] = channels  # Overwrite with dict for future consistency
 
+        # Return list of channelMember objects sorted by channel_number
+        def sort_key(item):
+            ch = item[1]
+            return ch.get("channel_number", 0)
+
+        return [channelMember(ch, self.index) for _, ch in sorted(channels.items(), key=sort_key)]
     def next_channel(self, current_number: int) -> Optional["channelMember"]:
         """Gets the next channel in the zone."""
         ch_list = self.channels
@@ -158,8 +190,15 @@ class zoneMember:
         return ch_list[-1] if ch_list else None
 
     def to_dict(self) -> dict:
-        """Returns the zone as a dictionary."""
-        return self._data
+        # Ensure channels are saved as a dict keyed by channel_number
+        channels_dict = {}
+        for ch in self.channels:
+            ch_num = str(ch.channel_number)
+            channels_dict[ch_num] = ch.to_dict()
+
+        new_data = dict(self._data)  # shallow copy
+        new_data["channels"] = channels_dict
+        return new_data
 
     def get_channel_by_index(self, channel_index: int) -> Optional["channelMember"]:
         """Retrieves a channel by its index within the zone."""

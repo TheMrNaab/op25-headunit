@@ -29,7 +29,7 @@
   
   .slider::-moz-range-thumb {
     width: 25px;
-    height: 25px;
+    height: 40px;
     background: var(--thumb-color);
     cursor: pointer;
     border-radius: 10px;
