@@ -6,7 +6,6 @@ modules/
 __pycache__
 api.py
 logs/stderr_op25.log
-logs/stderr_op25.log
 *.pyc
 modules/linuxSystem/__pycache__/linuxUtils.cpython-312.pyc
 logs/app_log.txt
@@ -39,3 +38,4 @@ modules/__pycache__/myConfiguration.cpython-312.pyc
 modules/linuxSystem/__pycache__/__init__.cpython-312.pyc
 modules/linuxSystem/__pycache__/linuxUtils.cpython-312.pyc
 modules/linuxSystem/__pycache__/sound.cpython-312.pyc
+.vscode/runner.sh

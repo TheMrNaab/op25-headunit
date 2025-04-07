@@ -13,17 +13,17 @@ from modules._session import SessionMember
 from modules._sessionManager import SessionManager
 from modules._op25Manager import op25Manager
 from modules.myConfiguration import MyConfig
+from modules._simpleLog import simpleLogger
 import time
 import threading
 from queue import Queue
 import json
 from modules._zoneManager import zoneMember, channelMember
 from modules._talkgroupSet import TalkgroupManager
-
+from evdev import InputDevice, categorize, ecodes # For remote
 import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)  # or logging.CRITICAL to suppress even more
-  
 class API:
     def __init__(self):
         # SET THE CROSS-ORIIGINS IP ADDRESS TO THE ROUTER-ASSIGNED IP
@@ -86,6 +86,43 @@ class API:
         # REGISTER API ROUTES
         self.register_routes()
      
+    def on_key_event(self, event):
+        self.mapper.buildKeyMap("Down", 108, "")
+        self.mapper.buildKeyMap("VOL_DOWN", 114,"f14")
+        self.mapper.buildKeyMap("VOL_UP", 115,"help")
+        self.mapper.buildKeyMap("PG_DOWN", 109,"page down")
+        self.mapper.buildKeyMap("PG_UP", 104,"page up")
+        self.mapper.buildKeyMap("mute", 113,"f13")
+        self.mapper.buildKeyMap("unmute", 240,"unknown")
+        self.mapper.buildKeyMap("backspace", 14,"backspace")
+        self.mapper.buildKeyMap("down", 108,"down")
+        self.mapper.buildKeyMap("up", 103,"up")
+        self.mapper.buildKeyMap("menu", 127,"menu")
+        self.mapper.buildKeyMap("home", 172,"unknown")
+        self.mapper.buildKeyMap("back", 158,"unknown")
+        
+        #help 115
+        
+        if event.scan_code == self._lastKey:
+            return
+            # SKIP EVENT
+            
+        print(event.name, event.scan_code)
+        
+        # payload = {
+        #     "name": event.name, # Name of the key (if available)
+        #     "action": "keypress", 
+        #     "event_type": event.event_type,  # 'down' or 'up'
+        #     "scan_code": event.scan_code,    # Numeric scan code
+        #     "time": event.time               # Timestamp of the event
+        # }
+        # try:
+        #     response = requests.post("http://localhost:5001/controller/logging/update", json=payload)
+        #     # Optionally log the response for debugging.
+        #     # print(f"Sent: {payload} | Status: {response.status_code}")
+        # except Exception as e:
+        #     print("Error sending key event:", e)
+        
     @property
     def logMonitor(self) -> logMonitorOP25:
         return self._monitor
@@ -667,8 +704,6 @@ class API:
                         os.kill(int(pid), signal.SIGKILL)
             except Exception as e:
                 print(f"[INFO] Error killing {name}: {e}")
-
-
 
 # ======== Launch from here ========
 if __name__ == '__main__':

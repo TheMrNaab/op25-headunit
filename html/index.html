@@ -269,30 +269,37 @@
             <button id="btnZoneUp">
                 <i class="fas fa-arrow-up"></i>
                 <span>ZN</span>
+                <div class="accent accent-red"></div>
             </button>
             <button id="btnZoneDown">
                 <i class="fas fa-arrow-down"></i>
                 <span>ZN</span>
+                <div class="accent accent-green"></div>
             </button>
             <button id="btnChannelUp">
                 <i class="fas fa-caret-up"></i>
                 <span>CH</span>
+                <div class="accent accent-yellow"></div>
             </button>
             <button id="btnChannelDown">
                 <i class="fas fa-caret-down"></i>
                 <span>CH</span>
+                <div class="accent accent-blue"></div>
             </button>
             <button id="btnChannelList">
                 <i class="fas fa-list"></i>
                 <span style="margin-top:6px">CH LIST</span>
+                <div class="accent accent-red"></div>
             </button>
             <button id="btnZoneList">
                 <i class="fa fa-layer-group"></i>
                 <span style="margin-top:6px">ZN LIST</span>
+                <div class="accent accent-green"></div>
             </button>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal"
-                data-bs-target="#keypadModal">
-                <i class="fas fa-calculator"></i><span style="margin-top:6px">DIRECT</span>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal" data-bs-target="#keypadModal">
+                <i class="fas fa-calculator"></i>
+                <span style="margin-top:6px">DIRECT</span>
+                <div class="accent accent-yellow"></div>
             </button>
         </div>
 
@@ -444,8 +451,9 @@
                 source.onmessage = async (event) => {
                     try {
                         const data = JSON.parse(event.data);
-
-                        const updateType = data.Action || data.Update;
+                        console.log(data.Action)
+                        const updateType = data.Action || data.Update || data.action;
+                        console.log(data.action);
                         const tgid = data["Talkgroup"] || -1;
                         if (updateType === "voice update" && tgid !== -1) {
                             console.log("voice update", data);
@@ -457,6 +465,10 @@
                             } catch (fetchError) {
                                 console.error("Error fetching talkgroup name:", fetchError);
                             }
+                        }
+                        else if (updateType == "keypress"){
+                            let keyTagged = prompt("Enter the key pressed:");
+                            console.log("keypress", data.scan_code, keyTagged);
                         }
                     } catch (parseError) {
                         console.warn("Invalid log stream data:", parseError);
@@ -1338,6 +1350,20 @@
                 initializeKeypadListeners()
                 fetchCurrentVolume();
                 await LoadKeypadFunctions();
+
+                document.addEventListener('keydown', function(event) {
+                    // Check if the pressed key is Home.
+                    // event.key can be "Home" and event.keyCode is 36.
+                    if (event.key === 'Home' || event.keyCode === 36) {
+                      event.preventDefault();   // Prevent the default behavior.
+                      event.stopPropagation();  // Stop the event from bubbling further.
+                      // Call your custom function here.
+                      console.log('Home key pressed - default action overridden.');
+                      // For example:
+                      customHomeKeyFunction();
+                    }
+                  });
+                  
             });
 
         </script>
