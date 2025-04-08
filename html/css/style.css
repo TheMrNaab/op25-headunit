@@ -12,6 +12,12 @@
     border-radius: 10px;
   }
   
+  #keypadZoneName,
+  #channel_text {
+      font-size: 1.5rem;
+      padding: 0.75rem 1rem;
+  }
+
   .slider:hover {
     opacity: 1;
   }
@@ -55,7 +61,7 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 2px solid #000;
-    max-height: 37px;
+    min-height: 45px;
     position: relative; /* Needed for absolute positioning */
 }
 
@@ -63,7 +69,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.8em;
+    font-size: 0.9em;
     text-align: center;
     font-weight: bold;
     width: 100%; /* Ensures full width */
@@ -73,7 +79,7 @@
 .status-icons {
     position: absolute;
     right: 10px; /* Keeps icons on the right */
-    font-size: 15px !important;
+    font-size: 0.9em !important;
     padding-right: 15px;
     font-size: .8em;
 }
@@ -269,7 +275,7 @@ body {
 }
 
 /* Optional custom styling */
-.keypad-btn, #del-btn, #go-btn {
+#del-btn, #go-btn {
     width: 100%;
 }
 
@@ -386,3 +392,181 @@ body {
 .accent-blue {
     background-color: blue;
 }
+
+.accent-purple {
+    background-color: purple;
+}
+
+.accent-standard {
+    background-color: snow;
+}
+
+.btn-purple {
+    background-color: purple !important;
+    color: white !important;
+}
+
+/* Base green theme */
+.btn-green {
+    border: 2px solid #198754;
+    color: #198754;
+    background-color: transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.btn-green:hover {
+    background-color: #198754;
+    color: #fff;
+    transform: scale(1.03);
+}
+
+/* Active/clicked effect */
+.btn-green:active {
+    background-color: #146c43;
+    border-color: #146c43;
+    transform: scale(0.97);
+}
+
+/* Selected (checked radio) effect */
+.btn-check:checked + .btn-green {
+    background-color: #198754;
+    color: #fff;
+    border-color: #198754;
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+.btn-purple {
+    background-color: transparent;
+    border: 2px solid purple;
+    color: purple;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.btn-purple:hover {
+    background-color: purple;
+    color: white;
+    transform: scale(1.03);
+}
+
+/* Active/clicked effect */
+.btn-purple:active {
+    background-color: indigo;
+    border-color: indigo;
+    transform: scale(0.97);
+}
+
+.btn-red {
+    background-color: #dc3545;
+    border: 2px solid #dc3545;
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.btn-red:hover {
+    background-color: #dc3545;
+    color: white;
+    transform: scale(1.03);
+}
+
+/* Active/clicked effect */
+.btn-red:active {
+    background-color: #bb2d3b;
+    border-color: #bb2d3b;
+    transform: scale(0.97);
+}
+
+.keypad-btn, .btn-black {
+    background-color: #000;
+    border: 2px solid #000;
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.keypad-btn:hover, .btn-black:hover {
+    background-color: #222;
+    border-color: #222;
+    transform: scale(1.03);
+}
+
+/* Active/clicked effect */
+.keypad-btn:active, .btn-black:active {
+    background-color: #111;
+    border-color: #111;
+    transform: scale(0.97);
+}
+
+.keypad-btn {
+    width: 100%;
+}
+
+
+
+
+/* Allow select-control to expand */
+.select-control {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+/* Allow select-wrapper and select to fill vertical space */
+.select-wrapper {
+    flex: 1;
+    height: 100%;
+}
+
+.select-wrapper select {
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-size: 1rem;
+    padding: 1rem;
+    margin-top: 10px;
+    margin-left: 10px;
+    box-sizing: border-box;
+}
+
+/* Vertical scroll buttons */
+.scroll-buttons-vertical {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+}
+.modal-header {
+    background-color: var(--bs-gray-600) !important;
+    color: white !important;
+    padding-bottom: 10px !important;
+    padding-top: 5px !important;
+    margin-bottom: 0px;
+    border: 0;
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+.modal-dark {
+    background-color: var(--bs-gray-800) !important;
+    padding: 10px !important;
+    border: 0;
+}
+
+/* Ensure modal-body fills available height */
+.modal-body {
+    height: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+
+--bs-gray-600: #6c757d;
+--bs-gray-700: #495057;
+--bs-gray-800: #343a40;

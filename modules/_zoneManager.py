@@ -222,6 +222,9 @@ class channelMember:
         self._blacklistFilePath = ""
         if zone_index is not None:
             self._data["zone_index"] = zone_index
+        
+        if "sysid" not in self._data and "system" in self._data:
+            self._data["sysid"] = int(channel_data["system"])
             
     def append_line_to_file(self, line: str):
         with open("/opt/op25-project/logs/app_log.txt", 'a') as file:
@@ -255,6 +258,11 @@ class channelMember:
         """Returns the system ID of the channel."""
         return self._data.get("sysid")
 
+    @property
+    def system(self) -> str:
+        """Returns the system ID of the channel."""
+        return self._data.get("system")
+    
     @property
     def whitelistFilePath(self) -> str:
         """Returns the file path for the whitelist."""
@@ -314,14 +322,17 @@ class channelMember:
         return self._data
 
 
-
 # Ensure the Channel class is defined or imported correctly
 class Channel:
     """Placeholder or actual implementation of the Channel class."""
     def __init__(self, data, zone_index):
-        self.data = data
+        self._data = data
         self.zone_index = zone_index
-        # Add necessary initialization logic
+        
+    @property
+    def data(self):
+        # Return the channel data
+        return self._data
 
     @property
     def channel_number(self):

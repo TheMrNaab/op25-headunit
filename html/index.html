@@ -47,17 +47,17 @@
     <!-- KEYPAD Modal -->
     <div class="modal modal-md fade" id="keypadModal" tabindex="-1" aria-labelledby="keypadModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="keypadModalLabel">Keypad</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body p-1">
                     <!--FUNCTION BUTTONS-->
                     <div id="channel_error" class="text-danger mt-1" style="font-size: 0.9em;"></div>
                     <label class="sr-only" for="inlineFormInputGroupUsername2">TAC</label>
-                    <div class="input-group mb-2 mr-sm-2">
+                    <div class="input-group mb-1 mt-3 mr-sm-2">
                         <div class="input-group-prepend">
                             <div class="input-group-text text-uppercasechannel_error" id="keypadZoneName">TAC</div>
                         </div>
@@ -66,80 +66,81 @@
                     </div>
                     <!-- Keypad Grid (3 x 4) -->
                     <div class="">
-                        <div class="row g-2 mb-2">
-                            <div class="btn-group btn-group-sm" role="group" aria-label="Small toggle group">
-                                <!-- Button 1 -->
+                        <!-- Keypad Toggle Buttons Aligned to 3 Columns -->
+                        <div class="row g-2 mt-3 mb-3">
+                            <div class="col-4">
                                 <input type="radio" class="btn-check" name="zoneSelection" id="btnFunction1Input"
-                                    value="-1" autocomplete="off" checked>
-                                <label class="btn btn-outline-primary text-uppercase" for="btnFunction1Input"
-                                    id="btnFunction1">Current Channel</label>
-
-                                <!-- Button 2 -->
+                                    value="3" autocomplete="off" checked data-shortname="FD OPS-TAC">
+                                <label class="btn btn-green btn-lg text-uppercase w-100" for="btnFunction1Input"
+                                    id="btnFunction1">FD OPS-TAC</label>
+                            </div>
+                            <div class="col-4">
                                 <input type="radio" class="btn-check" name="zoneSelection" id="btnFunction2Input"
-                                    value="-1" autocomplete="off">
-                                <label class="btn btn-outline-primary text-uppercase" for="btnFunction2Input"
-                                    id="btnFunction2">Two</label>
-
-                                <!-- Button 3 -->
+                                    value="2" autocomplete="off" data-shortname="LAW OPS">
+                                <label class="btn btn-green btn-lg text-uppercase w-100" for="btnFunction2Input"
+                                    id="btnFunction2">LAW OPS</label>
+                            </div>
+                            <div class="col-4">
                                 <input type="radio" class="btn-check" name="zoneSelection" id="btnFunction3Input"
-                                    value="-1" autocomplete="off">
-                                <label class="btn btn-outline-primary text-uppercase" for="btnFunction3Input"
-                                    id="btnFunction3">Three</label>
+                                    value="1" autocomplete="off" data-shortname="FIRE">
+                                <label class="btn btn-green btn-lg text-uppercase w-100" for="btnFunction3Input"
+                                    id="btnFunction3">FIRE</label>
                             </div>
                         </div>
                     </div>
                     <div class="row g-2">
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn"
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
                                 data-value="1">1</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn"
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
                                 data-value="2">2</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn"
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
                                 data-value="3">3</button>
                         </div>
                     </div>
                     <div class="row g-2 mt-2">
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn"
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
                                 data-value="4">4</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn"
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
                                 data-value="5">5</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn"
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
                                 data-value="6">6</button>
                         </div>
                     </div>
                     <div class="row g-2 mt-2">
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn"
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
                                 data-value="7">7</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn"
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
                                 data-value="8">8</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn"
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
                                 data-value="9">9</button>
                         </div>
                     </div>
                     <div class="row g-2 mt-2">
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-danger btn-lg" id="del-btn">DEL</button>
+                            <button type="button" class="btn btn-red btn-lg" id="del-btn">DEL</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-secondary btn-lg keypad-btn"
+                            <button type="button" class="btn  btn-secondary  keypad-btn btn-lg"
                                 data-value="0">0</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-sm btn-success btn-lg" id="go-btn">GO</button>
+                            <button type="button" class="btn btn-success btn-purple btn-lg"
+                                id="go-btn">GO</button>
                         </div>
                     </div>
                 </div>
@@ -150,13 +151,13 @@
 
     <!-- Channel List Modal -->
     <div class="modal fade" id="channelModal" tabindex="-1" aria-labelledby="channelModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="channelModalLabel">Channel List</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body position-relative">
+                <div class="modal-body modal-dark position-relative">
                     <div class="select-control">
                         <div class="select-wrapper">
                             <select multiple id="channels">
@@ -168,8 +169,7 @@
                         </div>
                         <div class="scroll-buttons-vertical">
                             <button id="channel-list-up-btn"><i class="fas fa-chevron-up"></i></button>
-                            <button id="channel-list-accept-btn" style="background-color:green"><i
-                                    class="fa fa-check"></i></button>
+                            <button class="btn-purple" id="channel-list-accept-btn"><i class="fa fa-check"></i></button>
                             <button id="channel-list-down-btn"><i class="fas fa-chevron-down"></i></button>
                         </div>
                     </div>
@@ -184,13 +184,13 @@
 
     <!-- Zone List Modal -->
     <div class="modal fade" id="zoneModal" tabindex="-1" aria-labelledby="zoneModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="zoneModalLabel">Zone List</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body position-relative">
+                <div class="modal-body modal-dark position-relative">
                     <div class="select-control">
                         <div class="select-wrapper">
                             <select multiple id="zones">
@@ -202,14 +202,13 @@
                         </div>
                         <div class="scroll-buttons-vertical">
                             <button id="zone-list-up-btn"><i class="fas fa-chevron-up"></i></button>
-                            <button id="zone-list-accept-btn" style="background-color:green"><i
-                                    class="fa fa-check"></i></button>
+                            <button class="btn-purple" id="zone-list-accept-btn"><i class="fa fa-check"></i></button>
                             <button id="zone-list-down-btn"><i class="fas fa-chevron-down"></i></button>
                         </div>
                     </div>
                 </div>
                 <!-- Apply Button in Modal Footer -->
-                <div class="modal-footer">
+                <div class=" modal-dark modal-footer">
                     <!-- <button id="zoneApplyBtn" class="btn btn-success">Apply</button> -->
                 </div>
             </div>
@@ -269,22 +268,22 @@
             <button id="btnZoneUp">
                 <i class="fas fa-arrow-up"></i>
                 <span>ZN</span>
-                <div class="accent accent-red"></div>
+                <div class="accent accent-standard"></div>
             </button>
             <button id="btnZoneDown">
                 <i class="fas fa-arrow-down"></i>
                 <span>ZN</span>
-                <div class="accent accent-green"></div>
+                <div class="accent accent-standard"></div>
             </button>
             <button id="btnChannelUp">
                 <i class="fas fa-caret-up"></i>
                 <span>CH</span>
-                <div class="accent accent-yellow"></div>
+                <div class="accent accent-standard"></div>
             </button>
             <button id="btnChannelDown">
                 <i class="fas fa-caret-down"></i>
                 <span>CH</span>
-                <div class="accent accent-blue"></div>
+                <div class="accent accent-standard"></div>
             </button>
             <button id="btnChannelList">
                 <i class="fas fa-list"></i>
@@ -296,10 +295,11 @@
                 <span style="margin-top:6px">ZN LIST</span>
                 <div class="accent accent-green"></div>
             </button>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal" data-bs-target="#keypadModal">
+            <button data-bs-toggle="modal" data-bs-dismiss="modal"
+                data-bs-target="#keypadModal">
                 <i class="fas fa-calculator"></i>
                 <span style="margin-top:6px">DIRECT</span>
-                <div class="accent accent-yellow"></div>
+                <div class="accent accent-purple"></div>
             </button>
         </div>
 
@@ -420,7 +420,7 @@
             }
 
             async function apiPut(url, body = null) {
-
+                console.log("Making PUT request to: ", `${API_BASE_URL}${url}`)
                 const res = await fetch(`${API_BASE_URL}${url}`, {
                     method: "PUT",
                     credentials: "include",
@@ -451,12 +451,10 @@
                 source.onmessage = async (event) => {
                     try {
                         const data = JSON.parse(event.data);
-                        console.log(data.Action)
                         const updateType = data.Action || data.Update || data.action;
-                        console.log(data.action);
                         const tgid = data["Talkgroup"] || -1;
                         if (updateType === "voice update" && tgid !== -1) {
-                            console.log("voice update", data);
+                            console.log("voice update logged for tgid " + tgid);
                             try {
                                 const response = await fetch(API_BASE_URL + APIEndpoints.SESSION.TALKGROUP_NAME(tgid));
                                 const jsonData = await response.json();
@@ -466,9 +464,8 @@
                                 console.error("Error fetching talkgroup name:", fetchError);
                             }
                         }
-                        else if (updateType == "keypress"){
-                            let keyTagged = prompt("Enter the key pressed:");
-                            console.log("keypress", data.scan_code, keyTagged);
+                        else if (updateType == "keydown") {
+                            shortcuts(data);
                         }
                     } catch (parseError) {
                         console.warn("Invalid log stream data:", parseError);
@@ -478,6 +475,81 @@
                 source.onerror = (err) => {
                     console.warn("SSE stream error:", err);
                 };
+            }
+
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const inputEl = document.getElementById("channel_text");
+                if (inputEl) {
+                    inputEl.addEventListener("input", onChannelInputChange);
+                }
+            });
+
+            function backspaceChannels() {
+                if (isKeypadModalVisible) {
+                    let textBox = document.getElementById("channel_text");
+                    textBox.value = textBox.value.slice(0, -1);
+                    playButton(data.name);
+                    onChannelInputChange();
+                }
+            }
+
+            function handleNumbericInput(data) {
+                if (/^[0-9]$/.test(data.name)) {
+                    if (isKeypadModalVisible) {
+                        // ONLY PROCESS NUMBERS IF KEYPAD IS OPEN
+                        console.log("number keydown", data);
+                        let textBox = document.getElementById("channel_text");
+                        textBox.value += data.name;
+                        playButton(data.name);
+                        onChannelInputChange();
+                    }
+                }
+            }
+
+            function handleReturn(data) {
+                if (data.name == "go") {
+                    console.log("go keydown", data);
+                    let textBox = document.getElementById("channel_text");
+                    let channelNumber = textBox.value;
+
+                    if (channelNumber) {
+                        apiPut(APIEndpoints.SESSION.CHANNEL_SELECT(channelNumber));
+                        playButton(data.name);
+                        onChannelInputChange();
+                    }
+                }
+            }
+
+            function shortcuts(data) {
+                // {'scan_code': 108, 'device_key_name': 'down', 'action': 'keydown'}
+
+                switch (data.name) {
+                    case "keydown":
+                        console.log("device_key_name:", data.device_key_name);
+                        break;
+
+                    case "enter_ok":
+                        if (!keyboardOpen) {
+                            showKeypadModal();
+                        }
+                        break;
+
+                    case "left":
+                        break;
+
+                    case "delete":
+                        backspaceChannels();
+                        break;
+
+                    case "left":
+                        backspaceChannels();
+                        break;
+
+                    default:
+                        handleNumbericInput(data);
+
+                }
             }
 
             // UI
@@ -499,21 +571,21 @@
                 // Create modal wrapper
                 const modal = document.createElement("div");
                 modal.innerHTML = `
-  <div class="modal fade" id="dynamicModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">${title}</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body text-start">
-                  ${bodyContent}
-              </div>
-            ${footerHTML}
-          </div>
-      </div>
-  </div>
-  `;
+                <div class="modal fade" id="dynamicModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${title}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                ${bodyContent}
+                            </div>
+                            ${footerHTML}
+                        </div>
+                    </div>
+                </div>
+                `;
                 document.body.appendChild(modal);
 
                 const bsModal = new bootstrap.Modal(modal.querySelector("#dynamicModal"));
@@ -564,10 +636,10 @@
                 bodyContent += `</textarea></p>`
 
                 // TODO: Implement Restart System
-                var footerContent = 
-                `<button class="btn btn-success" onClick="location.reload(true);"><i class="fas fa-refresh me-1"></i> Webpage</button>` +
-                `<button class="btn btn-warning" onClick="reloadSystem()" disabled><i class="fas fa-refresh me-1"></i> System</button>` +
-                `<button class="btn btn-secondary" onClick="window.open('http://${data.host_ip}:${data.host_port}/admin/index.html', '_blank')"><i class="fas fa-external-link-alt me-1"></i>Open Web Interface</button>`;
+                var footerContent =
+                    `<button class="btn btn-success" onClick="location.reload(true);"><i class="fas fa-refresh me-1"></i> Webpage</button>` +
+                    `<button class="btn btn-warning" onClick="reloadSystem()" disabled><i class="fas fa-refresh me-1"></i> System</button>` +
+                    `<button class="btn btn-secondary" onClick="window.open('http://${data.host_ip}:${data.host_port}/admin/index.html', '_blank')"><i class="fas fa-external-link-alt me-1"></i>Open Web Interface</button>`;
                 showDynamicModal("Device Status", bodyContent, footerContent);
             }
 
@@ -724,6 +796,7 @@
                             console.log("Selected zone index:", selectElement.value);
 
                             const selectedZoneIndex = selectElement.value;
+                            console.log("selectedZoneIndex", selectedZoneIndex)
 
                             // Set the new zone
                             await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectedZoneIndex));
@@ -1085,55 +1158,54 @@
             let configuration_json = {}
             async function LoadKeypadFunctions() {
                 console.log("LoadKeypadFunctions() CALLED");  // ✅ Add this
-                    url = `http://${location.hostname}:5001/admin/config/get`;
-                    console.log(url);
-                    const configuration_response = await fetch(url);
-                    if (!configuration_response.ok) {
-                        console.error("Failed to fetch configuration");
-                        return;
-                    }
+                url = `http://${location.hostname}:5001/admin/config/get`;
+                console.log(url);
+                const configuration_response = await fetch(url);
+                if (!configuration_response.ok) {
+                    console.error("Failed to fetch configuration");
+                    return;
+                }
 
-                    configuration_json = await configuration_response.json();
+                configuration_json = await configuration_response.json();
 
-                    // Debugging: Log the parsed configuration
-                    console.log("Configuration Loaded: ", configuration_json['FN']); // not btn1_name directly
+                // Debugging: Log the parsed configuration
+                console.log("Configuration Loaded: ", configuration_json['FN']); // not btn1_name directly
 
-                    // SET INITIAL BUTTON VALUES
-                    
-                    let zone1 = parseInt(configuration_json['FN'].btn1_zone);
-                    zone1 = zone1 + 1;
-                    document.getElementById("btnFunction1Input").value = zone1;
-                    document.getElementById("btnFunction2Input").value = parseInt(configuration_json['FN'].btn2_zone) + 1;
-                    document.getElementById("btnFunction3Input").value = parseInt(configuration_json['FN'].btn3_zone) + 1;
+                // SET INITIAL BUTTON VALUES
 
-                    document.getElementById("btnFunction1Input").setAttribute("data-shortname", configuration_json['FN'].btn1_name);
-                    document.getElementById("btnFunction2Input").setAttribute("data-shortname", configuration_json['FN'].btn2_name);
-                    document.getElementById("btnFunction3Input").setAttribute("data-shortname", configuration_json['FN'].btn3_name);
+                let zone1 = parseInt(configuration_json['FN'].btn1_zone);
+                zone1 = zone1 + 1;
+                document.getElementById("btnFunction1Input").value = zone1;
+                document.getElementById("btnFunction2Input").value = parseInt(configuration_json['FN'].btn2_zone) + 1;
+                document.getElementById("btnFunction3Input").value = parseInt(configuration_json['FN'].btn3_zone) + 1;
 
-                    document.getElementById("btnFunction1Input").checked = true;
-                    // ADD ZONE ID TO INPUTS
-                    document.getElementById("btnFunction1").innerText = configuration_json['FN'].btn1_name;
-                    document.getElementById("btnFunction2").innerText = configuration_json['FN'].btn2_name;
-                    document.getElementById("btnFunction3").innerText = configuration_json['FN'].btn3_name;
+                document.getElementById("btnFunction1Input").setAttribute("data-shortname", configuration_json['FN'].btn1_name);
+                document.getElementById("btnFunction2Input").setAttribute("data-shortname", configuration_json['FN'].btn2_name);
+                document.getElementById("btnFunction3Input").setAttribute("data-shortname", configuration_json['FN'].btn3_name);
 
-                    // DISABLE INPUT THAT HAVE A VALUE OF -1
-                    if (configuration_json['FN'].btn1_zone == -1) { document.getElementById("btnFunction1Input").setAttribute("disabled", "true"); }
-                    if (configuration_json['FN'].btn2_zone == -1) { document.getElementById("btnFunction2Input").setAttribute("disabled", "true"); }
-                    if (configuration_json['FN'].btn3_zone == -1) { document.getElementById("btnFunction3Input").setAttribute("disabled", "true"); }
+                document.getElementById("btnFunction1Input").checked = true;
+                // ADD ZONE ID TO INPUTS
+                document.getElementById("btnFunction1").innerText = configuration_json['FN'].btn1_name;
+                document.getElementById("btnFunction2").innerText = configuration_json['FN'].btn2_name;
+                document.getElementById("btnFunction3").innerText = configuration_json['FN'].btn3_name;
 
-                    // SET BUTTON GROUP ON CHANGE EVENT
-                    document.querySelectorAll('input[name="zoneSelection"]').forEach(el => {
-                        el.addEventListener("change", onZoneChange);
-                    });
-                    onZoneChange(null);
-                    // REMINDER: zoneSelection is the input group
-                    // SET GLOBAL VALUE
-                    configuration_json = configuration_json;
+                // DISABLE INPUT THAT HAVE A VALUE OF -1
+                if (configuration_json['FN'].btn1_zone == -1) { document.getElementById("btnFunction1Input").setAttribute("disabled", "true"); }
+                if (configuration_json['FN'].btn2_zone == -1) { document.getElementById("btnFunction2Input").setAttribute("disabled", "true"); }
+                if (configuration_json['FN'].btn3_zone == -1) { document.getElementById("btnFunction3Input").setAttribute("disabled", "true"); }
+
+                // SET BUTTON GROUP ON CHANGE EVENT
+                document.querySelectorAll('input[name="zoneSelection"]').forEach(el => {
+                    el.addEventListener("change", onZoneChange);
+                });
+                onZoneChange(null);
+                // REMINDER: zoneSelection is the input group
+                // SET GLOBAL VALUE
+                configuration_json = configuration_json;
 
             }
 
             async function onZoneChange(event) {
-
                 const response = await fetch(`http://${location.hostname}:5001/zones`);
                 keypadZones = await response.json();
 
@@ -1157,6 +1229,33 @@
                 console.log("Fetched Zones:", keypadZones.zones);
                 console.log("Active Zone:", keypadZone);
             }
+            let isKeypadModalVisible = false;
+            let keypadModal = null;
+            // HANDLE IF THE KEYPAD IS OPEN OR NOT
+            document.addEventListener("DOMContentLoaded", () => {
+                const modalEl = document.getElementById("keypadModal");
+
+                modalEl.addEventListener("shown.bs.modal", () => {
+                    isKeypadModalVisible = true;
+                });
+
+                modalEl.addEventListener("hidden.bs.modal", () => {
+                    isKeypadModalVisible = false;
+                });
+            });
+
+            async function showKeypadModal() {
+                await LoadKeypadFunctions();
+                const keypadModalEl = document.getElementById('keypadModal');
+                keypadModal = new bootstrap.Modal(keypadModalEl, { backdrop: 'static', keyboard: false });
+                keypadModal.show();
+            }
+
+            function hideKeypadModal() {
+                const modalEl = document.getElementById('keypadModal');
+                const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                modalInstance.hide();
+            }
 
             function initializeKeypadListeners() {
                 console.log("Init Keys")
@@ -1172,19 +1271,6 @@
                 const keypadButtons = document.querySelectorAll(".keypad-btn[data-value]");
 
 
-                async function showKeypadModal() {
-                    await LoadKeypadFunctions();
-                    const keypadModalEl = document.getElementById('keypadModal');
-                    const keypadModal = new bootstrap.Modal(keypadModalEl, { backdrop: 'static', keyboard: false });
-                    keypadModal.show();
-                }
-
-                function hideKeypadModal() {
-                    const modalEl = document.getElementById('keypadModal');
-                    const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-                    modalInstance.hide();
-                }
-
                 const delButton = document.getElementById("del-btn");
                 delButton.addEventListener("click", handleDelete);
 
@@ -1199,12 +1285,8 @@
                 channelInput.value = channelInput.value.slice(0, -1);
 
                 playButton("Delete");
-                if (exceedsChannelLimit()) {
-                    btnGo.setAttribute("disabled", "true");
 
-                } else {
-                    btnGo.removeAttribute("disabled");
-                }
+                onChannelInputChange();
 
             }
 
@@ -1242,48 +1324,46 @@
             }
 
             function handleKeypadKeyPress(event) {
-                const btn = event.currentTarget;
-
-                if (btn.disabled) return;
-
+                let btn = event.currentTarget;
                 const digit = btn.getAttribute("data-value");
                 const channelInput = document.getElementById("channel_text");
+                channelInput.value = channelInput.value + digit;
+                onChannelInputChange();
+                return
+            }
 
-                let currentRaw = channelInput.value.trim();
-
-                console.log("***")
-                console.log("Digit Pressed: ", digit);
-                console.log("Channel Input: ", currentRaw);
-
-                let currentValue = Number.isNaN(parseInt(currentRaw, 10)) ? 0 : parseInt(currentRaw, 10);
-
-                // If the raw value is blank, we will assign it the digit pressed
-                if (currentRaw == "") { currentRaw = digit; }
-
-                // Channels are indexed at Zero, but they should begin at 1
-                // We will correct this by subtracting 1 from the channel number
-                let nextChannelNumber = parseInt(`${currentValue}${digit}`, 10) - 1;
-                console.log("Next Channel Number", nextChannelNumber);
-                playButton(digit);
-
-                if (nextChannelNumber + 1 < channelCount) {
-                    channelInput.value = nextChannelNumber + 1; // +1 to match the display
-                    const nextChannel = keypadZone["channels"][nextChannelNumber];
-                    document.getElementById("keypadZoneName").innerText = nextChannel?.name || "Invalid";
-                } else {
-                    // Fallback: append digit to raw string if logic fails
-                    channelInput.value = currentRaw;
+            function chLength() {
+                let channelCount = 0;
+                let data = keypadZone;
+                if (Array.isArray(data.channels)) {
+                    channelCount = data.channels.length;
+                } else if (data.channels && typeof data.channels === "object") {
+                    channelCount = Object.keys(data.channels).length;
                 }
+                return channelCount;
+            }
 
+            function onChannelInputChange() {
+                const inputEl = document.getElementById("channel_text");
                 const btnGo = document.getElementById("go-btn");
-                const exceeds = exceedsChannelLimit(nextChannelNumber, channelCount);
-                console.log("Exceeds Limit", exceeds);
-                if (exceeds) {
+                const channelError = document.getElementById("channel_error");
+                const er = document.getElementById("channel_error");
+
+                const rawValue = inputEl.value.trim();
+                const channelNum = parseInt(rawValue, 10);
+                const channelCount = chLength();
+
+                if (getActualChannelNumber(rawValue) >= channelCount) {
+                    console.log("Channel Number: " + rawValue + " >= " + channelCount);
                     btnGo.setAttribute("disabled", "true");
+                    console.log("Added .disabled");
+                    er.textContent = "Channel number exceeds maximum of " + channelCount;
                 } else {
+                    console.log("Channel Number", channelNum, "Channel Count", channelCount);
                     btnGo.removeAttribute("disabled");
+                    console.log("Removed .disabled");
+                    er.textContent = "";  // clear error
                 }
-                console.log("***")
             }
 
             function playButton(id) {
@@ -1292,11 +1372,12 @@
                 audio.volume = 0.2;
             }
 
-            function exceedsChannelLimit(strLength, channelCount) {
+            // TO BE REMOVED
+            /* function exceedsChannelLimit(strLength, channelCount) {
                 const val = document.getElementById("channel_text").value;
 
                 let text_number = parseInt(val, 10);
-                let er = document.getElementById("channel_error");
+               
 
                 if (strLength > channelCount) {
                     er.innerHTML = "Channel number exceeds maximum of " + channelCount;
@@ -1307,7 +1388,7 @@
 
                 return false;
 
-            }
+            } */
 
             function submitChannel(channel) {
                 console.log("submitChannel()")
@@ -1333,6 +1414,7 @@
 
             document.addEventListener("DOMContentLoaded", async () => {
                 console.log("DOMContentLoaded", "interface.js");
+
                 document.getElementById('status-network-info').addEventListener("click", () => {
                     fetchNetworkStatus();
                 });
@@ -1342,6 +1424,7 @@
 
                 document.getElementById('go-btn').addEventListener("click", btnGo_click);
 
+                //document.getElementById('channel_text').addEventListener("input", onChannelInputChange);
 
                 listenLogStream();
                 await updateUI();
@@ -1351,19 +1434,19 @@
                 fetchCurrentVolume();
                 await LoadKeypadFunctions();
 
-                document.addEventListener('keydown', function(event) {
+                document.addEventListener('keydown', function (event) {
                     // Check if the pressed key is Home.
                     // event.key can be "Home" and event.keyCode is 36.
                     if (event.key === 'Home' || event.keyCode === 36) {
-                      event.preventDefault();   // Prevent the default behavior.
-                      event.stopPropagation();  // Stop the event from bubbling further.
-                      // Call your custom function here.
-                      console.log('Home key pressed - default action overridden.');
-                      // For example:
-                      customHomeKeyFunction();
+                        event.preventDefault();   // Prevent the default behavior.
+                        event.stopPropagation();  // Stop the event from bubbling further.
+                        // Call your custom function here.
+                        console.log('Home key pressed - default action overridden.');
+                        // For example:
+                        customHomeKeyFunction();
                     }
-                  });
-                  
+                });
+
             });
 
         </script>

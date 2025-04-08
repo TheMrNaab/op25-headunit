@@ -39,7 +39,8 @@ class API:
                 "origins": [
                     f"http://{LinuxUtilities.get_local_ip()}:8000",
                     "http://localhost:8000"
-                ]
+                ],
+
             }}
         )
 
@@ -184,10 +185,8 @@ class API:
         return self.sessionManager.zoneManager
     
     def dynamic_cross_origin(self):
-        """Dynamically set CORS headers based on the request origin."""
-        
         ip = f"http://{LinuxUtilities.get_local_ip()}:8000"
-        allowed_origins = ALLOWED_ORIGINS = [
+        allowed_origins = [
             ip,
             "http://localhost:8000"
         ]
@@ -415,9 +414,12 @@ class API:
                 return {"error": "Zone has no channels"}, 404
             channel = channels[0]
             sys = self.sessionManager.systemsManager.getSystemByIndex(channel.sysid)
+            if not channel:
+                return {"error": f"Zone: {id} with Channel 0 not found"}, 404
             if not sys:
-                return {"error": f"System with sysid {channel.sysid} not found"}, 404
-            self.activeSession.updateSession(channel, zone, sys)
+                return {"error": f"System with sysid {channel.sysid} not found", "data": channel._data}, 404
+            self.activeSession.update_session(channel, zone, sys)
+            
             return {"message": "Zone updated successfully"}
 
         # 15: [PUT] Move to next zone (loads first channel)
