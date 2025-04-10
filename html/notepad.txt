@@ -1,0 +1,76 @@
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const select = document.getElementById("zones");
+                const upBtn = document.getElementById("zone-list-up-btn");
+                const downBtn = document.getElementById("zone-list-down-btn");
+
+                upBtn.addEventListener("click", () => {
+                    if (select.selectedIndex > 0) {
+                        select.selectedIndex -= 1;
+                    }
+                });
+
+                downBtn.addEventListener("click", () => {
+                    if (select.selectedIndex < select.options.length - 1) {
+                        select.selectedIndex += 1;
+                    }
+                });
+            });
+
+            // HANDLE IF THE KEYPAD IS OPEN OR NOT
+            document.addEventListener("DOMContentLoaded", () => {
+                const modalEl = document.getElementById("keypadModal");
+
+                modalEl.addEventListener("shown.bs.modal", () => {
+                    isKeypadModalVisible = true;
+                });
+
+                modalEl.addEventListener("hidden.bs.modal", () => {
+                    isKeypadModalVisible = false;
+                });
+
+                
+            });
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const select = document.getElementById("channels");
+                const upBtn = document.getElementById("channel-list-up-btn");
+                const downBtn = document.getElementById("channel-list-down-btn");
+
+                upBtn.addEventListener("click", () => {
+                    if (select.selectedIndex > 0) {
+                        select.selectedIndex -= 1;
+                    }
+                });
+
+                downBtn.addEventListener("click", () => {
+                    if (select.selectedIndex < select.options.length - 1) {
+                        select.selectedIndex += 1;
+                    }
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", async () => {
+                console.log("DOMContentLoaded", "interface.js");
+
+                document.getElementById('status-network-info').addEventListener("click", () => {
+                    fetchNetworkStatus();
+                });
+                document.getElementById('status-github-info').addEventListener("click", () => {
+                    gitHubDialog();
+                });
+
+                document.getElementById('go-btn').addEventListener("click", btnGo_click);
+
+                //document.getElementById('channel_text').addEventListener("input", onChannelInputChange);
+                // KEEP IN THE SAME ORDER BELOW
+                listenLogStream();
+                await updateUI();
+                setupVolumeControls();
+                setupZoneAndChannelButtons();
+                initializeKeypadListeners()
+                fetchCurrentVolume();
+                await LoadKeypadFunctions();
+                // END ORDERING RESTRICTION
+            });
+            

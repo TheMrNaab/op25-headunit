@@ -66,6 +66,11 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
    pip install -r /opt/op25-project/requirements.txt
    ```
 
+4. Overwrite `trunking.py`
+   ```bash
+   cp /opt/op25-project/templates/trunking.py /home/$(whoami)/op25/op25/gr-op25_repeater/apps
+   ```
+
 ### Managed Systems (e.g., Ubuntu Server)
 
 1. Ensure Python tools are installed:

@@ -8,6 +8,7 @@ from flask import Flask, Response, request, jsonify, send_file
 from flask_cors import CORS, cross_origin
 from modules.linuxSystem.sound import soundSys # Ensure this path matches your project
 from modules.linuxSystem.linuxUtils import LinuxUtilities
+from modules.logMonitor import LogFileWatcher, logMonitorOP25
 from modules._session import SessionMember
 from modules._sessionManager import SessionManager
 from modules._op25Manager import op25Manager
@@ -108,6 +109,24 @@ class API:
             # SKIP EVENT
             
         print(event.name, event.scan_code)
+        
+        # payload = {
+        #     "name": event.name, # Name of the key (if available)
+        #     "action": "keypress", 
+        #     "event_type": event.event_type,  # 'down' or 'up'
+        #     "scan_code": event.scan_code,    # Numeric scan code
+        #     "time": event.time               # Timestamp of the event
+        # }
+        # try:
+        #     response = requests.post("http://localhost:5001/controller/logging/update", json=payload)
+        #     # Optionally log the response for debugging.
+        #     # print(f"Sent: {payload} | Status: {response.status_code}")
+        # except Exception as e:
+        #     print("Error sending key event:", e)
+        
+    # @property
+    # def logMonitor(self) -> logMonitorOP25:
+    #     return self._monitor
 
     def set_session(self, session: SessionMember):
         self._activeSession = session
@@ -123,6 +142,17 @@ class API:
         self.free_port(8000)
         self.free_port(5001)
         self.kill_named_scripts(["rx.py", "terminal.py"])
+
+    # def startLoggerStream(self):
+    #     """Starts the logger stream for OP25. This process is responsible for reading the 
+    #     OP25 log file and sending updates to the API server. Without it running, the UI
+    #     cannot receive updates.
+    #     """
+    #     self._end_point = f"http://127.0.0.0:5001/controller/logging/update"
+    #     self._monitor = logMonitorOP25(self, file=self.configManager.get("paths", "stderr_file"), endpoint=self._end_point)
+    #     self._watcher = LogFileWatcher(self._monitor)
+    #     self._watcher.start_in_thread()
+    #     self._log_queue = Queue()
         
     @property
     def logQueue(self) -> Queue:

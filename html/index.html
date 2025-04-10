@@ -90,44 +90,35 @@
                     </div>
                     <div class="row g-2">
                         <div class="col-4">
-                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
-                                data-value="1">1</button>
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn" data-value="1">1</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
-                                data-value="2">2</button>
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn" data-value="2">2</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
-                                data-value="3">3</button>
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn" data-value="3">3</button>
                         </div>
                     </div>
                     <div class="row g-2 mt-2">
                         <div class="col-4">
-                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
-                                data-value="4">4</button>
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn" data-value="4">4</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
-                                data-value="5">5</button>
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn" data-value="5">5</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
-                                data-value="6">6</button>
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn" data-value="6">6</button>
                         </div>
                     </div>
                     <div class="row g-2 mt-2">
                         <div class="col-4">
-                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
-                                data-value="7">7</button>
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn" data-value="7">7</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
-                                data-value="8">8</button>
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn" data-value="8">8</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-secondary btn-lg keypad-btn"
-                                data-value="9">9</button>
+                            <button type="button" class="btn btn-secondary btn-lg keypad-btn" data-value="9">9</button>
                         </div>
                     </div>
                     <div class="row g-2 mt-2">
@@ -139,8 +130,7 @@
                                 data-value="0">0</button>
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-success btn-purple btn-lg"
-                                id="go-btn">GO</button>
+                            <button type="button" class="btn btn-success btn-purple btn-lg" id="go-btn">GO</button>
                         </div>
                     </div>
                 </div>
@@ -295,8 +285,7 @@
                 <span style="margin-top:6px">ZN LIST</span>
                 <div class="accent accent-green"></div>
             </button>
-            <button data-bs-toggle="modal" data-bs-dismiss="modal"
-                data-bs-target="#keypadModal">
+            <button data-bs-toggle="modal" data-bs-dismiss="modal" data-bs-target="#keypadModal">
                 <i class="fas fa-calculator"></i>
                 <span style="margin-top:6px">DIRECT</span>
                 <div class="accent accent-purple"></div>
@@ -316,6 +305,10 @@
             // INTERFACE.JS
             // api.js
             const print_debug = true; // Toggle debug output
+            let keypadModal = null;
+            let isKeypadModalVisible = false;
+            let isChannelModalVisible = false;
+            let isZoneModalVisible = false;
 
             // Set base API URL dynamically based on the current hostname
             const API_BASE_URL = `http://${location.hostname}:5001`;
@@ -445,38 +438,7 @@
                 }
             }
 
-            function listenLogStream() {
-                const source = new EventSource(API_BASE_URL + APIEndpoints.LOGGING.STREAM);
-                console.log("Listening to stream", "listenLogStream()");
-                source.onmessage = async (event) => {
-                    try {
-                        const data = JSON.parse(event.data);
-                        const updateType = data.Action || data.Update || data.action;
-                        const tgid = data["Talkgroup"] || -1;
-                        if (updateType === "voice update" && tgid !== -1) {
-                            console.log("voice update logged for tgid " + tgid);
-                            try {
-                                const response = await fetch(API_BASE_URL + APIEndpoints.SESSION.TALKGROUP_NAME(tgid));
-                                const jsonData = await response.json();
-                                const el = document.getElementById("talkgroup");
-                                if (el) el.textContent = jsonData.name;
-                            } catch (fetchError) {
-                                console.error("Error fetching talkgroup name:", fetchError);
-                            }
-                        }
-                        else if (updateType == "keydown") {
-                            shortcuts(data);
-                        }
-                    } catch (parseError) {
-                        console.warn("Invalid log stream data:", parseError);
-                    }
-                };
-
-                source.onerror = (err) => {
-                    console.warn("SSE stream error:", err);
-                };
-            }
-
+          
 
             document.addEventListener("DOMContentLoaded", () => {
                 const inputEl = document.getElementById("channel_text");
@@ -487,10 +449,14 @@
 
             function backspaceChannels() {
                 if (isKeypadModalVisible) {
-                    let textBox = document.getElementById("channel_text");
-                    textBox.value = textBox.value.slice(0, -1);
-                    playButton(data.name);
-                    onChannelInputChange();
+                    try {
+                        let textBox = document.getElementById("channel_text");
+                        textBox.value = textBox.value.slice(0, -1);
+                        playButton("backspace");
+                        onChannelInputChange();
+                    } catch (error) {
+                        console.error("Error in backspaceChannels:", error);
+                    }
                 }
             }
 
@@ -503,7 +469,9 @@
                         textBox.value += data.name;
                         playButton(data.name);
                         onChannelInputChange();
+                        return true
                     }
+                    return false
                 }
             }
 
@@ -521,7 +489,16 @@
                 }
             }
 
+
+
             function shortcuts(data) {
+                const zoneUpBtn = document.getElementById("zone-list-up-btn");
+                const zoneDownBtn = document.getElementById("zone-list-down-btn");
+                const channelUpBtn = document.getElementById("channel-list-up-btn");
+                const channelDownBtn = document.getElementById("channel-list-down-btn");
+                const zone_list_accept_btn = document.getElementById("zone-list-accept-btn");
+                const channel_list_accept_btn = document.getElementById("channel-list-accept-btn");
+                const volumeRange = document.getElementById("volumeRange");
                 // {'scan_code': 108, 'device_key_name': 'down', 'action': 'keydown'}
 
                 switch (data.name) {
@@ -530,26 +507,106 @@
                         break;
 
                     case "enter_ok":
-                        if (!keyboardOpen) {
+                        if (isZoneModalVisible) { zone_list_accept_btn.click(); return }
+                        if (isChannelModalVisible) { channel_list_accept_btn.click(); return }
+                        if (!isKeypadModalVisible) { showKeypadModal(); } // MUST ALWAYS BE LAST
+                        break;
+
+                    case "rewind": // ZONE LIST
+                        if (!isChannelModalVisible && !isZoneModalVisible && !isKeypadModalVisible) { 
+                            openChannelModal();
+                            break;
+                        } 
+
+                    case "fastforward": // CHANNEL
+                        if (!isChannelModalVisible && !isZoneModalVisible && !isKeypadModalVisible) { 
+                            openZoneModal();
+                            break;
+                        } 
+
+                    case "skip back": // DIRECT & KEYPAD
+                        if (!isChannelModalVisible && !isZoneModalVisible && !isKeypadModalVisible) { 
                             showKeypadModal();
+                            break;
+                        } 
+                    case "up":
+                        if (isChannelModalVisible) { channelUpBtn.click(); }
+                        if (isZoneModalVisible) { zoneUpBtn.click(); }
+                        if (isKeypadModalVisible) { break; }
+                        break;
+
+                    case "down":
+                        if (isChannelModalVisible) { channelDownBtn.click(); }
+                        if (isZoneModalVisible) { zoneDownBtn.click(); }
+                        if (isKeypadModalVisible) { break; }
+                        break;
+                    case "delete":
+                        if (isKeypadModalVisible) { backspaceChannels(); }
+                        break;
+
+                    case "left":
+                        if (isKeypadModalVisible) { 
+                            
+                        
+                            // CYCLE THROUGH zoneSelection RADIOS in reverse
+                            const radios = document.querySelectorAll('input[name="zoneSelection"]');
+                            let currentIndex = Array.from(radios).findIndex(radio => radio.checked);
+
+                            if (currentIndex !== -1) {
+                                radios[currentIndex].checked = false;
+                                currentIndex = (currentIndex - 1 + radios.length) % radios.length;
+                                radios[currentIndex].checked = true;
+                                radios[currentIndex].dispatchEvent(new Event('change'));
+                                window.preventDefault();
+                            }
                         }
                         break;
 
-                    case "left":
+                    case "right":
+                    if (isKeypadModalVisible) {
+                        
+                        // CYCLE THROUGH zoneSelection RADIOS
+                        const radios = document.querySelectorAll('input[name="zoneSelection"]');
+                        let currentIndex = Array.from(radios).findIndex(radio => radio.checked);
+
+                        if (currentIndex !== -1) {
+                            radios[currentIndex].checked = false;
+                            currentIndex = (currentIndex + 1) % radios.length;
+                            radios[currentIndex].checked = true;
+                            radios[currentIndex].dispatchEvent(new Event('change'));
+                            window.preventDefault();
+                        }
+
+                        
+                    }
+
+                    case "back":
+                        if (isChannelModalVisible) { channelModal.hide(); return }
+                        if (isZoneModalVisible) { zoneModal.hide(); return }
+                        if (isKeypadModalVisible) { hideKeypadModal(); return }
+
+                    case "vol down":
+                        setVolumeRangeField(-10);
+                        sendVolume(volumeRange.value);
+                        document.getElementById('volume_percent').innerText = volumeRange.value + "%";
                         break;
 
-                    case "delete":
-                        backspaceChannels();
-                        break;
-
-                    case "left":
-                        backspaceChannels();
+                    case "vol up":
+                        setVolumeRangeField(10);
+                        sendVolume(volumeRange.value);
+                        document.getElementById('volume_percent').innerText = volumeRange.value + "%";
                         break;
 
                     default:
-                        handleNumbericInput(data);
-
+                        if (handleNumbericInput(data)) { return }
+                        console.log("Unhandled key event:", data);
                 }
+            }
+
+            function setVolumeRangeField(increment) {
+                let current = Number(volumeRange.value);
+                volumeRange.value = current + increment;
+                document.getElementById('volume_percent').innerText = volumeRange.value + "%";
             }
 
             // UI
@@ -596,11 +653,11 @@
                 const qrcode = `http://${location.hostname}:5001/utilities/qrcode/https://github.com/TheMrNaab/op25-headunit`;
                 const image = `<img src="${qrcode}" alt="QR Code" class="img-fluid" style="max-width: 200px; max-height: 200px;">`;
                 const bodyContent = `
-      <div class="text-center">
-          <p>Scan the QR Code to access the GitHub repository</p>
-          ${image}
-          <p><a href="${qrcode}" target="_blank">github.com/TheMrNaab/op25-headunit</a></p>
-      </div>`;
+                    <div class="text-center">
+                        <p>Scan the QR Code to access the GitHub repository</p>
+                        ${image}
+                        <p><a href="${qrcode}" target="_blank">github.com/TheMrNaab/op25-headunit</a></p>
+                    </div>`;
                 showDynamicModal("Github Information", bodyContent);
             }
 
@@ -701,8 +758,8 @@
                     const channel = await apiGet(APIEndpoints.SESSION.CHANNEL_CURRENT)
 
 
-                    console.log("zone", zone);
-                    console.log("channel", channel);
+                    //console.log("zone", zone);
+                    //console.log("channel", channel);
 
                     updateElement('zone', zone.name);
                     updateElement('channel-name', channel.name);
@@ -757,10 +814,10 @@
                     showAlert("Failed to go to previous zone.");
                 }
             }
-
+            let zoneModal = null;
             async function openZoneModal() {
                 const zoneModalEl = document.getElementById('zoneModal');
-                const zoneModal = new bootstrap.Modal(zoneModalEl, { backdrop: 'static', keyboard: false });
+                zoneModal = new bootstrap.Modal(zoneModalEl, { backdrop: 'static', keyboard: false });
 
                 try {
                     // Fetch the list of zones
@@ -792,9 +849,7 @@
                     // Handle the accept button click
                     document.getElementById('zone-list-accept-btn').onclick = async function () {
                         try {
-                            console.log("Select Field Element:", selectElement)
-                            console.log("Selected zone index:", selectElement.value);
-
+                            console.log("zone-list-accept-btn clicked");
                             const selectedZoneIndex = selectElement.value;
                             console.log("selectedZoneIndex", selectedZoneIndex)
 
@@ -806,6 +861,7 @@
 
                             // Hide the modal
                             zoneModal.hide();
+
                         } catch (error) {
                             console.error("Error applying zone:", error);
                             alert("Failed to apply selected zone.");
@@ -818,9 +874,10 @@
                 }
             }
 
+            let channelModal = null;
             async function openChannelModal() {
                 const channelModalEl = document.getElementById('channelModal');
-                const channelModal = new bootstrap.Modal(channelModalEl, { backdrop: 'static', keyboard: false });
+                channelModal = new bootstrap.Modal(channelModalEl, { backdrop: 'static', keyboard: false });
                 channelModal.show();
 
                 try {
@@ -859,45 +916,6 @@
                 }
             }
 
-            document.addEventListener("DOMContentLoaded", () => {
-                const select = document.getElementById("zones");
-                const upBtn = document.getElementById("zone-list-up-btn");
-                const downBtn = document.getElementById("zone-list-down-btn");
-
-                upBtn.addEventListener("click", () => {
-                    if (select.selectedIndex > 0) {
-                        select.selectedIndex -= 1;
-                    }
-                });
-
-                downBtn.addEventListener("click", () => {
-                    if (select.selectedIndex < select.options.length - 1) {
-                        select.selectedIndex += 1;
-                    }
-                });
-            });
-
-            // channel-list-up-btn
-            // channel-list-down-btn
-
-            document.addEventListener("DOMContentLoaded", () => {
-                const select = document.getElementById("channels");
-                const upBtn = document.getElementById("channel-list-up-btn");
-                const downBtn = document.getElementById("channel-list-down-btn");
-
-                upBtn.addEventListener("click", () => {
-                    if (select.selectedIndex > 0) {
-                        select.selectedIndex -= 1;
-                    }
-                });
-
-                downBtn.addEventListener("click", () => {
-                    if (select.selectedIndex < select.options.length - 1) {
-                        select.selectedIndex += 1;
-                    }
-                });
-            });
-
             async function fetchNetworkStatus() {
                 try {
                     const data = await apiGet(APIEndpoints.NETWORK);
@@ -919,8 +937,6 @@
                         throw new Error(`Volume API error: ${error}`);
                     }
 
-                    const data = await response.json();
-                    console.log(JSON.stringify(data, null, 2));
                 } catch (err) {
                     console.error("Failed to set volume:", err.message);
                 }
@@ -1072,7 +1088,7 @@
             }
 
             function updateSliderColor(value) {
-                console.log("Volume slider value:", value);
+                // console.log("Volume slider value:", value);
 
                 const slider = document.getElementById("volumeRange");
                 const volumeLabel = document.getElementById("volume_percent");
@@ -1169,7 +1185,7 @@
                 configuration_json = await configuration_response.json();
 
                 // Debugging: Log the parsed configuration
-                console.log("Configuration Loaded: ", configuration_json['FN']); // not btn1_name directly
+                // console.log("Configuration Loaded: ", configuration_json['FN']); // not btn1_name directly
 
                 // SET INITIAL BUTTON VALUES
 
@@ -1211,7 +1227,7 @@
 
                 selectedValue = parseInt(document.querySelector('input[name="zoneSelection"]:checked').value, 10);
                 keypadZone = keypadZones['zones'][selectedValue];
-                console.log("Set Keypad Zone > ", keypadZone)
+                //console.log("Set Keypad Zone > ", keypadZone)
 
                 // Set the maximum length for the input field based on the selected zone
                 channelCount = keypadZone.channels.length;
@@ -1225,24 +1241,10 @@
                     }
                 });
 
-                console.log("Selected Value:", selectedValue);
-                console.log("Fetched Zones:", keypadZones.zones);
-                console.log("Active Zone:", keypadZone);
+                //console.log("Selected Value:", selectedValue);
+                //console.log("Fetched Zones:", keypadZones.zones);
+                //console.log("Active Zone:", keypadZone);
             }
-            let isKeypadModalVisible = false;
-            let keypadModal = null;
-            // HANDLE IF THE KEYPAD IS OPEN OR NOT
-            document.addEventListener("DOMContentLoaded", () => {
-                const modalEl = document.getElementById("keypadModal");
-
-                modalEl.addEventListener("shown.bs.modal", () => {
-                    isKeypadModalVisible = true;
-                });
-
-                modalEl.addEventListener("hidden.bs.modal", () => {
-                    isKeypadModalVisible = false;
-                });
-            });
 
             async function showKeypadModal() {
                 await LoadKeypadFunctions();
@@ -1253,6 +1255,12 @@
 
             function hideKeypadModal() {
                 const modalEl = document.getElementById('keypadModal');
+                const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                modalInstance.hide();
+            }
+
+            function closeModal(id) {
+                const modalEl = document.getElementById(id);
                 const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
                 modalInstance.hide();
             }
@@ -1293,7 +1301,7 @@
             async function btnGo_click(event) {
                 let channel_text = document.getElementById("channel_text").value;
                 let zn = parseInt(keypadZone.zone_index, 10);
-                console.log("zn: ", keypadZone.zone_index);
+                // console.log("zn: ", keypadZone.zone_index);
                 let ch = parseInt(channel_text, 10); // Correct for offset
                 let url = `${API_BASE_URL}/session/zone/${zn}/channel/${ch}`;
 
@@ -1310,7 +1318,7 @@
 
                 if (!(await put_response).ok) { alert("Did not change channel."); }
                 else {
-                    console.log("Channel changed successfully");
+                    // console.log("Channel changed successfully");
                     updateUI();
                 }
 
@@ -1354,44 +1362,37 @@
                 const channelCount = chLength();
 
                 if (getActualChannelNumber(rawValue) >= channelCount) {
-                    console.log("Channel Number: " + rawValue + " >= " + channelCount);
+                    // console.log("Channel Number: " + rawValue + " >= " + channelCount);
                     btnGo.setAttribute("disabled", "true");
-                    console.log("Added .disabled");
+                    // console.log("Added .disabled");
                     er.textContent = "Channel number exceeds maximum of " + channelCount;
                 } else {
-                    console.log("Channel Number", channelNum, "Channel Count", channelCount);
+                    // console.log("Channel Number", channelNum, "Channel Count", channelCount);
                     btnGo.removeAttribute("disabled");
-                    console.log("Removed .disabled");
+                    // console.log("Removed .disabled");
                     er.textContent = "";  // clear error
                 }
             }
 
             function playButton(id) {
-                const audio = new Audio(`audio/${id}.m4a`);
-                audio.play();
-                audio.volume = 0.2;
+                const audioUrl = `audio/${id}.m4a`;
+                fetch(audioUrl, { method: 'HEAD' })
+                    .then(response => {
+                        if (response.ok) {
+                            const audio = new Audio(audioUrl);
+                            audio.play();
+                            audio.volume = 0.2;
+                        } else {
+                            console.info(`Audio file not found: ${audioUrl}`);
+                        }
+                    })
+                    .catch(error => {
+                        console.info(`Error checking audio file: ${error}`);
+                    });
             }
 
-            // TO BE REMOVED
-            /* function exceedsChannelLimit(strLength, channelCount) {
-                const val = document.getElementById("channel_text").value;
-
-                let text_number = parseInt(val, 10);
-               
-
-                if (strLength > channelCount) {
-                    er.innerHTML = "Channel number exceeds maximum of " + channelCount;
-                    return true;
-                } else {
-                    er.innerHTML = "";
-                }
-
-                return false;
-
-            } */
-
             function submitChannel(channel) {
-                console.log("submitChannel()")
+                // console.log("submitChannel()")
                 const channelInput = document.getElementById("channel_text");
                 response = fetch(`http://${location.hostname}:5001/session/channel/${channelInput}`, {
                     method: 'PUT',
@@ -1412,42 +1413,150 @@
             }
 
 
-            document.addEventListener("DOMContentLoaded", async () => {
-                console.log("DOMContentLoaded", "interface.js");
 
+            document.addEventListener("DOMContentLoaded", async () => {
+                console.log("DOMContentLoaded", "async()");
+
+                // ===== Scroll Buttons: ZONE LIST =====
+                const zoneSelect = document.getElementById("zones");
+                const zoneUpBtn = document.getElementById("zone-list-up-btn");
+                const zoneDownBtn = document.getElementById("zone-list-down-btn");
+
+                zoneUpBtn.addEventListener("click", () => {
+                    if (zoneSelect.selectedIndex > 0) {
+                        zoneSelect.selectedIndex -= 1;
+                    }
+                });
+
+                zoneDownBtn.addEventListener("click", () => {
+                    if (zoneSelect.selectedIndex < zoneSelect.options.length - 1) {
+                        zoneSelect.selectedIndex += 1;
+                    }
+                });
+
+                // ===== Scroll Buttons: CHANNEL LIST =====
+                const channelSelect = document.getElementById("channels");
+                const channelUpBtn = document.getElementById("channel-list-up-btn");
+                const channelDownBtn = document.getElementById("channel-list-down-btn");
+
+                channelUpBtn.addEventListener("click", () => {
+                    if (channelSelect.selectedIndex > 0) {
+                        channelSelect.selectedIndex -= 1;
+                    }
+                });
+
+                channelDownBtn.addEventListener("click", () => {
+                    if (channelSelect.selectedIndex < channelSelect.options.length - 1) {
+                        channelSelect.selectedIndex += 1;
+                    }
+                });
+
+                // ===== Modal Visibility Flags =====
+                const keypadModalEl = document.getElementById("keypadModal");
+                keypadModalEl.addEventListener("shown.bs.modal", () => isKeypadModalVisible = true);
+                keypadModalEl.addEventListener("hidden.bs.modal", () => isKeypadModalVisible = false);
+
+                const channelModalEl = document.getElementById("channelModal");
+                channelModalEl.addEventListener("shown.bs.modal", () => isChannelModalVisible = true);
+                channelModalEl.addEventListener("hidden.bs.modal", () => isChannelModalVisible = false);
+
+                const zoneModalEl = document.getElementById("zoneModal");
+                zoneModalEl.addEventListener("shown.bs.modal", () => isZoneModalVisible = true);
+                zoneModalEl.addEventListener("hidden.bs.modal", () => isZoneModalVisible = false);
+
+                // ===== Button Actions =====
                 document.getElementById('status-network-info').addEventListener("click", () => {
                     fetchNetworkStatus();
                 });
+
                 document.getElementById('status-github-info').addEventListener("click", () => {
                     gitHubDialog();
                 });
 
                 document.getElementById('go-btn').addEventListener("click", btnGo_click);
 
-                //document.getElementById('channel_text').addEventListener("input", onChannelInputChange);
-
+                // ===== Initialization Order (Do Not Change) =====
                 listenLogStream();
                 await updateUI();
                 setupVolumeControls();
                 setupZoneAndChannelButtons();
-                initializeKeypadListeners()
+                initializeKeypadListeners();
                 fetchCurrentVolume();
                 await LoadKeypadFunctions();
-
-                document.addEventListener('keydown', function (event) {
-                    // Check if the pressed key is Home.
-                    // event.key can be "Home" and event.keyCode is 36.
-                    if (event.key === 'Home' || event.keyCode === 36) {
-                        event.preventDefault();   // Prevent the default behavior.
-                        event.stopPropagation();  // Stop the event from bubbling further.
-                        // Call your custom function here.
-                        console.log('Home key pressed - default action overridden.');
-                        // For example:
-                        customHomeKeyFunction();
-                    }
-                });
-
             });
+
+
+
+        </script>
+        <script>
+            class logListener {
+                constructor(data) {
+                    this.data = data;
+                    this.API_BASE_URL = `http://${location.hostname}:5001`;
+                    this.END_POINT = "/controller/logging/stream";
+                    this._events = {}; // Holds listeners by event name
+                    this.listenLogStream(); // Fixed this line
+                }
+            
+                on(eventName, callback) {
+                    if (!this._events[eventName]) {
+                        this._events[eventName] = [];
+                    }
+                    this._events[eventName].push(callback);
+                }
+            
+                emit(eventName, data) {
+                    if (this._events[eventName]) {
+                        for (const callback of this._events[eventName]) {
+                            callback(data);
+                        }
+                    }
+                }
+            
+                listenLogStream() {
+                    const source = new EventSource(this.API_BASE_URL + this.END_POINT);
+                    console.log("Listening to stream", "listenLogStream()");
+                    source.onmessage = async (event) => {
+                        try {
+                            const data = JSON.parse(event.data);
+                            console.log(data);
+                            this.emit(data.action, data);
+                        } catch (parseError) {
+                            console.warn("Invalid log stream data:", parseError);
+                        }
+                    };
+            
+                    source.onerror = (err) => {
+                        console.warn("SSE stream error:", err);
+                    };
+                }
+            }
+        </script>
+        <script>
+            const logStream = new logListener();
+            function listenLogStream() {
+                logStream.on("voice_update", onVoiceUpdate);
+                logStream.on("voice_termination", voice_termination);
+                logStream.on("keydown", shortcuts);
+            }
+
+            function voice_termination(data) {
+                document.getElementById("talkgroup").textContent = "";
+            }
+
+            let lastTGID = -1;
+            async function onVoiceUpdate(data) {
+                // console.log("Voice update logged for tgid " + data.tgid);
+                if(lastTGID == parseInt(data.tgid)) return;
+                try {
+                    const response = await fetch(API_BASE_URL + APIEndpoints.SESSION.TALKGROUP_NAME(data.tgid));
+                    const jsonData = await response.json();
+                    const el = document.getElementById("talkgroup");
+                    if (el) el.textContent = jsonData.name;
+                } catch (fetchError) {
+                    console.error("Error fetching talkgroup name:", fetchError);
+                }
+            }
 
         </script>
 </body>

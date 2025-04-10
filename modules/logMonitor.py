@@ -1,4 +1,5 @@
 #logMonitor.py
+# RETIRED
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from api import API  # Replace with actual class name if different
@@ -248,7 +249,7 @@ class logMonitorOP25:
             entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(
                 self.api.sessionManager.thisSession.activeSystem.index, m
             )
-            return entry
+            return {}
 
         # Step 2: Check TG_REGEX
         m = TG_REGEX.match(line)
@@ -257,12 +258,12 @@ class logMonitorOP25:
             entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(
                 self.api.sessionManager.thisSession.activeChannelNumber, m
             )
-            return entry
+            return {}
 
         # Step 3: Check RECONFIG_REGEX
         m = RECONFIG_REGEX.match(line)
         if m:
-            return m.groupdict()
+            return {}
 
         # Step 4: Check HOLD_REGEX
         m = HOLD_REGEX.match(line)
@@ -271,7 +272,7 @@ class logMonitorOP25:
             entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(
                 self.api.sessionManager.thisSession.activeSystem.index, m
             )
-            return entry
+            return {}
 
         # Step 5: Check DUID_REGEX
         m = DUID_REGEX.match(line)
@@ -280,7 +281,7 @@ class logMonitorOP25:
             entry["Talkgroup Name"] = self.api.sessionManager.talkgroupsManager.getTalkgroupName(
                 self.api.sessionManager.thisSession.activeSystem.index, m
             )
-            return entry
+            return {}
 
         # Step 6: Check config-related patterns
         entry = self._match_config_patterns(line)
