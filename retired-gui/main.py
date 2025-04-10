@@ -118,10 +118,6 @@ class ChangeTalkgroupWorker(QThread):
         if hasattr(self, "op25") and self.op25:
             self.op25.stop()  # Ensure OP25 stops properly
 
-        if hasattr(self, "logMonitor") and self.logMonitor:
-            self.logMonitor.stop()  # ✅ Stop log monitor thread
-            self.logMonitor.wait()  # ✅ Wait for clean exit
-
         if hasattr(self, "ChangeTalkgroupWorker") and self.ChangeTalkgroupWorker:
             if self.ChangeTalkgroupWorker.isRunning():
                 self.ChangeTalkgroupWorker.quit()
@@ -258,9 +254,6 @@ class MainWindow(QMainWindow):
         self.change_talkgroup()
         self.update_display()
         
-        self.logMonitor = MonitorLogFileWorker(self.op25, self.op25.stderr_file)
-        self.logMonitor.signal_tg_update.connect(self.updateStatusBar)
-        self.logMonitor.start()
 
     def updateStatusBar(self, arg):
         """Updates the status bar with the latest talkgroup name."""
