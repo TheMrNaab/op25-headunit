@@ -137,7 +137,6 @@
             </div>
         </div>
     </div>
-    </div>
 
     <!-- Channel List Modal -->
     <div class="modal fade" id="channelModal" tabindex="-1" aria-labelledby="channelModalLabel" aria-hidden="true">
@@ -756,11 +755,6 @@
                 try {
                     const zone = await apiGet(APIEndpoints.SESSION.ZONE_CURRENT);
                     const channel = await apiGet(APIEndpoints.SESSION.CHANNEL_CURRENT)
-
-
-                    //console.log("zone", zone);
-                    //console.log("channel", channel);
-
                     updateElement('zone', zone.name);
                     updateElement('channel-name', channel.name);
                     updateElement('channel-number', channel.channel_number);
