@@ -87,8 +87,8 @@ To run `remote.py` as a systemd service:
    After=network.target
 
    [Service]
-   ExecStart=/usr/bin/python3 /opt/op25-project/remote.py
-   WorkingDirectory=/opt/op25-project
+   ExecStart=/usr/bin/python3 /opt/op25-project/modules/_remote.py
+   WorkingDirectory=/opt/op25-project/modules
    Restart=always
    User=root
 
