@@ -1,6 +1,6 @@
 # Remote Control Interface for OP25
 
-`remote.py` is a background Python process that listens for keypresses from a USB remote control or keyboard-like HID device. It intercepts and cancels the original keystrokes and sends API requests to the OP25 scanner web interface to trigger scanner functions.
+`keymap.py` is a background Python process that listens for keypresses from a USB remote control or keyboard-like HID device. It intercepts and cancels the original keystrokes and sends API requests to the OP25 scanner web interface to trigger scanner functions.
 
 This script enables full remote operation of the OP25 headunit, especially useful for touchscreen or embedded vehicle setups where physical buttons are used for channel and zone control.
 
@@ -78,7 +78,7 @@ The following key names are captured and mapped to scanner actions:
 
 ## Optional: Run as a Background Service
 
-To run `remote.py` as a systemd service:
+To run `keymap.py` as a systemd service:
 
 1. Create a service file `/etc/systemd/system/op25-remote.service`:
    ```ini
@@ -87,7 +87,7 @@ To run `remote.py` as a systemd service:
    After=network.target
 
    [Service]
-   ExecStart=/usr/bin/python3 /opt/op25-project/remote.py
+   ExecStart=/usr/bin/python3 /opt/op25-project/keymap.py
    WorkingDirectory=/opt/op25-project
    Restart=always
    User=root

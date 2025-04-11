@@ -6,6 +6,7 @@ import os
 import signal
 from flask import Flask, Response, request, jsonify, send_file
 from flask_cors import CORS, cross_origin
+from modules import linuxSystem
 from modules.linuxSystem.sound import soundSys # Ensure this path matches your project
 from modules.linuxSystem.linuxUtils import LinuxUtilities
 from modules._session import SessionMember
@@ -34,13 +35,7 @@ class API:
         CORS(
             self.app,
             supports_credentials=True,
-            resources={r"/*": {
-                "origins": [
-                    f"http://{LinuxUtilities.get_local_ip()}:8000",
-                    "http://localhost:8000"
-                ],
-
-            }}
+            resources={r"/*": {"origins": "*"}}
         )
 
         # INITIALIZE CONFIGURATION & ERROR HANDLER
@@ -619,6 +614,19 @@ class API:
             devices = soundSys.parse_hw_devices()
             return jsonify(devices)
 
+        @self.app.route("/config/audio-devices/bt/list", methods=["GET"])
+        @self.dynamic_cross_origin()  
+        def list_bt_devices():
+            devices = LinuxUtilities.list_bluetooth_speakers()
+            return jsonify(devices)
+        
+        @self.app.route("/config/audio-devices/bt/<mac>", methods=["GET"])
+        @self.dynamic_cross_origin()  
+        def connect_bt_audio(mac):
+            if ":" not in mac and len(mac) == 12:
+                mac = ':'.join(mac[i:i+2] for i in range(0, 12, 2))
+            rtn = LinuxUtilities.connect_and_route_bluetooth_audio(mac)
+            return jsonify(rtn)
         
     def run(self):
         self.free_port(8000)

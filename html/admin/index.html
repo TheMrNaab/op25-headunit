@@ -155,9 +155,31 @@
             </div>
           </div>
         </div>
-      
+        <h4><i class="fab fa-bluetooth mb-3 me-2"></i>Bluetooth Settings</h4>
+          <div class="card mb-3 card-red">
+            <div class="card-body">
+              <div class="row">
+                <p><strong>Bluetooth Speaker</strong></p>
+                <p>
+                <label class="form-label">Devices</label>
+                <span id="btStatus" class="text-muted small"></span>
+                <select type="text" class="form-control form-control-sm"
+                  id="speakersList" placeholder="Speakers">
+                  </select>
+                  <button role="button" type="button" class="btn btn-primary mt-2" id="list-speakers" onclick="bluetoothDevices()">List Speakers</button>
+                  <button role="button" type="button" class="btn btn-primary mt-2" id="connect-speakers" onclick="connectBluetoothSpeaker()" disabled>Connect to Speaker</button>
+                </p>
+                </div>
+            </div>
+
+          </div>
+
+
         <button role="button" type="button" class="btn btn-primary" id="save-config">Save Configuration</button>
+      
       </form>
+
+
 
       <script>
 
@@ -189,6 +211,44 @@
           await SaveLocalSettings();
         });
 
+        async function bluetoothDevices() {
+          const status = document.getElementById("btStatus");
+          const speakersList = document.getElementById("speakersList");
+      
+          // Notify user
+          status.textContent = "Scanning for Bluetooth speakers...";
+          speakersList.innerHTML = ""; // Clear previous options
+      
+          try {
+              const response = await fetch(`http://${localhost}:5001/config/audio-devices/bt/list`);
+              if (!response.ok) {
+                  status.textContent = "Failed to fetch devices.";
+                  console.error("Failed to fetch bluetooth devices");
+                  return;
+              }
+      
+              const devices = await response.json();
+      
+              if (devices.length === 0) {
+                  status.textContent = "No Bluetooth speakers found.";
+                  return;
+              }
+      
+              devices.forEach(device => {
+                  const option = document.createElement("option");
+                  option.value = device.address;
+                  option.textContent = device.name;
+                  speakersList.appendChild(option);
+              });
+      
+              status.textContent = "Select a Bluetooth speaker.";
+      
+          } catch (err) {
+              status.textContent = "Error scanning for devices.";
+              console.error(err);
+          }
+      }
+
         async function SaveLocalSettings() {
           const display = document.getElementById('primary_display_sleep').value;
           const timeout = document.getElementById('display_sleep').value
@@ -203,6 +263,47 @@
             alert("Failed to save configuration");
           }
         }
+
+        async function connectBluetoothSpeaker() {
+          const speakersList = document.getElementById("speakersList");
+          const status = document.getElementById("btStatus");
+      
+          const selectedMAC = speakersList.value;
+      
+          if (!selectedMAC) {
+              status.textContent = "Please select a speaker.";
+              return;
+          }
+      
+          // Normalize MAC for your route (remove colons or convert as needed)
+          const macParam = selectedMAC.replace(/:/g, "").toLowerCase(); // or keep as-is if you expect full address
+      
+          status.textContent = "Connecting to speaker...";
+          
+          try {
+              const response = await fetch(`http://${localhost}:5001/config/audio-devices/bt/${macParam}`, {
+                  method: "PUT"
+              });
+      
+              if (!response.ok) {
+                  status.textContent = "Failed to connect to speaker.";
+                  console.error("HTTP error:", response.status);
+                  return;
+              }
+      
+              const result = await response.json();
+      
+              if (result === true) {
+                  status.textContent = "Bluetooth speaker connected and set as default.";
+              } else {
+                  status.textContent = "Speaker found but failed to connect or switch audio.";
+              }
+      
+          } catch (error) {
+              status.textContent = "Error connecting to speaker.";
+              console.error("Fetch error:", error);
+          }
+      }
 
         async function Save() {
           const response = await fetch(`http://${localhost}:5001/admin/config/set`, {

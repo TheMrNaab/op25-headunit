@@ -6,6 +6,8 @@ import re
 import json
 from flask import jsonify
 import socket
+import time
+import os
 
 class LinuxUtilities:
 
@@ -155,3 +157,131 @@ class LinuxUtilities:
             status["audio_output"] = subprocess.check_output(["pactl", "get-default-sink"]).decode().strip()
         except: pass
         return status    
+    
+    
+    @staticmethod
+    def list_bluetooth_speakers():
+        try:
+            print("DBUS:", os.environ.get("DBUS_SESSION_BUS_ADDRESS"))
+            proc = subprocess.Popen(
+                ['bluetoothctl'],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+                text=True,
+                bufsize=1
+            )
+
+            # Set up agent and scan
+            proc.stdin.write("agent on\n")
+            proc.stdin.write("default-agent\n")
+            proc.stdin.write("scan on\n")
+            proc.stdin.flush()
+
+            found_lines = []
+
+            start_time = time.time()
+            timeout = 10 # seconds
+
+            # Read stdout in real-time
+            while time.time() - start_time < timeout:
+                line = proc.stdout.readline()
+                if not line:
+                    break
+                if "Device" in line:
+                    found_lines.append(line.strip())
+
+            # Stop scan and get final device list
+            proc.stdin.write("scan off\n")
+            proc.stdin.write("devices\n")
+            proc.stdin.flush()
+            time.sleep(1)  # allow output to flush
+
+            # Read remaining lines after devices command
+            proc.stdin.close()
+            additional_output = proc.stdout.read()
+            proc.terminate()
+
+            all_lines = found_lines + additional_output.strip().splitlines()
+
+            # Parse devices
+            devices = []
+            for line in all_lines:
+                match = re.match(r"Device ([0-9A-F:]+) (.+)", line)
+                if match:
+                    mac, name = match.groups()
+                    if name.replace("-", ":") == mac:
+                        name = "Unknown Device"
+                    devices.append({"address": mac, "name": name})  # no filter
+            return devices
+
+        except Exception as e:
+            print(f"Error listing bluetooth devices: {e}")
+            return []
+        
+    @staticmethod
+    def connect_and_route_bluetooth_audio(mac_address):
+        def run_bluetoothctl_commands(commands):
+            try:
+                proc = subprocess.Popen(
+                    ['bluetoothctl'],
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.DEVNULL,
+                    text=True
+                )
+                for cmd in commands:
+                    proc.stdin.write(cmd + "\n")
+                proc.stdin.flush()
+                output, _ = proc.communicate(timeout=15)
+                return output.lower()
+            except Exception as e:
+                return f"Error: {e}"
+
+        # Step 1: Trust, pair, and connect
+        print(f"[INFO] Connecting to {mac_address}...")
+        output = run_bluetoothctl_commands([
+            f"trust {mac_address}",
+            f"pair {mac_address}",
+            f"connect {mac_address}",
+            "exit"
+        ])
+
+        if "failed" in output or "not available" in output:
+            return {
+                "success": False,
+                "message": "Bluetooth pairing or connection failed.",
+                "output": output
+            }
+
+        # Step 2: Wait briefly for Pulse to register the device
+        time.sleep(3)
+
+        # Step 3: Set audio sink to Bluetooth speaker
+        try:
+            sinks = subprocess.check_output(['pactl', 'list', 'short', 'sinks'], text=True)
+            normalized_mac = mac_address.replace(":", "_").lower()
+
+            for line in sinks.strip().splitlines():
+                if normalized_mac in line.lower():
+                    sink_name = line.split()[1]
+                    subprocess.run(['pactl', 'set-default-sink', sink_name], check=True)
+                    return {
+                        "success": True,
+                        "message": f"Connected and routed audio to {sink_name}",
+                        "sink": sink_name,
+                        "mac": mac_address
+                    }
+
+            return {
+                "success": False,
+                "message": "Bluetooth device connected but audio sink was not found.",
+                "sinks_available": sinks
+            }
+
+        except subprocess.CalledProcessError as e:
+            return {
+                "success": False,
+                "message": "Error setting default audio sink.",
+                "error": str(e)
+            }
