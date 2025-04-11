@@ -11,6 +11,8 @@
 - [Running the Interface](#running-the-interface)
 
 ## Overview
+![Relationship](/html/static/images/op25_root_relationship_corrected.png)
+
 This project adds a touchscreen-friendly graphical interface to OP25, a software-defined radio (SDR) scanner. Designed for public safety personnel and radio enthusiasts, it offers a low-cost alternative to expensive commercial scanners like the Bearcat. The interface simplifies talkgroup scanning and monitoring in a vehicle without the high price tag.
 
 ## User Interface
