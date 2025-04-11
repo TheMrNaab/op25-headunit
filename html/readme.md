@@ -18,6 +18,7 @@ The `index.html` file serves as the main graphical user interface for controllin
   - **/fa** — Font Awesome icon library
   - **/webfonts** — Font Awesome font files
   - **/js** — Supporting JavaScript code for front-end functionality
+  - **/audio** Contains audio files for the numeric keypad and bottom function buttons. 
 
 - **/admin/**  
   Contains configuration tools and interfaces for:
