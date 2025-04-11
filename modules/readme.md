@@ -2,7 +2,8 @@
 
 This directory also includes Python modules under `/linuxSystem` that support system-level functionality and process management.
 
-## Module Overview
+## Dependant Module Overview
+![Organizational Chart](../html/static/images/modules_org.png)
 
 - **__init__.py**  
   Declares this folder as a Python package.
@@ -36,5 +37,6 @@ This directory also includes Python modules under `/linuxSystem` that support sy
 - **myConfiguration.py**  
   Contains functions to read and write values from `../config.ini`.
 
+## Independant Module Overview
 - **_remote.py.py**  
   Contains the python script, which can be run as a service to monitor and direct HID-support wireless remotes. See [readme_remote.md](readme_remote.md) for more information.
