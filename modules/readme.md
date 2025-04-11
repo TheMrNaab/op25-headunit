@@ -3,7 +3,7 @@
 ## Dependant Module Overview
 ![Organizational Chart](../html/static/images/modules_org.png)
 
-- **linuxSystem/**
+- **linuxSystem/*
   Modules that support system-level functionality and process management.
   
 - **__init__.py**  
