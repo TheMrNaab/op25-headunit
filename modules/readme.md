@@ -1,10 +1,11 @@
-# Linux System Modules for OP25
-
-This directory also includes Python modules under `/linuxSystem` that support system-level functionality and process management.
+# Core Modules for OP25 Headunit
 
 ## Dependant Module Overview
 ![Organizational Chart](../html/static/images/modules_org.png)
 
+- **linuxSystem/**
+  Modules that support system-level functionality and process management.
+  
 - **__init__.py**  
   Declares this folder as a Python package.
 
@@ -30,7 +31,7 @@ This directory also includes Python modules under `/linuxSystem` that support sy
 
 - **_talkgroupSet.py**  
   Loads and manages `../talkgroups.json`, providing structured access to TGID configuration.
-
+  
 - **_zoneManager.py**  
   Interfaces with `../zones.json`, handling zone and channel group definitions.
 
