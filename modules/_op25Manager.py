@@ -71,16 +71,17 @@ class op25Manager:
             
             self._activeSession = _session
             
-            self.op25_command = [
-                self.rx_script, "--nocrypt", "--args", "rtl",
-                "--gains", "lna:45", 
-                "-S", "960000", 
-                "-q", "0",
-                "-v", "2", "-2", 
-                "-V", "-U",
-                "-T", self.session.activeSystem.toTrunkTSV(self.session),
-                "-l", "5000"
-            ]
+            self.op25_command = self.configManager.buildCommandV2(self.session.activeSystem.toTrunkTSV(self.session))
+            # self.op25_command = [
+            #     self.rx_script, "--nocrypt", "--args", "rtl",
+            #     "--gains", "lna:45", 
+            #     "-S", "960000", 
+            #     "-q", "0",
+            #     "-v", "2", "-2", 
+            #     "-V", "-U",
+            #     "-T", self.session.activeSystem.toTrunkTSV(self.session),
+            #     "-l", "5000"
+            # ]
             
             print(f"\n\n... Generated OP25 start command to {self.op25_command}")
             
@@ -93,6 +94,7 @@ class op25Manager:
                 stderr=open(self.stderr_file, "w"),
                 text=True
             )
+            
             
             
             

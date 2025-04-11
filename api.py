@@ -56,7 +56,6 @@ class API:
          # STEP 2: INIT OP25 CONTROLLER WITH TEMP SESSION
         self._op25Manager = op25Manager(configMgr=self.configManager)
 
-
         # STEP 3: INIT SESSION HANDLER NOW THAT CONTROLLER EXISTS
         self._sessionManager = SessionManager(self.op25Manager,
                                              defaultSystemIndex=0,
@@ -64,11 +63,8 @@ class API:
                                              defaultChannelIndex=0,
                                              api=self)
         
-       
-        # LOGGER STREAM FOR OP25
-        self._monitor = None
-        # self.startLoggerStream()
-
+        self._log_queue = Queue()
+        
         # STEP 4: SET SESSION ON CONTROLLER
         if self._sessionManager is None:
             raise Exception("SessionManager is not initialized")

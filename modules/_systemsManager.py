@@ -4,7 +4,6 @@ import os
 import tempfile
 import shutil
 from typing import TYPE_CHECKING
-
 from modules._talkgroupSet import TalkgroupManager
 if TYPE_CHECKING:
     from modules._session import session
@@ -157,6 +156,9 @@ class systemsMember:
             f.write("\t".join(values) + "\n")
 
         #return "/opt/op25-project/templates/_trunk.tsv"
+        os.chmod(self.trunkFilePath, 0o644)
+        
+        
         return self.trunkFilePath
 
 class systemsManager:
