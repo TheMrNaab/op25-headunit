@@ -18,7 +18,7 @@
 
 <body>
     <!-- PROGRESS Modal -->
-    <div class="modal fade" id="progressModal" tabindex="-1" aria-labelledby="progressModalLabel" aria-hidden="true">
+    <div class="modal" id="progressModal" tabindex="-1" aria-labelledby="progressModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -45,7 +45,7 @@
     </div>
 
     <!-- KEYPAD Modal -->
-    <div class="modal modal-md fade" id="keypadModal" tabindex="-1" aria-labelledby="keypadModalLabel"
+    <div class="modal modal-md" id="keypadModal" tabindex="-1" aria-labelledby="keypadModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
@@ -139,7 +139,7 @@
     </div>
 
     <!-- Channel List Modal -->
-    <div class="modal fade" id="channelModal" tabindex="-1" aria-labelledby="channelModalLabel" aria-hidden="true">
+    <div class="modal" id="channelModal" tabindex="-1" aria-labelledby="channelModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
@@ -172,7 +172,7 @@
     </div>
 
     <!-- Zone List Modal -->
-    <div class="modal fade" id="zoneModal" tabindex="-1" aria-labelledby="zoneModalLabel" aria-hidden="true">
+    <div class="modal" id="zoneModal" tabindex="-1" aria-labelledby="zoneModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
@@ -284,7 +284,7 @@
                 <span style="margin-top:6px">ZN LIST</span>
                 <div class="accent accent-green"></div>
             </button>
-            <button data-bs-toggle="modal" data-bs-dismiss="modal" data-bs-target="#keypadModal">
+            <button data-bs-toggle="modal" data-bs-dismiss="modal" onclick="showKeypadModal()" data-bs-target="#keypadModal">
                 <i class="fas fa-calculator"></i>
                 <span style="margin-top:6px">DIRECT</span>
                 <div class="accent accent-purple"></div>
@@ -627,7 +627,7 @@
                 // Create modal wrapper
                 const modal = document.createElement("div");
                 modal.innerHTML = `
-                <div class="modal fade" id="dynamicModal" tabindex="-1" aria-hidden="true">
+                <div class="modal" id="dynamicModal" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -679,7 +679,7 @@
                     'Host Name': data.host_name,
                     'Host IP': data.host_ip,
                     'HTTP Port': data.host_port,
-                    'Web Interface': `http://${data.host_ip}:${data.host_ip}/admin/index.html`
+                    'Web Interface': `http://${data.host_ip}:${data.host_port}/admin/index.html`
                 };
 
                 let bodyContent = "";
@@ -693,9 +693,9 @@
 
                 // TODO: Implement Restart System
                 var footerContent =
-                    `<button class="btn btn-success" onClick="location.reload(true);"><i class="fas fa-refresh me-1"></i> Webpage</button>` +
-                    `<button class="btn btn-warning" onClick="reloadSystem()" disabled><i class="fas fa-refresh me-1"></i> System</button>` +
-                    `<button class="btn btn-secondary" onClick="window.open('http://${data.host_ip}:${data.host_port}/admin/index.html', '_blank')"><i class="fas fa-external-link-alt me-1"></i>Open Web Interface</button>`;
+                    `<button class="btn btn-sm btn-success" onClick="location.reload(true);"><i class="fas fa-refresh me-1"></i> Webpage</button>` +
+                    `<button class="btn btn-sm btn-warning" onClick="reloadSystem()" disabled><i class="fas fa-refresh me-1"></i> System</button>` +
+                    `<button class="btn btn-sm btn-secondary" onClick="window.open('http://${data.host_ip}:${data.host_port}/admin/index.html', '_blank')"><i class="fas fa-external-link-alt me-1"></i>Open Web Interface</button>`;
                 showDynamicModal("Device Status", bodyContent, footerContent);
             }
 
@@ -1245,6 +1245,7 @@
                 const keypadModalEl = document.getElementById('keypadModal');
                 keypadModal = new bootstrap.Modal(keypadModalEl, { backdrop: 'static', keyboard: false });
                 keypadModal.show();
+                initializeKeypadListeners(); // <-- Add this to re-bind keypad button events
             }
 
             function hideKeypadModal() {
