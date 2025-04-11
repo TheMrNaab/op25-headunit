@@ -10,15 +10,15 @@ The `index.html` file serves as the main graphical user interface for controllin
 
 - **index.html**  
   The main UI for the OP25 head unit. Allows users to view zones, talkgroups, change channels, adjust volume, and use a keypad for direct entry.
+- **/js** — Supporting JavaScript code for front-end functionality
+- **/audio** Contains audio files for the numeric keypad and bottom function buttons.
+- **/css** — Stylesheets for front-end customization
 
 - **/static/**  
   Contains all front-end assets, organized as follows:
-  - **/css** — Stylesheets for front-end customization
   - **/bootstrap** — Bootstrap framework files
   - **/fa** — Font Awesome icon library
   - **/webfonts** — Font Awesome font files
-  - **/js** — Supporting JavaScript code for front-end functionality
-  - **/audio** Contains audio files for the numeric keypad and bottom function buttons. 
 
 - **/admin/**  
   Contains configuration tools and interfaces for:
