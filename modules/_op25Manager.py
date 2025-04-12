@@ -116,7 +116,10 @@ class op25Manager:
         
         elif(not self.session):
             raise Exception("[FATAL] Session uavailable. Cannot start OP25.")
-                
+    
+    def commandToString(self):
+        return " ".join(self.op25_command)
+    
     def isConnected(self, timeout=30):
         """Continuously check for 'Reconfiguring NAC' in the log file until found or timeout."""
         print("...", "isConnected()")
@@ -162,6 +165,7 @@ class op25Manager:
     @property
     def activeSession (self):
         return self._activeSession
+    
     def switchTalkgroup(self, thisSession: 'session'):  # Use forward reference for session type
         """Switches OP25 to a new talkgroup."""
         if not self.op25_process or self.op25_process.poll() is not None:
@@ -183,11 +187,9 @@ class op25Manager:
 
     def switchSystem(self, thisSession: 'session'):  # Use forward reference for session type
         """Switches OP25 to a new P25 system with the first zone and channel set automatically."""
-        #TODO: Implement multisystem
-
+        
         # Command to reload OP25 configuration, assuming self.command is implemented
         self.command("reload", 0)
-        
 
     def command(self, cmd, data):
         """Sends a command to OP25. Ensures proper handling for hold, whitelist, and reload."""
@@ -271,8 +273,8 @@ class op25Manager:
 
         print("[INFO] Scan list update complete.")
     
-    def restart(self):
+    def restart(self, session):
         print("[INFO] Restarting OP25...")
         self.stop()
-        self.start()
+        self.start(session)
 

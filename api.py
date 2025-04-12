@@ -244,6 +244,10 @@ class API:
         @self.app.route('/config/network', methods=['GET'])
         def get_network_status():
             return jsonify(LinuxUtilities.get_network_status())
+        
+        @self.app.route('/config/op25/command', methods=['GET'])
+        def get_last_op25_command():
+            return jsonify({"command" : self.op25Manager.commandToString()});
 
         # ====== CHANNEL DATA BY ZONE ======
 
@@ -595,6 +599,15 @@ class API:
                 self.zoneManager.reloadZones()
                 self.configManager.reload()
                 return {"success": "reload command sent."}, 200
+            except Exception as e:
+                return {"error": str(e)}, 500
+            
+        @self.app.route("/config/reload/op25", methods=["PUT"])
+        @self.dynamic_cross_origin()     
+        def reload_op25():
+            try:
+                self.op25Manager.restart(self.sessionManager.thisSession)
+                return {"success": "Stopping and starting OP25."}, 200
             except Exception as e:
                 return {"error": str(e)}, 500
             

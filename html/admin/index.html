@@ -249,6 +249,17 @@
           }
       }
 
+        async function reloadOP25(){
+          const response = await fetch(`http://${localhost}:5001/config/reload/op25`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" }
+          });
+          if (response.ok) {
+            alert("Rebooting system");
+          } else {
+            alert("Failed to reboot system");
+          }
+        }
         async function SaveLocalSettings() {
           const display = document.getElementById('primary_display_sleep').value;
           const timeout = document.getElementById('display_sleep').value

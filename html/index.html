@@ -220,12 +220,11 @@
             <div id="display_container" class="display mt-0">
                 <div id="main-display" class="section active">
                     <table id="OnScreenDisplay" class="osd table-sm"
-                        style="width: 90%; margin-left: auto; margin-right:auto;">
+                        style="min-width: 90%; max-width:95%; margin-left: auto; margin-right:auto;">
                         <tbody>
                             <tr class="text-start fs-6"">
-                        <td><span class=" badge bg-dark fs-6">CHANNEL</span></td>
-                                <td><span id="channel-number"># - </span> - <span id="channel-name">[Channel
-                                        Name]</span></td>
+                                <td><span class=" badge bg-dark fs-6">CHANNEL</span></td>
+                                <td><span id="channel-number"># - </span> - <span id="channel-name">[Channel Name]</span></td>
                             </tr>
                             <tr class="text-start fs-6">
                                 <td><span class="badge bg-dark fs-6">ZONE</span></td>
@@ -233,10 +232,17 @@
                             </tr>
                             <tr class="text-start fs-6">
                                 <td><span class="badge bg-success fs-6">LAST TG</span></td>
-                                <td><span id="talkgroup">-</span><button
-                                        class="btn btn-sm btn-outline-secondary ms-5 disabled">HOLD</button> <button
-                                        class="btn btn-sm btn-outline-secondary ms-1 disabled">LOCKOUT</button></td>
+                                <td><span id="talkgroup"></span>
+                                    
                             </tr>
+                                <tr class="text-start ">
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <!-- THESE FEATURES HAVE YET TO BE IMPLEMENTED -->
+                                        <button type="button" id="btnHold" class="btn btn-sm btn-secondary m0 disabled"><i class="fas fa-pause me-1"></i>HOLD</button> 
+                                        <button type="button" id="btnLockout" class="btn btn-sm btn-secondary m0 disabled"><i class="fas fa-lock me-1"></i>LOCKOUT</button></td>
+                                    </td>
+                                </tr>
                         </tbody>
                     </table>
                 </div>
@@ -381,7 +387,7 @@
                 },
 
                 NETWORK: "/config/network",
-
+                OP25_Command: "/config/op25/command",
                 CONTROLLER: {
                     WHITELIST: "/session/controller/whitelist",
                     LOCKOUT: (tgid) => `/session/controller/lockout/${tgid}`,
@@ -488,6 +494,20 @@
                 }
             }
 
+            async function reloadOP25(e){
+                e.preventDefault();
+                // Send a PUT request to the Flask endpoint to reload OP25
+                const response = await fetch(`http://${location.hostname}:5001/config/reload/op25`, {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" }
+                });
+                if (response.ok) {
+                  alert("Rebooting system");
+                } else {
+                  alert("Failed to reboot system");
+                  console.log(await response.json());
+                }
+              }
 
 
             function shortcuts(data) {
@@ -502,7 +522,7 @@
 
                 switch (data.name) {
                     case "keydown":
-                        console.log("device_key_name:", data.device_key_name);
+                        console.info("device_key_name:", data.device_key_name);
                         break;
 
                     case "enter_ok":
@@ -598,7 +618,7 @@
 
                     default:
                         if (handleNumbericInput(data)) { return }
-                        console.log("Unhandled key event:", data);
+                        console.warn("Unhandled key event:", data);
                 }
             }
 
@@ -628,7 +648,7 @@
                 const modal = document.createElement("div");
                 modal.innerHTML = `
                 <div class="modal" id="dynamicModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">${title}</h5>
@@ -665,10 +685,11 @@
                     console.warn("No network data provided");
                     return;
                 }
-
-                var audio_req = await apiGetV2(APIEndpoints.DEVICE.GET_AUDIO_PROPERTY("api.alsa.path"));
-                var response = await audio_req.json();
-
+                const command_req = await apiGetV2(APIEndpoints.OP25_Command);
+                const command_data = await command_req.json(); 
+                const audio_req = await apiGetV2(APIEndpoints.DEVICE.GET_AUDIO_PROPERTY("api.alsa.path"));
+                const response = await audio_req.json();
+                console.log(command_req['command']);
                 const fieldMap = {
                     'Audio Output': response['api.alsa.path'],
                     'Connection Type': data.connection_type,
@@ -679,7 +700,8 @@
                     'Host Name': data.host_name,
                     'Host IP': data.host_ip,
                     'HTTP Port': data.host_port,
-                    'Web Interface': `http://${data.host_ip}:${data.host_port}/admin/index.html`
+                    'Web Interface': `http://${data.host_ip}:${data.host_port}/admin/index.html`,
+                    'Startup Command' : command_data.command
                 };
 
                 let bodyContent = "";
@@ -694,9 +716,13 @@
                 // TODO: Implement Restart System
                 var footerContent =
                     `<button class="btn btn-sm btn-success" onClick="location.reload(true);"><i class="fas fa-refresh me-1"></i> Webpage</button>` +
-                    `<button class="btn btn-sm btn-warning" onClick="reloadSystem()" disabled><i class="fas fa-refresh me-1"></i> System</button>` +
+                    `<button class="btn btn-sm btn-warning" id="btnReloadOP25"><i class="fas fa-refresh me-1"></i> OP25</button>` +
                     `<button class="btn btn-sm btn-secondary" onClick="window.open('http://${data.host_ip}:${data.host_port}/admin/index.html', '_blank')"><i class="fas fa-external-link-alt me-1"></i>Open Web Interface</button>`;
                 showDynamicModal("Device Status", bodyContent, footerContent);
+                const btnReloadOP25 = document.getElementById("btnReloadOP25");
+                if (btnReloadOP25) {
+                    btnReloadOP25.addEventListener("click", reloadOP25);
+                }
             }
 
             function createBootstrapRow(...elements) {
@@ -821,7 +847,7 @@
                     const data = await response.json();
 
                     // Debugging: Log the parsed zones
-                    console.log("Parsed Zones:", data);
+                    // console.log("Parsed Zones:", data);
 
                     // Access the zones array
                     const zones = Object.values(data.zones);
@@ -843,9 +869,9 @@
                     // Handle the accept button click
                     document.getElementById('zone-list-accept-btn').onclick = async function () {
                         try {
-                            console.log("zone-list-accept-btn clicked");
+                            // console.log("zone-list-accept-btn clicked");
                             const selectedZoneIndex = selectElement.value;
-                            console.log("selectedZoneIndex", selectedZoneIndex)
+                            // console.log("selectedZoneIndex", selectedZoneIndex)
 
                             // Set the new zone
                             await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectedZoneIndex));
@@ -954,8 +980,8 @@
             async function populateZoneList() {
                 try {
                     const zones = await apiGet(APIEndpoints.ZONES.LIST);
-                    console.log("Loading Populate Zones")
-                    console.log(zones);
+                    // console.log("Loading Populate Zones")
+                    // console.log(zones);
 
                     const zoneListContainer = document.getElementById("zones");
                     zoneListContainer.innerHTML = "";
@@ -1167,9 +1193,9 @@
             let config = {};
             let configuration_json = {}
             async function LoadKeypadFunctions() {
-                console.log("LoadKeypadFunctions() CALLED");  // ✅ Add this
+                // console.log("LoadKeypadFunctions() CALLED");  // ✅ Add this
                 url = `http://${location.hostname}:5001/admin/config/get`;
-                console.log(url);
+                // console.log(url);
                 const configuration_response = await fetch(url);
                 if (!configuration_response.ok) {
                     console.error("Failed to fetch configuration");
@@ -1261,7 +1287,7 @@
             }
 
             function initializeKeypadListeners() {
-                console.log("Init Keys")
+                // console.log("Init Keys")
                 // Retrieve the maximum length from the input's max attribute.
                 const MAX_LENGTH = parseInt(document.getElementById("channel_text").getAttribute("max"), 10);
                 const channelInput = document.getElementById("channel_text");
@@ -1410,7 +1436,7 @@
 
 
             document.addEventListener("DOMContentLoaded", async () => {
-                console.log("DOMContentLoaded", "async()");
+                // console.log("DOMContentLoaded", "async()");
 
                 // ===== Scroll Buttons: ZONE LIST =====
                 const zoneSelect = document.getElementById("zones");
@@ -1478,6 +1504,8 @@
                 initializeKeypadListeners();
                 fetchCurrentVolume();
                 await LoadKeypadFunctions();
+
+    
             });
 
 
@@ -1514,7 +1542,7 @@
                     source.onmessage = async (event) => {
                         try {
                             const data = JSON.parse(event.data);
-                            console.log(data);
+                            // console.log(data);
                             this.emit(data.action, data);
                         } catch (parseError) {
                             console.warn("Invalid log stream data:", parseError);

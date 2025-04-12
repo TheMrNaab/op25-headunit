@@ -282,6 +282,7 @@ python3 rx.py
   </div>
 </div>
       <button type="submit" class="btn btn-primary" onclick="handleSaveButtonClick()">Save Settings</button>
+      <button class="btn btn-secondary" id="btnReloadOP25">Restart OP25</button>
     </form>
   </div>
 
@@ -290,6 +291,7 @@ python3 rx.py
       loadOP25Config();
       populateAlsaDevices();
       activateSliders();
+      document.getElementById("btnReloadOP25").addEventListener("click", reloadOP25);
     });
     
     function activateSliders() {
@@ -332,7 +334,21 @@ python3 rx.py
         console.error("Failed to load ALSA devices:", err);
       }
     }
-    
+    async function reloadOP25(e){
+      e.preventDefault();
+      // Send a PUT request to the Flask endpoint to reload OP25
+      const response = await fetch(`http://${location.hostname}:5001/config/reload/op25`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" }
+      });
+      if (response.ok) {
+        alert("Rebooting system");
+      } else {
+        alert("Failed to reboot system");
+        console.log(await response.json());
+      }
+    }
+
     function parseCommand() {
       const input = document.getElementById("pasteInput").value;
       const tokens = input.split(/\s+/);
