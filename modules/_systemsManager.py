@@ -115,7 +115,7 @@ class systemsMember:
             str: The full file path to the trunk file.
         """
         if not hasattr(self, "_trunkFilePath") or not self._trunkFilePath:
-            safe_name = self.sysname.replace(" ", "_")  # Replace spaces with underscores
+            safe_name = "sys"  
             self._trunkFilePath = os.path.join(tempfile.gettempdir(), f"{safe_name}_trunk.tsv")
         return self._trunkFilePath
 

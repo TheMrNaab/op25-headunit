@@ -40,7 +40,7 @@ class API:
 
         # INITIALIZE CONFIGURATION & ERROR HANDLER
         self._configManager = MyConfig()
-        
+        self.__lastTGID = -1
 
         # CLEANUP PORTS AND PROCESSES
         self.killAndFree()
@@ -256,7 +256,10 @@ class API:
         def channel(zone_number, channel_number):
             return jsonify(self.zoneManager.getChannel(zone_number, channel_number)), 200
 
-        # 4: [GET] Get next channel in the zone
+
+
+
+        # 4.5: [GET] Get next channel in the zone
         @self.app.route('/zone/<int:zone_number>/channel/<int:channel_number>/next', methods=['GET'])
         def channel_next(zone_number, channel_number):
             return jsonify(self.zoneManager.getNextChannel(zone_number, channel_number)), 200
@@ -385,7 +388,7 @@ class API:
                 return {"error": f"System with sysid {channel.sysid} not found", "data": channel._data}, 404
             self.activeSession.update_session(channel, zone, sys)
             
-            return {"message": "Zone updated successfully"}
+            return {"message": f"Zone {zone.name} updated successfully"}
 
         # 15: [PUT] Move to next zone (loads first channel)
         @self.app.route('/session/zone/next', methods=['PUT'])
@@ -444,7 +447,7 @@ class API:
             return jsonify({"message": "TGIDs added to whitelist", "payload": payload}), 200
         
         # 22: BLACKLIST TGID (LOCKOUT COMMAND IN CONTROLLER)
-        @self.app.route('/session/controller/lockout/<int:tgid>', methods=['PUT'])
+        @self.app.route('/session/lockout/<int:tgid>', methods=['PUT'])
         def put_lockout(tgid):
             # NOTE: CONSTRUCT LATER
             # NOTE: ENSURE WE TRACK THE LOCK OUT AND CLEAR IT BEFORE CHANGING CHANNELS (UPDATE COMMAND)
@@ -452,12 +455,16 @@ class API:
             return jsonify({"Error":"Function requires implementation"})
         
         # 23: LOCK ONTO TGID (LOCK COMMAND IN CONTROLLER)
-        @self.app.route('/session/controller/hold/<int:tgid>', methods=['PUT'])
+        @self.app.route('/session/hold/<int:tgid>', methods=['PUT'])
         def put_hold(tgid):
-            # NOTE: CONSTRUCT LATER
-            # NOTE: ENSURE WE TRACK THE HOLD AND CLEAR IT BEFORE CHANGING CHANNELS (UPDATE COMMAND)
-            # NOTE: AND REWRITE THE BLACKLIST FILE CONTENTS
-            return jsonify({"Error":"Hold function requires implementation"})
+            response = self.op25Manager.send_udp_command("hold", tgid)
+            return jsonify(response), 200
+        
+        # 23: SKIP OVER TGID
+        @self.app.route('/session/skip/<int:tgid>', methods=['PUT'])
+        def put_skip(tgid):
+            response = self.op25Manager.send_udp_command("skip", tgid)
+            return jsonify(response), 200
 
         # 24: [PUT] RESTART OP25 
         @self.app.route('/controller/restart', methods=['PUT'])
@@ -468,6 +475,7 @@ class API:
         # ======    STREAMING & LOGGING      =======
 
         # 25: [POST] Receive log data for SSE broadcast
+        self.__lastTGID = 0
         @self.app.route('/controller/logging/update', methods=['POST'])
         def receive_log_update():
             data = request.get_json() or {}

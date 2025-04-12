@@ -1,4 +1,5 @@
 #OP25_Controller.py
+from importlib import simple
 import subprocess
 import os
 import time
@@ -13,6 +14,7 @@ from sympy import I
 # Removed to avoid circular import: from modules._session import session
 from modules._session import SessionMember
 from modules.myConfiguration import MyConfig
+from modules._simpleLog import simpleLogger
 
 
 if TYPE_CHECKING:
@@ -146,7 +148,7 @@ class op25Manager:
 
                 response, _ = sock.recvfrom(buffer_size)
                 response_data = json.loads(response.decode())
-
+                simpleLogger.writeLine(f"[DEBUG] Received response: {response_data}")
                 return response_data  # Return the received JSON response
 
         except (socket.error, json.JSONDecodeError) as e:
@@ -189,6 +191,7 @@ class op25Manager:
         """Switches OP25 to a new P25 system with the first zone and channel set automatically."""
         
         # Command to reload OP25 configuration, assuming self.command is implemented
+        thisSession.activeSystem.toTrunkTSV(thisSession)
         self.command("reload", 0)
 
     def command(self, cmd, data):
@@ -201,16 +204,13 @@ class op25Manager:
 
         # 🔹 Step 1: Ensure hold TGIDs are whitelisted before holding
         if cmd == "hold":
-            if data not in self.whitelist_tgids:
-                print(f"[INFO] TGID {data} not in whitelist. Adding before hold.")
-                self.whitelist([data])
-
             response = self.send_udp_command(cmd, data)
-            if response:
-                pass
-                # print(f"[SUCCESS] Hold command sent for TGID {data}.")
+            if response:  
+                print(f"[SUCCESS] Hold command sent for TGID {data}.")
+                return {"status": "success", "message": f"Hold command sent for TGID {data}."}
             else:
                 print(f"[ERROR] Failed to hold TGID {data}. No response received.")
+                return {"status": "error", "message": f"Failed to send hold command for TGID {data}."}
 
         elif cmd == "whitelist":
             response = self.send_udp_command(cmd, data)  # Directly send the command

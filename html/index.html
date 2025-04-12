@@ -238,8 +238,10 @@
                                 <tr class="text-start ">
                                     <td>&nbsp;</td>
                                     <td>
+                                        
+                                        <button type="button" id="btnHold" class="btn btn-sm btn-secondary m0"><i id="hold-icon" default-icon="fa-pause" class="fas fa-pause me-1"></i>HOLD</button> 
+                                        <button type="button" id="btnSkip" class="btn btn-sm btn-secondary m0"><i id="skip-icon" default-icon="fa-forward" class="fas fa-forward me-1"></i>SKIP</button>
                                         <!-- THESE FEATURES HAVE YET TO BE IMPLEMENTED -->
-                                        <button type="button" id="btnHold" class="btn btn-sm btn-secondary m0 disabled"><i class="fas fa-pause me-1"></i>HOLD</button> 
                                         <button type="button" id="btnLockout" class="btn btn-sm btn-secondary m0 disabled"><i class="fas fa-lock me-1"></i>LOCKOUT</button></td>
                                     </td>
                                 </tr>
@@ -350,7 +352,10 @@
                     CHANNEL_PREVIOUS: "/session/channel/previous",
                     ZONE_SELECT: (id) => `/session/zone/${id}`,
                     ZONE_NEXT: "/session/zone/next",
-                    ZONE_PREVIOUS: "/session/zone/previous"
+                    ZONE_PREVIOUS: "/session/zone/previous",
+                    LOCKOUT: (tgid) => `/session/lockout/${tgid}`,
+                    HOLD: (tgid) => `/session/hold/${tgid}`,
+                    SKIP: (tgid) => `/session/skip/${tgid}`
                 },
 
                 VOLUME: {
@@ -390,8 +395,6 @@
                 OP25_Command: "/config/op25/command",
                 CONTROLLER: {
                     WHITELIST: "/session/controller/whitelist",
-                    LOCKOUT: (tgid) => `/session/controller/lockout/${tgid}`,
-                    HOLD: (tgid) => `/session/controller/hold/${tgid}`,
                     RESTART: "/controller/restart"
                 }
             });
@@ -418,15 +421,26 @@
             }
 
             async function apiPut(url, body = null) {
-                console.log("Making PUT request to: ", `${API_BASE_URL}${url}`)
-                const res = await fetch(`${API_BASE_URL}${url}`, {
+                const fullUrl = `${API_BASE_URL}${url}`;
+
+                console.log("Making PUT request to:", fullUrl);
+            
+                const res = await fetch(fullUrl, {
                     method: "PUT",
                     credentials: "include",
                     headers: { "Content-Type": "application/json" },
                     body: body ? JSON.stringify(body) : null
                 });
-                if (!res.ok) throw new Error(`API error: ${await res.text()}`);
-                return res.json();
+            
+                const text = await res.text();
+
+                console.log("Raw response text:", text);
+                
+                if (!res.ok) {
+                    throw new Error(`API error: ${text}`);
+                }
+            
+                return JSON.parse(text);
             }
             let keypadZone = {};
             let keypadZones = {};
@@ -440,6 +454,34 @@
                     document.getElementById('talkgroup-name').textContent = data.name;
                 } else {
                     console.error('Error fetching talkgroup name');
+                }
+            }
+
+            function toggleSpinnerIcon(elName, flag, replacementIcon) {
+                el = document.getElementById(elName);
+                if (!el || !el.classList.contains("fa") && 
+                    !el.classList.contains("fas") &&
+                    !el.classList.contains("far") &&
+                    !el.classList.contains("fab")) {
+                    console.warn("Element is not a valid Font Awesome icon.", el);
+                    return;
+                }
+            
+                const defaultIconClass = el.getAttribute("default-icon");
+                if (!defaultIconClass) {
+                    console.warn("Missing default-icon attribute on <i> element.");
+                    return;
+                }
+            
+                // Remove any previous icon class (except base 'fa' or 'fas')
+                el.className = "fas me-1";
+            
+                if (flag) {
+                    console.log("Loading icon...");
+                    el.classList.add("fa-spinner", "fa-spin");
+                } else {
+                    console.log("Restoring default icon...");
+                    el.classList.add(replacementIcon);
                 }
             }
 
@@ -869,13 +911,13 @@
                     // Handle the accept button click
                     document.getElementById('zone-list-accept-btn').onclick = async function () {
                         try {
-                            // console.log("zone-list-accept-btn clicked");
+                            console.log("zone-list-accept-btn clicked");
                             const selectedZoneIndex = selectElement.value;
-                            // console.log("selectedZoneIndex", selectedZoneIndex)
+                            console.log("selectedZoneIndex", selectedZoneIndex)
 
                             // Set the new zone
-                            await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectedZoneIndex));
-
+                            var r = await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectedZoneIndex));
+                            console.log("zone result", r)
                             // Update the UI
                             updateUI();
 
@@ -1437,7 +1479,8 @@
 
             document.addEventListener("DOMContentLoaded", async () => {
                 // console.log("DOMContentLoaded", "async()");
-
+                document.getElementById("btnHold").addEventListener("click", holdTGID);
+                document.getElementById("btnSkip").addEventListener("click", skip)
                 // ===== Scroll Buttons: ZONE LIST =====
                 const zoneSelect = document.getElementById("zones");
                 const zoneUpBtn = document.getElementById("zone-list-up-btn");
@@ -1565,12 +1608,88 @@
 
             function voice_termination(data) {
                 document.getElementById("talkgroup").textContent = "";
+                if(!activeHold) { lastTGID = -1; }
+            }
+
+            async function skip() {
+                console.log("[DEBUG] skip() called with TGID:", lastTGID);
+                if(lastTGID == -1 ) {return;}
+                const el = document.getElementById("btnSkip");
+                toggleSpinnerIcon("skip-icon", true, "");
+                const fullUrl = `${API_BASE_URL}${APIEndpoints.SESSION.SKIP(lastTGID)}`;
+                const raw = await fetch(fullUrl, {
+                    method: "PUT",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ "caller": "holdTGID()" })
+                });
+                toggleSpinnerIcon("skip-icon", false, "fa-forward");
+
+
+            }
+
+
+            let activeHold = false;
+            async function holdTGID() {
+                try {
+                    let _lastTGID = lastTGID;
+
+                    // IF THE HOLD BUTTON IS PRESSED AGAIN, RELEASE THE HOLD
+                    // TO DO THIS, WE PASS 0 AS THE TGID
+                    if(activeHold == true){ _lastTGID = 0 }
+                    if(_lastTGID == -1){ return }
+                    toggleSpinnerIcon("hold-icon", true, "");
+                    console.log("[DEBUG] holdTGID() called with TGID:", _lastTGID);
+
+                    const fullUrl = `${API_BASE_URL}${APIEndpoints.SESSION.HOLD(_lastTGID)}`;
+                    const raw = await fetch(fullUrl, {
+                        method: "PUT",
+                        credentials: "include",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ "caller": "holdTGID()" })
+                    });
+            
+                    const data = await raw.json();
+                    const el = document.getElementById("btnHold");
+                    const el_icon = document.getElementById("hold-icon");
+
+                    if (activeHold == true) {           // RETURN TO NO HOLD STATE
+                        console.log("Returning to normal state.");
+                        toggleSpinnerIcon("hold-icon", false, "fa-pause");
+                        activeHold = false; 
+                        lastTGID = -1;
+                        el.classList.remove("btn-red");
+                        el.style.backgroundColor = "";
+                        el.classList.add("btn-secondary");
+                    } else {                            // SWITCH TO HOLD STATE
+                        activeHold = true;
+                        lastTGID = _lastTGID;
+                        toggleSpinnerIcon("hold-icon", false, "fa-undo");
+                        if (el_icon){ 
+                            //el_icon.classList.remove("fa-pause");
+                            //el_icon.classList.add("fa-undo");
+                            el.classList.remove("btn-secondary");
+                            el.classList.add("btn-red");
+                            console.log("class list", el.classList)
+                        }
+                       
+                    }
+            
+                } catch (err) {
+                    console.error("[ERROR] holdTGID failed:", err.message);
+                    toggleSpinnerIcon("hold-icon", false);
+                }
+
+                
             }
 
             let lastTGID = -1;
             async function onVoiceUpdate(data) {
                 // console.log("Voice update logged for tgid " + data.tgid);
+                console.log("Last TGID: ", lastTGID, " Current TGID: ", data.tgid);
+                if(data.tgid == null ){ console.info("[INFO] Skipped TGID lookup for [-1]."); return; }
                 if(lastTGID == parseInt(data.tgid)) return;
+                lastTGID = parseInt(data.tgid);
                 try {
                     const response = await fetch(API_BASE_URL + APIEndpoints.SESSION.TALKGROUP_NAME(data.tgid));
                     const jsonData = await response.json();

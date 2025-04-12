@@ -143,20 +143,10 @@ class TalkgroupManager:
         
         for tg_set in self._sets:
             self.logIT(f" + Checking TalkgroupSet with sysIndex: {tg_set.sysIndex}")
-            if tg_set.sysIndex == system_index:
+            if tg_set.sysIndex == int(system_index):
                 return tg_set
         self.logIT(f"TalkgroupSet with system index {system_index} not found.")
         return None
-    
-    # def getTalkgroupName(self, sysIndex: str, tgid: int) -> str:
-    #     """Finds the talkgroup by system index and tgid, and returns its name."""
-    #     tg_set = self.getTalkgroupSetBySysIndex(sysIndex)
-    #     if tg_set:
-    #         tg_member = tg_set.getTalkgroup(tgid)
-    #         if tg_member:
-    #             return tg_member.name
-    #         return f"Undefined in {sysIndex} ({tgid})"
-    #     return f"Undefined ({tgid})"
     
     def getTalkgroupName(self, sys_id: int, tgid: int) -> str | None:
         try:

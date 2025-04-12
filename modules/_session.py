@@ -123,38 +123,26 @@ class SessionMember:
         did_system_change = system.index != self._activeSysIndex
 
         # Log debug information
-        self._log_debug(f"Updating session: Channel={channel.channel_number}, Zone={zone.index}, System={system.index}")
+        
+        self._log_debug(f"\n\n\nUpdating session: Channel={channel.channel_number}, Zone={zone.index}, System={system.index}")
         self._log_debug(f"Did system change: {did_system_change}")
 
         # Update session state
         self._activeChannelNumber = channel.channel_number
+        self._log_debug(f"Updated channel number to: {channel.channel_number}")
         self._active_channel = channel
+        self._log_debug(f"Updated channel to: {channel.name}")
         self._activeZoneIndex = zone.index
         self._activeZone = zone
         self._activeSysIndex = system.index
         self._activeSystem = system
+        self._log_debug(f"Updated system to: {system.sysname} {system.index}")
         self._activeTGIDList = self._get_tgid_list(system.index)
 
         # Trigger talkgroup or system change
-        self._change_talkgroup(did_system_change)
-
-    def _change_talkgroup(self, did_system_change: bool):
-        """
-        Handles the change of a talkgroup or system.
-
-        This method determines whether a system change or a talkgroup change
-        has occurred and invokes the appropriate method on the op25Manager
-        to handle the change.
-
-        Args:
-            did_system_change (bool): A flag indicating whether the system
-                                      has changed. If True, a system change
-                                      is handled; otherwise, a talkgroup
-                                      change is handled.
-        """
-        """Handle talkgroup or system change."""
-        
+        self._log_debug(f"Triggering switchSystem...")
         self.sessionManager.op25Manager.switchSystem(self)
+    
 
     def nextChannel(self):
         """

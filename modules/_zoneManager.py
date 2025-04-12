@@ -267,7 +267,7 @@ class channelMember:
     def whitelistFilePath(self) -> str:
         """Returns the file path for the whitelist."""
         if not self._whitelistFilePath:
-            safe_name = re.sub(r'\W+', '_', self.name)
+            safe_name = "_whitelist"
             self._whitelistFilePath = os.path.join(tempfile.gettempdir(), f"_whitelist_{safe_name}.tsv")
         return self._whitelistFilePath
 
@@ -275,7 +275,7 @@ class channelMember:
     def blacklistFilePath(self) -> str:
         """Returns the file path for the blacklist."""
         if not self._blacklistFilePath:
-            safe_name = re.sub(r'\W+', '_', self.name)
+            safe_name = "_blacklist"
             self._blacklistFilePath = os.path.join(tempfile.gettempdir(), f"_blacklist_{safe_name}.tsv")
         return self._blacklistFilePath
 
