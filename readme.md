@@ -113,6 +113,13 @@ sleep 5
 # Launch Firefox in kiosk mode
 firefox-esr --kiosk http://localhost:8000
 ```
+3. If using an air mouse HID remote (new feature), add the following line:
+   ```bash
+   # NOTE: This script will disable keyboard entry; it is in beta.
+   sudo python modules/keymap.py &
+   ```
+   Read additional remote documentation [here](/modules/readme_remote.md).
+
 
 ### Managed Systems
 
@@ -130,6 +137,13 @@ firefox-esr --kiosk http://localhost:8000
    ```bash
    firefox-esr --kiosk http://localhost:8000
    ```
+
+4. If using an air mouse HID remote (new feature), add the following line:
+   ```bash
+   # NOTE: This script will disable keyboard entry; it is in beta.
+   sudo python modules/keymap.py &
+   ```
+   Read additional remote documentation [here](/modules/readme_remote.md).
 
 ## Configuration
 
