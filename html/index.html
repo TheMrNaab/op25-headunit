@@ -17,32 +17,24 @@
 </head>
 
 <body>
+    <script src="static/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- PROGRESS Modal -->
-    <div class="modal" id="progressModal" tabindex="-1" aria-labelledby="progressModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="progressModalLabel">Progress</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Converted progress display -->
-                    <div id="progress-display" class="section progress-container">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
-                                style="width: 0%;">
-                                0%
-                            </div>
+    <div class="modal" id="progressModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-4 text-center">
+                <strong id="updateText" class="d-block mb-3">Updating...</strong>
+                <div id="progress-display" class="progress-container">
+                    <div class="progress mx-auto" style="width: 100%;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 0%;">
+                            0%
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <!-- Optional close button -->
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <!-- KEYPAD Modal -->
     <div class="modal modal-md" id="keypadModal" tabindex="-1" aria-labelledby="keypadModalLabel"
@@ -163,10 +155,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Apply Button in Modal Footer -->
-                <!-- <div class="modal-footer">
-                    <button id="channelApplyBtn" class="btn btn-success">Apply</button>
-                </div> -->
             </div>
         </div>
     </div>
@@ -401,7 +389,7 @@
 
             async function apiGet(url) {
                 var url = `${API_BASE_URL}${url}`;
-                console.log(url);
+                // console.log(url);
                 const res = await fetch(`${url}`, {
                     method: "GET",
                     credentials: "include"
@@ -412,7 +400,7 @@
 
             async function apiGetV2(url) {
                 var url = `${API_BASE_URL}${url}`;
-                console.log(url);
+                // console.log(url);
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -423,7 +411,7 @@
             async function apiPut(url, body = null) {
                 const fullUrl = `${API_BASE_URL}${url}`;
 
-                console.log("Making PUT request to:", fullUrl);
+                //console.log("Making PUT request to:", fullUrl);
             
                 const res = await fetch(fullUrl, {
                     method: "PUT",
@@ -434,7 +422,7 @@
             
                 const text = await res.text();
 
-                console.log("Raw response text:", text);
+                //console.log("Raw response text:", text);
                 
                 if (!res.ok) {
                     throw new Error(`API error: ${text}`);
@@ -722,6 +710,29 @@
                 showDynamicModal("Github Information", bodyContent);
             }
 
+            function updateProgressBar(percent) {
+                const modalEl = document.getElementById("progressModal");
+                const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                const bar = document.querySelector("#progress-display .progress-bar");
+                document.getElementById("progress-display").style.display = "flex";
+                // Clamp value
+                const clamped = Math.max(0, Math.min(100, percent));
+            
+                // Update UI
+                bar.style.width = `${clamped}%`;
+                bar.textContent = `${clamped}%`;
+            
+                // Show if not already visible
+                if (!modalEl.classList.contains("show")) {
+                    modal.show();
+                }
+            
+                // Optionally hide after complete
+                if (clamped >= 100) {
+                    setTimeout(() => modal.hide(), 1000);
+                }
+            }
+
             async function updateNetworkModal(data) {
                 if (!data) {
                     console.warn("No network data provided");
@@ -884,7 +895,7 @@
                 try {
                     // Fetch the list of zones
                     const response = await apiGetV2(APIEndpoints.ZONES.LIST);
-
+                    playButton("Zone List");
                     // Parse the response as JSON
                     const data = await response.json();
 
@@ -909,21 +920,25 @@
                     zoneModal.show();
 
                     // Handle the accept button click
+                    
                     document.getElementById('zone-list-accept-btn').onclick = async function () {
                         try {
-                            console.log("zone-list-accept-btn clicked");
-                            const selectedZoneIndex = selectElement.value;
-                            console.log("selectedZoneIndex", selectedZoneIndex)
 
-                            // Set the new zone
-                            var r = await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectedZoneIndex));
-                            console.log("zone result", r)
-                            // Update the UI
-                            updateUI();
-
-                            // Hide the modal
+                            logStream.on("update_talkgroups", function (data) {
+                                console.log(data.percentComplete);
+                                document.getElementById('updateText').textContent = `Adding Talkgroup...`;
+                                updateProgressBar(data.percentComplete);
+                                if(data.percentComplete == 100){
+                                    hideProgressModal();
+                                }
+                            });
                             zoneModal.hide();
-
+                            showProgressModal();
+                            const selectedZoneIndex = selectElement.value;
+                            var r = await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectedZoneIndex));
+                            await waitForProgressCompletion();  // ⏳ Waits for 100%
+                            await updateUI();  
+                            updateUI();
                         } catch (error) {
                             console.error("Error applying zone:", error);
                             alert("Failed to apply selected zone.");
@@ -936,10 +951,28 @@
                 }
             }
 
+            async function waitForProgressCompletion() {
+                return new Promise((resolve) => {
+                    const handler = function (data) {
+                        document.getElementById('updateText').textContent = `Adding Talkgroup...`;
+                        updateProgressBar(data.percentComplete);
+            
+                        if (data.percentComplete === 100) {
+                            hideProgressModal();
+                            logStream._events["update_talkgroups"] = logStream._events["update_talkgroups"]
+                                .filter(fn => fn !== handler);  // Remove this handler
+                            resolve();  // Continue the flow
+                        }
+                    };
+                    logStream.on("update_talkgroups", handler);
+                });
+            }
+
             let channelModal = null;
             async function openChannelModal() {
                 const channelModalEl = document.getElementById('channelModal');
                 channelModal = new bootstrap.Modal(channelModalEl, { backdrop: 'static', keyboard: false });
+                playButton("Channel List");
                 channelModal.show();
 
                 try {
@@ -1316,11 +1349,20 @@
                 initializeKeypadListeners(); // <-- Add this to re-bind keypad button events
             }
 
-            function hideKeypadModal() {
-                const modalEl = document.getElementById('keypadModal');
+            function hideProgressModal() {
+                const modalEl = document.getElementById('progressModal');
                 const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
                 modalInstance.hide();
             }
+
+            async function showProgressModal() {
+                const modalEl = document.getElementById('progressModal');
+                modalInstance = new bootstrap.Modal(modalEl, { backdrop: 'static', keyboard: false });
+                document.getElementById("progress-display").style.display = "flex";
+                modalInstance.show();
+                
+            }
+
 
             function closeModal(id) {
                 const modalEl = document.getElementById(id);
@@ -1364,8 +1406,10 @@
             async function btnGo_click(event) {
                 let channel_text = document.getElementById("channel_text").value;
                 let zn = parseInt(keypadZone.zone_index, 10);
+           
                 // console.log("zn: ", keypadZone.zone_index);
                 let ch = parseInt(channel_text, 10); // Correct for offset
+                ch -= 1
                 let url = `${API_BASE_URL}/session/zone/${zn}/channel/${ch}`;
 
                 let put_response = fetch(url, {
@@ -1379,7 +1423,9 @@
                     })
                 })
 
-                if (!(await put_response).ok) { alert("Did not change channel."); }
+                playButton("btn-go");
+
+                if (!(await put_response).ok) { alert("Did not change channel."); console.log(await put_response); }
                 else {
                     // console.log("Channel changed successfully");
                     updateUI();
@@ -1397,6 +1443,7 @@
             function handleKeypadKeyPress(event) {
                 let btn = event.currentTarget;
                 const digit = btn.getAttribute("data-value");
+                playButton(digit);
                 const channelInput = document.getElementById("channel_text");
                 channelInput.value = channelInput.value + digit;
                 onChannelInputChange();
@@ -1439,19 +1486,13 @@
 
             function playButton(id) {
                 const audioUrl = `audio/${id}.m4a`;
-                fetch(audioUrl, { method: 'HEAD' })
-                    .then(response => {
-                        if (response.ok) {
-                            const audio = new Audio(audioUrl);
-                            audio.play();
-                            audio.volume = 0.2;
-                        } else {
-                            console.info(`Audio file not found: ${audioUrl}`);
-                        }
-                    })
-                    .catch(error => {
-                        console.info(`Error checking audio file: ${error}`);
-                    });
+                console.log(audioUrl);
+
+                const audio = new Audio(audioUrl);
+                console.log("Audio file found: " + audioUrl);
+                audio.play();
+                audio.volume = 0.2;
+
             }
 
             function submitChannel(channel) {
@@ -1581,10 +1622,11 @@
             
                 listenLogStream() {
                     const source = new EventSource(this.API_BASE_URL + this.END_POINT);
-                    console.log("Listening to stream", "listenLogStream()");
+                    // console.log("Listening to stream", "listenLogStream()");
                     source.onmessage = async (event) => {
                         try {
                             const data = JSON.parse(event.data);
+                            console.log("action", data.action);
                             // console.log(data);
                             this.emit(data.action, data);
                         } catch (parseError) {
@@ -1604,6 +1646,7 @@
                 logStream.on("voice_update", onVoiceUpdate);
                 logStream.on("voice_termination", voice_termination);
                 logStream.on("keydown", shortcuts);
+                
             }
 
             function voice_termination(data) {
@@ -1686,7 +1729,7 @@
             let lastTGID = -1;
             async function onVoiceUpdate(data) {
                 // console.log("Voice update logged for tgid " + data.tgid);
-                console.log("Last TGID: ", lastTGID, " Current TGID: ", data.tgid);
+                // console.log("Last TGID: ", lastTGID, " Current TGID: ", data.tgid);
                 if(data.tgid == null ){ console.info("[INFO] Skipped TGID lookup for [-1]."); return; }
                 if(lastTGID == parseInt(data.tgid)) return;
                 lastTGID = parseInt(data.tgid);

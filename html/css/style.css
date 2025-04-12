@@ -238,9 +238,8 @@ body {
 
 /* Progress Container - Full Height Centering */
 .progress-container {
-    display: none; /* Keep hidden until needed */
+    display: flex; /* Keep hidden until needed */
     width: 100%;
-    height: 150px;
     background: #fff;
     border-radius: 10px;
     align-items: center;
@@ -462,6 +461,16 @@ body {
     border: 2px solid #dc3545;
     color: white;
     transition: all 0.2s ease-in-out;
+}
+
+.btn-secondary:active {
+    transition: all 0.2s ease-in-out !important;
+}
+
+.btn-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+    transform: scale(1.03) !important;
 }
 
 /* Hover effect */
