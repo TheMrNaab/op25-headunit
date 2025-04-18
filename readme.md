@@ -46,34 +46,7 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
 
 ## Installation Steps
 
-### Unmanaged Systems (e.g., Raspberry Pi OS, bare Debian installs)
-
-1. Clone and install Boatbod's OP25 software
-   ```bash
-   cd ~
-   git clone https://github.com/boatbod/op25.git
-   cd op25
-   ./install.sh
-   ```
-
-2. Clone this repository to `/opt/op25-project`
-   ```bash
-   sudo mkdir -p /opt/op25-project
-   sudo chown $USER:$USER /opt/op25-project
-   git clone https://github.com/TheMrNaab/op25-headunit.git /opt/op25-project
-   ```
-
-3. Install dependencies
-   ```bash
-   pip install -r /opt/op25-project/requirements.txt
-   ```
-
-4. Overwrite `trunking.py`
-   ```bash
-   cp /opt/op25-project/templates/trunking.py /home/$(whoami)/op25/op25/gr-op25_repeater/apps
-   ```
-
-### Managed Systems (e.g., Ubuntu Server)
+## Managed Systems (e.g., PiOS)
 
 1. Ensure Python tools are installed:
    ```bash
@@ -95,31 +68,6 @@ The project serves the `/html` folder for the UI and uses `api.py` to handle int
    ```
 
 ## Running the Interface
-
-### Unmanaged Systems
-1. Run `api.py` in a terminal window, then open `http://localhost:8000` in your web browser.
-2. To launch this automatically at startup and open in kiosk mode, install `firefox-esr` and use a startup script like the one below:
-
-```bash
-#!/bin/bash
-
-# Start API server
-cd /opt/op25-project
-python3 api.py &
-
-# Wait briefly to ensure the server starts
-sleep 5
-
-# Launch Firefox in kiosk mode
-firefox-esr --kiosk http://localhost:8000
-```
-3. If using an air mouse HID remote (new feature), add the following line:
-   ```bash
-   # NOTE: This script will disable keyboard entry; it is in beta.
-   sudo python modules/keymap.py &
-   ```
-   Read additional remote documentation [here](/modules/readme_remote.md).
-
 
 ### Managed Systems
 

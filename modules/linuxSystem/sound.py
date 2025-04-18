@@ -8,8 +8,8 @@ import psutil
 
 class soundSys:
     @staticmethod
-    def get_volume_percent():
-        command = ["amixer", "get", "PCM"]
+    def get_volume_percent(card=3):
+        command = ["amixer", "-c", f"{card}", "get", "PCM"]
         try:
             result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
             match = re.search(r"\[(\d+)%\]", result.stdout)
@@ -20,14 +20,18 @@ class soundSys:
         except subprocess.CalledProcessError as e:
             return f"error: {e.stderr.strip()}", 500
 
-    @staticmethod
-    def set_volume(level):
-        command = ["amixer", "set", "PCM", f"{level}%"]
+    def set_volume(percent, card=3):
+        if isinstance(percent, int):
+            percent = f"{percent}%"
+        elif isinstance(percent, str) and not percent.endswith('%'):
+            percent += '%'
+
+        command = ["amixer", "-c", f"{card}", "set", "PCM", percent]
         try:
             result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-            return soundSys.parse_volume(result)
+            return "ok"
         except subprocess.CalledProcessError as e:
-            return jsonify({"error": e.stderr.strip()}), 500
+            return f"error: {e.stderr.strip()}", 500
 
     @staticmethod
     def parse_volume(result):

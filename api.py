@@ -160,11 +160,21 @@ class API:
         @self.app.route('/volume/simple', methods=['GET'])
         def get_volume():
             return soundSys.get_volume_percent()
+        
+        # 1: [GET] Get system volume level (0–100)
+        @self.app.route('/volume/simple/<int:sound_card>', methods=['GET'])
+        def get_card_volume(sound_card):
+            return soundSys.get_volume_percent(sound_card) # TO BE IMPLEMENTED
 
         # 2: [POST] Set system volume level
         @self.app.route('/volume/<int:level>', methods=['PUT'])
         def set_volume(level):
-            return soundSys.set_volume(level)
+            return soundSys.set_volume(level) # TO BE IMPLEMENTED
+        
+        # 2: [POST] Set system volume level
+        @self.app.route('/volume/<int:level>/<int:sound_card>', methods=['PUT'])
+        def set_card_volume(level, sound_card):
+            return soundSys.set_volume(level, sound_card)
         
         # [GET] Returns the active sound device address
         @self.app.route('/device/audio/properties', methods=['GET'])
@@ -648,6 +658,12 @@ class API:
                 mac = ':'.join(mac[i:i+2] for i in range(0, 12, 2))
             rtn = LinuxUtilities.connect_and_route_bluetooth_audio(mac)
             return jsonify(rtn)
+        
+        @self.app.route('/config/exit-kiosk', methods=['PUT'])
+        @self.dynamic_cross_origin()  
+        def exit_kiosk():
+            subprocess.run(["pkill", "chromium"])
+            return "OK"
         
     def run(self):
         self.free_port(8000)

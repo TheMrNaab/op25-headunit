@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OP25 Scanner Control</title>
-
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
 
@@ -20,25 +20,25 @@
     <script src="static/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- PROGRESS Modal -->
     <div class="modal" id="progressModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body p-4 text-center">
-                <strong id="updateText" class="d-block mb-3">Updating...</strong>
-                <div id="progress-display" class="progress-container">
-                    <div class="progress mx-auto" style="width: 100%;">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 0%;">
-                            0%
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body p-4 text-center">
+                    <strong id="updateText" class="d-block mb-3">Updating...</strong>
+                    <div id="progress-display" class="progress-container">
+                        <div class="progress mx-auto" style="width: 100%;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                                style="width: 0%;">
+                                0%
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
     <!-- KEYPAD Modal -->
-    <div class="modal modal-md" id="keypadModal" tabindex="-1" aria-labelledby="keypadModalLabel"
-        aria-hidden="true">
+    <div class="modal modal-md" id="keypadModal" tabindex="-1" aria-labelledby="keypadModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
@@ -199,7 +199,7 @@
             <div class="status-icons">
                 <i id="status-github-info" class="fa-brands me-2 fa-github"></i>
                 <i id="status-network-info" class="fa-solid fa-circle-info"></i>
-                <!-- <i id="status-admin-portal" class="ms-2 fas fa-wifi"></i> -->
+                <i id="status-menu" class="ms-2 fas fa-bars" data-bs-toggle="offcanvas" data-bs-target="#menuDrawer"></i>
             </div>
         </div>
 
@@ -212,7 +212,8 @@
                         <tbody>
                             <tr class="text-start fs-6"">
                                 <td><span class=" badge bg-dark fs-6">CHANNEL</span></td>
-                                <td><span id="channel-number"># - </span> - <span id="channel-name">[Channel Name]</span></td>
+                                <td><span id="channel-number"># - </span> - <span id="channel-name">[Channel
+                                        Name]</span></td>
                             </tr>
                             <tr class="text-start fs-6">
                                 <td><span class="badge bg-dark fs-6">ZONE</span></td>
@@ -221,18 +222,25 @@
                             <tr class="text-start fs-6">
                                 <td><span class="badge bg-success fs-6">LAST TG</span></td>
                                 <td><span id="talkgroup"></span>
-                                    
+
                             </tr>
-                                <tr class="text-start ">
-                                    <td>&nbsp;</td>
-                                    <td>
-                                        
-                                        <button type="button" id="btnHold" class="btn btn-sm btn-secondary m0"><i id="hold-icon" default-icon="fa-pause" class="fas fa-pause me-1"></i>HOLD</button> 
-                                        <button type="button" id="btnSkip" class="btn btn-sm btn-secondary m0"><i id="skip-icon" default-icon="fa-forward" class="fas fa-forward me-1"></i>SKIP</button>
-                                        <!-- THESE FEATURES HAVE YET TO BE IMPLEMENTED -->
-                                        <button type="button" id="btnLockout" class="btn btn-sm btn-secondary m0 disabled"><i class="fas fa-lock me-1"></i>LOCKOUT</button></td>
-                                    </td>
-                                </tr>
+                            <tr class="text-start ">
+                                <td>&nbsp;</td>
+                                <td>
+
+                                    <button type="button" id="btnHold" class="btn btn-sm btn-secondary m0"><i
+                                            id="hold-icon" default-icon="fa-pause"
+                                            class="fas fa-pause me-1"></i>HOLD</button>
+                                    <button type="button" id="btnSkip" class="btn btn-sm btn-secondary m0"><i
+                                            id="skip-icon" default-icon="fa-forward"
+                                            class="fas fa-forward me-1"></i>SKIP</button>
+                                    <!-- THESE FEATURES HAVE YET TO BE IMPLEMENTED -->
+                                    <button type="button" id="btnLockout"
+                                        class="btn btn-sm btn-secondary m0 disabled"><i
+                                            class="fas fa-lock me-1"></i>LOCKOUT</button>
+                                </td>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -280,12 +288,14 @@
                 <span style="margin-top:6px">ZN LIST</span>
                 <div class="accent accent-green"></div>
             </button>
-            <button data-bs-toggle="modal" data-bs-dismiss="modal" onclick="showKeypadModal()" data-bs-target="#keypadModal">
+            <button data-bs-toggle="modal" data-bs-dismiss="modal" onclick="showKeypadModal()"
+                data-bs-target="#keypadModal">
                 <i class="fas fa-calculator"></i>
                 <span style="margin-top:6px">DIRECT</span>
                 <div class="accent accent-purple"></div>
             </button>
         </div>
+
 
         <!-- Bootstrap JS -->
 
@@ -295,6 +305,42 @@
             <button class="btn btn-outline-primary w-100 mb-1" onclick="selectChannel('TAC 2')">TAC 2</button>
             <button class="btn btn-outline-primary w-100 mb-1" onclick="selectChannel('TAC 3')">TAC 3</button>
         </div>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="menuDrawer" aria-labelledby="menuDrawerLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="menuDrawerLabel">Menu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                      <button class="btn w-100 text-start">
+                        <i class="fas fa-terminal fa-fw me-2"></i>Reload Webpage
+                      </button>
+                    </li>
+                    <li class="list-group-item">
+                      <button class="btn w-100 text-start" id="btnReloadOP25">
+                        <i class="fas fa-terminal fa-fw me-2"></i>Restart OP25
+                      </button>
+                    </li>
+                    <li class="list-group-item">
+                      <button class="btn w-100 text-start" onclick="openPortal()">
+                        <i class="fas fa-globe fa-fw me-2"></i>Configuration Portal
+                      </button>
+                    </li>
+                    <li class="list-group-item">
+                      <button class="btn w-100 text-start" onclick="bookmarkThisPage()">
+                        <i class="fas fa-bookmark fa-fw me-2"></i>Bookmark
+                      </button>
+                    </li>
+                    <li class="list-group-item">
+                      <button class="btn w-100 text-start" onclick="requestExitKiosk()">
+                        <i class="fas fa-sign-out-alt fa-fw me-2"></i>Exit Kiosk Mode
+                      </button>
+                    </li>
+                  </ul>
+            </div>
+          </div>
         <script src="static/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script>
             // INTERFACE.JS
@@ -412,22 +458,22 @@
                 const fullUrl = `${API_BASE_URL}${url}`;
 
                 //console.log("Making PUT request to:", fullUrl);
-            
+
                 const res = await fetch(fullUrl, {
                     method: "PUT",
                     credentials: "include",
                     headers: { "Content-Type": "application/json" },
                     body: body ? JSON.stringify(body) : null
                 });
-            
+
                 const text = await res.text();
 
                 //console.log("Raw response text:", text);
-                
+
                 if (!res.ok) {
                     throw new Error(`API error: ${text}`);
                 }
-            
+
                 return JSON.parse(text);
             }
             let keypadZone = {};
@@ -447,23 +493,23 @@
 
             function toggleSpinnerIcon(elName, flag, replacementIcon) {
                 el = document.getElementById(elName);
-                if (!el || !el.classList.contains("fa") && 
+                if (!el || !el.classList.contains("fa") &&
                     !el.classList.contains("fas") &&
                     !el.classList.contains("far") &&
                     !el.classList.contains("fab")) {
                     console.warn("Element is not a valid Font Awesome icon.", el);
                     return;
                 }
-            
+
                 const defaultIconClass = el.getAttribute("default-icon");
                 if (!defaultIconClass) {
                     console.warn("Missing default-icon attribute on <i> element.");
                     return;
                 }
-            
+
                 // Remove any previous icon class (except base 'fa' or 'fas')
                 el.className = "fas me-1";
-            
+
                 if (flag) {
                     console.log("Loading icon...");
                     el.classList.add("fa-spinner", "fa-spin");
@@ -473,7 +519,10 @@
                 }
             }
 
-          
+            function openPortal(){
+                window.open('http://${data.host_ip}:${data.host_port}/admin/index.html', '_blank');
+            }
+
 
             document.addEventListener("DOMContentLoaded", () => {
                 const inputEl = document.getElementById("channel_text");
@@ -524,20 +573,20 @@
                 }
             }
 
-            async function reloadOP25(e){
+            async function reloadOP25(e) {
                 e.preventDefault();
                 // Send a PUT request to the Flask endpoint to reload OP25
                 const response = await fetch(`http://${location.hostname}:5001/config/reload/op25`, {
-                  method: "PUT",
-                  headers: { "Content-Type": "application/json" }
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" }
                 });
                 if (response.ok) {
-                  alert("Rebooting system");
+                    alert("Rebooting system");
                 } else {
-                  alert("Failed to reboot system");
-                  console.log(await response.json());
+                    alert("Failed to reboot system");
+                    console.log(await response.json());
                 }
-              }
+            }
 
 
             function shortcuts(data) {
@@ -562,22 +611,22 @@
                         break;
 
                     case "rewind": // ZONE LIST
-                        if (!isChannelModalVisible && !isZoneModalVisible && !isKeypadModalVisible) { 
+                        if (!isChannelModalVisible && !isZoneModalVisible && !isKeypadModalVisible) {
                             openChannelModal();
                             break;
-                        } 
+                        }
 
                     case "fastforward": // CHANNEL
-                        if (!isChannelModalVisible && !isZoneModalVisible && !isKeypadModalVisible) { 
+                        if (!isChannelModalVisible && !isZoneModalVisible && !isKeypadModalVisible) {
                             openZoneModal();
                             break;
-                        } 
+                        }
 
                     case "skip back": // DIRECT & KEYPAD
-                        if (!isChannelModalVisible && !isZoneModalVisible && !isKeypadModalVisible) { 
+                        if (!isChannelModalVisible && !isZoneModalVisible && !isKeypadModalVisible) {
                             showKeypadModal();
                             break;
-                        } 
+                        }
                     case "up":
                         if (isChannelModalVisible) { channelUpBtn.click(); }
                         if (isZoneModalVisible) { zoneUpBtn.click(); }
@@ -594,9 +643,9 @@
                         break;
 
                     case "left":
-                        if (isKeypadModalVisible) { 
-                            
-                        
+                        if (isKeypadModalVisible) {
+
+
                             // CYCLE THROUGH zoneSelection RADIOS in reverse
                             const radios = document.querySelectorAll('input[name="zoneSelection"]');
                             let currentIndex = Array.from(radios).findIndex(radio => radio.checked);
@@ -612,22 +661,22 @@
                         break;
 
                     case "right":
-                    if (isKeypadModalVisible) {
-                        
-                        // CYCLE THROUGH zoneSelection RADIOS
-                        const radios = document.querySelectorAll('input[name="zoneSelection"]');
-                        let currentIndex = Array.from(radios).findIndex(radio => radio.checked);
+                        if (isKeypadModalVisible) {
 
-                        if (currentIndex !== -1) {
-                            radios[currentIndex].checked = false;
-                            currentIndex = (currentIndex + 1) % radios.length;
-                            radios[currentIndex].checked = true;
-                            radios[currentIndex].dispatchEvent(new Event('change'));
-                            window.preventDefault();
+                            // CYCLE THROUGH zoneSelection RADIOS
+                            const radios = document.querySelectorAll('input[name="zoneSelection"]');
+                            let currentIndex = Array.from(radios).findIndex(radio => radio.checked);
+
+                            if (currentIndex !== -1) {
+                                radios[currentIndex].checked = false;
+                                currentIndex = (currentIndex + 1) % radios.length;
+                                radios[currentIndex].checked = true;
+                                radios[currentIndex].dispatchEvent(new Event('change'));
+                                window.preventDefault();
+                            }
+
+
                         }
-
-                        
-                    }
 
                     case "back":
                         if (isChannelModalVisible) { channelModal.hide(); return }
@@ -717,16 +766,16 @@
                 document.getElementById("progress-display").style.display = "flex";
                 // Clamp value
                 const clamped = Math.max(0, Math.min(100, percent));
-            
+
                 // Update UI
                 bar.style.width = `${clamped}%`;
                 bar.textContent = `${clamped}%`;
-            
+
                 // Show if not already visible
                 if (!modalEl.classList.contains("show")) {
                     modal.show();
                 }
-            
+
                 // Optionally hide after complete
                 if (clamped >= 100) {
                     setTimeout(() => modal.hide(), 1000);
@@ -739,7 +788,7 @@
                     return;
                 }
                 const command_req = await apiGetV2(APIEndpoints.OP25_Command);
-                const command_data = await command_req.json(); 
+                const command_data = await command_req.json();
                 //const audio_req = await apiGetV2(APIEndpoints.DEVICE.GET_AUDIO_PROPERTY("alsa_device"));
                 //const response = await audio_req.json();
                 console.log(command_req['command']);
@@ -753,7 +802,7 @@
                     'Host IP': data.host_ip,
                     'HTTP Port': data.host_port,
                     'Web Interface': `http://${data.host_ip}:${data.host_port}/admin/index.html`,
-                    'Startup Command' : command_data.command
+                    'Startup Command': command_data.command
                 };
 
                 let bodyContent = "";
@@ -769,8 +818,9 @@
                 var footerContent =
                     `<button class="btn btn-sm btn-success" onClick="location.reload(true);"><i class="fas fa-refresh me-1"></i> Webpage</button>` +
                     `<button class="btn btn-sm btn-warning" id="btnReloadOP25"><i class="fas fa-refresh me-1"></i> OP25</button>` +
-                    `<button class="btn btn-sm btn-secondary" onClick="window.open('http://${data.host_ip}:${data.host_port}/admin/index.html', '_blank')"><i class="fas fa-external-link-alt me-1"></i>Open Web Interface</button>`;
-                showDynamicModal("Device Status", bodyContent, footerContent);
+                    `<button class="btn btn-sm btn-secondary" onClick="window.open('http://${data.host_ip}:${data.host_port}/admin/index.html', '_blank')"><i class="fas fa-external-link-alt me-1"></i>Open Web Interface</button>`+
+                    `<button class="btn btn-sm btn-secondary" onclick="bookmarkThisPage()"><i class="fas fa-bookmark me-1"></i>Bookmark</button>`;
+                    showDynamicModal("Device Status", bodyContent, footerContent);
                 const btnReloadOP25 = document.getElementById("btnReloadOP25");
                 if (btnReloadOP25) {
                     btnReloadOP25.addEventListener("click", reloadOP25);
@@ -919,7 +969,7 @@
                     zoneModal.show();
 
                     // Handle the accept button click
-                    
+
                     document.getElementById('zone-list-accept-btn').onclick = async function () {
                         try {
 
@@ -927,7 +977,7 @@
                                 console.log(data.percentComplete);
                                 document.getElementById('updateText').textContent = `Adding Talkgroup...`;
                                 updateProgressBar(data.percentComplete);
-                                if(data.percentComplete == 100){
+                                if (data.percentComplete == 100) {
                                     hideProgressModal();
                                 }
                             });
@@ -936,7 +986,7 @@
                             const selectedZoneIndex = selectElement.value;
                             var r = await apiPut(APIEndpoints.SESSION.ZONE_SELECT(selectedZoneIndex));
                             await waitForProgressCompletion();  // ⏳ Waits for 100%
-                            await updateUI();  
+                            await updateUI();
                             updateUI();
                         } catch (error) {
                             console.error("Error applying zone:", error);
@@ -955,7 +1005,7 @@
                     const handler = function (data) {
                         document.getElementById('updateText').textContent = `Adding Talkgroup...`;
                         updateProgressBar(data.percentComplete);
-            
+
                         if (data.percentComplete === 100) {
                             hideProgressModal();
                             logStream._events["update_talkgroups"] = logStream._events["update_talkgroups"]
@@ -1359,7 +1409,7 @@
                 modalInstance = new bootstrap.Modal(modalEl, { backdrop: 'static', keyboard: false });
                 document.getElementById("progress-display").style.display = "flex";
                 modalInstance.show();
-                
+
             }
 
 
@@ -1405,7 +1455,7 @@
             async function btnGo_click(event) {
                 let channel_text = document.getElementById("channel_text").value;
                 let zn = parseInt(keypadZone.zone_index, 10);
-           
+
                 // console.log("zn: ", keypadZone.zone_index);
                 let ch = parseInt(channel_text, 10); // Correct for offset
                 ch -= 1
@@ -1588,7 +1638,7 @@
                 fetchCurrentVolume();
                 await LoadKeypadFunctions();
 
-    
+
             });
 
 
@@ -1603,14 +1653,14 @@
                     this._events = {}; // Holds listeners by event name
                     this.listenLogStream(); // Fixed this line
                 }
-            
+
                 on(eventName, callback) {
                     if (!this._events[eventName]) {
                         this._events[eventName] = [];
                     }
                     this._events[eventName].push(callback);
                 }
-            
+
                 emit(eventName, data) {
                     if (this._events[eventName]) {
                         for (const callback of this._events[eventName]) {
@@ -1618,7 +1668,7 @@
                         }
                     }
                 }
-            
+
                 listenLogStream() {
                     const source = new EventSource(this.API_BASE_URL + this.END_POINT);
                     // console.log("Listening to stream", "listenLogStream()");
@@ -1632,7 +1682,7 @@
                             console.warn("Invalid log stream data:", parseError);
                         }
                     };
-            
+
                     source.onerror = (err) => {
                         console.warn("SSE stream error:", err);
                     };
@@ -1645,17 +1695,17 @@
                 logStream.on("voice_update", onVoiceUpdate);
                 logStream.on("voice_termination", voice_termination);
                 logStream.on("keydown", shortcuts);
-                
+
             }
 
             function voice_termination(data) {
                 document.getElementById("talkgroup").textContent = "";
-                if(!activeHold) { lastTGID = -1; }
+                if (!activeHold) { lastTGID = -1; }
             }
 
             async function skip() {
                 console.log("[DEBUG] skip() called with TGID:", lastTGID);
-                if(lastTGID == -1 ) {return;}
+                if (lastTGID == -1) { return; }
                 const el = document.getElementById("btnSkip");
                 toggleSpinnerIcon("skip-icon", true, "");
                 const fullUrl = `${API_BASE_URL}${APIEndpoints.SESSION.SKIP(lastTGID)}`;
@@ -1678,8 +1728,8 @@
 
                     // IF THE HOLD BUTTON IS PRESSED AGAIN, RELEASE THE HOLD
                     // TO DO THIS, WE PASS 0 AS THE TGID
-                    if(activeHold == true){ _lastTGID = 0 }
-                    if(_lastTGID == -1){ return }
+                    if (activeHold == true) { _lastTGID = 0 }
+                    if (_lastTGID == -1) { return }
                     toggleSpinnerIcon("hold-icon", true, "");
                     console.log("[DEBUG] holdTGID() called with TGID:", _lastTGID);
 
@@ -1690,7 +1740,7 @@
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ "caller": "holdTGID()" })
                     });
-            
+
                     const data = await raw.json();
                     const el = document.getElementById("btnHold");
                     const el_icon = document.getElementById("hold-icon");
@@ -1698,7 +1748,7 @@
                     if (activeHold == true) {           // RETURN TO NO HOLD STATE
                         console.log("Returning to normal state.");
                         toggleSpinnerIcon("hold-icon", false, "fa-pause");
-                        activeHold = false; 
+                        activeHold = false;
                         lastTGID = -1;
                         el.classList.remove("btn-red");
                         el.style.backgroundColor = "";
@@ -1707,30 +1757,30 @@
                         activeHold = true;
                         lastTGID = _lastTGID;
                         toggleSpinnerIcon("hold-icon", false, "fa-undo");
-                        if (el_icon){ 
+                        if (el_icon) {
                             //el_icon.classList.remove("fa-pause");
                             //el_icon.classList.add("fa-undo");
                             el.classList.remove("btn-secondary");
                             el.classList.add("btn-red");
                             console.log("class list", el.classList)
                         }
-                       
+
                     }
-            
+
                 } catch (err) {
                     console.error("[ERROR] holdTGID failed:", err.message);
                     toggleSpinnerIcon("hold-icon", false);
                 }
 
-                
+
             }
 
             let lastTGID = -1;
             async function onVoiceUpdate(data) {
                 // console.log("Voice update logged for tgid " + data.tgid);
                 // console.log("Last TGID: ", lastTGID, " Current TGID: ", data.tgid);
-                if(data.tgid == null ){ console.info("[INFO] Skipped TGID lookup for [-1]."); return; }
-                if(lastTGID == parseInt(data.tgid)) return;
+                if (data.tgid == null) { console.info("[INFO] Skipped TGID lookup for [-1]."); return; }
+                if (lastTGID == parseInt(data.tgid)) return;
                 lastTGID = parseInt(data.tgid);
                 try {
                     const response = await fetch(API_BASE_URL + APIEndpoints.SESSION.TALKGROUP_NAME(data.tgid));
@@ -1740,6 +1790,43 @@
                 } catch (fetchError) {
                     console.error("Error fetching talkgroup name:", fetchError);
                 }
+            }
+
+            function bookmarkThisPage(title = document.title, url = window.location.href) {
+                const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+                const shortcut = isMac ? 'Command + D' : 'Ctrl + D';
+
+                // Firefox <= v62 (legacy)
+                if (window.sidebar && window.sidebar.addPanel) {
+                    window.sidebar.addPanel(title, url, '');
+                }
+                // Firefox >= v63
+                else if (window.sidebar && navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+                    alert(`Press ${shortcut} to bookmark this page.`);
+                }
+                // Chrome, Edge, Safari, modern browsers
+                else {
+                    alert(`To bookmark this page, press ${shortcut} on your keyboard.`);
+                }
+            }
+
+            function requestExitKiosk() {
+                const confirmExit = confirm("Do you wish to exit kiosk mode?");
+                if (!confirmExit) return;
+
+                fetch(`${API_BASE_URL}/config/exit-kiosk`, {
+                    method: 'PUT'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error("Exit request failed with status:", response.status);
+                        } else {
+                            console.log("Kiosk exit request sent.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error during kiosk exit request:", error);
+                    });
             }
 
         </script>

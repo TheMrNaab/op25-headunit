@@ -67,40 +67,41 @@ class op25Manager:
         
         if self.alreadyStarted == False:
             
-            os.environ["PYTHONPATH"] = (os.environ.get("PYTHONPATH") or "/usr/bin/python3") + ":/home/dnaab/op25/op25/gr-op25_repeater/apps/tx:/home/dnaab/op25/build"
-            
-            print(f"... Configured PYTHONPATH to {os.environ['PYTHONPATH']}")
-            
             self._activeSession = _session
             
-            # self.op25_command = self.configManager.buildCommandV2(self.session.activeSystem.toTrunkTSV(self.session))
-            self.op25_command = [
-                self.rx_script, "--nocrypt", "--args", "rtl",
-                "--gains", "lna:45", 
-                "-S", "960000", 
-                "-q", "0",
-                "-v", "2", "-2", 
-                "-V", "-U",
-                "-O", "3",
-                "-T", self.session.activeSystem.toTrunkTSV(self.session),
-                "-l", "5000"
-            ]
+            self.op25_command = self.configManager.buildCommandV2(self.session.activeSystem.toTrunkTSV(self.session))
+            # self.op25_command = [
+            #     self.rx_script, "--nocrypt", "--args", "rtl",
+            #     "--gains", "lna:25", 
+            #     "-S", "250000", 
+            #     "-q", "0",
+            #     "-v", "2", "-2", 
+            #     "-V", "-U",
+            #     "-O", "3",
+            #     "-f", "853.9625",
+            #     "-T", self.session.activeSystem.toTrunkTSV(self.session),
+            #     "-l", "5000"
+            # ]
             
             print(f"\n\n... Generated OP25 start command to {self.op25_command}")
             
             print(f"... Attempting to start self.op25_process.")
             
             # Attempt to start subprocess
+            env = os.environ.copy()
+            env["PYTHONPATH"] = env.get("PYTHONPATH", "") + ":/home/dnaab/op25/op25/gr-op25_repeater/apps:/home/dnaab/op25/build"
+            env = os.environ.copy()
+
             self.op25_process = subprocess.Popen(
                 self.op25_command,
+                cwd="/home/dnaab/op25/op25/gr-op25_repeater/apps",  # 🔥 This is key
                 stdout=open(self.stdout_file, "w"),
                 stderr=open(self.stderr_file, "w"),
-                text=True
+                text=True,
+                env=env
             )
             
-            
-            
-            
+        
             # Wait to see result of process
             print(f"... Awaiting self.op25_process start confirmation.")
             time.sleep(3)  # Wait for startup
