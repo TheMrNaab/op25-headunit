@@ -740,11 +740,10 @@
                 }
                 const command_req = await apiGetV2(APIEndpoints.OP25_Command);
                 const command_data = await command_req.json(); 
-                const audio_req = await apiGetV2(APIEndpoints.DEVICE.GET_AUDIO_PROPERTY("api.alsa.path"));
-                const response = await audio_req.json();
+                //const audio_req = await apiGetV2(APIEndpoints.DEVICE.GET_AUDIO_PROPERTY("alsa_device"));
+                //const response = await audio_req.json();
                 console.log(command_req['command']);
                 const fieldMap = {
-                    'Audio Output': response['api.alsa.path'],
                     'Connection Type': data.connection_type,
                     'Network Device': data.wifi_name,
                     'CPU Temp': data.cpu_temp,

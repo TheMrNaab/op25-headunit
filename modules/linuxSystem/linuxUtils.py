@@ -29,30 +29,63 @@ class LinuxUtilities:
     @staticmethod
     def get_audio_sink_properties():
         try:
-            cmd = (
-                'pw-dump | jq -c \'.[] | '
-                'select(.type == "PipeWire:Interface:Node") | '
-                'select(.info.props["media.class"] == "Audio/Sink") | '
-                '.info.props\''
-            )
-            result = subprocess.check_output(cmd, shell=True, text=True)
-            lines = result.strip().splitlines()
-            if not lines:
-                return {"error": "No audio sink found"}
+            # Get list of playback hardware devices
+            result = subprocess.run(["aplay", "-l"], capture_output=True, text=True, check=True)
+            lines = result.stdout.strip().splitlines()
 
-            return json.loads(lines[0])  # Return full props dictionary
+            sinks = []
+            current_card = None
+
+            for line in lines:
+                card_match = re.match(r'^card (\d+): (\S+) \[([^\]]+)\], device (\d+): ([^\[]+)\[([^\]]+)\]', line)
+                if card_match:
+                    card_index = card_match.group(1)
+                    card_id = card_match.group(2)
+                    card_name = card_match.group(3)
+                    device_index = card_match.group(4)
+                    device_name = card_match.group(5).strip()
+                    device_desc = card_match.group(6)
+
+                    sinks.append({
+                        "card_index": int(card_index),
+                        "card_id": card_id,
+                        "card_name": card_name,
+                        "device_index": int(device_index),
+                        "device_name": device_name,
+                        "device_description": device_desc,
+                        "alsa_device": f"hw:{card_index},{device_index}"
+                    })
+
+            if not sinks:
+                return {"error": "No ALSA audio sinks found"}
+
+            return sinks
 
         except subprocess.CalledProcessError as e:
-            return {"error": f"Command failed: {e}"}
-        except json.JSONDecodeError as e:
-            return {"error": f"JSON parse error: {e}"}
+            return {"error": f"Command failed: {e.stderr.strip()}"}
 
     @staticmethod
     def get_volume_percent():
         try:
-            result = subprocess.run(["amixer", "get", "PCM"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-            match = re.search(r"\[(\d+)%\]", result.stdout)
-            return match.group(1) if match else "unknown"
+            # Step 1: List all mixer controls
+            controls_output = subprocess.run(["amixer", "scontrols"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+            control_names = re.findall(r"'([^']+)'", controls_output.stdout)
+
+            if not control_names:
+                return "error: no mixer controls found"
+
+            # Step 2: Try each control until one works
+            for control in control_names:
+                try:
+                    result = subprocess.run(["amixer", "get", control], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+                    match = re.search(r"\[(\d+)%\]", result.stdout)
+                    if match:
+                        return match.group(1)
+                except subprocess.CalledProcessError:
+                    continue  # Try the next control
+
+            return "error: no valid volume control found"
+
         except subprocess.CalledProcessError as e:
             return f"error: {e.stderr.strip()}"
 

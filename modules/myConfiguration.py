@@ -222,15 +222,7 @@ class op25CommandBuilder():
         flag, value = self.configManager.getOP25Properties("vocoder", "-V")
         return [value] if flag else []
     
-    # self.op25_command = [
-#     self.rx_script , "--nocrypt", "--args", "rtl",
-#     "--gains", "lna:35", "-S", "960000", "-q", "0",
-#     "-v", "1", "-2", "-V", "-U",
-#     "-T", "/opt/op25-project/templates/_trunk.tsv",
-
-#     "-U", "-l", "5000"
-# ]
-
+   
 # CODE I DO NOT WANT TO LOSE
 #  echo '{"command": "whitelist", "arg1": 47021, "arg2": 0}' | nc -u 127.0.0.1 5000
 
