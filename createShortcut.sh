@@ -44,7 +44,7 @@ read -p "Do you want to include keymap.py at boot? [y/N]: " INCLUDE_KEYMAP
 KEYMAP_LINE=""
 case "$INCLUDE_KEYMAP" in
     [Yy]* )
-        KEYMAP_LINE="sudo /home/dnaab/op25-venv/bin/python3 /opt/op25-project/modules/keymap.py &"
+        KEYMAP_LINE="sudo /home/dnaab/op25-venv/bin/python3 /opt/op25-project/modules/_remote.py &"
         ;;
 esac
 
