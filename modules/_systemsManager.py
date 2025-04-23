@@ -143,7 +143,7 @@ class systemsMember:
             self.sysname or "",
             '"' + ", ".join([f"{float(x):.4f}" for x in sorted(self.control_channels, key=lambda x: float(x))]) + '"',
             "0",
-            self.nac or "0",
+            self.nac,
             self.modulation or "",
             _session.activeTGIDList.toTalkgroupsCSV() or "",
             _session.activeChannel.toWhitelistTSV(),

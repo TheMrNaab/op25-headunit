@@ -64,63 +64,63 @@ class op25Manager:
     def start(self, _session:SessionMember) -> bool | None:
         
         print("Starting op25Manager ...")
+ 
+        self._activeSession = _session
         
-        if self.alreadyStarted == False:
+        self.op25_command = self.configManager.buildCommandV2(self.session.activeSystem.toTrunkTSV(self.session))
+        # self.op25_command = [
+        #     self.rx_script, "--nocrypt", "--args", "rtl",
+        #     "--gains", "lna:25", 
+        #     "-S", "250000", 
+        #     "-q", "0",
+        #     "-v", "2", "-2", 
+        #     "-V", "-U",
+        #     "-O", "3",
+        #     "-f", "853.9625",
+        #     "-T", self.session.activeSystem.toTrunkTSV(self.session),
+        #     "-l", "5000"
+        # ]
             
-            self._activeSession = _session
-            
-            self.op25_command = self.configManager.buildCommandV2(self.session.activeSystem.toTrunkTSV(self.session))
-            # self.op25_command = [
-            #     self.rx_script, "--nocrypt", "--args", "rtl",
-            #     "--gains", "lna:25", 
-            #     "-S", "250000", 
-            #     "-q", "0",
-            #     "-v", "2", "-2", 
-            #     "-V", "-U",
-            #     "-O", "3",
-            #     "-f", "853.9625",
-            #     "-T", self.session.activeSystem.toTrunkTSV(self.session),
-            #     "-l", "5000"
-            # ]
-            
-            print(f"\n\n... Generated OP25 start command to {self.op25_command}")
-            
-            print(f"... Attempting to start self.op25_process.")
-            
-            # Attempt to start subprocess
-            env = os.environ.copy()
-            env["PYTHONPATH"] = env.get("PYTHONPATH", "") + ":/home/dnaab/op25/op25/gr-op25_repeater/apps:/home/dnaab/op25/build"
-            env = os.environ.copy()
+        print(f"\n\n... Generated OP25 start command to {self.op25_command}")
+        
+        print(f"... Attempting to start self.op25_process.")
+        
+        # Attempt to start subprocess
+        env = os.environ.copy()
+        env["PYTHONPATH"] = env.get("PYTHONPATH", "") + ":/home/dnaab/op25/op25/gr-op25_repeater/apps:/home/dnaab/op25/build"
+        env["LD_LIBRARY_PATH"] = "/usr/local/lib"
 
-            self.op25_process = subprocess.Popen(
-                self.op25_command,
-                cwd="/home/dnaab/op25/op25/gr-op25_repeater/apps",  # 🔥 This is key
-                stdout=open(self.stdout_file, "w"),
-                stderr=open(self.stderr_file, "w"),
-                text=True,
-                env=env
-            )
-            
-        
-            # Wait to see result of process
-            print(f"... Awaiting self.op25_process start confirmation.")
-            time.sleep(3)  # Wait for startup
-            
-            
-            if self.op25_process.poll() is not None:
-                print("[ERROR] OP25 process failed to start.")
-                self.set_alreadyStarted(False)  # Reset the alreadyStarted flag
-            else:
-                print("[SUCCESS] OP25 process started.")
-                self.set_alreadyStarted(True) # Ensure we do not accidentally start the process again
-            
-            print("... Ignition Complete")
-            
-            return True
-        
-        elif(not self.session):
-            raise Exception("[FATAL] Session uavailable. Cannot start OP25.")
+        bias_t_enable_cmd = "rtl_biast -b 1"
+        op25_cmd = " ".join(self.op25_command)
+
+        # Combine both commands into a shell chain
+        full_cmd = f"{bias_t_enable_cmd} && {op25_cmd}"
+
+        self.op25_process = subprocess.Popen(
+            ["bash", "-c", full_cmd],
+            cwd="/home/dnaab/op25/op25/gr-op25_repeater/apps",
+            stdout=open(self.stdout_file, "w"),
+            stderr=open(self.stderr_file, "w"),
+            text=True,
+            env=env
+        )
     
+        # Wait to see result of process
+        print(f"... Awaiting self.op25_process start confirmation.")
+        time.sleep(3)  # Wait for startup
+        
+        
+        if self.op25_process.poll() is not None:
+            print("[ERROR] OP25 process failed to start.")
+            self.set_alreadyStarted(False)  # Reset the alreadyStarted flag
+        else:
+            print("[SUCCESS] OP25 process started.")
+            self.set_alreadyStarted(True) # Ensure we do not accidentally start the process again
+        
+        print("... Ignition Complete")
+        
+        return True
+
     def commandToString(self):
         return " ".join(self.op25_command)
     

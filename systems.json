@@ -9,7 +9,7 @@
             853.1500
         ],
         "offset": 0,
-        "nac": "0",
+        "nac": "0x592",
         "modulation": "cqpsk",
         "tgid_tags_file": null,
         "whitelist": null,

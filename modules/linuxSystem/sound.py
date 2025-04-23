@@ -8,7 +8,7 @@ import psutil
 
 class soundSys:
     @staticmethod
-    def get_volume_percent(card=3):
+    def get_volume_percent(card=2):
         command = ["amixer", "-c", f"{card}", "get", "PCM"]
         try:
             result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
@@ -20,7 +20,7 @@ class soundSys:
         except subprocess.CalledProcessError as e:
             return f"error: {e.stderr.strip()}", 500
 
-    def set_volume(percent, card=3):
+    def set_volume(percent, card=2):
         if isinstance(percent, int):
             percent = f"{percent}%"
         elif isinstance(percent, str) and not percent.endswith('%'):

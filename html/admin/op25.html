@@ -185,9 +185,15 @@ python3 rx.py
       <small class="text-muted">Flag: <code>--audio-dev</code></small>
     </div>
     <label for="audio_device" class="form-label">ALSA Audio Device</label>
-    <select class="form-control" id="audio_device" placeholder="default" disabled>
-    </select>
+    <div class="input-group">
+      <span class="input-group-text">Device</span>
+      <select class="form-control" id="audio_device" placeholder="default" disabled>
+      </select>
+      <span class="input-group-text">Number</span>
+      <input type="text" class="form-control" style="max-width: 15%;" maxlength="4" id="audio_card_number" value="">
+    </div>
     <div class="form-text">Specify ALSA device (e.g., default, hw:1,0, plughw:1,0).</div>
+    <input type="hidden" id="enableAudioCard" value="">
   </div>
 </div>
 
@@ -455,6 +461,7 @@ async function loadOP25Config() {
     for (const [toggleId, setting] of Object.entries(settingsMap)) {
       const toggle = document.getElementById(toggleId);
       const input = document.getElementById(setting.id);
+      console.log(`Loading setting ${setting.id}...`);
 
       if (!input) {
         console.warn(`Element not found for input ${setting.id}`);
@@ -542,7 +549,8 @@ function capitalize(s) {
     enableStderrFile:   { id: "stderr_file", flag: null, type: "text" },
     enableVocoder:      { id: "vocoder", flag: "-V", type: "flag" }, // NEW
     enableTerminalPort: { id: "terminal_port", flag: "-l", type: "number" },
-    enableTdma: { id: "tdma", flag: "-2", type: "display" }
+    enableTdma: { id: "tdma", flag: "-2", type: "display" },
+    enableAudioCard: { id: "audio_card_number", flag: null, type: "number" }
   };
 
   function updatePreview() {

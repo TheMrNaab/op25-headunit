@@ -169,7 +169,8 @@ class API:
         # 2: [POST] Set system volume level
         @self.app.route('/volume/<int:level>', methods=['PUT'])
         def set_volume(level):
-            return soundSys.set_volume(level) # TO BE IMPLEMENTED
+            """Set the system volume level (0–100)."""
+            return soundSys.set_volume(level, self.configManager.getint("OP25", "audio_card_number")) # TO BE IMPLEMENTED
         
         # 2: [POST] Set system volume level
         @self.app.route('/volume/<int:level>/<int:sound_card>', methods=['PUT'])
