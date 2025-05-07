@@ -324,6 +324,11 @@
                       </button>
                     </li>
                     <li class="list-group-item">
+                        <button class="btn w-100 text-start" onclick="openLog()" id="btnOP25Log">
+                          <i class="fas fa-file fa-fw me-2"></i>OP25 Log
+                        </button>
+                      </li>
+                    <li class="list-group-item">
                       <button class="btn w-100 text-start" onclick="openPortal()">
                         <i class="fas fa-globe fa-fw me-2"></i>Configuration Portal
                       </button>
@@ -825,6 +830,11 @@
                 if (btnReloadOP25) {
                     btnReloadOP25.addEventListener("click", reloadOP25);
                 }
+            }
+
+            function openLog(){ 
+                // OPENS THE RAW LOG FOR OP25
+                window.open(`http://${location.hostname}:5001/controller/logging/op25`);
             }
 
             function createBootstrapRow(...elements) {

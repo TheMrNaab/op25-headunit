@@ -485,6 +485,14 @@ class API:
 
         # ======    STREAMING & LOGGING      =======
 
+        @self.app.route('/controller/logging/op25', methods=['GET'])
+        def get_op25_log():
+            """Returns the OP25 log file."""
+            log_file = self.configManager.getUserPath("paths", "stderr_file")
+            if not os.path.exists(log_file):
+                return jsonify({"error": "Log file not found"}), 404
+            return send_file(log_file, mimetype='text/plain')
+
         # 25: [POST] Receive log data for SSE broadcast
         self.__lastTGID = 0
         @self.app.route('/controller/logging/update', methods=['POST'])
