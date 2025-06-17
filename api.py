@@ -385,21 +385,27 @@ class API:
         @self.app.route('/session/zone/<int:id>', methods=['PUT'])
         @self.dynamic_cross_origin()
         def set_active_zone(id):
+            print(f"set_active_zone called with id={id}")
             zone = self.sessionManager.zoneManager.getZoneByIndex(id)
             if not zone:
-                return {"error": f"Zone {id} not found"}, 404
+                print("Zone not found")
+                return jsonify({"error": f"Zone {id} not found"}), 404
             channels = zone.channels
             if not channels:
-                return {"error": "Zone has no channels"}, 404
+                print("Zone has no channels")
+                return jsonify({"error": "Zone has no channels"}), 404
             channel = channels[0]
             sys = self.sessionManager.systemsManager.getSystemByIndex(channel.sysid)
             if not channel:
-                return {"error": f"Zone: {id} with Channel 0 not found"}, 404
+                print("Channel 0 not found in zone")
+                return jsonify({"error": f"Zone: {id} with Channel 0 not found"}), 404
             if not sys:
-                return {"error": f"System with sysid {channel.sysid} not found", "data": channel._data}, 404
+                print("System not found for channel")
+                return jsonify({"error": f"System with sysid {channel.sysid} not found", "data": channel._data}), 404
+            print("Calling update_session...")
             self.activeSession.update_session(channel, zone, sys)
-            
-            return {"message": f"Zone {zone.name} updated successfully"}
+            print("Zone updated successfully")
+            return jsonify({"message": f"Zone {zone.name} updated successfully"}), 200
 
         # 15: [PUT] Move to next zone (loads first channel)
         @self.app.route('/session/zone/next', methods=['PUT'])

@@ -3,12 +3,12 @@
         "sysid": "",
         "sysname": "Wake County Simulcast",
         "control_channels": [
-            853.9250,
-            853.9625,
+            853.15,
             853.4625,
-            853.1500
+            853.925,
+            853.9625
         ],
-        "offset": 0,
+        "offset": "0",
         "nac": "0x592",
         "modulation": "cqpsk",
         "tgid_tags_file": null,

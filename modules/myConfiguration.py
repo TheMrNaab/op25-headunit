@@ -163,6 +163,7 @@ class op25CommandBuilder():
             self.UDP_PLAYER(),
             self.TERMINAL_PORT(),
             self.OUTPUT_DEVICE(),
+            # self.WEB_PLAYER(),
             self.TRUNK_CONF_FILE(tsv)
         ]
 
@@ -225,9 +226,14 @@ class op25CommandBuilder():
         flag, value = self.configManager.getOP25Properties("vocoder", "-V")
         return [value] if flag else []
     
+    def WEB_PLAYER(self):
+        # --l http:127.0.0.1:8080
+        flag, value = self.configManager.getOP25Properties("web_player", False)
+        return ["-l", value] if flag else []
+    
     def OUTPUT_DEVICE(self):
         flag, value = self.configManager.getOP25Properties("audio_device", "0")
-        return ["-O", value] if flag else []
+        return ["--audio-output=" + value] if flag else []
    
 # CODE I DO NOT WANT TO LOSE
 #  echo '{"command": "whitelist", "arg1": 47021, "arg2": 0}' | nc -u 127.0.0.1 5000

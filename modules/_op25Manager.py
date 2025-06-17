@@ -70,12 +70,12 @@ class op25Manager:
         self.op25_command = self.configManager.buildCommandV2(self.session.activeSystem.toTrunkTSV(self.session))
         # self.op25_command = [
         #     self.rx_script, "--nocrypt", "--args", "rtl",
-        #     "--gains", "lna:25", 
+        #     "--gains", "lna:35", 
         #     "-S", "250000", 
         #     "-q", "0",
         #     "-v", "2", "-2", 
         #     "-V", "-U",
-        #     "-O", "3",
+        #     "--audio-output=", "plughw:2,0",
         #     "-f", "853.9625",
         #     "-T", self.session.activeSystem.toTrunkTSV(self.session),
         #     "-l", "5000"
@@ -92,12 +92,14 @@ class op25Manager:
 
         bias_t_enable_cmd = "rtl_biast -b 1"
         op25_cmd = " ".join(self.op25_command)
-
+        # full_cmd = self.op25_command
+        
         # Combine both commands into a shell chain
         full_cmd = f"{bias_t_enable_cmd} && {op25_cmd}"
 
         self.op25_process = subprocess.Popen(
             ["bash", "-c", full_cmd],
+            # full_cmd,
             cwd="/home/dnaab/op25/op25/gr-op25_repeater/apps",
             stdout=open(self.stdout_file, "w"),
             stderr=open(self.stderr_file, "w"),
@@ -141,9 +143,10 @@ class op25Manager:
 
     def send_udp_command(self, command, arg2=0):
         try:
+            
             server_address = ('127.0.0.1', 5000)  # Target address and port
             buffer_size = 1024  # Buffer size for receiving response
-
+            print(f"[DEBUG] Sending command '{command}' with arg2={arg2} to {server_address}")
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
                 message = json.dumps({"command": command, "arg1": arg2, "arg2": 0})
                 sock.sendto(message.encode(), server_address)
@@ -193,12 +196,17 @@ class op25Manager:
         """Switches OP25 to a new P25 system with the first zone and channel set automatically."""
         
         # Command to reload OP25 configuration, assuming self.command is implemented
+        print("[DEBUG] Switching OP25 to new system...")
         thisSession.activeSystem.toTrunkTSV(thisSession)
-        self.command("reload", 0)
+        print(f"[DEBUG] New OP25 command: {self.op25_command}")
+        self.command("reload", 0) # was reload
+        print("[DEBUG] OP25 system switched successfully.")
 
     def command(self, cmd, data):
         """Sends a command to OP25. Ensures proper handling for hold, whitelist, and reload."""
         time.sleep(1) 
+        
+        print(f"[DEBUG] Executing command: {cmd} with data: {data}")
         
         if cmd not in ["hold", "whitelist", "skip", "lockout", "reload"]:
             print(f"[ERROR] Invalid command: {cmd}")
@@ -224,7 +232,9 @@ class op25Manager:
 
         # 🔹 Step 3: Handle reload command - Fully reload both whitelist & blacklist
         elif cmd == "reload":
+            print("[INFO] Sending UDP Command...", cmd)
             response = self.send_udp_command(cmd, 0)  # Reset OP25 state
+            print("[DEBUG] OP25 reload command sent.")
             if response:
                 print("[SUCCESS] OP25 reload command executed.")
                 time.sleep(1)  # Ensure OP25 has time to process reload
